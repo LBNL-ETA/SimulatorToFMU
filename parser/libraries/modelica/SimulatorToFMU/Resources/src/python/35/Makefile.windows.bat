@@ -16,8 +16,8 @@ REM ############################################################################
 SET SRCS=pythonInterpreter.c
 SET LIBS=pythonInterpreter.lib
 
-SET MOD_DLL=SimulatorToFMUPython3.5.dll
-SET MOD_LIB=SimulatorToFMUPython3.5.lib
+SET MOD_DLL=SimulatorToFMUPython35.dll
+SET MOD_LIB=SimulatorToFMUPython35.lib
 
 :: Check if we are on a 32 or 64 bit machine
 ::IF "%DevEnvDir%"=="" (
