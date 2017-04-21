@@ -31,13 +31,13 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
                                     dblParNam,
                                     dblParVal,
                                     resWri)
-    annotation (Library={"SimulatorToFMUPython2.7", "python27"},
+    annotation (Library={"SimulatorToFMUPython27", "python27"},
       LibraryDirectory={"modelica://SimulatorToFMU.Resources/Library"},
       IncludeDirectory="modelica://SimulatorToFMU.Resources/C-Sources",
       Include="#include \"pythonWrapper.c\"");
   annotation (Documentation(info="<html>
 <p>
-This function exchanges data with CymDist through its Python API.
+This function exchanges data with a Simulator through its Python API.
 See 
 <a href=\"modelica://SimulatorToFMU.Python27.UsersGuide\">
 SimulatorToFMU.Python27.UsersGuide</a>

@@ -29,7 +29,7 @@ CC_FLAGS_64 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I/usr/include/python
 
 SRCS = pythonInterpreter.c
 OBJS = pythonInterpreter.o
-LIB  = SimulatorToFMUPython${python_version_major}${python_version_minor}.so
+LIB  = libSimulatorToFMUPython${python_version_major}${python_version_minor}.so
 
 # Note that -fPIC is recommended on Linux according to the Modelica specification
 
