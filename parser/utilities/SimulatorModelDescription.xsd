@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:element name="SimulatorModelDescription" type="SimulatorModelDescriptionType"/>
+  <xs:complexType name="RealType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="unit" use="optional"/>
+        <xs:attribute type="xs:float" name="start" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="ScalarVariableType">
+    <xs:sequence>
+      <xs:element type="RealType" name="Real"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="optional"/>
+    <xs:attribute type="xs:string" name="description" use="optional"/>
+    <xs:attribute type="xs:string" name="causality" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="ModelVariablesType">
+    <xs:sequence>
+      <xs:element type="ScalarVariableType" name="ScalarVariable" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SimulatorModelDescriptionType">
+    <xs:sequence>
+      <xs:element type="ModelVariablesType" name="ModelVariables"/>
+    </xs:sequence>
+    <xs:attribute type="xs:float" name="fmiVersion"/>
+    <xs:attribute type="xs:string" name="modelName"/>
+    <xs:attribute type="xs:string" name="description"/>
+    <xs:attribute type="xs:string" name="generationTool"/>
+  </xs:complexType>
+</xs:schema>

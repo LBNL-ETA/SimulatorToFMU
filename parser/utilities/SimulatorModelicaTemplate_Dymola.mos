@@ -1,0 +1,17 @@
+// Export model as an FMU.
+openModel("{{model_name}}.mo");
+Advanced.FMI.xmlIgnoreProtected=true;
+Advanced.AllowStringParameters=true;
+translateModelFMU(
+  modelToOpen="{{model_name}}",
+  storeResult=false,
+  modelName="",
+  fmiVersion="{{fmi_version}}",
+  fmiType="{{fmi_api}}",
+  includeSource=false);
+Advanced.FMI.xmlIgnoreProtected=false;
+Advanced.AllowStringParameters=false;
+exit();
+
+
+

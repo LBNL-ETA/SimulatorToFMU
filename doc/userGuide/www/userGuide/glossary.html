@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>10. Glossary &mdash; FMU Export of CYMDIST User Guide</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="FMU Export of CYMDIST User Guide" href="index.html" />
+    <link rel="next" title="11. Acknowledgments" href="acknowledgments.html" />
+    <link rel="prev" title="9. Notation" href="notation.html" /> 
+  </head>
+  <body role="document">
+<div class="headerStyle">
+<img src="_static/lbl-logo.png" alt="LBL logo" />
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="acknowledgments.html" title="11. Acknowledgments"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="notation.html" title="9. Notation"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/fmu/CYMDIST/export/index.html">Home</a> |
+    <a href="index.html">User Guide</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of CYMDIST User Guide</a> &raquo;</li> -->
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="notation.html"
+                        title="previous chapter">9. Notation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="acknowledgments.html"
+                        title="next chapter">11. Acknowledgments</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/glossary.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="glossary">
+<h1>10. Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
+<dl class="glossary docutils">
+<dt id="term-dymola">Dymola</dt>
+<dd>Dymola, Dynamic Modeling Laboratory, is a modeling and simulation environment for the Modelica language.</dd>
+<dt id="term-functional-mock-up-interface">Functional Mock-up Interface</dt>
+<dd>The Functional Mock-up Interface (FMI) is the result of the Information Technology for European Advancement (ITEA2) project  <a class="reference internal" href="#term-modelisar"><span class="xref std std-term">MODELISAR</span></a>.
+The FMI standard is a tool independent standard to support both model exchange and co-simulation of dynamic models using a combination of XML-files, C-header files, C-code or binaries.</dd>
+<dt id="term-functional-mock-up-unit">Functional Mock-up Unit</dt>
+<dd>A simulation model or program which implements the FMI standard is called Functional Mock-up Unit (FMU).
+An FMU comes along with a small set of C-functions (FMI functions) whose input and return arguments are defined by the FMI standard.
+These C-functions can be provided in source and/or binary form. The FMI functions are called by a simulator to create one or more instances of the FMU.
+The functions are also used to run the FMUs, typically together with other models. An FMU may either require the importing tool
+to perform numerical integration (model-exchange) or be self-integrating (co-simulation). An FMU is distributed in the form of a zip-file that contains shared libraries, which contain the implementation of the FMI functions and/or source code of the FMI functions, an XML-file, also called the model description file, which contains the variable definitions as well as meta-information of the model,additional files such as tables, images or documentation that might be relevant for the model.</dd>
+<dt id="term-modelica">Modelica</dt>
+<dd>Modelica is a non-proprietary, object-oriented, equation-based language to conveniently model complex physical systems containing,
+e.g., mechanical, electrical, electronic, hydraulic, thermal, control, electric power or process-oriented subcomponents.</dd>
+<dt id="term-modelisar">MODELISAR</dt>
+<dd>MODELISAR is an ITEA 2 (Information Technology for European Advancement) European project aiming to improve the design of systems and of embedded software in vehicles.</dd>
+<dt id="term-pyfmi">PyFMI</dt>
+<dd>PyFMI is a package for loading and interacting with Functional Mock-Up Units (FMUs), which are compiled dynamic models compliant with the Functional Mock-Up Interface (FMI).</dd>
+<dt id="term-python">Python</dt>
+<dd>Python is a dynamic programming language that is used in a wide variety of application domains.</dd>
+</dl>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="acknowledgments.html" title="11. Acknowledgments"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="notation.html" title="9. Notation"
+             >previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/fmu/CYMDIST/export/index.html">Home</a> |
+    <a href="index.html">User Guide</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of CYMDIST User Guide</a> &raquo;</li> -->
+ 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

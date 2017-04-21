@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4. Creating an FMU &mdash; FMU Export of CYMDIST User Guide</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="FMU Export of CYMDIST User Guide" href="index.html" />
+    <link rel="next" title="5. Usage of CYMDIST as an FMU" href="usage.html" />
+    <link rel="prev" title="3. Installation and Configuration" href="installation.html" /> 
+  </head>
+  <body role="document">
+<div class="headerStyle">
+<img src="_static/lbl-logo.png" alt="LBL logo" />
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="usage.html" title="5. Usage of CYMDIST as an FMU"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="3. Installation and Configuration"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/fmu/CYMDIST/export/index.html">Home</a> |
+    <a href="index.html">User Guide</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of CYMDIST User Guide</a> &raquo;</li> -->
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">4. Creating an FMU</a><ul>
+<li><a class="reference internal" href="#command-line-use">4.1. Command-line use</a></li>
+<li><a class="reference internal" href="#output">4.2. Output</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">3. Installation and Configuration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="usage.html"
+                        title="next chapter">5. Usage of CYMDIST as an FMU</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/build.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="creating-an-fmu">
+<span id="build"></span><h1>4. Creating an FMU<a class="headerlink" href="#creating-an-fmu" title="Permalink to this headline">¶</a></h1>
+<p>This chapter describes how to create a Functional Mockup Unit, starting from a CYMDIST XML input file.
+It assumes you have followed the <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> instructions, and that you have created the CYMDIST
+model description file  following the <a class="reference internal" href="bestPractice.html"><span class="doc">Best Practice</span></a> guidelines.</p>
+<div class="section" id="command-line-use">
+<h2>4.1. Command-line use<a class="headerlink" href="#command-line-use" title="Permalink to this headline">¶</a></h2>
+<p>To create an FMU,
+open a command-line window (see <a class="reference internal" href="notation.html"><span class="doc">Notation</span></a>).
+The standard invocation of the CYMDISTToFMU tool is:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&gt; python  &lt;scriptDir&gt;CYMDISTToFMU.py &lt;input-file-path&gt;
+</pre></div>
+</div>
+<p>where <code class="docutils literal"><span class="pre">scriptDir</span></code> is the path to the scripts directory of CYMDISTToFMU.
+This is the <code class="docutils literal"><span class="pre">parser</span></code> subdirectory of the installation directory.
+See <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> for details.</p>
+<p>An example of invoking <code class="docutils literal"><span class="pre">CYMDISTToFMU.py</span></code> on Windows is</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span># Windows:
+&gt; python parser\CYMDISTToFMU.py test.xml
+</pre></div>
+</div>
+<p>All file paths can be absolute or relative.
+For readability, the rest of these instructions omit the paths to the script and input files.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If any file path contains spaces, then it must be surrounded with double quotes.</p>
+</div>
+<p>Script <code class="docutils literal"><span class="pre">CYMDISTToFMU.py</span></code> supports the following command-line switches:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="47%" />
+<col width="53%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">option &lt;arguments&gt;</th>
+<th class="head">Purpose</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&lt;input-file-path&gt;</td>
+<td>Path to the input file (if not provided, a default input
+file which is in
+<code class="docutils literal"><span class="pre">parser\utilities\CYMDISTModelDescription.xml</span></code>
+will be used.</td>
+</tr>
+<tr class="row-odd"><td>-h</td>
+<td>Show help and explanation on how to use this function.</td>
+</tr>
+</tbody>
+</table>
+<p>The main functions of CYMDISTToFMU are</p>
+<blockquote>
+<div><ul class="simple">
+<li>reading, validating, and parsing the CYMDIST XML input file.
+This includes removing and replacing invalid characters in variable names such as <code class="docutils literal"><span class="pre">*+-</span></code> with <code class="docutils literal"><span class="pre">_</span></code>,</li>
+<li>writing Modelica code with valid inputs and outputs names,</li>
+<li>invoking Dymola to compile the <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> code as an FMU for co-simulation 2.0.</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the process of creating the FMU, CYMDISTToFMU will rewrite the model description file
+generated by Dymola to include <code class="docutils literal"><span class="pre">needsExecutionTool=true</span></code> attribute in the FMU capabilities of the CYMDIST FMU.
+This is currently not supported by default in Dymola.</p>
+</div>
+</div>
+<div class="section" id="output">
+<h2>4.2. Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<p>The main output from running <code class="docutils literal"><span class="pre">CYMDISTToFMU.py</span></code> consists of an FMU, named after the <code class="docutils literal"><span class="pre">modelName</span></code> specified in the input file.
+The FMU is written to the current working directory, that is, in the directory from which you entered the command.</p>
+<p>The FMU is complete and self-contained.
+Any secondary output from running the CYMDISTToFMU tools can be deleted safely.</p>
+<p>Note that the FMU is a zip file.
+This means you can open and inspect its contents.
+To do so, it may help to change the &#8220;<code class="docutils literal"><span class="pre">.fmu</span></code>&#8221; extension to &#8220;<code class="docutils literal"><span class="pre">.zip</span></code>&#8221;.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="usage.html" title="5. Usage of CYMDIST as an FMU"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="3. Installation and Configuration"
+             >previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/fmu/CYMDIST/export/index.html">Home</a> |
+    <a href="index.html">User Guide</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of CYMDIST User Guide</a> &raquo;</li> -->
+ 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>
