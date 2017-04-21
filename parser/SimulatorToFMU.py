@@ -40,7 +40,7 @@ XML_MODELDESCRIPTION = 'SimulatorModelDescription.xml'
 # Get the path to the templates files
 script_path = os.path.dirname(os.path.realpath(__file__))
 utilities_path = os.path.join(script_path, 'utilities')
-MO_TEMPLATE_PATH = os.path.join(utilities_path, SimulatorModelicaTemplate_MO)
+MO_TEMPLATE_PATH_DYMOLA = os.path.join(utilities_path, SimulatorModelicaTemplate_MO)
 MOS_TEMPLATE_PATH_DYMOLA = os.path.join(utilities_path, SimulatorModelicaTemplate_Dymola_MOS)
 MOS_TEMPLATE_PATH_OPENMODELICA = os.path.join(utilities_path, SimulatorModelicaTemplate_OpenModelica_MOS)
 XSD_FILE_PATH = os.path.join(utilities_path, XSD_SCHEMA)
@@ -230,7 +230,7 @@ def main():
     Simulator = SimulatorToFMU(con_path,
                             io_file_path,
                             SimulatorToFMU_LIB_PATH,
-                            MO_TEMPLATE_PATH,
+                            MO_TEMPLATE_PATH_DYMOLA,
                             mos_template_path,
                             XSD_FILE_PATH,
                             python_vers,
