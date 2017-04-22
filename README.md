@@ -1,4 +1,3 @@
-=======
 # SimulatorToFMU
 
 ## Overview
