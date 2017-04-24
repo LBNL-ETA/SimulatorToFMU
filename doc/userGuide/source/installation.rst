@@ -21,9 +21,10 @@ To export a Simulator as an FMU, SimulatorToFMU needs:
 
 4. Modelica compiler
 
-SimulatorToFMU has been tested with:
+SimulatorToFMU has been tested with two Modelica compilers:
 
-- Dymola 2017 FD01 (Modelica compiler)
+- Dymola 2017 FD01 
+- OpenModelica 1.11.0 
 
 .. _installation directory:
 
