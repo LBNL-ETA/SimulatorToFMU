@@ -1,22 +1,17 @@
-'''
-Created on Oct 7, 2016
-
-@author: Thierry S. Nouidui
-@requires: Python 2.7 and higher
-@contact: TSNouidui@lbl.gov
-@note: Simulator to FMU xxxx
-
-'''
-
 """
 
-SimulatorToFMUoFMU is a software package written in Python which allows 
+SimulatorToFMU is a software package written in Python which allows 
 users to export any memory less simulation program which can be interfaced 
 through a Python API  as a :term:`Functional Mock-up Unit` (FMU) for  
-Co-Simulation or Model Exchange using the :term:`Functional Mock-up Interface` (FMI) 
+model Exchange or co-Simulation using the :term:`Functional Mock-up Interface` (FMI) 
 standard `version 2.0 <https://svn.modelica.org/fmi/branches/public/specifications/v2.0/FMI_for_ModelExchange_and_CoSimulation_v2.0.pdf>`_.
 This FMU can then be imported into a variety of simulation programs 
 that support the import of the Functional Mock-up Interface.
+
+__author__ = "Thierry S. Nouidui"
+__email__ = "TSNouidui@lbl.gov"
+__license__ = "BSD"
+__maintainer__ = "Thierry S Nouidui"
 
 """
 
@@ -61,15 +56,10 @@ XML_INPUT_FILE = os.path.join(utilities_path, XML_MODELDESCRIPTION)
 SimulatorToFMU_LIB_PATH = os.path.join(script_path, 'libraries', 'modelica')
 
 def main():
+    
     """
+    Main function to export a Simulator as an FMU.
 
-    SimulatorToFMUoFMU is a software package written in Python which allows 
-    users to export any memory less simulation program which can be interfaced 
-    through a Python API  as a :term:`Functional Mock-up Unit` (FMU) for  
-    Co-Simulation or Model Exchange using the :term:`Functional Mock-up Interface` (FMI) 
-    standard `version 2.0 <https://svn.modelica.org/fmi/branches/public/specifications/v2.0/FMI_for_ModelExchange_and_CoSimulation_v2.0.pdf>`_.
-    This FMU can then be imported into a variety of simulation programs 
-    that support the import of the Functional Mock-up Interface.
 
     """
     import argparse
@@ -81,7 +71,7 @@ def main():
     
     simulator_group.add_argument('-s', '--python-scripts-path',
                                 required=True,
-                                help='Path to the Pythons script '
+                                help='Path to the Python scripts '
                                 + ' used to interface with simulator',
                                 type=(lambda s: [item for item in s.split(',')]))
 
@@ -243,6 +233,7 @@ def main():
     elif(export_tool == 'omc'):
         mos_template_path = MOS_TEMPLATE_PATH_OPENMODELICA 
         modelica_path = 'OPENMODELICALIBRARY'
+    
     # Export the tool as an FMU
     Simulator = SimulatorToFMU(con_path,
                             io_file_path,
@@ -419,8 +410,8 @@ class SimulatorToFMU(object):
     a pre-defined XML schema, extracting the
     variables attributes, writing a Modelica
     model of a Simulator model and exporting
-    the model as an FMU for co-simulation or 
-    model exchange 2.0.
+    the model as an FMU for model exchange or 
+    co-simulation.
 
     """
 
@@ -703,7 +694,7 @@ class SimulatorToFMU(object):
             modelica_input_variable_names, \
             modelica_output_variable_names, \
             modelica_parameter_variable_names \
- = self.xml_parser()
+            = self.xml_parser()
 
         loader = jja2.FileSystemLoader(self.moT_path)
         env = jja2.Environment(loader=loader)
@@ -831,7 +822,8 @@ class SimulatorToFMU(object):
         return 0
 
     def rewrite_fmu(self):
-        """Add needsExecutionTool to the Simulator FMU.
+        """
+        Add needsExecutionTool to the Simulator FMU.
 
         This function unzips the FMU generated with generate_fmu(),
         reads the xml file, and add needsExecutionTool to the FMU capabilities.

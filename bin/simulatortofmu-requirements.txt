@@ -1,17 +1,14 @@
 #
 ####### cymdistpy-requirements.txt #######
-# The release version of CYMDISTPy was 
+# The release version of SimulatorToFMU.py was 
 # tested with the versions of following moduldes:
 ###### Requirements without Version Specifiers ######
-#jinja2
-#cython
-#numpy
-#pandas
-#
+jinja2
+lxml
+
 ###### Requirements with Version Specifiers ######
 #   See https://www.python.org/dev/peps/pep-0440/#version-specifiers
 # lxml==3.4.4         # Version Matching.
-jinja2==2.8
-cython==0.25.1
-numpy==1.11.2
-pandas==0.19.0
+# jinja2==2.8
+
+
