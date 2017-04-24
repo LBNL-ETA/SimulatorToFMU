@@ -3,10 +3,10 @@
 Development
 ===========
 
-The development site of this software is at https://github.com/LBNL-ETA/cyder.
+The development site of this software is at https://github.com/tsnouidui/SimulatorToFMU.
 
 To clone the master branch, type
    
-git clone https://github.com/LBNL-ETA/cyder.git
+git clone https://github.com/tsnouidui/SimulatorToFMU.git
 
 

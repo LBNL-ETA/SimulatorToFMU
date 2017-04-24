@@ -6,17 +6,17 @@
 Best Practice
 =============
 
-This section explains to users the best practice in configuring a CYMDIST XML input file 
+This section explains to users the best practice in configuring a Simulator XML input file 
 for an FMU. 
 
-To export CYMDIST as an FMU, the user needs to write an XML file which contains the list 
+To export Simulator as an FMU, the user needs to write an XML file which contains the list 
 of inputs, outputs and parameters of the FMU. The XML snippet below shows how a user has to write such an input file.
-A template named ``CYMDISTModeldescritpion.xml`` which shows such a file is provided in the ``parser\utilities`` installation folder of CYMDISTToFMU. 
+A template named ``SimulatorModeldescritpion.xml`` which shows such a file is provided in the ``parser\utilities`` installation folder of SimulatorToFMU. 
 This template should be adapted to create new XML input file.
 
 The following snippet shows an input file where the user defines 6 inputs and 6 output variables.
 
-.. literalinclude:: ../../../parser/utilities/CYMDISTModelDescription.xml
+.. literalinclude:: ../../../parser/utilities/SimulatorModelDescription.xml
    :language: xml
    :linenos:
 

@@ -10,10 +10,8 @@ User Guide
    download
    installation
    build
-   usage
    bestPractice
    development
-   help
    notation
    glossary
    acknowledgments
