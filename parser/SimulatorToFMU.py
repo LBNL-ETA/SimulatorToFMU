@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 
 SimulatorToFMU is a software package written in Python which allows 
