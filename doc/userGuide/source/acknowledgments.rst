@@ -9,6 +9,5 @@ under contract No. xxx.
 The following people contributed to the development of this program:
 
 - Thierry Stephane Nouidui, Lawrence Berkeley National Laboratory
-- Jonathan Coignard, Lawrence Berkeley National Laboratory 
 - Michael Wetter, Lawrence Berkeley National Laboratory
 
