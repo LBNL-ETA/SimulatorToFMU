@@ -60,9 +60,15 @@ Script ``SimulatorToFMU.py`` supports the following command-line switches:
 | -a                                                 | FMI API version. Options are ``cs`` (co-simulation) and ``me``    | 
 |                                                    | (model exchange). Default is ``me``.                              |  
 +----------------------------------------------------+-------------------------------------------------------------------+
-| -t                                                 | Export tool. Options are ``omc`` (OpenModelica) and ``dymola``    | 
-|                                                    | (Dymola). Default is ``dymola``.                                  |  
+| -t                                                 | Export tool. Options are ``dymola`` (Dymola) and ``omc``          | 
+|                                                    | (OpenModelica which is experimentell). Default is ``dymola``.     |  
 +----------------------------------------------------+-------------------------------------------------------------------+
+
+.. note:: 
+
+   SimulatorToFMU.py can use OpenModelica to export a Simulator as an FMU. 
+   However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
+   that cannot be loaded. 
 
 The main functions of SimulatorToFMU are
 

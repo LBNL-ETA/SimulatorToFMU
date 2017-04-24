@@ -163,11 +163,17 @@ Default is <code class="docutils literal"><span class="pre">parser\utilities\Sim
 (model exchange). Default is <code class="docutils literal"><span class="pre">me</span></code>.</td>
 </tr>
 <tr class="row-odd"><td>-t</td>
-<td>Export tool. Options are <code class="docutils literal"><span class="pre">omc</span></code> (OpenModelica) and <code class="docutils literal"><span class="pre">dymola</span></code>
-(Dymola). Default is <code class="docutils literal"><span class="pre">dymola</span></code>.</td>
+<td>Export tool. Options are <code class="docutils literal"><span class="pre">dymola</span></code> (Dymola) and <code class="docutils literal"><span class="pre">omc</span></code>
+(OpenModelica which is experimentell). Default is <code class="docutils literal"><span class="pre">dymola</span></code>.</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">SimulatorToFMU.py can use OpenModelica to export a Simulator as an FMU.
+However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
+that cannot be loaded.</p>
+</div>
 <p>The main functions of SimulatorToFMU are</p>
 <blockquote>
 <div><ul class="simple">
