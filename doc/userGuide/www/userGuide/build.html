@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>4. Creating an FMU &mdash; FMU Export of CYMDIST User Guide</title>
+    <title>4. Creating an FMU &#8212; FMU Export of Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -17,15 +17,17 @@
         VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="FMU Export of CYMDIST User Guide" href="index.html" />
-    <link rel="next" title="5. Usage of CYMDIST as an FMU" href="usage.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5. Best Practice" href="bestPractice.html" />
     <link rel="prev" title="3. Installation and Configuration" href="installation.html" /> 
   </head>
   <body role="document">
@@ -40,16 +42,16 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="usage.html" title="5. Usage of CYMDIST as an FMU"
+          <a href="bestPractice.html" title="5. Best Practice"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="installation.html" title="3. Installation and Configuration"
              accesskey="P">previous</a> |</li>
-    <li><a href="http://simulationresearch.lbl.gov/fmu/CYMDIST/export/index.html">Home</a> |
+    <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of CYMDIST User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
@@ -59,7 +61,10 @@
   <ul>
 <li><a class="reference internal" href="#">4. Creating an FMU</a><ul>
 <li><a class="reference internal" href="#command-line-use">4.1. Command-line use</a></li>
-<li><a class="reference internal" href="#output">4.2. Output</a></li>
+<li><a class="reference internal" href="#output">4.2. Output</a><ul>
+<li><a class="reference internal" href="#exporting-a-simulator-with-python-2-7">4.2.1. Exporting a Simulator with Python 2.7</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -68,20 +73,20 @@
   <p class="topless"><a href="installation.html"
                         title="previous chapter">3. Installation and Configuration</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="usage.html"
-                        title="next chapter">5. Usage of CYMDIST as an FMU</a></p>
+  <p class="topless"><a href="bestPractice.html"
+                        title="next chapter">5. Best Practice</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/build.txt"
+      <li><a href="_sources/build.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -97,79 +102,116 @@
             
   <div class="section" id="creating-an-fmu">
 <span id="build"></span><h1>4. Creating an FMU<a class="headerlink" href="#creating-an-fmu" title="Permalink to this headline">¶</a></h1>
-<p>This chapter describes how to create a Functional Mockup Unit, starting from a CYMDIST XML input file.
-It assumes you have followed the <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> instructions, and that you have created the CYMDIST
+<p>This chapter describes how to create a Functional Mockup Unit, starting from a Simulator XML input file.
+It assumes you have followed the <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> instructions, and that you have created the Simulator
 model description file  following the <a class="reference internal" href="bestPractice.html"><span class="doc">Best Practice</span></a> guidelines.</p>
 <div class="section" id="command-line-use">
 <h2>4.1. Command-line use<a class="headerlink" href="#command-line-use" title="Permalink to this headline">¶</a></h2>
 <p>To create an FMU,
 open a command-line window (see <a class="reference internal" href="notation.html"><span class="doc">Notation</span></a>).
-The standard invocation of the CYMDISTToFMU tool is:</p>
-<div class="highlight-none"><div class="highlight"><pre><span></span>&gt; python  &lt;scriptDir&gt;CYMDISTToFMU.py &lt;input-file-path&gt;
+The standard invocation of the SimulatorToFMU tool is:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&gt; python3  &lt;scriptDir&gt;SimulatorToFMU.py &lt;python-scripts-path&gt;
 </pre></div>
 </div>
-<p>where <code class="docutils literal"><span class="pre">scriptDir</span></code> is the path to the scripts directory of CYMDISTToFMU.
+<p>where <code class="docutils literal"><span class="pre">scriptDir</span></code> is the path to the scripts directory of SimulatorToFMU.
 This is the <code class="docutils literal"><span class="pre">parser</span></code> subdirectory of the installation directory.
 See <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> for details.</p>
-<p>An example of invoking <code class="docutils literal"><span class="pre">CYMDISTToFMU.py</span></code> on Windows is</p>
+<p>An example of invoking <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> on Windows is</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span># Windows:
-&gt; python parser\CYMDISTToFMU.py test.xml
+&gt; python3 parser\SimulatorToFMU.py -s Simulator.py, calcEng.py
 </pre></div>
 </div>
-<p>All file paths can be absolute or relative.
-For readability, the rest of these instructions omit the paths to the script and input files.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If any file path contains spaces, then it must be surrounded with double quotes.</p>
+<ul class="last simple">
+<li>All file paths can be absolute or relative.</li>
+<li>If any file path contains spaces, then it must be surrounded with double quotes.</li>
+<li>On windows Operating system, all paths must use double backward slash (e.g. C:\\Simulator.py).</li>
+</ul>
 </div>
-<p>Script <code class="docutils literal"><span class="pre">CYMDISTToFMU.py</span></code> supports the following command-line switches:</p>
+<p>Script <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> supports the following command-line switches:</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="47%" />
-<col width="53%" />
+<col width="44%" />
+<col width="56%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">option &lt;arguments&gt;</th>
+<tr class="row-odd"><th class="head">Options</th>
 <th class="head">Purpose</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>&lt;input-file-path&gt;</td>
-<td>Path to the input file (if not provided, a default input
-file which is in
-<code class="docutils literal"><span class="pre">parser\utilities\CYMDISTModelDescription.xml</span></code>
-will be used.</td>
+<tr class="row-even"><td>-s</td>
+<td>Paths to python scripts required to run the
+Simulator. The main Python script must be an extension
+of the Simulator.py script provided in
+<code class="docutils literal"><span class="pre">parser\utilities\Simulator.py</span></code>.
+Its name must be Simulator.py.</td>
 </tr>
-<tr class="row-odd"><td>-h</td>
-<td>Show help and explanation on how to use this function.</td>
+<tr class="row-odd"><td>-c</td>
+<td>Path to the Simulator model file.</td>
+</tr>
+<tr class="row-even"><td>-i</td>
+<td>Path to the XML input file with the inputs/outputs of the FMU.
+Default is <code class="docutils literal"><span class="pre">parser\utilities\SimulatorModelDescription.xml</span></code></td>
+</tr>
+<tr class="row-odd"><td>-v</td>
+<td>FMI version. Options are <code class="docutils literal"><span class="pre">1.0</span></code> and <code class="docutils literal"><span class="pre">2.0</span></code>. Default is <code class="docutils literal"><span class="pre">2.0</span></code></td>
+</tr>
+<tr class="row-even"><td>-a</td>
+<td>FMI API version. Options are <code class="docutils literal"><span class="pre">cs</span></code> (co-simulation) and <code class="docutils literal"><span class="pre">me</span></code>
+(model exchange). Default is <code class="docutils literal"><span class="pre">me</span></code>.</td>
+</tr>
+<tr class="row-odd"><td>-t</td>
+<td>Export tool. Options are <code class="docutils literal"><span class="pre">omc</span></code> (OpenModelica) and <code class="docutils literal"><span class="pre">dymola</span></code>
+(Dymola). Default is <code class="docutils literal"><span class="pre">dymola</span></code>.</td>
 </tr>
 </tbody>
 </table>
-<p>The main functions of CYMDISTToFMU are</p>
+<p>The main functions of SimulatorToFMU are</p>
 <blockquote>
 <div><ul class="simple">
-<li>reading, validating, and parsing the CYMDIST XML input file.
+<li>reading, validating, and parsing the Simulator XML input file.
 This includes removing and replacing invalid characters in variable names such as <code class="docutils literal"><span class="pre">*+-</span></code> with <code class="docutils literal"><span class="pre">_</span></code>,</li>
 <li>writing Modelica code with valid inputs and outputs names,</li>
-<li>invoking Dymola to compile the <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> code as an FMU for co-simulation 2.0.</li>
+<li>invoking Dymola to compile the <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> code as an FMU for model exchange or co-simulation 2.0.</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">In the process of creating the FMU, CYMDISTToFMU will rewrite the model description file
-generated by Dymola to include <code class="docutils literal"><span class="pre">needsExecutionTool=true</span></code> attribute in the FMU capabilities of the CYMDIST FMU.
-This is currently not supported by default in Dymola.</p>
+<p class="last">For FMI 2.0 FMUs, SimulatorToFMU will rewrite the model description file
+generated by Dymola or OpenModelica to include <code class="docutils literal"><span class="pre">needsExecutionTool=true</span></code>
+attribute in the FMU capabilities of the Simulator FMU.
+This is currently not supported by Dymola and OpenModelica.</p>
 </div>
 </div>
 <div class="section" id="output">
 <h2>4.2. Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
-<p>The main output from running <code class="docutils literal"><span class="pre">CYMDISTToFMU.py</span></code> consists of an FMU, named after the <code class="docutils literal"><span class="pre">modelName</span></code> specified in the input file.
+<p>The main output from running <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> consists of an FMU, named after the <code class="docutils literal"><span class="pre">modelName</span></code> specified in the input file.
 The FMU is written to the current working directory, that is, in the directory from which you entered the command.</p>
-<p>The FMU is complete and self-contained.
-Any secondary output from running the CYMDISTToFMU tools can be deleted safely.</p>
+<p>The FMU is complete and self-contained.</p>
+<p>Any secondary output from running the SimulatorToFMU tools can be deleted safely.</p>
 <p>Note that the FMU is a zip file.
 This means you can open and inspect its contents.
 To do so, it may help to change the &#8220;<code class="docutils literal"><span class="pre">.fmu</span></code>&#8221; extension to &#8220;<code class="docutils literal"><span class="pre">.zip</span></code>&#8221;.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">SimulatorToFMU.py detects the Python version used to export the FMU and
+include binaries for Python 2.7 or Python 3.5. Hence it is important
+to use the correct version of Python when invoking SimulatorToFMU.py.</p>
+</div>
+<div class="section" id="exporting-a-simulator-with-python-2-7">
+<h3>4.2.1. Exporting a Simulator with Python 2.7<a class="headerlink" href="#exporting-a-simulator-with-python-2-7" title="Permalink to this headline">¶</a></h3>
+<p>If SimulatorToFMU is run using Python 2.7, then
+SimulatorToFMU.py creates a  <code class="docutils literal"><span class="pre">.zip</span></code> file named
+<code class="docutils literal"><span class="pre">Simulator.scripts.zip</span></code> along with the FMU.
+The zip file contains the Python scripts needed to
+interface the Simulator. The unzipped folder must be added
+to the PYTHONPATH of the target machine where the FMU will be used.
+This is because of an issue with Cython and the python interpreter
+which does not add the files on the path as expected.
+This step is not needed when using Python 3.5.x.</p>
+</div>
 </div>
 </div>
 
@@ -186,22 +228,22 @@ To do so, it may help to change the &#8220;<code class="docutils literal"><span 
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="usage.html" title="5. Usage of CYMDIST as an FMU"
+          <a href="bestPractice.html" title="5. Best Practice"
              >next</a> |</li>
         <li class="right" >
           <a href="installation.html" title="3. Installation and Configuration"
              >previous</a> |</li>
-    <li><a href="http://simulationresearch.lbl.gov/fmu/CYMDIST/export/index.html">Home</a> |
+    <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of CYMDIST User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+        &#169; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

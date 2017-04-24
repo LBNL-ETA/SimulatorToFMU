@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>5. Usage of CYMDIST as an FMU &mdash; FMU Export of CYMDIST User Guide</title>
+    <title>5. Usage of Simulator as an FMU &mdash; FMU Export of Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="FMU Export of CYMDIST User Guide" href="index.html" />
+    <link rel="top" title="FMU Export of Simulator User Guide" href="index.html" />
     <link rel="next" title="6. Best Practice" href="bestPractice.html" />
     <link rel="prev" title="4. Creating an FMU" href="build.html" /> 
   </head>
@@ -45,11 +45,11 @@
         <li class="right" >
           <a href="build.html" title="4. Creating an FMU"
              accesskey="P">previous</a> |</li>
-    <li><a href="http://simulationresearch.lbl.gov/fmu/CYMDIST/export/index.html">Home</a> |
+    <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of CYMDIST User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of Simulator User Guide</a> &raquo;</li> -->
  
       </ul>
     </div>
@@ -87,15 +87,15 @@
           <div class="body" role="main">
             
   <div class="section" id="usage-of-cymdist-as-an-fmu">
-<span id="usage"></span><h1>5. Usage of CYMDIST as an FMU<a class="headerlink" href="#usage-of-cymdist-as-an-fmu" title="Permalink to this headline">¶</a></h1>
-<p>The following requirements must be met to import and run a CYMDIST FMU:</p>
+<span id="usage"></span><h1>5. Usage of Simulator as an FMU<a class="headerlink" href="#usage-of-cymdist-as-an-fmu" title="Permalink to this headline">¶</a></h1>
+<p>The following requirements must be met to import and run a Simulator FMU:</p>
 <ol class="arabic">
 <li><p class="first">Python 3.4 must be installed. This is needed by the master algorithm <a class="reference internal" href="glossary.html#term-pyfmi"><span class="xref std std-term">PyFMI</span></a>.</p>
 </li>
 <li><p class="first">CYME version 7.2 must be installed. CYME can be downloaded from <a class="reference external" href="https://www.cyme.com">www.cyme.com</a>.</p>
 </li>
 <li><p class="first">The <code class="docutils literal"><span class="pre">fmu_code</span></code> functions directory must be added to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>.
-This directory contains functions needed at runtime by the CYMDIST FMU.
+This directory contains functions needed at runtime by the Simulator FMU.
 The <code class="docutils literal"><span class="pre">fmu_code</span></code> functions folder can be found at the top level of
 the distribution folder of CyDER. It is in <code class="docutils literal"><span class="pre">web\docker_django\worker\simulation</span></code>.</p>
 <p>To add the <code class="docutils literal"><span class="pre">fmu_code</span></code> functions folder to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>:</p>
@@ -117,22 +117,22 @@ which should be in our case the full path to
 </li>
 </ul>
 </li>
-<li><p class="first">The CYMDIST Python API directory must be added to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>.
-This directory contains scripts needed at runtime by the CYMDIST FMU.</p>
-<p>The CYMDIST Python API directory is in the installation folder of CYME.
+<li><p class="first">The Simulator Python API directory must be added to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>.
+This directory contains scripts needed at runtime by the Simulator FMU.</p>
+<p>The Simulator Python API directory is in the installation folder of CYME.
 It can typically be found in <code class="docutils literal"><span class="pre">path_to_CYME\CYME\cympy</span></code>, where <code class="docutils literal"><span class="pre">path_to_CYME</span></code>
 is the path to the installation folder of CYME 7.2.</p>
 </li>
 </ol>
 <blockquote>
-<div>To add the CYMDIST Python API scripts folder to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>,
+<div>To add the Simulator Python API scripts folder to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>,
 add <code class="docutils literal"><span class="pre">path_to_CYME\CYME</span></code> to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>.
 Note that <code class="docutils literal"><span class="pre">cympy</span></code> is not included in the name of the variable.</div></blockquote>
 <ol class="arabic" start="5">
-<li><p class="first">The CYMDIST installation directory must be added to the system <code class="docutils literal"><span class="pre">PATH</span></code>.
+<li><p class="first">The Simulator installation directory must be added to the system <code class="docutils literal"><span class="pre">PATH</span></code>.
 This directory contains runtime DLLS (<code class="docutils literal"><span class="pre">mkl_core.dll</span></code>, <code class="docutils literal"><span class="pre">mkl_def.dll</span></code>)
-that are needed at runtime by the CYMDIST FMU.</p>
-<p>The CYMDIST installation directory is typically found in <code class="docutils literal"><span class="pre">path_to_CYME\CYME\`,</span>
+that are needed at runtime by the Simulator FMU.</p>
+<p>The Simulator installation directory is typically found in <code class="docutils literal"><span class="pre">path_to_CYME\CYME\`,</span>
 <span class="pre">where</span> <span class="pre">``path_to_CYME</span></code> is the path to the installation folder of CYME 7.2.</p>
 </li>
 <li><p class="first">Upon request, the simulation results are saved in a result file which
@@ -161,11 +161,11 @@ is the FMU model name as defined in the XML input file.</p>
         <li class="right" >
           <a href="build.html" title="4. Creating an FMU"
              >previous</a> |</li>
-    <li><a href="http://simulationresearch.lbl.gov/fmu/CYMDIST/export/index.html">Home</a> |
+    <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of CYMDIST User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of Simulator User Guide</a> &raquo;</li> -->
  
       </ul>
     </div>
