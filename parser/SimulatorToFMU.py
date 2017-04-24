@@ -4,9 +4,22 @@ Created on Oct 7, 2016
 @author: Thierry S. Nouidui
 @requires: Python 2.7 and higher
 @contact: TSNouidui@lbl.gov
-@note: Simulator to FMU
+@note: Simulator to FMU xxxx
 
 '''
+
+"""
+
+SimulatorToFMUoFMU is a software package written in Python which allows 
+users to export any memory less simulation program which can be interfaced 
+through a Python API  as a :term:`Functional Mock-up Unit` (FMU) for  
+Co-Simulation or Model Exchange using the :term:`Functional Mock-up Interface` (FMI) 
+standard `version 2.0 <https://svn.modelica.org/fmi/branches/public/specifications/v2.0/FMI_for_ModelExchange_and_CoSimulation_v2.0.pdf>`_.
+This FMU can then be imported into a variety of simulation programs 
+that support the import of the Functional Mock-up Interface.
+
+"""
+
 
 from lxml import etree
 from datetime import datetime
@@ -48,7 +61,15 @@ XML_INPUT_FILE = os.path.join(utilities_path, XML_MODELDESCRIPTION)
 SimulatorToFMU_LIB_PATH = os.path.join(script_path, 'libraries', 'modelica')
 
 def main():
-    """Illustrate how to export Simulator as an FMU.
+    """
+
+    SimulatorToFMUoFMU is a software package written in Python which allows 
+    users to export any memory less simulation program which can be interfaced 
+    through a Python API  as a :term:`Functional Mock-up Unit` (FMU) for  
+    Co-Simulation or Model Exchange using the :term:`Functional Mock-up Interface` (FMI) 
+    standard `version 2.0 <https://svn.modelica.org/fmi/branches/public/specifications/v2.0/FMI_for_ModelExchange_and_CoSimulation_v2.0.pdf>`_.
+    This FMU can then be imported into a variety of simulation programs 
+    that support the import of the Functional Mock-up Interface.
 
     """
     import argparse
@@ -58,32 +79,28 @@ def main():
     parser = argparse.ArgumentParser(description='Export Simulator as a Functional Mock-up Unit')
     simulator_group = parser.add_argument_group("Arguments to export CYMDIST as an FMU")
     
-    simulator_group.add_argument('-s', '--python-scripts-path', 
+    simulator_group.add_argument('-s', '--python-scripts-path',
                                 required=True,
                                 help='Path to the Pythons script '
-                                +' used to interface with simulator',
+                                + ' used to interface with simulator',
                                 type=(lambda s: [item for item in s.split(',')]))
-    
-    #simulator_group.add_argument('-s', '--python-script-path',
-    #                             required=True,
-    #                             help='Path to the Python script '
-    #                             +' used to interface with simulator')
+
     simulator_group.add_argument('-c', '--con-fil-path',
                         help='Path to the configuration file')
     simulator_group.add_argument('-i', '--io-file-path',
                         help='Path to the XML input file')
     simulator_group.add_argument('-v', '--fmi-version',
                         help='FMI version. Valid options are <1.0>'
-                        +' and <2.0>). Default is <2.0>')
+                        + ' and <2.0>). Default is <2.0>')
     simulator_group.add_argument('-a', "--fmi-api",
                         help='FMI API version. Valid options'
-                        +' are <cs> for co-simulation'
-                        +' and <me> for model exchange.'
-                        +' Default is <me>')
+                        + ' are <cs> for co-simulation'
+                        + ' and <me> for model exchange.'
+                        + ' Default is <me>')
     simulator_group.add_argument("-t", "--export-tool",
                         help='Export tool. Valid options are '
-                        +'<dymola> for Dymola and'
-                        +' <omc> for OpenModelica')
+                        + '<dymola> for Dymola and'
+                        + ' <omc> for OpenModelica')
     # Parse the arguments
     args = parser.parse_args()
     
@@ -126,7 +143,7 @@ def main():
     io_file_path = args.io_file_path
     if io_file_path is None :
         log.info('No XML input file was provided. '
-                 +' The default XML file which is at ' 
+                 + ' The default XML file which is at ' 
                  + XML_INPUT_FILE + " will be used.")
         io_file_path = XML_INPUT_FILE
         
@@ -148,7 +165,7 @@ def main():
         log.info ('Set the Python version of the target simulator to be 2.7.')
         python_vers = '27'
         # Copy all resources file in a directory
-        dir_name='Simulator.scripts'
+        dir_name = 'Simulator.scripts'
         if os.path.exists(dir_name):
             shutil.rmtree(dir_name)
         log.info('Create the folder Simulator.scripts with scripts to be added to the PYTHONPATH')
@@ -157,7 +174,7 @@ def main():
             shutil.copy2(python_script_path, dir_name)
         fnam = os.path.join(dir_name, "README.txt")
         fh = open(fnam, "w")
-        readme='IMPORTANT:\n\n' + \
+        readme = 'IMPORTANT:\n\n' + \
                 'The files contains in this folder must be added to the PYTHONPATH.\n' + \
                 'This can be done by adding the folder ' + dir_name + ' to the PYTHONPATH.\n\n' + \
                 'This is needed because of CYTHON which is not adding the PYTHONPATH in the \n' + \
@@ -168,7 +185,7 @@ def main():
                 'addition.'
         fh.write(readme)
         fh.close()
-        dir_name_zip = dir_name+'.zip'
+        dir_name_zip = dir_name + '.zip'
         if os.path.exists(dir_name_zip):
             os.remove(dir_name_zip)
         zip_fmu(dir_name, includeDirInZip=False)
@@ -208,8 +225,8 @@ def main():
     # Get the FMI API version
     export_tool = args.export_tool    
     if(export_tool is None):
-         log.info('No export tool was specified. dymola the default will be used.')
-         export_tool = 'dymola'
+        log.info('No export tool was specified. dymola the default will be used.')
+        export_tool = 'dymola'
     
     # Check if export tool is valid
     if not (export_tool in ['dymola', 'omc']):
@@ -241,7 +258,6 @@ def main():
                             modelica_path)
     
     start = datetime.now()
-    retVal = -1
     ret_val = Simulator.print_mo()
     if(ret_val != 0):
         s = 'Could not print the Simulator Modelica model. Error in print_mo().'
@@ -377,7 +393,7 @@ def zip_fmu(dirPath=None, zipFilePath=None, includeDirInZip=True):
             archivePath = archivePath.replace(os.path.sep, "", 1)
         if not includeDirInZip:
             archivePath = archivePath.replace(dirToZip + os.path.sep, "", 1)
-        #return os.path.normcase(archivePath)
+        # return os.path.normcase(archivePath)
         return archivePath
 
     outFile = zipfile.ZipFile(zipFilePath, "w",
@@ -403,19 +419,20 @@ class SimulatorToFMU(object):
     a pre-defined XML schema, extracting the
     variables attributes, writing a Modelica
     model of a Simulator model and exporting
-    the model as an FMU for co-simulation 2.0.
+    the model as an FMU for co-simulation or 
+    model exchange 2.0.
 
     """
 
     def __init__(self, con_path,
-                 xml_path, 
+                 xml_path,
                  simulatortofmu_path,
-                 moT_path, 
-                 mosT_path, 
+                 moT_path,
+                 mosT_path,
                  xsd_path,
-                 python_vers, 
+                 python_vers,
                  python_scripts_path,
-                 fmi_version, 
+                 fmi_version,
                  fmi_api,
                  export_tool,
                  modelica_path):
@@ -523,8 +540,6 @@ class SimulatorToFMU(object):
         # Get the root of the tree
         root = tree.getroot()
 
-        # Get the FMI Version for checking
-        fmi_version = root.attrib.get('fmiVersion')
         # Get the model name to write the .mo file
         self.model_name = root.attrib.get('modelName')
         
@@ -611,7 +626,6 @@ class SimulatorToFMU(object):
                              + new_name + '.')
                     modelica_parameter_variable_names.append(new_name)
                     scalar_variable['name'] = new_name
-                    parameter_variable_values.append(start)
                 
                 for subelement in element:
                     vartype = subelement.tag
@@ -778,7 +792,7 @@ class SimulatorToFMU(object):
 
         # Renamed the FMU to indicate target Python simulator
         fmu_name = self.model_name + '.fmu'
-        #os.rename(self.model_name+'.fmu', fmu_name)
+        # os.rename(self.model_name+'.fmu', fmu_name)
 
         # Write scuccess.
         log.info('The FMU ' + fmu_name + ' is successfully created.')
@@ -808,7 +822,7 @@ class SimulatorToFMU(object):
         
         # Delete any files with extension in the list
         import glob
-        for ext in ['*.c', '*.h', '*.o', '*.dll', 
+        for ext in ['*.c', '*.h', '*.o', '*.dll',
                   '*.makefile', '*.libs', '*.json',
                   '*.exe', '*.exp', '*.lib']:
             filelist = glob.glob (ext)
@@ -868,7 +882,7 @@ class SimulatorToFMU(object):
         # Switch back to the current working directory
         os.chdir(cwd)
         
-        #sys.exit()
+        # sys.exit()
         # Pass the directory which will be zipped
         # and call the zipper function.
         zip_fmu(fmutmp, includeDirInZip=False)
