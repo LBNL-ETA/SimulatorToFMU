@@ -23,5 +23,6 @@ that support the import of the Functional Mock-up Interface.
    - The invocation of the simulation program is memoryless. That is, 
      the output of the simulation program at any invocation time ``t`` 
      depends only on the inputs at the time ``t``. 
+  - The inputs and the outputs of the Simulator must be of type ``Float``.
 
 
