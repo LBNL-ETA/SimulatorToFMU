@@ -6,8 +6,11 @@
 Best Practice
 =============
 
-This section explains to users the best practice in configuring a Simulator XML input file 
-for an FMU. 
+This section explains to users the best practice in configuring a Simulator XML input file,
+and implementing the Python wrapper which will interface with the Simulator.
+
+Configuring the Simulator XML input file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To export Simulator as an FMU, the user needs to write an XML file which contains the list 
 of inputs, outputs and parameters of the FMU. The XML snippet below shows how a user has to write such an input file.
@@ -42,4 +45,46 @@ To parametrize the ``ScalarVariable`` as an output variable, the user needs to
   - define the type of variable (Currently only ``Real`` variables are supported) (Line 61)
   - give the unit of the variable (Currently only valid Modelica units are supported) (Line 62)
    
- 
+
+Configuring the Python Wrapper Simulator
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To export Simulator as an FMU, the user needs to write a Python wrapper which will interface with the Simulator.
+The wrapper will be embedded in the FMU when the Simulator is exported and use at runtime on the target machine.
+
+The user needs to extend the Python wrapper provided in ``parser\utilities\Simulator.py`` 
+and implements the function ``exchange``.
+
+The following snippet shows the Simulator function.
+
+.. literalinclude:: ../../../parser/utilities/Simulator.py
+   :language: python
+   :linenos:
+
+The arguments of the functions are in the next table
+
++----------------------------------------------------+-------------------------------------------------------------------+
+| Arguments                                          | Description                                                       | 
++====================================================+===================================================================+
+| ``configuration_file``                             | The Simulator model path/Simulator configuration file.            |
++----------------------------------------------------+-------------------------------------------------------------------+
+| ``time``                                           | The current simulation model time.                                |   
++----------------------------------------------------+-------------------------------------------------------------------+
+| ``input_values``                                   | The list of input values of the FMU.                              |  
++----------------------------------------------------+-------------------------------------------------------------------+
+| ``input_names``                                    | The list of input names of the FMU.                               |   
++----------------------------------------------------+-------------------------------------------------------------------+
+| ``output_values``                                  | The list of output values of the FMU.                             | 
++----------------------------------------------------+-------------------------------------------------------------------+
+| ``output_names``                                   | The list of output names of the FMU.                              | 
++----------------------------------------------------+-------------------------------------------------------------------+
+| ``write_results``                                  | A flag for writing results to a file.                             | 
++----------------------------------------------------+-------------------------------------------------------------------+
+
+.. note:: 
+
+   The function ``exchange`` must return a list of output values which match the order of the output names. 
+
+Once Simulator.py is implemented, it must be saved under the same name and used as required argument for SimulatorToFMU.py
+
+  

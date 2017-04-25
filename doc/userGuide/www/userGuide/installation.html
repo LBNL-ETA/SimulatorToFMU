@@ -115,6 +115,12 @@
 <li>Dymola 2017 FD01</li>
 <li>OpenModelica 1.11.0</li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">SimulatorToFMU.py can use OpenModelica to export a Simulator as an FMU.
+However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
+that cannot be loaded.</p>
+</div>
 </div>
 <div class="section" id="installation-directory">
 <span id="id1"></span><h2>3.2. Installation<a class="headerlink" href="#installation-directory" title="Permalink to this headline">¶</a></h2>
@@ -145,7 +151,9 @@
 </li>
 <li><p class="first">Python scripts folder (e.g. <code class="docutils literal"><span class="pre">C:\Python35\Scripts</span></code>),</p>
 </li>
-<li><p class="first">Dymola executable folder (e.g. <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files(x86)\Dymola2017</span> <span class="pre">FD01\bin</span></code>)</p>
+<li><p class="first">Dymola executable folder (e.g. <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files(x86)\Dymola2017</span> <span class="pre">FD01\bin64</span></code>)</p>
+</li>
+<li><p class="first">OpenModelica executable folder</p>
 <p>You can add folders to your system path by performing following steps on Windows 8 or 10:</p>
 <ul class="simple">
 <li>In Search, search for and then select: System (Control Panel)</li>
@@ -154,8 +162,8 @@
 <li>In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable (e.g. <code class="docutils literal"><span class="pre">C:\Python35</span></code>, <code class="docutils literal"><span class="pre">C:\Python35\Scripts</span></code>). Click OK. Close all remaining windows by clicking OK.</li>
 <li>Reopen Command prompt window for your changes to be active.</li>
 </ul>
-<p>To check if the variables have been correctly added to the system path, type <code class="docutils literal"><span class="pre">python</span></code>
-into a command prompt to see if the right version of Python starts up.</p>
+<p>To check if the variables have been correctly added to the system path, type <code class="docutils literal"><span class="pre">python</span></code>, <code class="docutils literal"><span class="pre">dymola</span></code>, or <code class="docutils literal"><span class="pre">omc</span></code>
+into a command prompt to see if the right version of Python, Dymola or OpenModelica starts up.</p>
 </li>
 </ul>
 </div></blockquote>
