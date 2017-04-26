@@ -2,6 +2,7 @@
 
 """
 
+___int_doc:
 SimulatorToFMU is a software package written in Python which allows 
 users to export any memory less simulation program which can be interfaced 
 through a Python API  as a :term:`Functional Mock-up Unit` (FMU) for  
@@ -14,6 +15,81 @@ __author__ = "Thierry S. Nouidui"
 __email__ = "TSNouidui@lbl.gov"
 __license__ = "BSD"
 __maintainer__ = "Thierry S Nouidui"
+___int_doc::
+
+To create an FMU,
+open a command-line window (see :doc:`notation`).
+The standard invocation of the SimulatorToFMU tool is:
+
+.. code-block:: none
+
+  > python3  <scriptDir>SimulatorToFMU.py <python-scripts-path> 
+
+where ``scriptDir`` is the path to the scripts directory of SimulatorToFMU.
+This is the ``parser`` subdirectory of the installation directory.
+See :doc:`installation` for details.
+
+An example of invoking ``SimulatorToFMU.py`` on Windows is 
+
+.. code-block:: none
+
+  # Windows:
+  > python3 parser\SimulatorToFMU.py -s Simulator.py, calcEng.py
+
+Following requirements must be met hen using SimulatorToFMU
+
+- All file paths can be absolute or relative.
+- If any file path contains spaces, then it must be surrounded with double quotes. 
+
+
+``SimulatorToFMU.py`` supports the following command-line switches:
+
++----------------------------------------------------+-------------------------------------------------------------------+
+| Options                                            | Purpose                                                           | 
++====================================================+===================================================================+
+| -s                                                 | Paths to python scripts required to run the                       |   
+|                                                    | Simulator. On Windows Operating system, the paths                 |
+|                                                    | must use **double backward slash**.                               |
+|                                                    | The main Python script must be an extension                       |
+|                                                    | of the ``Simulator.py`` script which is provided in               |
+|                                                    | ``parser\utilities\Simulator.py``.                                |
+|                                                    | The name of the main Python script must be ``Simulator.py``.      |
++----------------------------------------------------+-------------------------------------------------------------------+
+| -c                                                 | Path to the Simulator model file.                                 |   
++----------------------------------------------------+-------------------------------------------------------------------+
+| -i                                                 | Path to the XML input file with the inputs/outputs of the FMU.    |  
+|                                                    | Default is ``parser\utilities\SimulatorModelDescription.xml``     |
++----------------------------------------------------+-------------------------------------------------------------------+
+| -v                                                 | FMI version. Options are ``1.0`` and ``2.0``. Default is ``2.0``  |   
++----------------------------------------------------+-------------------------------------------------------------------+
+| -a                                                 | FMI API version. Options are ``cs`` (co-simulation) and ``me``    | 
+|                                                    | (model exchange). Default is ``me``.                              |  
++----------------------------------------------------+-------------------------------------------------------------------+
+| -t                                                 | Modelica compiler. Options are ``dymola`` (Dymola) and ``omc``    | 
+|                                                    | (OpenModelica which is experimentell). Default is ``dymola``.     |  
++----------------------------------------------------+-------------------------------------------------------------------+
+| -n                                                 | Flag to indicate if FMU needs an external execution tool to run.  | 
+|                                                    | Options are ``true`` and ``false``. Default is ``false``.         |  
++----------------------------------------------------+-------------------------------------------------------------------+
+
+The main functions of SimulatorToFMU are
+
+ - reading, validating, and parsing the Simulator XML input file. 
+   This includes removing and replacing invalid characters in variable names such as ``*+-`` with ``_``,
+ - writing Modelica code with valid inputs and outputs names,
+ - invoking Dymola to compile the :term:`Modelica` code as an FMU for model exchange or co-simulation 2.0.
+
+
+.. note:: 
+ 
+  - If option ``<n>`` is ``true`` then the simulation program/script which will be invoked 
+    in the Python scripts provided for option <s> must be installed on the target 
+    machine where the FMU will be run.
+  - If option ``<n>`` is ``false`` then the FMU only needs the Python scripts provided for option <s> to run.
+  - SimulatorToFMU can use OpenModelica to export a Simulator as an FMU. 
+    However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
+    that cannot be loaded. 
+
 
 """
 
@@ -69,7 +145,7 @@ def main():
     # Configure the argument parser
     
     parser = argparse.ArgumentParser(description='Export Simulator as a Functional Mock-up Unit')
-    simulator_group = parser.add_argument_group("Arguments to export CYMDIST as an FMU")
+    simulator_group = parser.add_argument_group("Arguments to export a Simulator as an FMU")
     
     simulator_group.add_argument('-s', '--python-scripts-path',
                                 required=True,
@@ -92,7 +168,15 @@ def main():
     simulator_group.add_argument("-t", "--export-tool",
                         help='Modelica compiler. Valid options are '
                         + '<dymola> for Dymola and'
-                        + ' <omc> for OpenModelica')
+                        + ' <omc> for OpenModelica (experimentell)'
+                        + ' Default is <dymola>')
+    simulator_group.add_argument("-n", "--needs-tool",
+                        help='Flag to indicate if FMU needs an '
+                        + 'external execution tool to run. '
+                        + 'Valid options are '
+                        + '<true> and <false>.'
+                        + 'Default is <false>')
+    
     # Parse the arguments
     args = parser.parse_args()
     
@@ -196,7 +280,7 @@ def main():
         fmi_version = '2.0'
     
     # Check if fmi version is valid
-    if not (fmi_version in ['1.0', '2.0']):
+    if not (fmi_version in ['1.0', '2.0', '1', '2']):
         s = 'This version only supports FMI version 1.0 and 2.0.'
         log.error (s)
         raise ValueError(s)
@@ -221,20 +305,31 @@ def main():
         export_tool = 'dymola'
     
     # Check if export tool is valid
-    if not (export_tool in ['dymola', 'omc']):
+    if not (export_tool.lower() in ['dymola', 'omc']):
         s = 'Export tool specified is neither Dymola (dymola) nor OpenModelica(omc).'
         log.error (s)
         raise ValueError(s)
     
     # Define templates variables
-    if(export_tool == 'dymola'):
+    if(export_tool.lower() == 'dymola'):
         mos_template_path = MOS_TEMPLATE_PATH_DYMOLA
         # Convert the FMI version to int for Dymola
         fmi_version = int(float(fmi_version))
         modelica_path = 'MODELICAPATH'
-    elif(export_tool == 'omc'):
+    elif(export_tool.lower() == 'omc'):
         mos_template_path = MOS_TEMPLATE_PATH_OPENMODELICA 
         modelica_path = 'OPENMODELICALIBRARY'
+    
+    # Get the need execution
+    needs_tool = args.needs_tool
+    # Check if fmi api is none
+    if(needs_tool is None):
+        log.info('Flag to specify whether an execution is needed is not specified. Default (false) will be used.')
+        needs_tool = 'false'
+        
+    if not (needs_tool.lower() in ['true', 'false']):
+        log.info('Flag to specify whether an execution is needed is not specified. Default (false) will be used.')
+        needs_tool = 'false'
     
     # Export the tool as an FMU
     Simulator = SimulatorToFMU(con_path,
@@ -272,7 +367,7 @@ def main():
         log.error (s)
         raise ValueError(s)
     # Rewrite FMUs for FMUs with version higher than 1.0
-    if(float(fmi_version) > 1.0): 
+    if(float(fmi_version) > 1.0 and needs_tool): 
         ret_val = -1
         ret_val = Simulator.rewrite_fmu()
         if(ret_val != 0):

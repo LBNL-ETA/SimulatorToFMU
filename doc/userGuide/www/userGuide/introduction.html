@@ -95,26 +95,21 @@
 <span id="id1"></span><h1>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <p>This user manual explains how to install and use SimulatorToFMU.</p>
 <p>SimulatorToFMU is a software package written in Python which allows
-users to export any memoryless Python-driven simulation program or script which can be interfaced
-through a Python API  as a <a class="reference internal" href="glossary.html#term-functional-mock-up-unit"><span class="xref std std-term">Functional Mock-up Unit</span></a> (FMU) for
+users to export any memoryless Python-driven simulation program or script
+as a <a class="reference internal" href="glossary.html#term-functional-mock-up-unit"><span class="xref std std-term">Functional Mock-up Unit</span></a> (FMU) for
 model Exchange or co-Simulation using the <a class="reference internal" href="glossary.html#term-functional-mock-up-interface"><span class="xref std std-term">Functional Mock-up Interface</span></a> (FMI)
 standard <a class="reference external" href="https://svn.modelica.org/fmi/branches/public/specifications/v2.0/FMI_for_ModelExchange_and_CoSimulation_v2.0.pdf">version 2.0</a>.
 This FMU can then be imported into a variety of simulation programs
 that support the import of the Functional Mock-up Interface.</p>
-<p>We define a memoryless Python-driven simulation program/script as a simulation program which meets following requirements:</p>
+<p>A memoryless Python-driven simulation program/script
+is a simulation program which meets following requirements:</p>
 <blockquote>
-<div><ul>
-<li><p class="first">The simulation program/script can be invoked through a Python script.</p>
-</li>
-<li><dl class="first docutils">
-<dt>The invocation of the simulation program/script is memoryless. That is,</dt>
-<dd><p class="first last">the output of the simulation program at any invocation time <code class="docutils literal"><span class="pre">t</span></code>
-depends only on the inputs at the time <code class="docutils literal"><span class="pre">t</span></code>.</p>
-</dd>
-</dl>
-</li>
-<li><p class="first">The inputs and the outputs of the program/script must be of type <code class="docutils literal"><span class="pre">Float</span></code>.</p>
-</li>
+<div><ul class="simple">
+<li>The simulation program/script can be invoked through a Python script.</li>
+<li>The invocation of the simulation program/script is memoryless. That is,
+the output of the simulation program at any invocation time <code class="docutils literal"><span class="pre">t</span></code>
+depends only on the inputs at the time <code class="docutils literal"><span class="pre">t</span></code>.</li>
+<li>The inputs and the outputs of the simulation program/script must be of type <code class="docutils literal"><span class="pre">Float</span></code>.</li>
 </ul>
 </div></blockquote>
 </div>
