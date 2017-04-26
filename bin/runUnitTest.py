@@ -5,8 +5,7 @@
 # TSNouidui@lbl.gov                            2016-09-06
 #######################################################
 import unittest
-import os, sys, logging
-from subprocess import call
+import os, sys
 from pyfmi import load_fmu
 from datetime import datetime
 
@@ -118,7 +117,6 @@ class Tester(unittest.TestCase):
         
         simulator_input_valref=[] 
         simulator_output_valref=[]
-        simulator_output_values=[]  
         
         fmu_path = os.path.join(script_path, '..', 'fmus', 'Dymola', 'Simulator.fmu')
         simulator = load_fmu(fmu_path, log_level=7)
@@ -154,10 +152,6 @@ class Tester(unittest.TestCase):
         # Enter continuous time mode
         simulator.enter_continuous_time_mode()
         
-        print('Done initializing the FMU')
-        # Create vector to store time
-        simTim=[]
-    
         print ('Starting the time integration' )    
         start = datetime.now()
         simulator.set_real(simulator_input_valref, simulator_input_values)
