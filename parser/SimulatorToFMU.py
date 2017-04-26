@@ -90,7 +90,7 @@ def main():
                         + ' and <me> for model exchange.'
                         + ' Default is <me>')
     simulator_group.add_argument("-t", "--export-tool",
-                        help='Export tool. Valid options are '
+                        help='Modelica compiler. Valid options are '
                         + '<dymola> for Dymola and'
                         + ' <omc> for OpenModelica')
     # Parse the arguments
