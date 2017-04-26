@@ -6,9 +6,9 @@
 Creating an FMU
 ===============
 
-This chapter describes how to create a Functional Mockup Unit, starting from a Simulator XML input file.
+This chapter describes how to create a Functional Mockup Unit.
 It assumes you have followed the :doc:`installation` instructions, and that you have created the Simulator 
-model description file  following the :doc:`bestPractice` guidelines.
+model description file as well as the Python script required to interface the Simulator following the :doc:`bestPractice` guidelines.
 
 Command-line use
 ^^^^^^^^^^^^^^^^
@@ -21,8 +21,6 @@ Outputs of SimulatorToFMU
 
 The main output from running ``SimulatorToFMU.py`` consists of an FMU, named after the ``modelName`` specified in the input file.
 The FMU is written to the current working directory, that is, in the directory from which you entered the command.
-
-The FMU is complete and self-contained.
 
 Any secondary output from running the SimulatorToFMU tools can be deleted safely.
 
@@ -44,7 +42,7 @@ SimulatorToFMU.py creates a  ``.zip`` file named
 ``Simulator.scripts.zip`` along with the FMU. 
 The zip file contains the Python scripts needed to 
 interface the Simulator. The unzipped folder must be added 
-to the PYTHONPATH of the target machine where the FMU will be used.
+to the ``PYTHONPATH`` of the target machine where the FMU will be used.
 This is because of an issue with Cython and the python interpreter 
 which does not add the files on the path as expected. 
 This step is not needed when using Python 3.5.x.

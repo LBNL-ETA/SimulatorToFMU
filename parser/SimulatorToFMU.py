@@ -34,7 +34,7 @@ An example of invoking ``SimulatorToFMU.py`` on Windows is
 .. code-block:: none
 
   # Windows:
-  > python3 parser\SimulatorToFMU.py -s Simulator.py, calcEng.py
+  > python3 parser\SimulatorToFMU.py -s parser\\\\utilities\\\\Simulator.py, d:\\\\calcEng.py
 
 Following requirements must be met hen using SimulatorToFMU
 
@@ -77,15 +77,16 @@ The main functions of SimulatorToFMU are
  - reading, validating, and parsing the Simulator XML input file. 
    This includes removing and replacing invalid characters in variable names such as ``*+-`` with ``_``,
  - writing Modelica code with valid inputs and outputs names,
- - invoking Dymola to compile the :term:`Modelica` code as an FMU for model exchange or co-simulation 2.0.
+ - invoking a Modelica compiler to compile the :term:`Modelica` code as an FMU for model exchange or co-simulation 2.0.
 
 
 .. note:: 
  
   - If option ``<n>`` is ``true`` then the simulation program/script which will be invoked 
-    in the Python scripts provided for option <s> must be installed on the target 
+    in the Python scripts provided for option ``<s>`` must be installed on the target 
     machine where the FMU will be run.
-  - If option ``<n>`` is ``false`` then the FMU only needs the Python scripts provided for option <s> to run.
+  - If option ``<n>`` is ``false`` then the FMU only needs the Python scripts 
+    provided for option ``<s>`` to run.
   - SimulatorToFMU can use OpenModelica to export a Simulator as an FMU. 
     However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
     that cannot be loaded. 

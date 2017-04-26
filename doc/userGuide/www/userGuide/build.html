@@ -105,9 +105,9 @@
             
   <div class="section" id="creating-an-fmu">
 <span id="build"></span><h1>4. Creating an FMU<a class="headerlink" href="#creating-an-fmu" title="Permalink to this headline">¶</a></h1>
-<p>This chapter describes how to create a Functional Mockup Unit, starting from a Simulator XML input file.
+<p>This chapter describes how to create a Functional Mockup Unit.
 It assumes you have followed the <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> instructions, and that you have created the Simulator
-model description file  following the <a class="reference internal" href="bestPractice.html"><span class="doc">Best Practice</span></a> guidelines.</p>
+model description file as well as the Python script required to interface the Simulator following the <a class="reference internal" href="bestPractice.html"><span class="doc">Best Practice</span></a> guidelines.</p>
 <div class="section" id="module-parser.SimulatorToFMU">
 <span id="command-line-use"></span><h2>4.1. Command-line use<a class="headerlink" href="#module-parser.SimulatorToFMU" title="Permalink to this headline">¶</a></h2>
 <p>To create an FMU,
@@ -121,7 +121,7 @@ This is the <code class="docutils literal"><span class="pre">parser</span></code
 See <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> for details.</p>
 <p>An example of invoking <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> on Windows is</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span># Windows:
-&gt; python3 parser\SimulatorToFMU.py -s Simulator.py, calcEng.py
+&gt; python3 parser\SimulatorToFMU.py -s parser\\utilities\\Simulator.py, d:\\calcEng.py
 </pre></div>
 </div>
 <p>Following requirements must be met hen using SimulatorToFMU</p>
@@ -129,7 +129,7 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
 <li>All file paths can be absolute or relative.</li>
 <li>If any file path contains spaces, then it must be surrounded with double quotes.</li>
 </ul>
-<p>Script <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> supports the following command-line switches:</p>
+<p><code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> supports the following command-line switches:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="44%" />
@@ -180,16 +180,17 @@ Options are <code class="docutils literal"><span class="pre">true</span></code> 
 <li>reading, validating, and parsing the Simulator XML input file. 
 This includes removing and replacing invalid characters in variable names such as <code class="docutils literal"><span class="pre">*+-</span></code> with <code class="docutils literal"><span class="pre">_</span></code>,</li>
 <li>writing Modelica code with valid inputs and outputs names,</li>
-<li>invoking Dymola to compile the <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> code as an FMU for model exchange or co-simulation 2.0.</li>
+<li>invoking a Modelica compiler to compile the <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> code as an FMU for model exchange or co-simulation 2.0.</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <ul class="last simple">
 <li>If option <code class="docutils literal"><span class="pre">&lt;n&gt;</span></code> is <code class="docutils literal"><span class="pre">true</span></code> then the simulation program/script which will be invoked 
-in the Python scripts provided for option &lt;s&gt; must be installed on the target 
+in the Python scripts provided for option <code class="docutils literal"><span class="pre">&lt;s&gt;</span></code> must be installed on the target 
 machine where the FMU will be run.</li>
-<li>If option <code class="docutils literal"><span class="pre">&lt;n&gt;</span></code> is <code class="docutils literal"><span class="pre">false</span></code> then the FMU only needs the Python scripts provided for option &lt;s&gt; to run.</li>
+<li>If option <code class="docutils literal"><span class="pre">&lt;n&gt;</span></code> is <code class="docutils literal"><span class="pre">false</span></code> then the FMU only needs the Python scripts 
+provided for option <code class="docutils literal"><span class="pre">&lt;s&gt;</span></code> to run.</li>
 <li>SimulatorToFMU can use OpenModelica to export a Simulator as an FMU. 
 However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
 that cannot be loaded.</li>
@@ -200,7 +201,6 @@ that cannot be loaded.</li>
 <h2>4.2. Outputs of SimulatorToFMU<a class="headerlink" href="#outputs-of-simulatortofmu" title="Permalink to this headline">¶</a></h2>
 <p>The main output from running <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> consists of an FMU, named after the <code class="docutils literal"><span class="pre">modelName</span></code> specified in the input file.
 The FMU is written to the current working directory, that is, in the directory from which you entered the command.</p>
-<p>The FMU is complete and self-contained.</p>
 <p>Any secondary output from running the SimulatorToFMU tools can be deleted safely.</p>
 <p>Note that the FMU is a zip file.
 This means you can open and inspect its contents.
@@ -218,7 +218,7 @@ SimulatorToFMU.py creates a  <code class="docutils literal"><span class="pre">.z
 <code class="docutils literal"><span class="pre">Simulator.scripts.zip</span></code> along with the FMU.
 The zip file contains the Python scripts needed to
 interface the Simulator. The unzipped folder must be added
-to the PYTHONPATH of the target machine where the FMU will be used.
+to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> of the target machine where the FMU will be used.
 This is because of an issue with Cython and the python interpreter
 which does not add the files on the path as expected.
 This step is not needed when using Python 3.5.x.</p>
