@@ -12,6 +12,7 @@
 # serve to show the default.
 
 import sys, os
+from sphinx.ext.autodoc import between
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -176,7 +177,7 @@ htmlhelp_basename = 'User Guide'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'userGuide.tex', u'FMU Export of a memoryless Python-based Simulator',
+  ('index', 'userGuide.tex', u'FMU Export of a memoryless Python-driven Simulator',
    u'LBNL - Building Technology and Urban Systems Division', 'manual'),
 ]
 
@@ -202,21 +203,6 @@ def setup(app):
 
     from pygments.lexer import RegexLexer, bygroups
     from pygments.token import Comment, Text, Number
+    app.connect('autodoc-process-docstring', between('^.*___int_doc.*$', exclude=True))
 
-    class IDFLexer(RegexLexer):
-        name = 'IDF'
-        aliases = ['idf']
-        filenames = ['*.idf']
-
-        tokens = {
-            'root': [
-                (r'( *\d+|\.)', Number),
-                (r'(\w+)', Text),
-                (r'( )', Text),
-                (r'(, *|; *)', Text),
-                (r'(!.*)$', Comment),
-                ]
-            }
-    lexers['idf'] = IDFLexer()
-
-highlight_language = 'idf'
+highlight_language = 'python'

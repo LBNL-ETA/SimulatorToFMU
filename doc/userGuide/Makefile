@@ -6,7 +6,7 @@ SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         = letter
 BUILDDIR      = build
-
+export PYTHONPATH    = ../../
 #PYTHONPATH=`pwd`/..
 
 # Internal variables.

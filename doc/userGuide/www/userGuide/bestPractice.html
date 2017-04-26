@@ -42,6 +42,9 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="development.html" title="6. Development"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -458,9 +461,13 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The function <code class="docutils literal"><span class="pre">exchange</span></code> must return a list of output values which match the order of the output names.</p>
+<p class="last">The function <code class="docutils literal"><span class="pre">exchange</span></code> must return a list of output values which match the order of the output names.
+The function <code class="docutils literal"><span class="pre">exchange</span></code> can be used to invoke external programs/scripts which do not ship with the FMU.
+In this situation, the FMU will must be exported with the option <code class="docutils literal"><span class="pre">&lt;n&gt;</span></code> set to <code class="docutils literal"><span class="pre">true</span></code>.
+The external programs/scripts will have to be installed on the target machine where the
+FMU is run. See <a class="reference internal" href="build.html"><span class="doc">Creating an FMU</span></a> for details on command line options.
+Once Simulator.py is implemented, it must be saved under the same name and used as required argument for SimulatorToFMU.py</p>
 </div>
-<p>Once Simulator.py is implemented, it must be saved under the same name and used as required argument for SimulatorToFMU.py</p>
 </div>
 </div>
 
@@ -476,6 +483,9 @@ and implements the function <code class="docutils literal"><span class="pre">exc
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="right" >
           <a href="development.html" title="6. Development"
              >next</a> |</li>

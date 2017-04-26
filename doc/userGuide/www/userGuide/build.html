@@ -42,6 +42,9 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="bestPractice.html" title="5. Best Practice"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -60,7 +63,7 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">4. Creating an FMU</a><ul>
-<li><a class="reference internal" href="#command-line-use">4.1. Command-line use</a></li>
+<li><a class="reference internal" href="#module-parser.SimulatorToFMU">4.1. Command-line use</a></li>
 <li><a class="reference internal" href="#outputs-of-simulatortofmu">4.2. Outputs of SimulatorToFMU</a><ul>
 <li><a class="reference internal" href="#exporting-a-simulator-with-python-2-7">4.2.1. Exporting a Simulator with Python 2.7</a></li>
 </ul>
@@ -105,12 +108,12 @@
 <p>This chapter describes how to create a Functional Mockup Unit, starting from a Simulator XML input file.
 It assumes you have followed the <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> instructions, and that you have created the Simulator
 model description file  following the <a class="reference internal" href="bestPractice.html"><span class="doc">Best Practice</span></a> guidelines.</p>
-<div class="section" id="command-line-use">
-<h2>4.1. Command-line use<a class="headerlink" href="#command-line-use" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-parser.SimulatorToFMU">
+<span id="command-line-use"></span><h2>4.1. Command-line use<a class="headerlink" href="#module-parser.SimulatorToFMU" title="Permalink to this headline">¶</a></h2>
 <p>To create an FMU,
 open a command-line window (see <a class="reference internal" href="notation.html"><span class="doc">Notation</span></a>).
 The standard invocation of the SimulatorToFMU tool is:</p>
-<div class="highlight-none"><div class="highlight"><pre><span></span>&gt; python3  &lt;scriptDir&gt;SimulatorToFMU.py &lt;python-scripts-path&gt;
+<div class="highlight-none"><div class="highlight"><pre><span></span>&gt; python3  &lt;scriptDir&gt;SimulatorToFMU.py &lt;python-scripts-path&gt; 
 </pre></div>
 </div>
 <p>where <code class="docutils literal"><span class="pre">scriptDir</span></code> is the path to the scripts directory of SimulatorToFMU.
@@ -121,13 +124,11 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
 &gt; python3 parser\SimulatorToFMU.py -s Simulator.py, calcEng.py
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<ul class="last simple">
+<p>Following requirements must be met hen using SimulatorToFMU</p>
+<ul class="simple">
 <li>All file paths can be absolute or relative.</li>
 <li>If any file path contains spaces, then it must be surrounded with double quotes.</li>
 </ul>
-</div>
 <p>Script <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> supports the following command-line switches:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -142,8 +143,8 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
 <tbody valign="top">
 <tr class="row-even"><td>-s</td>
 <td>Paths to python scripts required to run the
-Simulator. On windows Operating system, the paths
-must use double backward slash (e.g. C:\\Simulator.py).
+Simulator. On Windows Operating system, the paths
+must use <strong>double backward slash</strong>.
 The main Python script must be an extension
 of the <code class="docutils literal"><span class="pre">Simulator.py</span></code> script which is provided in
 <code class="docutils literal"><span class="pre">parser\utilities\Simulator.py</span></code>.
@@ -167,18 +168,16 @@ Default is <code class="docutils literal"><span class="pre">parser\utilities\Sim
 <td>Modelica compiler. Options are <code class="docutils literal"><span class="pre">dymola</span></code> (Dymola) and <code class="docutils literal"><span class="pre">omc</span></code>
 (OpenModelica which is experimentell). Default is <code class="docutils literal"><span class="pre">dymola</span></code>.</td>
 </tr>
+<tr class="row-even"><td>-n</td>
+<td>Flag to indicate if FMU needs an external execution tool to run.
+Options are <code class="docutils literal"><span class="pre">true</span></code> and <code class="docutils literal"><span class="pre">false</span></code>. Default is <code class="docutils literal"><span class="pre">false</span></code>.</td>
+</tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">SimulatorToFMU can use OpenModelica to export a Simulator as an FMU.
-However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
-that cannot be loaded.</p>
-</div>
 <p>The main functions of SimulatorToFMU are</p>
 <blockquote>
 <div><ul class="simple">
-<li>reading, validating, and parsing the Simulator XML input file.
+<li>reading, validating, and parsing the Simulator XML input file. 
 This includes removing and replacing invalid characters in variable names such as <code class="docutils literal"><span class="pre">*+-</span></code> with <code class="docutils literal"><span class="pre">_</span></code>,</li>
 <li>writing Modelica code with valid inputs and outputs names,</li>
 <li>invoking Dymola to compile the <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> code as an FMU for model exchange or co-simulation 2.0.</li>
@@ -186,10 +185,15 @@ This includes removing and replacing invalid characters in variable names such a
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">For FMI 2.0 FMUs, SimulatorToFMU will rewrite the model description file
-generated by Dymola or OpenModelica to include <code class="docutils literal"><span class="pre">needsExecutionTool=true</span></code>
-attribute in the FMU capabilities of the Simulator FMU.
-This is currently not supported by Dymola and OpenModelica.</p>
+<ul class="last simple">
+<li>If option <code class="docutils literal"><span class="pre">&lt;n&gt;</span></code> is <code class="docutils literal"><span class="pre">true</span></code> then the simulation program/script which will be invoked 
+in the Python scripts provided for option &lt;s&gt; must be installed on the target 
+machine where the FMU will be run.</li>
+<li>If option <code class="docutils literal"><span class="pre">&lt;n&gt;</span></code> is <code class="docutils literal"><span class="pre">false</span></code> then the FMU only needs the Python scripts provided for option &lt;s&gt; to run.</li>
+<li>SimulatorToFMU can use OpenModelica to export a Simulator as an FMU. 
+However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
+that cannot be loaded.</li>
+</ul>
 </div>
 </div>
 <div class="section" id="outputs-of-simulatortofmu">
@@ -234,6 +238,9 @@ This step is not needed when using Python 3.5.x.</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="right" >
           <a href="bestPractice.html" title="5. Best Practice"
              >next</a> |</li>
