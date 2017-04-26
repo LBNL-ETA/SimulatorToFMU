@@ -61,7 +61,7 @@
   <ul>
 <li><a class="reference internal" href="#">4. Creating an FMU</a><ul>
 <li><a class="reference internal" href="#command-line-use">4.1. Command-line use</a></li>
-<li><a class="reference internal" href="#output">4.2. Output</a><ul>
+<li><a class="reference internal" href="#outputs-of-simulatortofmu">4.2. Outputs of SimulatorToFMU</a><ul>
 <li><a class="reference internal" href="#exporting-a-simulator-with-python-2-7">4.2.1. Exporting a Simulator with Python 2.7</a></li>
 </ul>
 </li>
@@ -118,7 +118,7 @@ This is the <code class="docutils literal"><span class="pre">parser</span></code
 See <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> for details.</p>
 <p>An example of invoking <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> on Windows is</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span># Windows:
-&gt; python3 parser\SimulatorToFMU.py -s Simulator.py, calcEng.py
+&gt; python3 parser\\SimulatorToFMU.py -s Simulator.py, calcEng.py
 </pre></div>
 </div>
 <div class="admonition note">
@@ -170,7 +170,7 @@ Default is <code class="docutils literal"><span class="pre">parser\utilities\Sim
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">SimulatorToFMU.py can use OpenModelica to export a Simulator as an FMU.
+<p class="last">SimulatorToFMU can use OpenModelica to export a Simulator as an FMU.
 However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
 that cannot be loaded.</p>
 </div>
@@ -191,8 +191,8 @@ attribute in the FMU capabilities of the Simulator FMU.
 This is currently not supported by Dymola and OpenModelica.</p>
 </div>
 </div>
-<div class="section" id="output">
-<h2>4.2. Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="outputs-of-simulatortofmu">
+<h2>4.2. Outputs of SimulatorToFMU<a class="headerlink" href="#outputs-of-simulatortofmu" title="Permalink to this headline">¶</a></h2>
 <p>The main output from running <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> consists of an FMU, named after the <code class="docutils literal"><span class="pre">modelName</span></code> specified in the input file.
 The FMU is written to the current working directory, that is, in the directory from which you entered the command.</p>
 <p>The FMU is complete and self-contained.</p>
@@ -202,9 +202,9 @@ This means you can open and inspect its contents.
 To do so, it may help to change the &#8220;<code class="docutils literal"><span class="pre">.fmu</span></code>&#8221; extension to &#8220;<code class="docutils literal"><span class="pre">.zip</span></code>&#8221;.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">SimulatorToFMU.py detects the Python version used to export the FMU and
+<p class="last">SimulatorToFMU detects the Python version used to export the FMU and
 include binaries for Python 2.7 or Python 3.5. Hence it is important
-to use the correct version of Python when invoking SimulatorToFMU.py.</p>
+to use the correct version of Python when invoking SimulatorToFMU.</p>
 </div>
 <div class="section" id="exporting-a-simulator-with-python-2-7">
 <h3>4.2.1. Exporting a Simulator with Python 2.7<a class="headerlink" href="#exporting-a-simulator-with-python-2-7" title="Permalink to this headline">¶</a></h3>

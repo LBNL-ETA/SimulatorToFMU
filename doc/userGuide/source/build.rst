@@ -30,7 +30,7 @@ An example of invoking ``SimulatorToFMU.py`` on Windows is
 .. code-block:: none
 
   # Windows:
-  > python3 parser\SimulatorToFMU.py -s Simulator.py, calcEng.py
+  > python3 parser\\SimulatorToFMU.py -s Simulator.py, calcEng.py
 
 
 .. note:: 
@@ -66,7 +66,7 @@ Script ``SimulatorToFMU.py`` supports the following command-line switches:
 
 .. note:: 
 
-   SimulatorToFMU.py can use OpenModelica to export a Simulator as an FMU. 
+   SimulatorToFMU can use OpenModelica to export a Simulator as an FMU. 
    However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
    that cannot be loaded. 
 
@@ -84,8 +84,8 @@ The main functions of SimulatorToFMU are
   attribute in the FMU capabilities of the Simulator FMU. 
   This is currently not supported by Dymola and OpenModelica. 
 
-Output
-^^^^^^
+Outputs of SimulatorToFMU
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The main output from running ``SimulatorToFMU.py`` consists of an FMU, named after the ``modelName`` specified in the input file.
 The FMU is written to the current working directory, that is, in the directory from which you entered the command.
@@ -100,9 +100,9 @@ To do so, it may help to change the "``.fmu``" extension to "``.zip``".
 
 .. note:: 
 
-   SimulatorToFMU.py detects the Python version used to export the FMU and 
+   SimulatorToFMU detects the Python version used to export the FMU and 
    include binaries for Python 2.7 or Python 3.5. Hence it is important 
-   to use the correct version of Python when invoking SimulatorToFMU.py.
+   to use the correct version of Python when invoking SimulatorToFMU.
 
 Exporting a Simulator with Python 2.7
 """""""""""""""""""""""""""""""""""""

@@ -98,21 +98,22 @@ model Exchange or co-Simulation using the <a class="reference internal" href="gl
 standard <a class="reference external" href="https://svn.modelica.org/fmi/branches/public/specifications/v2.0/FMI_for_ModelExchange_and_CoSimulation_v2.0.pdf">version 2.0</a>.
 This FMU can then be imported into a variety of simulation programs
 that support the import of the Functional Mock-up Interface.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p>We define a memoryless Python-based simulation as a simulation program which meets following requirements:</p>
 <blockquote>
-<div><p>A memoryless Python-based simulation is a simulation program which meets following requirements:</p>
-<ul class="simple">
-<li>The simulation program can be invoked through a Python script.</li>
-<li>The invocation of the simulation program is memoryless. That is,
-the output of the simulation program at any invocation time <code class="docutils literal"><span class="pre">t</span></code>
-depends only on the inputs at the time <code class="docutils literal"><span class="pre">t</span></code>.</li>
+<div><ul>
+<li><p class="first">The simulation program can be invoked through a Python script.</p>
+</li>
+<li><dl class="first docutils">
+<dt>The invocation of the simulation program is memoryless. That is,</dt>
+<dd><p class="first last">the output of the simulation program at any invocation time <code class="docutils literal"><span class="pre">t</span></code>
+depends only on the inputs at the time <code class="docutils literal"><span class="pre">t</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">The inputs and the outputs of the Simulator must be of type <code class="docutils literal"><span class="pre">Float</span></code>.</p>
+</li>
 </ul>
 </div></blockquote>
-<ul class="last simple">
-<li>The inputs and the outputs of the Simulator must be of type <code class="docutils literal"><span class="pre">Float</span></code>.</li>
-</ul>
-</div>
 </div>
 
 

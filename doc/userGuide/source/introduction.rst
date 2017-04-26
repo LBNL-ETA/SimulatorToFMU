@@ -15,12 +15,10 @@ standard `version 2.0 <https://svn.modelica.org/fmi/branches/public/specificatio
 This FMU can then be imported into a variety of simulation programs 
 that support the import of the Functional Mock-up Interface.
 
-.. note::  
+We define a memoryless Python-based simulation as a simulation program which meets following requirements:
    
-   A memoryless Python-based simulation is a simulation program which meets following requirements:
-   
-   - The simulation program can be invoked through a Python script.
-   - The invocation of the simulation program is memoryless. That is, 
+  - The simulation program can be invoked through a Python script.
+  - The invocation of the simulation program is memoryless. That is, 
      the output of the simulation program at any invocation time ``t`` 
      depends only on the inputs at the time ``t``. 
   - The inputs and the outputs of the Simulator must be of type ``Float``.
