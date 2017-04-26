@@ -30,14 +30,13 @@ An example of invoking ``SimulatorToFMU.py`` on Windows is
 .. code-block:: none
 
   # Windows:
-  > python3 parser\\SimulatorToFMU.py -s Simulator.py, calcEng.py
+  > python3 parser\SimulatorToFMU.py -s Simulator.py, calcEng.py
 
 
 .. note:: 
 
     - All file paths can be absolute or relative.
     - If any file path contains spaces, then it must be surrounded with double quotes. 
-    - On windows Operating system, all paths must use double backward slash (e.g. C:\\\\Simulator.py).
 
 Script ``SimulatorToFMU.py`` supports the following command-line switches:
 
@@ -45,10 +44,12 @@ Script ``SimulatorToFMU.py`` supports the following command-line switches:
 | Options                                            | Purpose                                                           | 
 +====================================================+===================================================================+
 | -s                                                 | Paths to python scripts required to run the                       |   
-|                                                    | Simulator. The main Python script must be an extension            |
-|                                                    | of the Simulator.py script provided in                            |
+|                                                    | Simulator. On windows Operating system, the paths 		 |
+|                                                    | must use double backward slash (e.g. C:\\\\Simulator.py).         |
+|                                                    | The main Python script must be an extension                       |
+|                                                    | of the ``Simulator.py`` script which is provided in               |
 |                                                    | ``parser\utilities\Simulator.py``.                                |
-|                                                    | Its name must be Simulator.py.                                    |
+|                                                    | The name of the main Python script must be ``Simulator.py``.      |
 +----------------------------------------------------+-------------------------------------------------------------------+
 | -c                                                 | Path to the Simulator model file.                                 |   
 +----------------------------------------------------+-------------------------------------------------------------------+

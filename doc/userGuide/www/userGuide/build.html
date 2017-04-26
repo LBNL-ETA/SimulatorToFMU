@@ -118,7 +118,7 @@ This is the <code class="docutils literal"><span class="pre">parser</span></code
 See <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> for details.</p>
 <p>An example of invoking <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> on Windows is</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span># Windows:
-&gt; python3 parser\\SimulatorToFMU.py -s Simulator.py, calcEng.py
+&gt; python3 parser\SimulatorToFMU.py -s Simulator.py, calcEng.py
 </pre></div>
 </div>
 <div class="admonition note">
@@ -126,7 +126,6 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
 <ul class="last simple">
 <li>All file paths can be absolute or relative.</li>
 <li>If any file path contains spaces, then it must be surrounded with double quotes.</li>
-<li>On windows Operating system, all paths must use double backward slash (e.g. C:\\Simulator.py).</li>
 </ul>
 </div>
 <p>Script <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> supports the following command-line switches:</p>
@@ -143,10 +142,12 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
 <tbody valign="top">
 <tr class="row-even"><td>-s</td>
 <td>Paths to python scripts required to run the
-Simulator. The main Python script must be an extension
-of the Simulator.py script provided in
+Simulator. On windows Operating system, the paths
+must use double backward slash (e.g. C:\\Simulator.py).
+The main Python script must be an extension
+of the <code class="docutils literal"><span class="pre">Simulator.py</span></code> script which is provided in
 <code class="docutils literal"><span class="pre">parser\utilities\Simulator.py</span></code>.
-Its name must be Simulator.py.</td>
+The name of the main Python script must be <code class="docutils literal"><span class="pre">Simulator.py</span></code>.</td>
 </tr>
 <tr class="row-odd"><td>-c</td>
 <td>Path to the Simulator model file.</td>
