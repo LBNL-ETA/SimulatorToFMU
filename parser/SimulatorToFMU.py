@@ -52,13 +52,13 @@ Following requirements must be met hen using SimulatorToFMU
 |                                                    | must use **double backward slash**.                               |
 |                                                    | The main Python script must be an extension                       |
 |                                                    | of the ``Simulator.py`` script which is provided in               |
-|                                                    | ``parser\utilities\Simulator.py``.                                |
+|                                                    | ``parser\\utilities\\Simulator.py``.                              |
 |                                                    | The name of the main Python script must be ``Simulator.py``.      |
 +----------------------------------------------------+-------------------------------------------------------------------+
 | -c                                                 | Path to the Simulator model file.                                 |   
 +----------------------------------------------------+-------------------------------------------------------------------+
 | -i                                                 | Path to the XML input file with the inputs/outputs of the FMU.    |  
-|                                                    | Default is ``parser\utilities\SimulatorModelDescription.xml``     |
+|                                                    | Default is ``parser\\utilities\\SimulatorModelDescription.xml``   |
 +----------------------------------------------------+-------------------------------------------------------------------+
 | -v                                                 | FMI version. Options are ``1.0`` and ``2.0``. Default is ``2.0``  |   
 +----------------------------------------------------+-------------------------------------------------------------------+
@@ -91,9 +91,7 @@ The main functions of SimulatorToFMU are
     However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
     that cannot be loaded. 
 
-
 """
-
 
 from lxml import etree
 from datetime import datetime
@@ -236,41 +234,43 @@ def main():
                  + XML_INPUT_FILE + ' will be used.')
         io_file_path = XML_INPUT_FILE
     
-    # Detect the version of Python and set it
-    log.info ('This script generates FMUs for Python 2.7 and 3.5 target simulators only.')
-    if (sys.version_info[0] < 3):
-        log.info ('Set the Python version of the target simulator to be 2.7.')
-        python_vers = '27'
-        # Copy all resources file in a directory
-        dir_name = 'Simulator.scripts'
-        if os.path.exists(dir_name):
-            shutil.rmtree(dir_name)
-        log.info('Create the folder Simulator.scripts with scripts to be added to the PYTHONPATH')
-        os.makedirs(dir_name)
-        for python_script_path in python_scripts_path:
-            shutil.copy2(python_script_path, dir_name)
-        fnam = os.path.join(dir_name, "README.txt")
-        fh = open(fnam, "w")
-        readme = 'IMPORTANT:\n\n' + \
-                'The files contains in this folder must be added to the PYTHONPATH.\n' + \
-                'This can be done by adding the folder ' + dir_name + ' to the PYTHONPATH.\n\n' + \
-                'This is needed because of CYTHON which is not adding the PYTHONPATH in the \n' + \
-                'pythonInterpreter.c code.' + \
-                'Failing to add the files to the PYTHONPATH will cause the FMU to fail to run.\n' + \
-                'This issue can be reproduced with Python 2.7.\n' + \
-                'Python 3.5 does not exhibit this behavior and hence can be used without the folder\n' + \
-                'addition.'
-        fh.write(readme)
-        fh.close()
-        dir_name_zip = dir_name + '.zip'
-        if os.path.exists(dir_name_zip):
-            os.remove(dir_name_zip)
-        zip_fmu(dir_name, includeDirInZip=False)
-        # Delete the folder created
-        shutil.rmtree(dir_name)      
-    else:
-        log.info ('Set the Python version of the target simulator to be 3.5.')
-        python_vers = '35'
+    # Set the Python version
+    log.info ('Set the Python version in the Modelica model to be 3.5.')
+    python_vers = '35'
+#     log.info ('This script generates FMUs for Python 2.7 and 3.5 target simulators only.')
+#     if (sys.version_info[0] < 3):
+#         log.info ('Set the Python version of the target simulator to be 2.7.')
+#         python_vers = '27'
+#         # Copy all resources file in a directory
+#         dir_name = 'Simulator.scripts'
+#         if os.path.exists(dir_name):
+#             shutil.rmtree(dir_name)
+#         log.info('Create the folder Simulator.scripts with scripts to be added to the PYTHONPATH')
+#         os.makedirs(dir_name)
+#         for python_script_path in python_scripts_path:
+#             shutil.copy2(python_script_path, dir_name)
+#         fnam = os.path.join(dir_name, "README.txt")
+#         fh = open(fnam, "w")
+#         readme = 'IMPORTANT:\n\n' + \
+#                 'The files contains in this folder must be added to the PYTHONPATH.\n' + \
+#                 'This can be done by adding the folder ' + dir_name + ' to the PYTHONPATH.\n\n' + \
+#                 'This is needed because of CYTHON which is not adding the PYTHONPATH in the \n' + \
+#                 'pythonInterpreter.c code.' + \
+#                 'Failing to add the files to the PYTHONPATH will cause the FMU to fail to run.\n' + \
+#                 'This issue can be reproduced with Python 2.7.\n' + \
+#                 'Python 3.5 does not exhibit this behavior and hence can be used without the folder\n' + \
+#                 'addition.'
+#         fh.write(readme)
+#         fh.close()
+#         dir_name_zip = dir_name + '.zip'
+#         if os.path.exists(dir_name_zip):
+#             os.remove(dir_name_zip)
+#         zip_fmu(dir_name, includeDirInZip=False)
+#         # Delete the folder created
+#         shutil.rmtree(dir_name)      
+#     else:
+#         log.info ('Set the Python version of the target simulator to be 3.5.')
+#         python_vers = '35'
 
     # Get the FMI version
     fmi_version = args.fmi_version
