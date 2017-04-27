@@ -28,22 +28,4 @@ Note that the FMU is a zip file.
 This means you can open and inspect its contents.
 To do so, it may help to change the "``.fmu``" extension to "``.zip``".
 
-.. note:: 
-
-   SimulatorToFMU detects the Python version used to export the FMU and 
-   include binaries for Python 2.7 or Python 3.5. Hence it is important 
-   to use the correct version of Python when invoking SimulatorToFMU.
-
-Exporting a Simulator with Python 2.7
-"""""""""""""""""""""""""""""""""""""
-
-If SimulatorToFMU is run using Python 2.7, then 
-SimulatorToFMU.py creates a  ``.zip`` file named
-``Simulator.scripts.zip`` along with the FMU. 
-The zip file contains the Python scripts needed to 
-interface the Simulator. The unzipped folder must be added 
-to the ``PYTHONPATH`` of the target machine where the FMU will be used.
-This is because of an issue with Cython and the python interpreter 
-which does not add the files on the path as expected. 
-This step is not needed when using Python 3.5.x.
 

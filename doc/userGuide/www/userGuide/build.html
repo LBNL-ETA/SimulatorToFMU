@@ -64,10 +64,7 @@
   <ul>
 <li><a class="reference internal" href="#">4. Creating an FMU</a><ul>
 <li><a class="reference internal" href="#module-parser.SimulatorToFMU">4.1. Command-line use</a></li>
-<li><a class="reference internal" href="#outputs-of-simulatortofmu">4.2. Outputs of SimulatorToFMU</a><ul>
-<li><a class="reference internal" href="#exporting-a-simulator-with-python-2-7">4.2.1. Exporting a Simulator with Python 2.7</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#outputs-of-simulatortofmu">4.2. Outputs of SimulatorToFMU</a></li>
 </ul>
 </li>
 </ul>
@@ -205,24 +202,6 @@ The FMU is written to the current working directory, that is, in the directory f
 <p>Note that the FMU is a zip file.
 This means you can open and inspect its contents.
 To do so, it may help to change the &#8220;<code class="docutils literal"><span class="pre">.fmu</span></code>&#8221; extension to &#8220;<code class="docutils literal"><span class="pre">.zip</span></code>&#8221;.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">SimulatorToFMU detects the Python version used to export the FMU and
-include binaries for Python 2.7 or Python 3.5. Hence it is important
-to use the correct version of Python when invoking SimulatorToFMU.</p>
-</div>
-<div class="section" id="exporting-a-simulator-with-python-2-7">
-<h3>4.2.1. Exporting a Simulator with Python 2.7<a class="headerlink" href="#exporting-a-simulator-with-python-2-7" title="Permalink to this headline">¶</a></h3>
-<p>If SimulatorToFMU is run using Python 2.7, then
-SimulatorToFMU.py creates a  <code class="docutils literal"><span class="pre">.zip</span></code> file named
-<code class="docutils literal"><span class="pre">Simulator.scripts.zip</span></code> along with the FMU.
-The zip file contains the Python scripts needed to
-interface the Simulator. The unzipped folder must be added
-to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> of the target machine where the FMU will be used.
-This is because of an issue with Cython and the python interpreter
-which does not add the files on the path as expected.
-This step is not needed when using Python 3.5.x.</p>
-</div>
 </div>
 </div>
 

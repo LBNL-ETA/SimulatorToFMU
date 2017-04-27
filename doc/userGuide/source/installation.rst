@@ -13,7 +13,7 @@ Software requirements
 
 To export a Simulator as an FMU, SimulatorToFMU needs:
 
-1. Python 2.7.x. or 3.5.x 
+1. Python 
 
 2. jinja2
 
@@ -21,8 +21,10 @@ To export a Simulator as an FMU, SimulatorToFMU needs:
 
 4. Modelica compiler
 
-SimulatorToFMU has been tested with two Modelica compilers on Windows:
+SimulatorToFMU has been tested on Windows with:
 
+  - Python 2.7.13
+  - Python 3.5.0 
   - Dymola 2017 FD01 
   - OpenModelica 1.11.0 
 
