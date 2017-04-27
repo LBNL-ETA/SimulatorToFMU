@@ -943,32 +943,15 @@ class SimulatorToFMU(object):
         # Switch back to the current working directory
         os.chdir(cwd)
         
-        # sys.exit()
         # Pass the directory which will be zipped
         # and call the zipper function.
         zip_fmu(fmutmp, includeDirInZip=False)
 
-        # Check if fmu_name exists in current directory
-        # If that is the case, delete it or rename to tmp?
-        fmu_name_original = fmu_name + '.original'
-        if os.path.isfile(fmu_name):
-            log.info('The original Simulator FMU ' + fmu_name + 
-                     ' will be renamed to ' + fmu_name + '.original.')
-            log.info('A modified version of the original will be created.')
-            log.info('The difference between the original and the new FMU lies'
-                     ' in the model description file of the new FMU which has'
-                     ' the attribute ' + NEEDSEXECUTIONTOOL + ' set to true.')
-            if os.path.isfile(fmu_name_original):
-                os.remove(fmu_name_original)
-            os.rename(fmu_name, fmu_name_original)
-
-        # Rename the FMU name to be the name of the FMU
-        # which will be used for the simulation. This FMU
-        # contains the needsExecutionTool flag.
-        os.rename(zipdir, fmu_name)
-
         # Delete temporary folder
-        shutil.rmtree(fmutmp)
+        if (os.path.exists (fmutmp)):
+            shutil.rmtree(fmutmp)
+        if os.path.isfile(zipdir):
+            os.remove(zipdir)
 
         # Write scuccess.
         log.info('The FMU ' + fmu_name + ' is successfully re-created.')
