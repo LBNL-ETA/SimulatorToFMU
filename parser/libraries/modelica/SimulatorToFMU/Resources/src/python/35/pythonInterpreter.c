@@ -372,17 +372,21 @@ void pythonExchangeVariables(const char * moduleName,
 									   PyBytes_AsString(PyObject_Repr(pValue)));
 			}
 		}
-		/*//////////////////////////////////////////////////////////////////////////		*/
-		/* Parse double values, if we have some		*/
+		/*//////////////////////////////////////////////////////////////////////////
+		*/
+		/* Parse double values, if we have some
+		*/
 		if (nDblRea > 0){
-			/* Check if the function only returns double values			*/
+			/* Check if the function only returns double values
+			*/
 			if (nRet == 1)
 				pItemDbl = pValue;
 			else{
 				pItemDbl = PyList_GetItem(pValue, iRet);
 				iRet++;
 			}
-			/* Check the number of return arguments			*/
+			/* Check the number of return arguments
+			*/
 			if (nDblRea > 1 && nDblRea != PyList_Size(pItemDbl))
 				(*ModelicaFormatError)("For Python function \"%s\", Modelica declares that Python returns %i doubles,\
 									   but Python returned %i values.\n\
@@ -390,11 +394,15 @@ void pythonExchangeVariables(const char * moduleName,
 									   functionName, nDblRea, PyList_Size(pItemDbl),
 									   PyBytes_AsString(PyObject_Repr(pValue)));
 
-			/* The number of arguments is correct. Retrieve them and parse them.			*/
-			/* If nDblRea == 1, then it is a scalar, else it is a list			*/
+			/* The number of arguments is correct. Retrieve them and parse them.
+			*/
+			/* If nDblRea == 1, then it is a scalar, else it is a list
+			*/
 			if (nDblRea == 1){
-				/* Check whether it is a float or an integer.				*/
-				/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p))				*/
+				/* Check whether it is a float or an integer.
+				*/
+				/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p))
+				*/
 				if (PyFloat_Check(pItemDbl) || PyLong_Check(pItemDbl) || PyLong_Check(pItemDbl))
 					dblValRea[0] = PyFloat_AsDouble(pItemDbl);
 				else
@@ -403,23 +411,30 @@ void pythonExchangeVariables(const char * moduleName,
 										   The returned object is \"%s\".",
 										   functionName, PyBytes_AsString(PyObject_Repr(pValue)));
 			}
-			else{ /* We have nDblRea > 1, iterate through the list				  */
+			else{ /* We have nDblRea > 1, iterate through the list
+				  */
 				for (pIndVal = 0; pIndVal < PyList_Size(pItemDbl); ++pIndVal){
 					PyObject *p = PyList_GetItem(pItemDbl, pIndVal);
-					/* Check whether it is a float or an integer.					*/
-					/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p))					*/
+					/* Check whether it is a float or an integer.
+					*/
+					/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p))
+					*/
 					if (PyFloat_Check(p) || PyLong_Check(p) || PyLong_Check(p))
 						dblValRea[pIndVal] = PyFloat_AsDouble(p);
 					else
 						(*ModelicaFormatError)("Python function \"%s\" returns an invalid object for a scalar double value.\n\
 											   The returned object is \"%s\".",
 											   functionName, PyBytes_AsString(PyObject_Repr(pValue)));
-				} /* for(...)				  */
+				} /* for(...)
+				  */
 			}
-		}/* nDblRea > 0		 */
+		}/* nDblRea > 0
+		 */
 		else{
-			/* Modelica has no arrays with zero lenght. Hence, dblValRea has size 1 if nDblRea = 0.			*/
-			/* Assign a zero value to this element.			*/
+			/* Modelica has no arrays with zero lenght. Hence, dblValRea has size 1 if nDblRea = 0.
+			*/
+			/* Assign a zero value to this element.
+			*/
 			dblValRea[0] = 0;
 		}
 
@@ -433,7 +448,7 @@ void pythonExchangeVariables(const char * moduleName,
 	/* Undo all initializations*/
 	/* We uncommented Py_Finalize() because it caused a segmentation fault on Ubuntu 12.04 32 bit.*/
 	/* The segmentation fault was randomly produced by the statement, and often observed when running*/
-	/* simulateModel("SimulatorToFMU.Utilities.IO.Python27.Functions.Examples.TestPythonInterface");*/
+	/* simulateModel("SimulatorToFMU.Utilities.IO.Python35.Functions.Examples.TestPythonInterface");*/
 	/**/
 	/* See also the discussion at*/
 	/* http://stackoverflow.com/questions/7676314/py-initialize-py-finalize-not-working-twice-with-numpy*/
