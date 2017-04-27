@@ -17,7 +17,7 @@ of inputs, outputs and parameters of the FMU. The XML snippet below shows how a 
 A template named ``SimulatorModeldescritpion.xml`` which shows such a file is provided in the ``parser\utilities`` installation folder of SimulatorToFMU. 
 This template should be adapted to create new XML input file.
 
-The following snippet shows an input file where the user defines 6 inputs and 6 output variables.
+The following snippet shows an input file where the user defines 1 input and 1 output variable.
 
 .. literalinclude:: ../../../parser/utilities/SimulatorModelDescription.xml
    :language: xml
@@ -34,16 +34,16 @@ To parametrize the ``ScalarVariable`` as an input variable, the user needs to
   - give a brief description of the variable (Line 11)
   - give the causality of the variable (``input`` for inputs, ``output`` for outputs) (Line 12)
   - define the type of variable (Currently only ``Real`` variables are supported) (Line 13)
-  - give the unit of the variable (Currently only valid Modelica units are supported) (Line 14)
+  - give the unit of the variable (Currently only valid :term:`Modelica` units are supported) (Line 14)
   - give a start value for the input variable (This is optional) (Line 15)
 
 To parametrize the ``ScalarVariable`` as an output variable, the user needs to
 
-  - define the name of the variable (Line 58), 
-  - give a brief description of the variable (Line 59)
-  - give the causality of the variable (``input`` for inputs, ``output`` for outputs) (Line 60)
-  - define the type of variable (Currently only ``Real`` variables are supported) (Line 61)
-  - give the unit of the variable (Currently only valid Modelica units are supported) (Line 62)
+  - define the name of the variable (Line 18), 
+  - give a brief description of the variable (Line 19)
+  - give the causality of the variable (``input`` for inputs, ``output`` for outputs) (Line 20)
+  - define the type of variable (Currently only ``Real`` variables are supported) (Line 21)
+  - give the unit of the variable (Currently only valid :term:`Modelica` units are supported) (Line 22)
    
 
 Configuring the Python Wrapper Simulator

@@ -331,12 +331,12 @@ void pythonExchangeVariables(const char * moduleName,
 		Py_DECREF(pFunc);
 		Py_DECREF(pModule);
 		/* Py_Finalize(); // removed, see note at other Py_Finalize() statement*/
-		(*ModelicaFormatError)("Call to Python function failed.\n \
+		(*ModelicaFormatError)("Call to Python function \"%s\" failed.\n \
 							   This is often due to an error in the Python script,\n \
 							   or because the list of arguments of the Python function is incorrect.\n \
 							   Check the module \"%s\".\n \
 							   The error message is \"%s\"",
-							   moduleName,
+							   functionName, moduleName,
 							   PyBytes_AsString(PyObject_Repr(pValue)));
 	}
 

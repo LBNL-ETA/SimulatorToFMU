@@ -182,8 +182,8 @@ algorithm
   end if;
 
   // Compute values that will be sent to Simulator
-  for i in 1:nDblInp loop
-	dblInpVal[i] := uR[i];
+  for _cnt in 1:nDblInp loop
+	dblInpVal[_cnt] := uR[_cnt];
   end for;
   
   // Exchange data

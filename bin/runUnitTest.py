@@ -123,9 +123,9 @@ class Tester(unittest.TestCase):
         simulator.setup_experiment(start_time=start_time, stop_time=stop_time)
         
         # Define the inputs
-        simulator_input_names = ['VMAG_A', 'VMAG_B', 'VMAG_C', 'VANG_A', 'VANG_B', 'VANG_C']
-        simulator_input_values = [2520, 2520, 2520, 0, -120, 120]
-        simulator_output_names = ['IA', 'IB', 'IC', 'IAngleA', 'IAngleB', 'IAngleC']
+        simulator_input_names = ['v']
+        simulator_input_values = [220.0]
+        simulator_output_names = ['i']
         
         # Get the value references of simulator inputs
         for elem in simulator_input_names:
@@ -155,8 +155,6 @@ class Tester(unittest.TestCase):
         print ('Starting the time integration' )    
         start = datetime.now()
         simulator.set_real(simulator_input_valref, simulator_input_values)
-        print('This is the result of the angle IAngleA: ' 
-              + str(simulator.get_real(simulator.get_variable_valueref('IAngleA'))))
         
         # Terminate FMUs
         simulator.terminate()
@@ -164,6 +162,8 @@ class Tester(unittest.TestCase):
         
         print('Ran a single Simulator simulation in ' + 
               str((end - start).total_seconds()) + ' seconds.')
+        self.assertEqual(simulator.get_real(simulator.get_variable_valueref('i')), 1.0, 
+                         'Values are not matching.')
 
     def test_print_mo(self):
         '''  

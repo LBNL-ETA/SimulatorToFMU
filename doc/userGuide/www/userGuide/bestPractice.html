@@ -110,107 +110,32 @@ and implementing the Python wrapper which will interface with the Simulator.</p>
 of inputs, outputs and parameters of the FMU. The XML snippet below shows how a user has to write such an input file.
 A template named <code class="docutils literal"><span class="pre">SimulatorModeldescritpion.xml</span></code> which shows such a file is provided in the <code class="docutils literal"><span class="pre">parser\utilities</span></code> installation folder of SimulatorToFMU.
 This template should be adapted to create new XML input file.</p>
-<p>The following snippet shows an input file where the user defines 6 inputs and 6 output variables.</p>
-<div class="highlight-xml"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
-  2
-  3
-  4
-  5
-  6
-  7
-  8
-  9
- 10
- 11
- 12
- 13
- 14
- 15
- 16
- 17
- 18
- 19
- 20
- 21
- 22
- 23
- 24
- 25
- 26
- 27
- 28
- 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
- 37
- 38
- 39
- 40
- 41
- 42
- 43
- 44
- 45
- 46
- 47
- 48
- 49
- 50
- 51
- 52
- 53
- 54
- 55
- 56
- 57
- 58
- 59
- 60
- 61
- 62
- 63
- 64
- 65
- 66
- 67
- 68
- 69
- 70
- 71
- 72
- 73
- 74
- 75
- 76
- 77
- 78
- 79
- 80
- 81
- 82
- 83
- 84
- 85
- 86
- 87
- 88
- 89
- 90
- 91
- 92
- 93
- 94
- 95
- 96
- 97
- 98
- 99
-100</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<p>The following snippet shows an input file where the user defines 1 input and 1 output variable.</p>
+<div class="highlight-xml"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="nt">&lt;SimulatorModelDescription</span>
   <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
   <span class="na">fmiVersion=</span><span class="s">&quot;2.0&quot;</span>
@@ -219,94 +144,19 @@ This template should be adapted to create new XML input file.</p>
   <span class="na">generationTool=</span><span class="s">&quot;SimulatorToFMU&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;ModelVariables&gt;</span>
     <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;VMAG_A&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;VMAG_A&quot;</span>
+      <span class="na">name=</span><span class="s">&quot;v&quot;</span>
+      <span class="na">description=</span><span class="s">&quot;Voltage&quot;</span>
       <span class="na">causality=</span><span class="s">&quot;input&quot;</span><span class="nt">&gt;</span>
       <span class="nt">&lt;Real</span>
         <span class="na">unit=</span><span class="s">&quot;V&quot;</span>
         <span class="na">start=</span><span class="s">&quot;0.0&quot;</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;/ScalarVariable&gt;</span>
     <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;VMAG_B&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;VMAG_B&quot;</span>
-      <span class="na">causality=</span><span class="s">&quot;input&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Real</span>
-        <span class="na">unit=</span><span class="s">&quot;V&quot;</span>
-        <span class="na">start=</span><span class="s">&quot;0.0&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/ScalarVariable&gt;</span>
-    <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;VMAG_C&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;VMAG_C&quot;</span>
-      <span class="na">causality=</span><span class="s">&quot;input&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Real</span>
-        <span class="na">unit=</span><span class="s">&quot;V&quot;</span>
-        <span class="na">start=</span><span class="s">&quot;0.0&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/ScalarVariable&gt;</span>
-    <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;VANG_A&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;VANG_A&quot;</span>
-      <span class="na">causality=</span><span class="s">&quot;input&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Real</span>
-        <span class="na">unit=</span><span class="s">&quot;deg&quot;</span>
-        <span class="na">start=</span><span class="s">&quot;0.0&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;/ScalarVariable&gt;</span>
-    <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;VANG_B&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;VANG_B&quot;</span>
-      <span class="na">causality=</span><span class="s">&quot;input&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Real</span>
-        <span class="na">unit=</span><span class="s">&quot;deg&quot;</span>
-        <span class="na">start=</span><span class="s">&quot;-120.0&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/ScalarVariable&gt;</span>
-    <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;VANG_C&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;VANG_C&quot;</span>
-      <span class="na">causality=</span><span class="s">&quot;input&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Real</span>
-        <span class="na">unit=</span><span class="s">&quot;deg&quot;</span>
-        <span class="na">start=</span><span class="s">&quot;120.0&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/ScalarVariable&gt;</span>
-    <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;IA&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;IA&quot;</span>
+      <span class="na">name=</span><span class="s">&quot;i&quot;</span>
+      <span class="na">description=</span><span class="s">&quot;Current&quot;</span>
       <span class="na">causality=</span><span class="s">&quot;output&quot;</span><span class="nt">&gt;</span>
       <span class="nt">&lt;Real</span>
         <span class="na">unit=</span><span class="s">&quot;A&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/ScalarVariable&gt;</span>
-    <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;IB&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;IB&quot;</span>
-      <span class="na">causality=</span><span class="s">&quot;output&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Real</span>
-        <span class="na">unit=</span><span class="s">&quot;A&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/ScalarVariable&gt;</span>
-    <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;IC&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;IC&quot;</span>
-      <span class="na">causality=</span><span class="s">&quot;output&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Real</span>
-        <span class="na">unit=</span><span class="s">&quot;A&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/ScalarVariable&gt;</span>
-    <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;IAngleA&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;IAngleA&quot;</span>
-      <span class="na">causality=</span><span class="s">&quot;output&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Real</span>
-        <span class="na">unit=</span><span class="s">&quot;deg&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/ScalarVariable&gt;</span>
-    <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;IAngleB&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;IAngleB&quot;</span>
-      <span class="na">causality=</span><span class="s">&quot;output&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Real</span>
-        <span class="na">unit=</span><span class="s">&quot;deg&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/ScalarVariable&gt;</span>
-    <span class="nt">&lt;ScalarVariable</span>
-      <span class="na">name=</span><span class="s">&quot;IAngleC&quot;</span>
-      <span class="na">description=</span><span class="s">&quot;IAngleC&quot;</span>
-      <span class="na">causality=</span><span class="s">&quot;output&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Real</span>
-        <span class="na">unit=</span><span class="s">&quot;deg&quot;</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;/ScalarVariable&gt;</span>
   <span class="nt">&lt;/ModelVariables&gt;</span>
 <span class="nt">&lt;/SimulatorModelDescription&gt;</span>
@@ -323,18 +173,18 @@ This is done by adding <code class="docutils literal"><span class="pre">ScalarVa
 <li>give a brief description of the variable (Line 11)</li>
 <li>give the causality of the variable (<code class="docutils literal"><span class="pre">input</span></code> for inputs, <code class="docutils literal"><span class="pre">output</span></code> for outputs) (Line 12)</li>
 <li>define the type of variable (Currently only <code class="docutils literal"><span class="pre">Real</span></code> variables are supported) (Line 13)</li>
-<li>give the unit of the variable (Currently only valid Modelica units are supported) (Line 14)</li>
+<li>give the unit of the variable (Currently only valid <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> units are supported) (Line 14)</li>
 <li>give a start value for the input variable (This is optional) (Line 15)</li>
 </ul>
 </div></blockquote>
 <p>To parametrize the <code class="docutils literal"><span class="pre">ScalarVariable</span></code> as an output variable, the user needs to</p>
 <blockquote>
 <div><ul class="simple">
-<li>define the name of the variable (Line 58),</li>
-<li>give a brief description of the variable (Line 59)</li>
-<li>give the causality of the variable (<code class="docutils literal"><span class="pre">input</span></code> for inputs, <code class="docutils literal"><span class="pre">output</span></code> for outputs) (Line 60)</li>
-<li>define the type of variable (Currently only <code class="docutils literal"><span class="pre">Real</span></code> variables are supported) (Line 61)</li>
-<li>give the unit of the variable (Currently only valid Modelica units are supported) (Line 62)</li>
+<li>define the name of the variable (Line 18),</li>
+<li>give a brief description of the variable (Line 19)</li>
+<li>give the causality of the variable (<code class="docutils literal"><span class="pre">input</span></code> for inputs, <code class="docutils literal"><span class="pre">output</span></code> for outputs) (Line 20)</li>
+<li>define the type of variable (Currently only <code class="docutils literal"><span class="pre">Real</span></code> variables are supported) (Line 21)</li>
+<li>give the unit of the variable (Currently only valid <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> units are supported) (Line 22)</li>
 </ul>
 </div></blockquote>
 </div>
@@ -383,7 +233,11 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 36
 37
 38
-39</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Main Python function to be modified to integrate the main simulator.</span>
+39
+40
+41
+42
+43</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Main Python function to be modified to integrate the main simulator.</span>
 
 <span class="k">def</span> <span class="nf">exchange</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">input_values</span><span class="p">,</span> 
             <span class="n">input_names</span><span class="p">,</span> <span class="n">output_names</span><span class="p">,</span> <span class="n">write_results</span><span class="p">):</span>
@@ -402,9 +256,9 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; configuration_file = &#39;config.json&#39;</span>
 <span class="sd">        &gt;&gt;&gt; time = 0</span>
-<span class="sd">        &gt;&gt;&gt; input_names = [&#39;VMAG_A&#39;, &#39;VMAG_B&#39;, &#39;VMAG_C&#39;, &#39;VANG_A&#39;, &#39;VANG_B&#39;, &#39;VANG_C&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; input_values = [2520, 2520, 2520, 0, -120, 120]</span>
-<span class="sd">        &gt;&gt;&gt; output_names = [&#39;IA&#39;, &#39;IAngleA&#39;, &#39;IB&#39;, &#39;IAngleB&#39;, &#39;IC&#39;, &#39;IAngleC&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; input_names = [&#39;v&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; input_values = [220.0]</span>
+<span class="sd">        &gt;&gt;&gt; output_names = [&#39;i&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; write_results = 0</span>
 <span class="sd">        &gt;&gt;&gt; output_values = simulator(configuration_file, time, input_names,</span>
 <span class="sd">                        input_values, output_names)</span>
@@ -417,9 +271,13 @@ and implements the function <code class="docutils literal"><span class="pre">exc
     <span class="c1"># This function currently returns the input values. </span>
     <span class="c1"># This will need to be adapted so it return the output_values instead.</span>
     <span class="c1"># Assign the vector of output values with dummy values.</span>
-    <span class="n">output_values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span>
+	<span class="c1"># If the list of output names has only one name, then only a scalar </span>
+	<span class="c1"># must be returned.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">output_values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">output_values</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="c1">#########################################################################</span>
-
     <span class="k">return</span> <span class="n">output_values</span>
     
 </pre></div>

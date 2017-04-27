@@ -17,9 +17,9 @@ def exchange(configuration_file, time, input_values,
     Example:
         >>> configuration_file = 'config.json'
         >>> time = 0
-        >>> input_names = ['VMAG_A', 'VMAG_B', 'VMAG_C', 'VANG_A', 'VANG_B', 'VANG_C']
-        >>> input_values = [2520, 2520, 2520, 0, -120, 120]
-        >>> output_names = ['IA', 'IAngleA', 'IB', 'IAngleB', 'IC', 'IAngleC']
+        >>> input_names = ['v']
+        >>> input_values = [220.0]
+        >>> output_names = ['i']
         >>> write_results = 0
         >>> output_values = simulator(configuration_file, time, input_names,
                         input_values, output_names)
@@ -32,8 +32,12 @@ def exchange(configuration_file, time, input_values,
     # This function currently returns the input values. 
     # This will need to be adapted so it return the output_values instead.
     # Assign the vector of output values with dummy values.
-    output_values = [0]*len(output_names)
+	# If the list of output names has only one name, then only a scalar 
+	# must be returned.
+    if (len(output_names) > 1):
+        output_values = [1.0] * len(output_names)
+    else:
+        output_values = 1.0
     #########################################################################
-
     return output_values
     
