@@ -957,7 +957,7 @@ class SimulatorToFMU(object):
                         if(platform.system().lower() == 'windows'):
                             libraries = ['SimulatorToFMUPython35.dll', 'python35.dll']
                         elif(platform.system().lower() == 'linux'):
-                            libraries = ['libSimulatorToFMUPython35.dll', 'libpython35.dll']
+                            libraries = ['libSimulatorToFMUPython35.so', 'libpython35.so']
                         for cur_fil in libraries:
                             cur_dll = os.path.join(path_bin, cur_fil)
                             if(os.path.isfile(cur_dll)):
