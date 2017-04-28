@@ -30,9 +30,9 @@ SimulatorToFMU has been tested on Windows with:
 
 .. note:: 
 
-   SimulatorToFMU.py can use OpenModelica to export a Simulator as an FMU. 
-   However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
-   that cannot be loaded. 
+   SimulatorToFMU.py can use OpenModelica and Dymola to export a Simulator as an FMU. 
+   However OpenModelica and Dymola on Linux do not copy all required binaries dependencies to the FMU.
+   SimulatorToFMU checks if there are missing dependencies and copies the dependencies in the FMU.
 
 .. _installation directory:
 
