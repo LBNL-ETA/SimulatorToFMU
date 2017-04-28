@@ -66,7 +66,7 @@ Following requirements must be met hen using SimulatorToFMU
 |                                                    | (model exchange). Default is ``me``.                              |  
 +----------------------------------------------------+-------------------------------------------------------------------+
 | -t                                                 | Modelica compiler. Options are ``dymola`` (Dymola) and ``omc``    | 
-|                                                    | (OpenModelica which is experimentell). Default is ``dymola``.     |  
+|                                                    | (OpenModelica). Default is ``dymola``.                            |  
 +----------------------------------------------------+-------------------------------------------------------------------+
 | -n                                                 | Flag to indicate if FMU needs an external execution tool to run.  | 
 |                                                    | Options are ``true`` and ``false``. Default is ``false``.         |  
@@ -167,7 +167,7 @@ def main():
     simulator_group.add_argument("-t", "--export-tool",
                         help='Modelica compiler. Valid options are '
                         + '<dymola> for Dymola and'
-                        + ' <omc> for OpenModelica (experimentell)'
+                        + ' <omc> for OpenModelica'
                         + ' Default is <dymola>')
     simulator_group.add_argument("-n", "--needs-tool",
                         help='Flag to indicate if FMU needs an '
@@ -175,6 +175,9 @@ def main():
                         + 'Valid options are '
                         + '<true> and <false>.'
                         + 'Default is <false>')
+    
+    if not(platform.system().lower() in ['windows', 'linux']):
+        raise ValueError ('SimulatorToFMU is only supported on Linux and Windows')
     
     # Parse the arguments
     args = parser.parse_args()
@@ -315,7 +318,8 @@ def main():
                             fmi_version,
                             fmi_api,
                             export_tool,
-                            modelica_path)
+                            modelica_path,
+                            needs_tool.lower())
     
     start = datetime.now()
     ret_val = Simulator.print_mo()
@@ -338,15 +342,15 @@ def main():
         parser.print_help()
         log.error (s)
         raise ValueError(s)
+    
     # Rewrite FMUs for FMUs with version higher than 1.0
-    if(float(fmi_version) > 1.0 and needs_tool): 
-        ret_val = -1
-        ret_val = Simulator.rewrite_fmu()
-        if(ret_val != 0):
-            s = 'Could not rewrite Simulator FMU. Error in rewrite_fmu().'
-            parser.print_help()
-            log.error (s)
-            raise ValueError(s)
+    ret_val = -1
+    ret_val = Simulator.rewrite_fmu()
+    if(ret_val != 0):
+        s = 'Could not rewrite Simulator FMU. Error in rewrite_fmu().'
+        parser.print_help()
+        log.error (s)
+        raise ValueError(s)
     end = datetime.now()
      
     log.info('Export Simulator as an FMU in ' + 
@@ -495,7 +499,8 @@ class SimulatorToFMU(object):
                  fmi_version,
                  fmi_api,
                  export_tool,
-                 modelica_path):
+                 modelica_path,
+                 needs_tool):
         """
         Initialize the class.
 
@@ -512,7 +517,8 @@ class SimulatorToFMU(object):
             scripts needed to interface the simulator.
         :param fmi_version (str): The FMI version.
         :param fmi_api (str): The FMI API.
-        :param export_tool (str): The export tool.
+        :param export_tool (str): The Modelica compiler.
+        :param needs_tool (str): Needs execution tool on target machine.
 
         """
         
@@ -529,6 +535,7 @@ class SimulatorToFMU(object):
         self.fmi_api = fmi_api
         self.export_tool = export_tool
         self.modelica_path = modelica_path
+        self.needs_tool = needs_tool
 
     def xml_validator(self):
         """
@@ -892,10 +899,12 @@ class SimulatorToFMU(object):
 
     def rewrite_fmu(self):
         """
-        Add needsExecutionTool to the Simulator FMU.
+        Add needsExecutionTool and missing libraries to the Simulator FMU.
 
         This function unzips the FMU generated with generate_fmu(),
         reads the xml file, and add needsExecutionTool to the FMU capabilities.
+        The function also includes binaries which are not included by OpenModelica
+        and Dymola on Linux machines so the FMU can run on the deloyed paltforms.
         The function completes the process by re-zipping the FMU.
         The new FMU contains the modified XML file as well as the binaries.
 
@@ -903,60 +912,102 @@ class SimulatorToFMU(object):
         
         
         """
-
-        fmutmp = self.model_name + '.tmp'
-        zipdir = fmutmp + '.zip'
-        fmu_name = self.model_name + '.fmu'
-
-        if os.path.exists(fmutmp):
-            shutil.rmtree(fmutmp)
-
-        if not os.path.exists(fmutmp):
-            os.makedirs(fmutmp)
-
-        # Copy file to temporary folder
-        shutil.copy2(fmu_name, fmutmp)
-
-        # Get the current working directory
-        cwd = os.getcwd()
-
-        # Change to the temporary directory
-        os.chdir(fmutmp)
-
-        # Unzip folder which contains he FMU
-        zip_ref = zipfile.ZipFile(fmu_name, 'r')
-        zip_ref.extractall('.')
-        zip_ref.close()
-
-        log.info('The model description file will be rewritten' + 
-                 ' to include the attribute ' + NEEDSEXECUTIONTOOL + 
-                 ' set to true.')
-        tree = ET.parse(MODELDESCRIPTION)
-        # Get the root of the tree
-        root = tree.getroot()
-        # Add the needsExecution tool attribute
-        root.attrib[NEEDSEXECUTIONTOOL] = 'true'
-        tree.write(MODELDESCRIPTION, xml_declaration=True)
-        if os.path.isfile(fmu_name):
-            os.remove(fmu_name)
-
-        # Switch back to the current working directory
-        os.chdir(cwd)
         
-        # Pass the directory which will be zipped
-        # and call the zipper function.
-        zip_fmu(fmutmp, includeDirInZip=False)
+        fmi_version = float(self.fmi_version)
+        if (self.export_tool == 'omc' or platform.system().lower() == 'linux' 
+            or  (fmi_version > 1.0 and self.needs_tool=='true')):
+            
+            
 
-        # Delete temporary folder
-        if (os.path.exists (fmutmp)):
-            shutil.rmtree(fmutmp)
-        if os.path.isfile(zipdir):
-            os.remove(zipdir)
-
-        # Write scuccess.
-        log.info('The FMU ' + fmu_name + ' is successfully re-created.')
-        log.info('The FMU ' + fmu_name + ' is in ' + os.getcwd() + '.')
-
+            fmutmp = self.model_name + '.tmp'
+            zipdir = fmutmp + '.zip'
+            fmu_name = self.model_name + '.fmu'
+    
+            if os.path.exists(fmutmp):
+                shutil.rmtree(fmutmp)
+    
+            if not os.path.exists(fmutmp):
+                os.makedirs(fmutmp)
+    
+            # Copy file to temporary folder
+            shutil.copy2(fmu_name, fmutmp)
+    
+            # Get the current working directory
+            cwd = os.getcwd()
+    
+            # Change to the temporary directory
+            os.chdir(fmutmp)
+            
+            # Path to the temporary directory
+            fmutmp_path=os.path.join(cwd, fmutmp)
+    
+            # Unzip folder which contains he FMU
+            zip_ref = zipfile.ZipFile(fmu_name, 'r')
+            zip_ref.extractall('.')
+            zip_ref.close()
+            
+            # Delete the FMU which is no longer used
+            if os.path.isfile(fmu_name):
+                os.remove(fmu_name)
+            
+            if (self.export_tool == 'omc' or platform.system().lower() == 'linux'):
+                for arch in ['win32', 'win64', 'linux32', 'linux64']:
+                    path_bin=os.path.join(fmutmp_path, 'binaries', arch)
+                    if (os.path.exists(path_bin)):
+                        if(platform.system().lower() == 'windows'):
+                            libraries = ['SimulatorToFMUPython35.dll', 'python35.dll']
+                        elif(platform.system().lower() == 'linux'):
+                            libraries = ['libSimulatorToFMUPython35.dll', 'libpython35.dll']
+                        for cur_fil in libraries:
+                            cur_dll = os.path.join(path_bin, cur_fil)
+                            if(os.path.isfile(cur_dll)):
+                                continue
+                            else:
+                                fil_path = os.path.join(SimulatorToFMU_LIB_PATH,
+                                                        'SimulatorToFMU',
+                                                        'Resources',
+                                                        'Library',
+                                                        arch,
+                                                        cur_fil)
+                                if (os.path.isfile(fil_path)):
+                                    log.info(cur_fil + ' is missing in the FMU.\n' + 
+                                             fil_path + ' will be copied to it.')
+                                    shutil.copy2(fil_path, path_bin)
+                                else:
+                                    raise ValueError (fil_path + 
+                                                      ' does not exist and will need to be compiled.')
+                                    
+            if (fmi_version > 1.0 and self.needs_tool=='true'):
+                log.info('The model description file will be rewritten' + 
+                         ' to include the attribute ' + NEEDSEXECUTIONTOOL + 
+                         ' set to true.')
+                tree = ET.parse(MODELDESCRIPTION)
+                # Get the root of the tree
+                root = tree.getroot()
+                # Add the needsExecution tool attribute
+                root.attrib[NEEDSEXECUTIONTOOL] = 'true'
+                tree.write(MODELDESCRIPTION, xml_declaration=True)
+    
+            # Switch back to the current working directory
+            os.chdir(cwd)
+            # Pass the directory which will be zipped
+            # and call the zipper function.
+            zip_fmu(fmutmp, includeDirInZip=False)
+    
+            if (os.path.exists (fmutmp)):
+                shutil.rmtree(fmutmp)
+            
+            if os.path.isfile(fmu_name):
+                os.remove(fmu_name)
+            
+            # Renamed file 
+            os.rename(zipdir, fmu_name)
+            
+            # Write scuccess.
+            log.info('The FMU ' + fmu_name + ' is successfully re-created.')
+            log.info('The FMU ' + fmu_name + ' is in ' + os.getcwd() + '.')
+    
+            return 0
         return 0
 
 if __name__ == '__main__':
