@@ -21,7 +21,7 @@ To export a Simulator as an FMU, SimulatorToFMU needs:
 
 4. Modelica compiler
 
-SimulatorToFMU has been tested on Windows with:
+SimulatorToFMU has been tested with:
 
   - Python 2.7.13
   - Python 3.5.0 
@@ -30,9 +30,11 @@ SimulatorToFMU has been tested on Windows with:
 
 .. note:: 
 
-   SimulatorToFMU.py can use OpenModelica and Dymola to export a Simulator as an FMU. 
-   However OpenModelica and Dymola on Linux do not copy all required binaries dependencies to the FMU.
-   SimulatorToFMU checks if there are missing dependencies and copies the dependencies in the FMU.
+   SimulatorToFMU can use OpenModelica and Dymola to export a Simulator as an FMU. 
+   
+   However OpenModelica and Dymola (on Linux) do not copy all required libraries dependencies to the FMU.
+
+   As a workaround, SimulatorToFMU checks if there are missing libraries dependencies and copies the dependencies to the FMU.
 
 .. _installation directory:
 

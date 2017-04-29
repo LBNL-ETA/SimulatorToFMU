@@ -120,7 +120,7 @@ protected
   }"Output variables names to be received from Simulator";
   {%- endif %}
   {% if (parameter_variable_names|length==0) -%} 
-  parameter String dblParNam[nDblPar](each start="") 
+  parameter String dblParNam[nDblPar]
     "Parameter variables names to be sent to Simulator";
   {%- else %}
   {% set comma = joiner(",") -%}
