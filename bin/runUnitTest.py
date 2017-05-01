@@ -5,7 +5,7 @@
 # TSNouidui@lbl.gov                            2016-09-06
 #######################################################
 import unittest
-import os, sys
+import os, sys, platform
 from pyfmi import load_fmu
 from datetime import datetime
 
@@ -33,7 +33,7 @@ MOS_TEMPLATE_PATH_DYMOLA = os.path.join(utilities_path, SimulatorModelicaTemplat
 MOS_TEMPLATE_PATH_OPENMODELICA = os.path.join(utilities_path, SimulatorModelicaTemplate_OpenModelica_MOS)
 XSD_FILE_PATH = os.path.join(utilities_path, XSD_SCHEMA)
 XML_INPUT_FILE = os.path.join(utilities_path, XML_MODELDESCRIPTION)
-SimulatorToFMU_LIB_PATH = os.path.join(script_path, 'libraries', 'modelica')
+SimulatorToFMU_LIB_PATH = os.path.join(script_path, '..', 'parser', 'libraries', 'modelica')
 
 Simulator_T = simulator.SimulatorToFMU('con_path',
                             XML_INPUT_FILE,
@@ -41,9 +41,9 @@ Simulator_T = simulator.SimulatorToFMU('con_path',
                             MO_TEMPLATE_PATH_DYMOLA,
                             MOS_TEMPLATE_PATH_DYMOLA,
                             XSD_FILE_PATH,
-                            '3.5',
-                            PYTHON_SCRIPT_PATH,
-                            '2.0',
+                            '35',
+                            [PYTHON_SCRIPT_PATH],
+                            '2',
                             'me',
                             'dymola',
                             'MODELICAPATH',
@@ -100,135 +100,116 @@ class Tester(unittest.TestCase):
 
         # Testing validation of xml file
         Simulator_T.xml_parser()
-
-
-    def test_run_simulator_fmu_dymola(self):
+        
+    
+    def test_simulator_to_fmu(self):
         '''  
-        Test the simulation of one Simulator FMU.
+        Test the export of an FMU with various options.
 
         '''
 
-        
-        for fmu in ['Simulator.fmu', 'Simulator_w_neeExeToo.fmu']:
+        for tool in ['omc', 'dymola']:
+            if (platform.system().lower() == 'linux' and tool == 'omc'):
+                continue
+            if tool=='omc':
+                modPat = 'OPENMODELICALIBRARY'
+            else:
+                modPat = 'MODELICAPATH'
+            for version in ['1', '2']:
+                for api in ['me', 'cs']:
+                    for cs_xml in ['false', 'true']:
+                        Simulator_Test = simulator.SimulatorToFMU('con_path',
+                                                    XML_INPUT_FILE,
+                                                    SimulatorToFMU_LIB_PATH,
+                                                    MO_TEMPLATE_PATH_DYMOLA,
+                                                    MOS_TEMPLATE_PATH_DYMOLA,
+                                                    XSD_FILE_PATH,
+                                                    '35',
+                                                    [PYTHON_SCRIPT_PATH],
+                                                    version,
+                                                    api,
+                                                    tool,
+                                                    modPat,
+                                                    cs_xml)
+
+
+                        start = datetime.now()
+                        Simulator_Test.print_mo()
+                        Simulator_Test.generate_fmu()
+                        Simulator_Test.clean_temporary()
+                        Simulator_Test.rewrite_fmu()
+                        end = datetime.now()
+                        print('Export Simulator as an FMU in {!s} seconds.'.format((end - start).total_seconds()))
+    
+
+
+    def test_run_simulator_fmu(self):
+        '''  
+        Test the simulation of one Simulator FMU.
+ 
+        '''
+        for tool in ['OpenModelica', 'Dymola']:
+            if platform.system().lower()=='windows':
+                fmu_path = os.path.join(script_path, '..', 'fmus', tool, 'windows', 'Simulator.fmu')
+            elif platform.system().lower()=='linux':
+                fmu_path = os.path.join(script_path, '..', 'fmus', tool, 'linux', 'Simulator.fmu')
+            if (tool == 'OpenModelica' and platform.system().lower()=='linux'):
+                continue
             # Parameters which will be arguments of the function
             start_time = 0.0
             stop_time  = 5.0
-        
+         
             # Path to configuration file
-            path_config=os.path.abspath('config.json')
-            simulator_con_val_str = bytes(path_config, 'utf-8')
-            
+            simulator_con_val_str=os.path.abspath('config.json')
+            if sys.version_info.major > 2:
+                simulator_con_val_str = bytes(simulator_con_val_str, 'utf-8')
+             
             simulator_input_valref=[] 
             simulator_output_valref=[]
-            
-            fmu_path = os.path.join(script_path, '..', 'fmus', 'Dymola', fmu)
+             
+            #fmu_path = os.path.join(script_path, '..', 'fmus', 'Dymola', fmu)
             simulator = load_fmu(fmu_path, log_level=7)
             simulator.setup_experiment(start_time=start_time, stop_time=stop_time)
-            
+             
             # Define the inputs
             simulator_input_names = ['v']
             simulator_input_values = [220.0]
             simulator_output_names = ['i']
-            
+             
             # Get the value references of simulator inputs
             for elem in simulator_input_names:
                 simulator_input_valref.append(simulator.get_variable_valueref(elem))   
-                
+                 
             # Get the value references of simulator outputs 
             for elem in simulator_output_names:
                 simulator_output_valref.append(simulator.get_variable_valueref(elem))  
-        
+         
             # Set the flag to save the results
             simulator.set('_saveToFile', 0)
             # Get value reference of the configuration file 
             simulator_con_val_ref = simulator.get_variable_valueref('_configurationFileName')
-            
+             
             # Set the configuration file
             simulator.set_string([simulator_con_val_ref], [simulator_con_val_str])
-            
+             
             # Initialize the FMUs
             simulator.initialize()
-            
+             
             # Call event update prior to entering continuous mode.
             simulator.event_update()
-            
+             
             # Enter continuous time mode
             simulator.enter_continuous_time_mode()
-            
+             
             print ('Starting the time integration' )    
             start = datetime.now()
             simulator.set_real(simulator_input_valref, simulator_input_values)
-            
+             
             # Terminate FMUs
             simulator.terminate()
             end = datetime.now()
-            
-            print('Ran a single Simulator simulation with fmu: ' + fmu +' in ' + 
-                  str((end - start).total_seconds()) + ' seconds.')
-            self.assertEqual(simulator.get_real(simulator.get_variable_valueref('i')), 1.0, 
-                             'Values are not matching.')
-
-    def test_run_simulator_omc_fmu(self):
-        '''  
-        Test the simulation of one Simulator FMU.
-
-        '''
-
-        for fmu in ['Simulator.fmu', 'Simulator_w_neeExeToo.fmu']:
-            # Parameters which will be arguments of the function
-            start_time = 0.0
-            stop_time  = 5.0
-        
-            # Path to configuration file
-            path_config=os.path.abspath('config.json')
-            simulator_con_val_str = bytes(path_config, 'utf-8')
-            
-            simulator_input_valref=[] 
-            simulator_output_valref=[]
-            
-            fmu_path = os.path.join(script_path, '..', 'fmus', 'OpenModelica', fmu)
-            simulator = load_fmu(fmu_path, log_level=7)
-            simulator.setup_experiment(start_time=start_time, stop_time=stop_time)
-            
-            # Define the inputs
-            simulator_input_names = ['v']
-            simulator_input_values = [220.0]
-            simulator_output_names = ['i']
-            
-            # Get the value references of simulator inputs
-            for elem in simulator_input_names:
-                simulator_input_valref.append(simulator.get_variable_valueref(elem))   
-                
-            # Get the value references of simulator outputs 
-            for elem in simulator_output_names:
-                simulator_output_valref.append(simulator.get_variable_valueref(elem))  
-        
-            # Set the flag to save the results
-            simulator.set('_saveToFile', 0)
-            # Get value reference of the configuration file 
-            simulator_con_val_ref = simulator.get_variable_valueref('_configurationFileName')
-            
-            # Set the configuration file
-            simulator.set_string([simulator_con_val_ref], [simulator_con_val_str])
-            
-            # Initialize the FMUs
-            simulator.initialize()
-            
-            # Call event update prior to entering continuous mode.
-            simulator.event_update()
-            
-            # Enter continuous time mode
-            simulator.enter_continuous_time_mode()
-            
-            print ('Starting the time integration' )    
-            start = datetime.now()
-            simulator.set_real(simulator_input_valref, simulator_input_values)
-            
-            # Terminate FMUs
-            simulator.terminate()
-            end = datetime.now()
-            
-            print('Ran a single Simulator simulation with fmu: ' + fmu +' in ' + 
+             
+            print('Ran a single Simulator simulation with fmu: ' + fmu_path +' in ' + 
                   str((end - start).total_seconds()) + ' seconds.')
             self.assertEqual(simulator.get_real(simulator.get_variable_valueref('i')), 1.0, 
                              'Values are not matching.')
@@ -237,19 +218,12 @@ class Tester(unittest.TestCase):
     def test_print_mo(self):
         '''  
         Test the function print_mo().
-
+ 
         '''
-
+ 
         # Testing function to print Modelica model.
         Simulator_T.print_mo()
-        import filecmp
-
-        # Check if file is the same as the reference.
-        assert(filecmp.cmp
-               ('Simulator.mo', 
-                os.path.join(utilities_path, 'Simulator_ref.mo'))), \
-                'Printed file is different' + \
-                ' from reference Simulator_ref.mo.'
+ 
 
 if __name__ == '__main__':
     unittest.main()
