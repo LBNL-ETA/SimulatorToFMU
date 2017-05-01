@@ -122,7 +122,7 @@ XML_MODELDESCRIPTION = 'SimulatorModelDescription.xml'
 # Get the path to the templates files
 script_path = os.path.dirname(os.path.realpath(__file__))
 utilities_path = os.path.join(script_path, 'utilities')
-MO_TEMPLATE_PATH_DYMOLA = os.path.join(utilities_path, SimulatorModelicaTemplate_MO)
+MO_TEMPLATE_PATH = os.path.join(utilities_path, SimulatorModelicaTemplate_MO)
 MOS_TEMPLATE_PATH_DYMOLA = os.path.join(utilities_path, SimulatorModelicaTemplate_Dymola_MOS)
 MOS_TEMPLATE_PATH_OPENMODELICA = os.path.join(utilities_path, SimulatorModelicaTemplate_OpenModelica_MOS)
 XSD_FILE_PATH = os.path.join(utilities_path, XSD_SCHEMA)
@@ -176,16 +176,82 @@ def main():
     # Parse the arguments
     args = parser.parse_args()
     
-        # Get the FMI API version
-   
+    # Set the Python version    
+    # Here we set the Python version. We keep this in case
+    # we want to include different versions of Python in the 
+    # Modelica model and use the correct one by detecting the version
+    # of Python used to run the script.
+    python_vers = '35'
+    
+    # Check command line options
     if not(platform.system().lower() in ['windows', 'linux']):
         log.info ('SimulatorToFMU is only supported on Linux and Windows')
         return
-        
+    
+    # Check export tool
     export_tool = args.export_tool 
     if (platform.system().lower() == 'linux' and export_tool == 'omc'):
         log.info ('SimulatorToFMU is only supported on Windows when using OpenModelica as the Modelica compiler.')
         return 
+    
+    # Get the FMI version
+    fmi_version = args.fmi_version
+    
+    # Check if fmi version is none
+    if(fmi_version is None):
+        log.info('FMI version not specified. Version 2.0 will be used.')
+        fmi_version = '2.0'
+    
+    # Check if fmi version is valid
+    if not (fmi_version in ['1.0', '2.0', '1', '2']):
+        s = 'This version only supports FMI version 1.0 and 2.0.'
+        log.error (s)
+        raise ValueError(s)
+    
+    # Get the FMI API version
+    fmi_api = args.fmi_api
+    
+    # Check if fmi api is none
+    if(fmi_api is None):
+        log.info('FMI API not specified. Model exchange (me) API will be used.')
+        fmi_api = 'me'
+    
+    # Check if the fmi api is valid
+    if not (fmi_api.lower() in ['me', 'cs']):
+        s = 'This version only supports FMI model exchange(me) or co-simulation (cs) API.'
+        log.error (s)
+        raise ValueError(s)
+  
+    if(export_tool is None):
+        log.info('No export tool was specified. dymola the default will be used.')
+        export_tool = 'dymola'
+    
+    # Check if export tool is valid
+    if not (export_tool.lower() in ['dymola', 'omc']):
+        s = 'Export tool specified is neither Dymola (dymola) nor OpenModelica(omc).'
+        log.error (s)
+        raise ValueError(s)
+    
+    # Define templates variables
+    if(export_tool.lower() == 'dymola'):
+        mos_template_path = MOS_TEMPLATE_PATH_DYMOLA
+        # Convert the FMI version to int for Dymola
+        if fmi_version in ['1.0', '2.0']:
+            fmi_version = str(int(float(fmi_version)))
+        modelica_path = 'MODELICAPATH'
+    elif(export_tool.lower() == 'omc'):
+        if fmi_version in ['1', '2']:
+            fmi_version =str(float(fmi_version))
+        mos_template_path = MOS_TEMPLATE_PATH_OPENMODELICA 
+        modelica_path = 'OPENMODELICALIBRARY'
+    
+    # Check if user is trying to export a 1.0 co-simulation FMU with OpenModelica
+    if (export_tool == 'omc' and fmi_version=='1.0' and fmi_api.lower()=='cs'):
+        log.info ('Export of FMU type cs for version 1 is not supported for omc.'+
+                  ' Supported combinations are me (model exchange) for versions 1.0 & 2.0,'+
+                  ' cs (co-simulation) & me_cs (model exchange & co-simulation) for version 2.0.')
+        return 
+
     
     # Get the Python script path
     python_scripts_path = args.python_scripts_path  
@@ -232,61 +298,7 @@ def main():
     # Set the default configuration file
     con_path = ''
                 
-    # Set the Python version
-    log.info ('Set the Python version in the Modelica model to be 3.5.')
-    
-    # Here we set the Python version. We keep this in case
-    # we want to include different versions of Python in the 
-    # Modelica model and use the correct one by detecting the version
-    # of Python used to run the script.
-    python_vers = '35'
-
-    # Get the FMI version
-    fmi_version = args.fmi_version
-    
-    # Check if fmi version is none
-    if(fmi_version is None):
-        log.info('FMI version not specified. Version 2.0 will be used.')
-        fmi_version = '2.0'
-    
-    # Check if fmi version is valid
-    if not (fmi_version in ['1.0', '2.0', '1', '2']):
-        s = 'This version only supports FMI version 1.0 and 2.0.'
-        log.error (s)
-        raise ValueError(s)
-    # Get the FMI API version
-    fmi_api = args.fmi_api
-    
-    # Check if fmi api is none
-    if(fmi_api is None):
-        log.info('FMI API not specified. Model exchange (me) API will be used.')
-        fmi_api = 'me'
-    
-    # Check if the fmi api is valid
-    if not (fmi_api.lower() in ['me', 'cs']):
-        s = 'This version only supports FMI model exchange(me) or co-simulation (cs) API.'
-        log.error (s)
-        raise ValueError(s)
-  
-    if(export_tool is None):
-        log.info('No export tool was specified. dymola the default will be used.')
-        export_tool = 'dymola'
-    
-    # Check if export tool is valid
-    if not (export_tool.lower() in ['dymola', 'omc']):
-        s = 'Export tool specified is neither Dymola (dymola) nor OpenModelica(omc).'
-        log.error (s)
-        raise ValueError(s)
-    
-    # Define templates variables
-    if(export_tool.lower() == 'dymola'):
-        mos_template_path = MOS_TEMPLATE_PATH_DYMOLA
-        # Convert the FMI version to int for Dymola
-        fmi_version = int(float(fmi_version))
-        modelica_path = 'MODELICAPATH'
-    elif(export_tool.lower() == 'omc'):
-        mos_template_path = MOS_TEMPLATE_PATH_OPENMODELICA 
-        modelica_path = 'OPENMODELICALIBRARY'
+      
     
     # Get the need execution
     needs_tool = args.needs_tool
@@ -303,7 +315,7 @@ def main():
     Simulator = SimulatorToFMU(con_path,
                             io_file_path,
                             SimulatorToFMU_LIB_PATH,
-                            MO_TEMPLATE_PATH_DYMOLA,
+                            MO_TEMPLATE_PATH,
                             mos_template_path,
                             XSD_FILE_PATH,
                             python_vers,
@@ -844,17 +856,19 @@ class SimulatorToFMU(object):
         fh.close()
 
         if (self.export_tool == 'dymola'):
-            output_sp = sp.check_output([self.export_tool, output_file])
+            sp.check_call([self.export_tool, output_file])
+            #output_sp = os.system(self.export_tool + ' ' +  output_file)
          
         if (self.export_tool == 'omc'):
-            output_sp = sp.check_output([self.export_tool, output_file, 'SimulatorToFMU'])
-    
-        
-        # Check if error is raised
-        if ('error' in output_sp.lower()):
-            s = ('Export of model={!s} failed when using the {!s} Modelica compiler.').format(
-                self.model_name, self.export_tool)
-            raise ValueError (s)
+            sp.call([self.export_tool, output_file, 'SimulatorToFMU'])
+            #output_sp = os.system(self.export_tool + ' ' + output_file + ' ' + 'SimulatorToFMU')
+#         
+#         # Check if error is raised
+#         print ("This is the output" + str(output_sp.stdout.flush()))
+#         if (output_sp.stdout.flush() is not None and 'error' in output_sp.stdout.flush()):
+#             s = ('Export of model={!s} failed when using the {!s} Modelica compiler.').format(
+#                 self.model_name, self.export_tool)
+#             raise ValueError (s)
         
         # Reset the library path to the default
         if not(current_library_path is None):
@@ -920,7 +934,7 @@ class SimulatorToFMU(object):
         
         fmi_version = float(self.fmi_version)
         if (self.export_tool == 'omc' or platform.system().lower() == 'linux' 
-            or  (fmi_version > 1.0 and self.needs_tool == 'true')):
+            or  (float(fmi_version) > 1.0 and self.needs_tool == 'true')):
             
             
 
@@ -982,7 +996,7 @@ class SimulatorToFMU(object):
                                     raise ValueError (fil_path + 
                                                       ' does not exist and will need to be compiled.')
                                     
-            if (fmi_version > 1.0 and self.needs_tool == 'true'):
+            if (float(fmi_version) > 1.0 and self.needs_tool == 'true'):
                 s = ('The model description file will be rewritten' + 
                          ' to include the attribute {!s} set to true.').format(
                         NEEDSEXECUTIONTOOL)
