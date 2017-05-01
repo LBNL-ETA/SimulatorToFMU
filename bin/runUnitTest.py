@@ -105,9 +105,9 @@ class Tester(unittest.TestCase):
     def test_simulator_to_fmu(self):
         '''  
         Test the export of an FMU with various options.
-
+ 
         '''
-
+ 
         for tool in ['omc', 'dymola']:
             if (platform.system().lower() == 'linux' and tool == 'omc'):
                 continue
@@ -131,8 +131,8 @@ class Tester(unittest.TestCase):
                                                     tool,
                                                     modPat,
                                                     cs_xml)
-
-
+ 
+ 
                         start = datetime.now()
                         Simulator_Test.print_mo()
                         Simulator_Test.generate_fmu()
