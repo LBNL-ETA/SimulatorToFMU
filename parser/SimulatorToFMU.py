@@ -848,6 +848,7 @@ class SimulatorToFMU(object):
          
         if (self.export_tool == 'omc'):
             output_sp = sp.check_output([self.export_tool, output_file, 'SimulatorToFMU'])
+    
         
         # Check if error is raised
         if ('error' in output_sp.lower()):
@@ -967,7 +968,7 @@ class SimulatorToFMU(object):
                             if(os.path.isfile(cur_dll)):
                                 continue
                             else:
-                                fil_path = os.path.join(SimulatorToFMU_LIB_PATH,
+                                fil_path = os.path.join(self.simulatortofmu_path,
                                                         'SimulatorToFMU',
                                                         'Resources',
                                                         'Library',
