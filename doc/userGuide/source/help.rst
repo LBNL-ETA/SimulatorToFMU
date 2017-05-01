@@ -8,8 +8,8 @@ Help
 This chapter lists potential issues encountered when using SimulatorToFMU.
 
 
-Dymola FMUs do not run
-^^^^^^^^^^^^^^^^^^^^^^
+Simulation failed with Dymola FMUs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If an FMU exported using Dymola fails to run, check if the version of Dymola which exported the FMU had the ``Binary Model Export`` license.
 The ``Binary Model Export`` license is required to export FMUs which can be run without requiring a Dymola runtime license.

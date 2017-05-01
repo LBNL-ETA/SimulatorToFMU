@@ -63,7 +63,7 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">7. Help</a><ul>
-<li><a class="reference internal" href="#dymola-fmus-do-not-run">7.1. Dymola FMUs do not run</a></li>
+<li><a class="reference internal" href="#simulation-failed-with-dymola-fmus">7.1. Simulation failed with Dymola FMUs</a></li>
 <li><a class="reference internal" href="#compilation-failed-with-openmodelica">7.2. Compilation failed with OpenModelica</a></li>
 </ul>
 </li>
@@ -103,8 +103,8 @@
   <div class="section" id="help">
 <span id="id1"></span><h1>7. Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h1>
 <p>This chapter lists potential issues encountered when using SimulatorToFMU.</p>
-<div class="section" id="dymola-fmus-do-not-run">
-<h2>7.1. Dymola FMUs do not run<a class="headerlink" href="#dymola-fmus-do-not-run" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="simulation-failed-with-dymola-fmus">
+<h2>7.1. Simulation failed with Dymola FMUs<a class="headerlink" href="#simulation-failed-with-dymola-fmus" title="Permalink to this headline">¶</a></h2>
 <p>If an FMU exported using Dymola fails to run, check if the version of Dymola which exported the FMU had the <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license.
 The <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license is required to export FMUs which can be run without requiring a Dymola runtime license.
 You can also inspect the model description of the FMU to see if a Dymola runtime license is required to run the FMU.</p>
