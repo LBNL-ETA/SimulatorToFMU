@@ -118,14 +118,14 @@
 <div><ul class="simple">
 <li>Python 2.7.13</li>
 <li>Python 3.5.0</li>
-<li>Dymola 2017 FD01</li>
-<li>OpenModelica 1.11.0</li>
+<li>Dymola 2017 FD01 (Windows and Linux)</li>
+<li>OpenModelica 1.11.0 (Windows)</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>SimulatorToFMU can use OpenModelica and Dymola to export a Simulator as an FMU.</p>
-<p>However OpenModelica and Dymola (on Linux) do not copy all required libraries dependencies to the FMU.</p>
+<p>However OpenModelica (on sWindows) and Dymola (on Linux) do not copy all required libraries dependencies to the FMU.</p>
 <p class="last">As a workaround, SimulatorToFMU checks if there are missing libraries dependencies and copies the dependencies to the FMU.</p>
 </div>
 </div>
@@ -160,7 +160,7 @@
 </li>
 <li><p class="first">Dymola executable folder (e.g. <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files(x86)\Dymola2017</span> <span class="pre">FD01\bin64</span></code>)</p>
 </li>
-<li><p class="first">OpenModelica executable folder</p>
+<li><p class="first">OpenModelica executable folder (e.g. <code class="docutils literal"><span class="pre">C:\OpenModelica1.11.0-32bit\</span></code>)</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>You can add folders to your system path by performing following steps on Windows 8 or 10:</p>

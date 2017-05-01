@@ -25,14 +25,14 @@ SimulatorToFMU has been tested with:
 
   - Python 2.7.13
   - Python 3.5.0 
-  - Dymola 2017 FD01 
-  - OpenModelica 1.11.0 
+  - Dymola 2017 FD01 (Windows and Linux)
+  - OpenModelica 1.11.0 (Windows) 
 
 .. note:: 
 
    SimulatorToFMU can use OpenModelica and Dymola to export a Simulator as an FMU. 
    
-   However OpenModelica and Dymola (on Linux) do not copy all required libraries dependencies to the FMU.
+   However OpenModelica (on sWindows) and Dymola (on Linux) do not copy all required libraries dependencies to the FMU.
 
    As a workaround, SimulatorToFMU checks if there are missing libraries dependencies and copies the dependencies to the FMU.
 
@@ -68,7 +68,7 @@ The installation directory should contain the following subdirectories:
  - Python installation folder (e.g. ``C:\Python35``)
  - Python scripts folder (e.g. ``C:\Python35\Scripts``), 
  - Dymola executable folder (e.g. ``C:\Program Files(x86)\Dymola2017 FD01\bin64``)
- - OpenModelica executable folder
+ - OpenModelica executable folder (e.g. ``C:\OpenModelica1.11.0-32bit\``)
 
    .. note:: 
 

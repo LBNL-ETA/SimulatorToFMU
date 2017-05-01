@@ -28,4 +28,11 @@ Note that the FMU is a zip file.
 This means you can open and inspect its contents.
 To do so, it may help to change the "``.fmu``" extension to "``.zip``".
 
+.. note::
+
+  FMUs exported using Dymola will need a Dymola runtime license to run.
+  A Dymola runtime license will not be needed if the FMU is exported with 
+  a version of Dymola which has the ``Binary Model Export`` license.
+
+
 

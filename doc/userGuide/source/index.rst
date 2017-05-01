@@ -12,6 +12,7 @@ User Guide
    build
    bestPractice
    development
+   help
    notation
    glossary
    acknowledgments

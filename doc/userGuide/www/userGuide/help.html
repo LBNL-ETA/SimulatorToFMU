@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>8. Help &mdash; FMU Export of Simulator User Guide</title>
+    <title>7. Help &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -17,16 +17,18 @@
         VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="FMU Export of Simulator User Guide" href="index.html" />
-    <link rel="next" title="9. Notation" href="notation.html" />
-    <link rel="prev" title="7. Development" href="development.html" /> 
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="8. Notation" href="notation.html" />
+    <link rel="prev" title="6. Development" href="development.html" /> 
   </head>
   <body role="document">
 <div class="headerStyle">
@@ -40,16 +42,19 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="notation.html" title="9. Notation"
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="notation.html" title="8. Notation"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="development.html" title="7. Development"
+          <a href="development.html" title="6. Development"
              accesskey="P">previous</a> |</li>
     <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of Simulator User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
@@ -57,34 +62,31 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">8. Help</a><ul>
-<li><a class="reference internal" href="#running-pyfmi-with-python-3-4-on-windows-32-bit">8.1. Running PyFMI with Python 3.4 on Windows 32 bit</a><ul>
-<li><a class="reference internal" href="#requirements">8.1.1. Requirements</a></li>
-<li><a class="reference internal" href="#compilation">8.1.2. Compilation</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">7. Help</a><ul>
+<li><a class="reference internal" href="#dymola-fmus-do-not-run">7.1. Dymola FMUs do not run</a></li>
+<li><a class="reference internal" href="#compilation-failed-with-openmodelica">7.2. Compilation failed with OpenModelica</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="development.html"
-                        title="previous chapter">7. Development</a></p>
+                        title="previous chapter">6. Development</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="notation.html"
-                        title="next chapter">9. Notation</a></p>
+                        title="next chapter">8. Notation</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/help.txt"
+      <li><a href="_sources/help.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -99,81 +101,18 @@
           <div class="body" role="main">
             
   <div class="section" id="help">
-<h1>8. Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="running-pyfmi-with-python-3-4-on-windows-32-bit">
-<h2>8.1. Running PyFMI with Python 3.4 on Windows 32 bit<a class="headerlink" href="#running-pyfmi-with-python-3-4-on-windows-32-bit" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="glossary.html#term-pyfmi"><span class="xref std std-term">PyFMI</span></a> is a python package which can be used to import and run a Simulator FMU.
-In <a class="reference internal" href="glossary.html#term-pyfmi"><span class="xref std std-term">PyFMI</span></a> version 2.3.1, a master algorithm was added to import and
-link multiple FMUs for co-simulation. At time of writing, there was no <a class="reference internal" href="glossary.html#term-pyfmi"><span class="xref std std-term">PyFMI</span></a>
-2.3.1 executable available for Python 3.4 for Windows 32bit (See <a class="reference external" href="https://pypi.python.org/pypi/PyFMI">PyPyi</a>.).
-The next steps describe requirements and steps to perform to compile <a class="reference internal" href="glossary.html#term-pyfmi"><span class="xref std std-term">PyFMI</span></a> version 2.3.1 from source.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">To avoid having to recompile <a class="reference internal" href="glossary.html#term-pyfmi"><span class="xref std std-term">PyFMI</span></a> dependent libraries from source,
-we recommend to use pre-compiled Windows binaries whenever available.</p>
+<span id="id1"></span><h1>7. Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h1>
+<p>This chapter lists potential issues encountered when using SimulatorToFMU.</p>
+<div class="section" id="dymola-fmus-do-not-run">
+<h2>7.1. Dymola FMUs do not run<a class="headerlink" href="#dymola-fmus-do-not-run" title="Permalink to this headline">¶</a></h2>
+<p>If an FMU exported using Dymola fails to run, check if the version of Dymola which exported the FMU had the <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license.
+The <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license is required to export FMUs which can be run without requiring a Dymola runtime license.
+You can also inspect the model description of the FMU to see if a Dymola runtime license is required to run the FMU.</p>
 </div>
-<div class="section" id="requirements">
-<h3>8.1.1. Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
-<p>The next table shows the list of Python modules and softwares used to compile version 2.3.1 of PyFMI from source
-so it can run with Python 3.4 on Windows 32 bit.</p>
-<p>Install PyFMI dependencies with</p>
-<blockquote>
-<div><div class="highlight-none"><div class="highlight"><pre><span></span>pip install -r dev/master/bin/pyfmi-dependencies.txt
-</pre></div>
-</div>
-</div></blockquote>
-<p>Below is a table with dependencies which fail to install using pip.
-For those, we recommend to use the MS Windows installer directly.</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="13%" />
-<col width="38%" />
-<col width="50%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Modules</th>
-<th class="head">Version</th>
-<th class="head">Link</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>FMI Library</td>
-<td>2.0.2 (source)</td>
-<td><a class="reference external" href="http://www.jmodelica.org/FMILibrary">http://www.jmodelica.org/FMILibrary</a></td>
-</tr>
-<tr class="row-odd"><td>Scipy</td>
-<td>0.16.1</td>
-<td><a class="reference external" href="https://sourceforge.net/projects/scipy/files/scipy/0.16.1">https://sourceforge.net/projects/scipy/files/scipy/0.16.1</a></td>
-</tr>
-<tr class="row-even"><td>lxml</td>
-<td>3.4.4</td>
-<td><a class="reference external" href="https://pypi.python.org/pypi/lxml/3.4.4">https://pypi.python.org/pypi/lxml/3.4.4</a></td>
-</tr>
-<tr class="row-odd"><td>Assimulo</td>
-<td>2.7b1</td>
-<td><a class="reference external" href="https://pypi.python.org/pypi/Assimulo/2.7b1">https://pypi.python.org/pypi/Assimulo/2.7b1</a></td>
-</tr>
-<tr class="row-even"><td>PyFMI</td>
-<td>2.3.1 (source)</td>
-<td><a class="reference external" href="https://pypi.python.org/pypi/PyFMI">https://pypi.python.org/pypi/PyFMI</a></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><a class="reference internal" href="glossary.html#term-pyfmi"><span class="xref std std-term">PyFMI</span></a> needs a C-compiler to compile the source codes. We used the Microsoft Visual Studio 10 Professional.</p>
-</div>
-</div>
-<div class="section" id="compilation">
-<h3>8.1.2. Compilation<a class="headerlink" href="#compilation" title="Permalink to this headline">¶</a></h3>
-<p>To compile <a class="reference internal" href="glossary.html#term-pyfmi"><span class="xref std std-term">PyFMI</span></a> from source, run</p>
-<div class="highlight-none"><div class="highlight"><pre><span></span>python setup.py install --fmil-home=path_to_FMI_Library\
-</pre></div>
-</div>
-<p>where <code class="docutils literal"><span class="pre">path_to_FMI_Library\</span></code> is the path to the FMI library.</p>
-<p>To use <a class="reference internal" href="glossary.html#term-pyfmi"><span class="xref std std-term">PyFMI</span></a> as a master algorithm to couple a Simulator FMU with GridDyn FMU,
-we refer to the documentation located in <code class="docutils literal"><span class="pre">fmu/master/doc/userGuide</span></code>.</p>
-</div>
+<div class="section" id="compilation-failed-with-openmodelica">
+<h2>7.2. Compilation failed with OpenModelica<a class="headerlink" href="#compilation-failed-with-openmodelica" title="Permalink to this headline">¶</a></h2>
+<p>If the compilation of Modelica models fails with OpenModelica, check if the <code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is defined in the Windows <code class="docutils literal"><span class="pre">Environment</span> <span class="pre">Variables</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is the path to the libraries which are required by OpenModelica to compile Modelica models.</p>
 </div>
 </div>
 
@@ -190,22 +129,25 @@ we refer to the documentation located in <code class="docutils literal"><span cl
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="notation.html" title="9. Notation"
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="notation.html" title="8. Notation"
              >next</a> |</li>
         <li class="right" >
-          <a href="development.html" title="7. Development"
+          <a href="development.html" title="6. Development"
              >previous</a> |</li>
     <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of Simulator User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+        &#169; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

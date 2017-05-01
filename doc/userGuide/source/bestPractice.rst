@@ -88,6 +88,6 @@ The arguments of the functions are in the next table
      In this situation, the FMU will must be exported with the option ``<n>`` set to ``true``. 
      The external programs/scripts will have to be installed on the target machine where the 
      FMU is run. See :doc:`build` for details on command line options. 
-   - Once Simulator.py is implemented, it must be saved under the same name and used as required argument for SimulatorToFMU.py
+   - Once ``Simulator.py`` is implemented, it must be saved under the same name and used as required argument for ``SimulatorToFMU.py``.
 
   

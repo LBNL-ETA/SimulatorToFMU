@@ -110,7 +110,7 @@ model description file as well as the Python script required to interface the Si
 <p>To create an FMU,
 open a command-line window (see <a class="reference internal" href="notation.html"><span class="doc">Notation</span></a>).
 The standard invocation of the SimulatorToFMU tool is:</p>
-<div class="highlight-none"><div class="highlight"><pre><span></span>&gt; python3  &lt;scriptDir&gt;SimulatorToFMU.py &lt;python-scripts-path&gt; 
+<div class="highlight-none"><div class="highlight"><pre><span></span>&gt; python  &lt;scriptDir&gt;SimulatorToFMU.py &lt;python-scripts-path&gt; 
 </pre></div>
 </div>
 <p>where <code class="docutils literal"><span class="pre">scriptDir</span></code> is the path to the scripts directory of SimulatorToFMU.
@@ -118,7 +118,7 @@ This is the <code class="docutils literal"><span class="pre">parser</span></code
 See <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> for details.</p>
 <p>An example of invoking <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> on Windows is</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span># Windows:
-&gt; python3 parser\SimulatorToFMU.py -s parser\\utilities\\Simulator.py, d:\\calcEng.py
+&gt; python parser\SimulatorToFMU.py -s parser\\utilities\\Simulator.py, d:\\calcEng.py
 </pre></div>
 </div>
 <p>Following requirements must be met hen using SimulatorToFMU</p>
@@ -183,14 +183,11 @@ This includes removing and replacing invalid characters in variable names such a
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <ul class="last simple">
-<li>If option <code class="docutils literal"><span class="pre">&lt;n&gt;</span></code> is <code class="docutils literal"><span class="pre">true</span></code> then the simulation program/script which will be invoked 
+<li>If option <code class="docutils literal"><span class="pre">&lt;-n&gt;</span></code> is <code class="docutils literal"><span class="pre">true</span></code> then the simulation program/script which will be invoked 
 in the Python scripts provided for option <code class="docutils literal"><span class="pre">&lt;s&gt;</span></code> must be installed on the target 
 machine where the FMU will be run.</li>
-<li>If option <code class="docutils literal"><span class="pre">&lt;n&gt;</span></code> is <code class="docutils literal"><span class="pre">false</span></code> then the FMU only needs the Python scripts 
-provided for option <code class="docutils literal"><span class="pre">&lt;s&gt;</span></code> to run.</li>
-<li>SimulatorToFMU can use OpenModelica to export a Simulator as an FMU. 
-However the FMU cannot be loaded in Dymola or PyFMI because of shared libraries
-that cannot be loaded.</li>
+<li>If option <code class="docutils literal"><span class="pre">&lt;-n&gt;</span></code> is <code class="docutils literal"><span class="pre">false</span></code> then the FMU only needs the Python scripts 
+provided for option <code class="docutils literal"><span class="pre">&lt;-s&gt;</span></code> to run.</li>
 </ul>
 </div>
 </div>
@@ -202,6 +199,12 @@ The FMU is written to the current working directory, that is, in the directory f
 <p>Note that the FMU is a zip file.
 This means you can open and inspect its contents.
 To do so, it may help to change the &#8220;<code class="docutils literal"><span class="pre">.fmu</span></code>&#8221; extension to &#8220;<code class="docutils literal"><span class="pre">.zip</span></code>&#8221;.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">FMUs exported using Dymola will need a Dymola runtime license to run.
+A Dymola runtime license will not be needed if the FMU is exported with
+a version of Dymola which has the <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license.</p>
+</div>
 </div>
 </div>
 
