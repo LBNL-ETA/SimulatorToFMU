@@ -11,6 +11,7 @@ import subprocess
 try:
     from pyfmi import load_fmu
 except BaseException:
+    print ('PyFMI is not installed.')
     pass
 from datetime import datetime
 
@@ -22,22 +23,22 @@ sys.path.append(parser_path)
 
 import SimulatorToFMU as simulator
 
-XSD_SCHEMA = 'SimulatorModelDescription.xsd'
-NEEDSEXECUTIONTOOL = 'needsExecutionTool'
-MODELDESCRIPTION = 'modelDescription.xml'
-SimulatorModelicaTemplate_MO = 'SimulatorModelicaTemplate.mo'
-SimulatorModelicaTemplate_Dymola_MOS = 'SimulatorModelicaTemplate_Dymola.mos'
-SimulatorModelicaTemplate_OpenModelica_MOS = 'SimulatorModelicaTemplate_OpenModelica.mos'
-XML_MODELDESCRIPTION = 'SimulatorModelDescription.xml'
 # Get the path to the templates files
 script_path = os.path.dirname(os.path.realpath(__file__))
 utilities_path = os.path.join(script_path, '..', 'parser', 'utilities')
+XSD_SCHEMA = 'SimulatorModelDescription.xsd'
+NEEDSEXECUTIONTOOL = 'needsExecutionTool'
+MODELDESCRIPTION = 'modelDescription.xml'
+MO_TEMPLATE = 'SimulatorModelicaTemplate.mo'
+MOS_TEMPLATE_DYMOLA = 'SimulatorModelicaTemplate_Dymola.mos'
+MOS_TEMPLATE_OPENMODELICA = 'SimulatorModelicaTemplate_OpenModelica.mos'
+XML_MODELDESCRIPTION = 'SimulatorModelDescription.xml'
 PYTHON_SCRIPT_PATH = os.path.join(utilities_path, 'Simulator.py')
-MO_TEMPLATE_PATH = os.path.join(utilities_path, SimulatorModelicaTemplate_MO)
+MO_TEMPLATE_PATH = os.path.join(utilities_path, MO_TEMPLATE)
 MOS_TEMPLATE_PATH_DYMOLA = os.path.join(
-    utilities_path, SimulatorModelicaTemplate_Dymola_MOS)
+    utilities_path, MOS_TEMPLATE_DYMOLA)
 MOS_TEMPLATE_PATH_OPENMODELICA = os.path.join(
-    utilities_path, SimulatorModelicaTemplate_OpenModelica_MOS)
+    utilities_path, MOS_TEMPLATE_OPENMODELICA)
 XSD_FILE_PATH = os.path.join(utilities_path, XSD_SCHEMA)
 XML_INPUT_FILE = os.path.join(utilities_path, XML_MODELDESCRIPTION)
 SimulatorToFMU_LIB_PATH = os.path.join(
@@ -45,11 +46,11 @@ SimulatorToFMU_LIB_PATH = os.path.join(
 python_scripts_path = [PYTHON_SCRIPT_PATH]
 
 if(platform.system().lower() == 'windows'):
-    print("Convert path to Python script={!s} to valid Windows path".format(
+    print('Convert path to Python script path={!s} to valid Windows path'.format(
         PYTHON_SCRIPT_PATH))
     python_scripts_path = [item.replace('\\', '\\\\') for item in [
         PYTHON_SCRIPT_PATH]]
-    print("The valid Python script path={!s}.".format(python_scripts_path))
+    print('The valid Python script path is {!s}.'.format(python_scripts_path))
 
 Simulator_T = simulator.SimulatorToFMU('con_path',
                                        XML_INPUT_FILE,
@@ -125,8 +126,7 @@ class Tester(unittest.TestCase):
         # Testing function to print Modelica model.
         Simulator_T.print_mo()
 
-    unittest.skip("Export Simulator using multiple options.")
-
+    # unittest.skip('Export Simulator using multiple options.')
     def test_simulator_to_fmu(self):
         '''
         Test the export of an FMU with various options.
@@ -183,7 +183,7 @@ class Tester(unittest.TestCase):
                             'Export Simulator as an FMU in {!s} seconds.'.format(
                                 (end - start).total_seconds()))
 
-    @unittest.skip("Run the FMU using PyFMI")
+    @unittest.skip('Run the FMU using PyFMI')
     def test_run_simulator_fmu(self):
         '''
         Test the execution of one Simulator FMU.
@@ -270,5 +270,5 @@ class Tester(unittest.TestCase):
                     'Values are not matching.')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
