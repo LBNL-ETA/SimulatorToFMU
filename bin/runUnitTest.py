@@ -127,7 +127,7 @@ class Tester(unittest.TestCase):
  
         for tool in ['dymola', 'omc']:
             if (platform.system().lower() == 'linux' and tool == 'omc'):
-                print ('tool={!s} is not supported on Linux'.format(tool))
+                print ('tool={!s} is not supported on Linux.'.format(tool))
                 continue
             if tool=='omc':
                 modPat = 'OPENMODELICALIBRARY'
@@ -140,7 +140,7 @@ class Tester(unittest.TestCase):
                     version = str(float(version))
                 for api in ['me']:
                     if (tool == 'omc' and version=='1.0' and api=='cs'):
-                        print ('tool={!s} with FMI version={!s} and FMI API={!s} is not supported'.format(
+                        print ('tool={!s} with FMI version={!s} and FMI API={!s} is not supported.'.format(
                             tool, version, api))
                         continue
                     for cs_xml in ['false', 'true']:
