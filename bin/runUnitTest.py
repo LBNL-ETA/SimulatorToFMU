@@ -126,7 +126,7 @@ class Tester(unittest.TestCase):
         # Testing function to print Modelica model.
         Simulator_T.print_mo()
 
-    # unittest.skip('Export Simulator using multiple options.')
+    #@unittest.skip('Export Simulator using multiple options.')
     def test_simulator_to_fmu(self):
         '''
         Test the export of an FMU with various options.
