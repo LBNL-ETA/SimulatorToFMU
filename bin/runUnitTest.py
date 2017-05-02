@@ -5,7 +5,10 @@
 #######################################################
 import unittest
 import os, sys, platform, subprocess 
-from pyfmi import load_fmu
+try:
+    from pyfmi import load_fmu
+except:
+    pass
 from datetime import datetime
 
 # Appending parser_path to the system path os required to be able
@@ -115,7 +118,7 @@ class Tester(unittest.TestCase):
         # Testing function to print Modelica model.
         Simulator_T.print_mo()
 
-    @unittest.skip("Export Simulator using multiple options.")
+    unittest.skip("Export Simulator using multiple options.")
     def test_simulator_to_fmu(self):
         '''  
         Test the export of an FMU with various options.
@@ -167,7 +170,7 @@ class Tester(unittest.TestCase):
                         end = datetime.now()
                         print('Export Simulator as an FMU in {!s} seconds.'.format((end - start).total_seconds()))
     
-    #@unittest.skip("Run the FMU using PyFMI")
+    @unittest.skip("Run the FMU using PyFMI")
     def test_run_simulator_fmu(self):
         '''  
         Test the execution of one Simulator FMU.
