@@ -8,6 +8,3 @@ The makefile generates libraries for the respective
 operating system, and copies the library to
 SimulatorToFMU.Resources/Library/"operatingSystem".
 
-Note that Dymola 2013 FD01 on Linux Ubuntu 64 bit compiles
-the executable as a 32 bit application. Hence,
-to 32 bit version of the library will be used.

@@ -32,7 +32,7 @@ CC_FLAGS_64 = -Wall -m64
 
 SRCS = pythonInterpreter.c
 OBJS = pythonInterpreter.o
-LIB  = SimulatorToFMUPython${python_version_major}${python_version_minor}.dylib
+LIB  = libSimulatorToFMUPython${python_version_major}${python_version_minor}.dylib
 
 # Note that -fPIC is recommended on Linux according to the Modelica specification
 

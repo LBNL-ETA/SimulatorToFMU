@@ -21,7 +21,7 @@ The standard invocation of the SimulatorToFMU tool is:
 
 .. code-block:: none
 
-  > python  <scriptDir>SimulatorToFMU.py <python-scripts-path>
+  > python  <scriptDir>SimulatorToFMU.py -s <python-scripts-path>
 
 where ``scriptDir`` is the path to the scripts directory of SimulatorToFMU.
 This is the ``parser`` subdirectory of the installation directory.
