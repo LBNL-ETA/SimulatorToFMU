@@ -32,7 +32,7 @@ An example of invoking ``SimulatorToFMU.py`` on Windows is
 .. code-block:: none
 
   # Windows:
-  > python parser\SimulatorToFMU.py -s parser\\\\utilities\\\\Simulator.py, d:\\\\calcEng.py
+  > python parser\SimulatorToFMU.py -s parser\\\\utilities\\\\simulatortofmu_wrapper.py, d:\\\\calcEng.py
 
 Following requirements must be met hen using SimulatorToFMU
 
@@ -49,9 +49,9 @@ Following requirements must be met hen using SimulatorToFMU
 |                                                    | Simulator. On Windows Operating system, the paths                 |
 |                                                    | must use **double backward slash**.                               |
 |                                                    | The main Python script must be an extension                       |
-|                                                    | of the ``Simulator.py`` script which is provided in               |
-|                                                    | ``parser\\utilities\\Simulator.py``.                                |
-|                                                    | The name of the main Python script must be ``Simulator.py``.      |
+|                                                    | of the ``simulatortofmu_wrapper.py`` script which is provided in               |
+|                                                    | ``parser\\utilities\\simulatortofmu_wrapper.py``.                                |
+|                                                    | The name of the main Python script must be ``simulatortofmu_wrapper.py``.      |
 +----------------------------------------------------+-------------------------------------------------------------------+
 | -c                                                 | Path to the Simulator model file.                                 |
 +----------------------------------------------------+-------------------------------------------------------------------+
@@ -279,9 +279,9 @@ def main():
     # Save correct Python script path
     python_scripts_base = [os.path.basename(item)
                            for item in python_scripts_path]
-    # Check if Simulator.py is in the list of functions
-    if not('Simulator.py' in python_scripts_base):
-        s = ('Simulator.py no found in the list of Python scripts={!s}').format(
+    # Check if simulatortofmu_wrapper.py is in the list of functions
+    if not('simulatortofmu_wrapper.py' in python_scripts_base):
+        s = ('simulatortofmu_wrapper.py no found in the list of Python scripts={!s}').format(
             python_scripts_path)
         log.error(s)
         raise ValueError(s)

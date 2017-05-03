@@ -33,7 +33,7 @@ MO_TEMPLATE = 'SimulatorModelicaTemplate.mo'
 MOS_TEMPLATE_DYMOLA = 'SimulatorModelicaTemplate_Dymola.mos'
 MOS_TEMPLATE_OPENMODELICA = 'SimulatorModelicaTemplate_OpenModelica.mos'
 XML_MODELDESCRIPTION = 'SimulatorModelDescription.xml'
-PYTHON_SCRIPT_PATH = os.path.join(utilities_path, 'Simulator.py')
+PYTHON_SCRIPT_PATH = os.path.join(utilities_path, 'simulatortofmu_wrapper.py')
 MO_TEMPLATE_PATH = os.path.join(utilities_path, MO_TEMPLATE)
 MOS_TEMPLATE_PATH_DYMOLA = os.path.join(
     utilities_path, MOS_TEMPLATE_DYMOLA)
