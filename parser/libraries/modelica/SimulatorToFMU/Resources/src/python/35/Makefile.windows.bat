@@ -61,12 +61,12 @@ CL /I%PYTHONInc% testProgram.c %SRCS%  %PYTHONLibs%
 ECHO Run the testProgram.exe
  start /WAIT testProgram.exe
 
-::ECHO Rename library file
-::ren %LIBS% %MOD_LIB%
+ECHO Rename library file
+ren %LIBS% %MOD_LIB%
 
 ECHO Copy files to the Library
 move %MOD_DLL% %BINDIR%
-::move %MOD_LIB% %BINDIR%
+move %MOD_LIB% %BINDIR%
 ::move %DUMMY_DLL% %BINDIR%
 
 ECHO Delete temporary files
@@ -77,9 +77,6 @@ del *.obj
 del "*.exp"
 
 :: Delete lib files
-del %LIBS%
-
-
 del testProgram.lib
 
 :: Delete check files
