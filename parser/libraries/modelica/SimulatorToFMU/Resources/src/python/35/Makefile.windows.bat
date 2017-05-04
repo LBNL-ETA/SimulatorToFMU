@@ -66,7 +66,7 @@ ren %LIBS% %MOD_LIB%
 
 ECHO Copy files to the Library
 move %MOD_DLL% %BINDIR%
-move %MOD_LIB% %BINDIR%
+::move %MOD_LIB% %BINDIR%
 ::move %DUMMY_DLL% %BINDIR%
 
 ECHO Delete temporary files
