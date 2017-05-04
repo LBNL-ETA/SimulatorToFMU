@@ -32,7 +32,7 @@ SimulatorToFMU has been tested with:
 
    SimulatorToFMU can use OpenModelica and Dymola to export a Simulator as an FMU. 
    
-   However OpenModelica (on sWindows) and Dymola (on Linux) do not copy all required libraries dependencies to the FMU.
+   However OpenModelica (on Windows) and Dymola (on Linux) do not copy all required libraries dependencies to the FMU.
 
    As a workaround, SimulatorToFMU checks if there are missing libraries dependencies and copies the dependencies to the FMU.
 
