@@ -110,7 +110,7 @@ model description file as well as the Python script required to interface the Si
 <p>To create an FMU,
 open a command-line window (see <a class="reference internal" href="notation.html"><span class="doc">Notation</span></a>).
 The standard invocation of the SimulatorToFMU tool is:</p>
-<div class="highlight-none"><div class="highlight"><pre><span></span>&gt; python  &lt;scriptDir&gt;SimulatorToFMU.py &lt;python-scripts-path&gt; 
+<div class="highlight-none"><div class="highlight"><pre><span></span>&gt; python  &lt;scriptDir&gt;SimulatorToFMU.py -s &lt;python-scripts-path&gt;
 </pre></div>
 </div>
 <p>where <code class="docutils literal"><span class="pre">scriptDir</span></code> is the path to the scripts directory of SimulatorToFMU.
@@ -118,7 +118,7 @@ This is the <code class="docutils literal"><span class="pre">parser</span></code
 See <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> for details.</p>
 <p>An example of invoking <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> on Windows is</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span># Windows:
-&gt; python parser\SimulatorToFMU.py -s parser\\utilities\\Simulator.py, d:\\calcEng.py
+&gt; python parser\SimulatorToFMU.py -s parser\\utilities\\simulator_wrapper.py, d:\\calcEng.py
 </pre></div>
 </div>
 <p>Following requirements must be met hen using SimulatorToFMU</p>
@@ -140,12 +140,11 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
 <tbody valign="top">
 <tr class="row-even"><td>-s</td>
 <td>Paths to python scripts required to run the
-Simulator. On Windows Operating system, the paths
-must use <strong>double backward slash</strong>.
+Simulator.
 The main Python script must be an extension
-of the <code class="docutils literal"><span class="pre">Simulator.py</span></code> script which is provided in
-<code class="docutils literal"><span class="pre">parser\utilities\Simulator.py</span></code>.
-The name of the main Python script must be <code class="docutils literal"><span class="pre">Simulator.py</span></code>.</td>
+of the <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code> script which is provided in
+<code class="docutils literal"><span class="pre">parser\utilities\simulator_wrapper.py</span></code>. The name of
+the main Python script must be <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code>.</td>
 </tr>
 <tr class="row-odd"><td>-c</td>
 <td>Path to the Simulator model file.</td>
@@ -174,7 +173,7 @@ Options are <code class="docutils literal"><span class="pre">true</span></code> 
 <p>The main functions of SimulatorToFMU are</p>
 <blockquote>
 <div><ul class="simple">
-<li>reading, validating, and parsing the Simulator XML input file. 
+<li>reading, validating, and parsing the Simulator XML input file.
 This includes removing and replacing invalid characters in variable names such as <code class="docutils literal"><span class="pre">*+-</span></code> with <code class="docutils literal"><span class="pre">_</span></code>,</li>
 <li>writing Modelica code with valid inputs and outputs names,</li>
 <li>invoking a Modelica compiler to compile the <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> code as an FMU for model exchange or co-simulation 2.0.</li>
@@ -183,10 +182,10 @@ This includes removing and replacing invalid characters in variable names such a
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <ul class="last simple">
-<li>If option <code class="docutils literal"><span class="pre">&lt;-n&gt;</span></code> is <code class="docutils literal"><span class="pre">true</span></code> then the simulation program/script which will be invoked 
-in the Python scripts provided for option <code class="docutils literal"><span class="pre">&lt;s&gt;</span></code> must be installed on the target 
+<li>If option <code class="docutils literal"><span class="pre">&lt;-n&gt;</span></code> is <code class="docutils literal"><span class="pre">true</span></code> then the simulation program/script which will be invoked
+in the Python scripts provided for option <code class="docutils literal"><span class="pre">&lt;s&gt;</span></code> must be installed on the target
 machine where the FMU will be run.</li>
-<li>If option <code class="docutils literal"><span class="pre">&lt;-n&gt;</span></code> is <code class="docutils literal"><span class="pre">false</span></code> then the FMU only needs the Python scripts 
+<li>If option <code class="docutils literal"><span class="pre">&lt;-n&gt;</span></code> is <code class="docutils literal"><span class="pre">false</span></code> then the FMU only needs the Python scripts
 provided for option <code class="docutils literal"><span class="pre">&lt;-s&gt;</span></code> to run.</li>
 </ul>
 </div>

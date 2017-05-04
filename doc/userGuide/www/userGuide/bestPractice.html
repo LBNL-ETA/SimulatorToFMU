@@ -192,7 +192,7 @@ This is done by adding <code class="docutils literal"><span class="pre">ScalarVa
 <h2>5.2. Configuring the Python Wrapper Simulator<a class="headerlink" href="#configuring-the-python-wrapper-simulator" title="Permalink to this headline">¶</a></h2>
 <p>To export Simulator as an FMU, the user needs to write a Python wrapper which will interface with the Simulator.
 The wrapper will be embedded in the FMU when the Simulator is exported and use at runtime on the target machine.</p>
-<p>The user needs to extend the Python wrapper provided in <code class="docutils literal"><span class="pre">parser\utilities\Simulator.py</span></code>
+<p>The user needs to extend the Python wrapper provided in <code class="docutils literal"><span class="pre">parser\utilities\simulator_wrapper.py</span></code>
 and implements the function <code class="docutils literal"><span class="pre">exchange</span></code>.</p>
 <p>The following snippet shows the Simulator function.</p>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -236,8 +236,7 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 39
 40
 41
-42
-43</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Main Python function to be modified to integrate the main simulator.</span>
+42</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Main Python function to be modified to interface with the main simulator.</span>
 
 <span class="k">def</span> <span class="nf">exchange</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">input_values</span><span class="p">,</span> 
             <span class="n">input_names</span><span class="p">,</span> <span class="n">output_names</span><span class="p">,</span> <span class="n">write_results</span><span class="p">):</span>
@@ -245,13 +244,12 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 <span class="sd">    Return  a list of output values from the Python-based Simulator.</span>
 <span class="sd">    The order of the output values must match the order of the output names.    </span>
 
-<span class="sd">    :param configuration_file (String): filename for the model configurations</span>
-<span class="sd">    :param time (Float): Current simulation time</span>
+<span class="sd">    :param configuration_file (String): Model configuration name</span>
+<span class="sd">    :param time (Float): Simulation time</span>
 <span class="sd">    :param input_values (Floats): Input values </span>
 <span class="sd">    :param input_names (Strings): Input names (same length as input_values)</span>
-
 <span class="sd">    :param output_names (Strings): Output names</span>
-<span class="sd">    :param write_results (Float): save results to a file (1.0 for saving, 0.0 else)</span>
+<span class="sd">    :param write_results (Float): Store results to file (1 to store, 0 else)</span>
 <span class="sd">        </span>
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; configuration_file = &#39;config.json&#39;</span>

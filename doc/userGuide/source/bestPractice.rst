@@ -52,12 +52,12 @@ Configuring the Python Wrapper Simulator
 To export Simulator as an FMU, the user needs to write a Python wrapper which will interface with the Simulator.
 The wrapper will be embedded in the FMU when the Simulator is exported and use at runtime on the target machine.
 
-The user needs to extend the Python wrapper provided in ``parser\utilities\Simulator.py`` 
+The user needs to extend the Python wrapper provided in ``parser\utilities\simulator_wrapper.py`` 
 and implements the function ``exchange``.
 
 The following snippet shows the Simulator function.
 
-.. literalinclude:: ../../../parser/utilities/Simulator.py
+.. literalinclude:: ../../../parser/utilities/simulator_wrapper.py
    :language: python
    :linenos:
 
