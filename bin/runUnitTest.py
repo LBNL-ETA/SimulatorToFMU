@@ -32,7 +32,7 @@ XML_MODELDESCRIPTION = 'SimulatorModelDescription.xml'
 # Get the path to the templates files
 script_path = os.path.dirname(os.path.realpath(__file__))
 utilities_path = os.path.join(script_path, '..', 'parser', 'utilities')
-PYTHON_SCRIPT_PATH = os.path.join(utilities_path, 'Simulator.py')
+PYTHON_SCRIPT_PATH = os.path.join(utilities_path, 'simulator_wrapper.py')
 MO_TEMPLATE_PATH = os.path.join(utilities_path, SimulatorModelicaTemplate_MO)
 MOS_TEMPLATE_PATH_DYMOLA = os.path.join(
     utilities_path, SimulatorModelicaTemplate_Dymola_MOS)

@@ -34,7 +34,7 @@ An example of invoking ``SimulatorToFMU.py`` on Windows is
 .. code-block:: none
 
   # Windows:
-  > python parser\SimulatorToFMU.py -s parser\\\\utilities\\\\simulator_wrapper.py, d:\\\\calcEng.py
+  > python parser\SimulatorToFMU.py -s parser\\utilities\\simulator_wrapper.py, d:\\calcEng.py
 
 Following requirements must be met hen using SimulatorToFMU
 
@@ -48,8 +48,7 @@ Following requirements must be met hen using SimulatorToFMU
 | Options                                            | Purpose                                                           |
 +====================================================+===================================================================+
 | -s                                                 | Paths to python scripts required to run the                       |
-|                                                    | Simulator. On Windows Operating system, the paths                 |
-|                                                    | must use **double backward slash**.                               |
+|                                                    | Simulator.                                                        |
 |                                                    | The main Python script must be an extension                       |
 |                                                    | of the ``simulator_wrapper.py`` script which is provided in       |
 |                                                    | ``parser\\utilities\\simulator_wrapper.py``. The name of            |
@@ -254,7 +253,7 @@ def main():
         modelica_path = 'MODELICAPATH'
     elif(export_tool.lower() == 'omc'):
         if fmi_version in ['1', '2']:
-            fmi_version = str(float(fmi_version))
+            fmi_version = str(float(fmi_version)*1.0)
         mos_template_path = MOS_TEMPLATE_PATH_OPENMODELICA
         modelica_path = 'OPENMODELICALIBRARY'
 
@@ -374,8 +373,8 @@ def main():
         raise ValueError(s)
     end = datetime.now()
 
-    log.info('Export Simulator as an FMU in ' +
-             str((end - start).total_seconds()) + ' seconds.')
+    log.info('Export Simulator as an FMU in {!s} seconds.'.format(
+        (end - start).total_seconds()))
 
 
 def check_duplicates(arr):
@@ -395,15 +394,13 @@ def check_duplicates(arr):
     lst_dup = list(dup)
     len_lst = len(lst_dup)
     if (len_lst > 0):
-        log.error('There are duplicates names in the list '
-                  + str(arr) + '.')
+        log.error('There are duplicates names in the list {!s}.'.format(arr))
         log.error('This is invalid. Check your XML input file.')
         for i in lst_dup:
-            log.error('Variable ' + i + ' has duplicates'
-                      ' in the list ' + str(arr) + '.')
+            log.error('Variable {!s} has duplicates in the list {!s}.'.format(
+                i, arr))
         # Assert if version is different from FMI 2.0
         assert(len_lst <= 0), 'Duplicates found in the list.'
-
 
 # Invalid symbols
 g_rexBadIdChars = re.compile(r'[^a-zA-Z0-9_]')
