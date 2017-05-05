@@ -3,13 +3,22 @@
 """
 
 ___int_doc:
-SimulatorToFMU is a software package written in Python which allows
-users to export any memory less simulation program which can be interfaced
-through a Python API  as a :term:`Functional Mock-up Unit` (FMU) for
-model Exchange or co-Simulation using the :term:`Functional Mock-up Interface` (FMI)
-standard `version 2.0 <https://svn.modelica.org/fmi/branches/public/specifications/v2.0/FMI_for_ModelExchange_and_CoSimulation_v2.0.pdf>`_.
-This FMU can then be imported into a variety of simulation programs
-that support the import of the Functional Mock-up Interface.
+SimulatorToFMU is a software package written in Python which allows 
+users to export a memoryless Python-driven simulation program or script 
+as a :term:`Functional Mock-up Unit` (FMU) for  
+model exchange or co-simulation using the :term:`Functional Mock-up Interface` (FMI) 
+standard `version 1.0 or 2.0 <https://www.fmi-standard.org>`_.
+This FMU can then be imported into a variety of simulation programs 
+that support the import of Functional Mock-up Units.
+
+A memoryless Python-driven simulation program/script 
+is a simulation program which meets following requirements:
+   
+  - The simulation program/script can be invoked through a Python script.
+  - The invocation of the simulation program/script is memoryless. That is, 
+    the output of the simulation program at any invocation time ``t`` 
+    depends only on the inputs at the time ``t``. 
+  - The inputs and the outputs of the simulation program/script must be ``real`` numbers.
 
 __author__ = "Thierry S. Nouidui"
 __email__ = "TSNouidui@lbl.gov"
@@ -76,13 +85,14 @@ The main functions of SimulatorToFMU are
  - reading, validating, and parsing the Simulator XML input file.
    This includes removing and replacing invalid characters in variable names such as ``*+-`` with ``_``,
  - writing Modelica code with valid inputs and outputs names,
- - invoking a Modelica compiler to compile the :term:`Modelica` code as an FMU for model exchange or co-simulation 2.0.
+ - invoking a Modelica compiler to compile the :term:`Modelica` code as an FMU 
+   for model exchange or co-simulation ``1.0`` or ``2.0``.
 
 
 .. note::
 
   - If option ``<-n>`` is ``true`` then the simulation program/script which will be invoked
-    in the Python scripts provided for option ``<s>`` must be installed on the target
+    in the Python scripts provided for option ``<-s>`` must be installed on the target
     machine where the FMU will be run.
   - If option ``<-n>`` is ``false`` then the FMU only needs the Python scripts
     provided for option ``<-s>`` to run.
