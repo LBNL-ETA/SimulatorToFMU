@@ -5,7 +5,7 @@
 Installation and Configuration
 ==============================
 
-This chapter describes how to install, configure and uninstall SimulatorToFMU.
+This chapter describes how to install, configure, and uninstall SimulatorToFMU.
 
 
 Software requirements
@@ -15,9 +15,9 @@ To export a Simulator as an FMU, SimulatorToFMU needs:
 
 1. Python 
 
-2. jinja2
+2. jinja2 (Python package)
 
-3. lxml
+3. lxml (Python package)
 
 4. Modelica compiler
 
@@ -33,7 +33,6 @@ SimulatorToFMU has been tested with:
    SimulatorToFMU can use OpenModelica and Dymola to export a Simulator as an FMU. 
    
    However OpenModelica (on Windows) and Dymola (on Linux) do not copy all required libraries dependencies to the FMU.
-
    As a workaround, SimulatorToFMU checks if there are missing libraries dependencies and copies the dependencies to the FMU.
 
 .. _installation directory:
@@ -41,11 +40,10 @@ SimulatorToFMU has been tested with:
 Installation
 ^^^^^^^^^^^^
 
-To install SimulatorToFMU, proceed as follows:
+To install SimulatorToFMU, 
 
-1. Download the installation file from the :doc:`download` page.
-
-2. Unzip the installation file into any subdirectory (hereafter referred to as the "installation directory").
+1. download the installation repository from the :doc:`download` page
+   into a directory (hereafter referred to as the "installation directory").
  
 
 The installation directory should contain the following subdirectories:
@@ -63,10 +61,10 @@ The installation directory should contain the following subdirectories:
     (Python scripts, Modelica templates and XML validator files)
     
 
-3. Add following folders to your system path: 
+2. Add following folders to your system path: 
 
  - Python installation folder (e.g. ``C:\Python35``)
- - Python scripts folder (e.g. ``C:\Python35\Scripts``), 
+ - Python scripts folder (e.g. ``C:\Python35\Scripts``) 
  - Dymola executable folder (e.g. ``C:\Program Files(x86)\Dymola2017 FD01\bin64``)
  - OpenModelica executable folder (e.g. ``C:\OpenModelica1.11.0-32bit\``)
 
@@ -85,7 +83,7 @@ The installation directory should contain the following subdirectories:
      Reopen Command prompt window for your changes to be active.
     
    To check if the variables have been correctly added to the system path, type ``python``, ``dymola``, or ``omc``
-   into a command prompt to see if the right version of Python, Dymola or OpenModelica starts up.
+   into a command prompt to see if the right version of Python, Dymola, or OpenModelica starts up.
 
 
 4. Install Python dependencies by running

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>5. Best Practice &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
+    <title>4. Best Practice &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0.0',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -27,8 +27,8 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Development" href="development.html" />
-    <link rel="prev" title="4. Creating an FMU" href="build.html" /> 
+    <link rel="next" title="5. Creating an FMU" href="build.html" />
+    <link rel="prev" title="3. Installation and Configuration" href="installation.html" /> 
   </head>
   <body role="document">
 <div class="headerStyle">
@@ -45,10 +45,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="development.html" title="6. Development"
+          <a href="build.html" title="5. Creating an FMU"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="build.html" title="4. Creating an FMU"
+          <a href="installation.html" title="3. Installation and Configuration"
              accesskey="P">previous</a> |</li>
     <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>
@@ -62,19 +62,19 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">5. Best Practice</a><ul>
-<li><a class="reference internal" href="#configuring-the-simulator-xml-input-file">5.1. Configuring the Simulator XML input file</a></li>
-<li><a class="reference internal" href="#configuring-the-python-wrapper-simulator">5.2. Configuring the Python Wrapper Simulator</a></li>
+<li><a class="reference internal" href="#">4. Best Practice</a><ul>
+<li><a class="reference internal" href="#configuring-the-simulator-xml-input-file">4.1. Configuring the Simulator XML input file</a></li>
+<li><a class="reference internal" href="#configuring-the-python-wrapper-simulator">4.2. Configuring the Python Wrapper Simulator</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="build.html"
-                        title="previous chapter">4. Creating an FMU</a></p>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">3. Installation and Configuration</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="development.html"
-                        title="next chapter">6. Development</a></p>
+  <p class="topless"><a href="build.html"
+                        title="next chapter">5. Creating an FMU</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -101,11 +101,11 @@
           <div class="body" role="main">
             
   <div class="section" id="best-practice">
-<span id="bestpractice"></span><h1>5. Best Practice<a class="headerlink" href="#best-practice" title="Permalink to this headline">¶</a></h1>
+<span id="bestpractice"></span><h1>4. Best Practice<a class="headerlink" href="#best-practice" title="Permalink to this headline">¶</a></h1>
 <p>This section explains to users the best practice in configuring a Simulator XML input file,
 and implementing the Python wrapper which will interface with the Simulator.</p>
 <div class="section" id="configuring-the-simulator-xml-input-file">
-<h2>5.1. Configuring the Simulator XML input file<a class="headerlink" href="#configuring-the-simulator-xml-input-file" title="Permalink to this headline">¶</a></h2>
+<h2>4.1. Configuring the Simulator XML input file<a class="headerlink" href="#configuring-the-simulator-xml-input-file" title="Permalink to this headline">¶</a></h2>
 <p>To export Simulator as an FMU, the user needs to write an XML file which contains the list
 of inputs, outputs and parameters of the FMU. The XML snippet below shows how a user has to write such an input file.
 A template named <code class="docutils literal"><span class="pre">SimulatorModeldescritpion.xml</span></code> which shows such a file is provided in the <code class="docutils literal"><span class="pre">parser\utilities</span></code> installation folder of SimulatorToFMU.
@@ -189,9 +189,9 @@ This is done by adding <code class="docutils literal"><span class="pre">ScalarVa
 </div></blockquote>
 </div>
 <div class="section" id="configuring-the-python-wrapper-simulator">
-<h2>5.2. Configuring the Python Wrapper Simulator<a class="headerlink" href="#configuring-the-python-wrapper-simulator" title="Permalink to this headline">¶</a></h2>
+<h2>4.2. Configuring the Python Wrapper Simulator<a class="headerlink" href="#configuring-the-python-wrapper-simulator" title="Permalink to this headline">¶</a></h2>
 <p>To export Simulator as an FMU, the user needs to write a Python wrapper which will interface with the Simulator.
-The wrapper will be embedded in the FMU when the Simulator is exported and use at runtime on the target machine.</p>
+The wrapper will be embedded in the FMU when the Simulator is exported and used at runtime on the target machine.</p>
 <p>The user needs to extend the Python wrapper provided in <code class="docutils literal"><span class="pre">parser\utilities\simulator_wrapper.py</span></code>
 and implements the function <code class="docutils literal"><span class="pre">exchange</span></code>.</p>
 <p>The following snippet shows the Simulator function.</p>
@@ -235,8 +235,7 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 38
 39
 40
-41
-42</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Main Python function to be modified to interface with the main simulator.</span>
+41</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Main Python function to be modified to interface with the main simulator.</span>
 
 <span class="k">def</span> <span class="nf">exchange</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">input_values</span><span class="p">,</span> 
             <span class="n">input_names</span><span class="p">,</span> <span class="n">output_names</span><span class="p">,</span> <span class="n">write_results</span><span class="p">):</span>
@@ -259,18 +258,17 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 <span class="sd">        &gt;&gt;&gt; output_names = [&#39;i&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; write_results = 0</span>
 <span class="sd">        &gt;&gt;&gt; output_values = simulator(configuration_file, time, input_names,</span>
-<span class="sd">                        input_values, output_names)</span>
+<span class="sd">                        input_values, output_names, write_results)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1">#######################################################################</span>
     <span class="c1"># EDIT AND INCLUDE CUSTOM CODE FOR TARGET SIMULATOR</span>
-    <span class="c1"># ***Include body of the function used to compute the output values***</span>
-    <span class="c1"># based on the inputs received by the simulator function</span>
-    <span class="c1"># This function currently returns the input values. </span>
-    <span class="c1"># This will need to be adapted so it return the output_values instead.</span>
-    <span class="c1"># Assign the vector of output values with dummy values.</span>
-	<span class="c1"># If the list of output names has only one name, then only a scalar </span>
-	<span class="c1"># must be returned.</span>
+    <span class="c1"># Include body of the function used to compute the output values</span>
+    <span class="c1"># based on the inputs received by the simulator function.</span>
+    <span class="c1"># This function currently returns dummy output values. </span>
+    <span class="c1"># This will need to be adapted so it returns the correct output_values.</span>
+    <span class="c1"># If the list of output names has only one name, then only a scalar </span>
+    <span class="c1"># must be returned.</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">output_values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -293,37 +291,37 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">configuration_file</span></code></td>
-<td>The Simulator model path/Simulator configuration file.</td>
+<td>The Simulator model path or configuration file</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">time</span></code></td>
-<td>The current simulation model time.</td>
+<td>The current simulation model time</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">input_values</span></code></td>
-<td>The list of input values of the FMU.</td>
+<td>The list of input values of the FMU</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">input_names</span></code></td>
-<td>The list of input names of the FMU.</td>
+<td>The list of input names of the FMU</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">output_values</span></code></td>
-<td>The list of output values of the FMU.</td>
+<td>The list of output values of the FMU</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">output_names</span></code></td>
-<td>The list of output names of the FMU.</td>
+<td>The list of output names of the FMU</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">write_results</span></code></td>
-<td>A flag for writing results to a file.</td>
+<td>A flag for writing results to a file</td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <ul class="last simple">
-<li>The function <code class="docutils literal"><span class="pre">exchange</span></code> must return a list of output values which match the order of the output names.</li>
+<li>The function <code class="docutils literal"><span class="pre">exchange</span></code> must return a list of output values which matchs the order of the output names.</li>
 <li>The function <code class="docutils literal"><span class="pre">exchange</span></code> can be used to invoke external programs/scripts which do not ship with the FMU.
-In this situation, the FMU will must be exported with the option <code class="docutils literal"><span class="pre">&lt;n&gt;</span></code> set to <code class="docutils literal"><span class="pre">true</span></code>.
+In this situation, the FMU will must be exported with the option <code class="docutils literal"><span class="pre">&lt;-n&gt;</span></code> set to <code class="docutils literal"><span class="pre">true</span></code>.
 The external programs/scripts will have to be installed on the target machine where the
 FMU is run. See <a class="reference internal" href="build.html"><span class="doc">Creating an FMU</span></a> for details on command line options.</li>
-<li>Once <code class="docutils literal"><span class="pre">Simulator.py</span></code> is implemented, it must be saved under the same name and used as required argument for <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code>.</li>
+<li>Once <code class="docutils literal"><span class="pre">simulation_wrapper.py</span></code> is implemented, it must be saved under the same name and used as required argument for <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code>.</li>
 </ul>
 </div>
 </div>
@@ -345,10 +343,10 @@ FMU is run. See <a class="reference internal" href="build.html"><span class="doc
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="development.html" title="6. Development"
+          <a href="build.html" title="5. Creating an FMU"
              >next</a> |</li>
         <li class="right" >
-          <a href="build.html" title="4. Creating an FMU"
+          <a href="installation.html" title="3. Installation and Configuration"
              >previous</a> |</li>
     <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>

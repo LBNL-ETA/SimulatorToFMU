@@ -50,7 +50,7 @@ Configuring the Python Wrapper Simulator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To export Simulator as an FMU, the user needs to write a Python wrapper which will interface with the Simulator.
-The wrapper will be embedded in the FMU when the Simulator is exported and use at runtime on the target machine.
+The wrapper will be embedded in the FMU when the Simulator is exported and used at runtime on the target machine.
 
 The user needs to extend the Python wrapper provided in ``parser\utilities\simulator_wrapper.py`` 
 and implements the function ``exchange``.
@@ -66,28 +66,28 @@ The arguments of the functions are in the next table
 +----------------------------------------------------+-------------------------------------------------------------------+
 | Arguments                                          | Description                                                       | 
 +====================================================+===================================================================+
-| ``configuration_file``                             | The Simulator model path/Simulator configuration file.            |
+| ``configuration_file``                             | The Simulator model path or configuration file                    |
 +----------------------------------------------------+-------------------------------------------------------------------+
-| ``time``                                           | The current simulation model time.                                |   
+| ``time``                                           | The current simulation model time                                 |   
 +----------------------------------------------------+-------------------------------------------------------------------+
-| ``input_values``                                   | The list of input values of the FMU.                              |  
+| ``input_values``                                   | The list of input values of the FMU                               |  
 +----------------------------------------------------+-------------------------------------------------------------------+
-| ``input_names``                                    | The list of input names of the FMU.                               |   
+| ``input_names``                                    | The list of input names of the FMU                                |   
 +----------------------------------------------------+-------------------------------------------------------------------+
-| ``output_values``                                  | The list of output values of the FMU.                             | 
+| ``output_values``                                  | The list of output values of the FMU                              | 
 +----------------------------------------------------+-------------------------------------------------------------------+
-| ``output_names``                                   | The list of output names of the FMU.                              | 
+| ``output_names``                                   | The list of output names of the FMU                               | 
 +----------------------------------------------------+-------------------------------------------------------------------+
-| ``write_results``                                  | A flag for writing results to a file.                             | 
+| ``write_results``                                  | A flag for writing results to a file                              | 
 +----------------------------------------------------+-------------------------------------------------------------------+
 
 .. note:: 
 
-   - The function ``exchange`` must return a list of output values which match the order of the output names. 
+   - The function ``exchange`` must return a list of output values which matchs the order of the output names. 
    - The function ``exchange`` can be used to invoke external programs/scripts which do not ship with the FMU. 
-     In this situation, the FMU will must be exported with the option ``<n>`` set to ``true``. 
+     In this situation, the FMU will must be exported with the option ``<-n>`` set to ``true``. 
      The external programs/scripts will have to be installed on the target machine where the 
      FMU is run. See :doc:`build` for details on command line options. 
-   - Once ``Simulator.py`` is implemented, it must be saved under the same name and used as required argument for ``SimulatorToFMU.py``.
+   - Once ``simulation_wrapper.py`` is implemented, it must be saved under the same name and used as required argument for ``SimulatorToFMU.py``.
 
   

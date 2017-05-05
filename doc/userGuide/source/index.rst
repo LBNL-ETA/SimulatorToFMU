@@ -9,8 +9,8 @@ User Guide
    introduction
    download
    installation
-   build
    bestPractice
+   build
    development
    help
    notation

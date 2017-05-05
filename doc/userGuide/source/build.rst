@@ -19,7 +19,7 @@ Command-line use
 Outputs of SimulatorToFMU
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The main output from running ``SimulatorToFMU.py`` consists of an FMU, named after the ``modelName`` specified in the input file.
+The main output from running ``SimulatorToFMU.py`` consists of an FMU named after the ``modelName`` specified in the input file.
 The FMU is written to the current working directory, that is, in the directory from which you entered the command.
 
 Any secondary output from running the SimulatorToFMU tools can be deleted safely.
@@ -30,12 +30,12 @@ To do so, it may help to change the "``.fmu``" extension to "``.zip``".
 
 .. note::
 
-  FMUs exported using the tested version OpenModelica tested needs 
-  almost 10 times more compilation/simulation time compared to Dymola.
+  - FMUs exported using OpenModelica 1.11.0 needs almost ``10`` times 
+    more compilation/simulation time compared to Dymola 2017 FD01.
 
-  FMUs exported using Dymola needs a Dymola runtime license to run.
-  A Dymola runtime license is not be needed if the FMU is exported with 
-  a version of Dymola which has the ``Binary Model Export`` license.
+  - FMUs exported using Dymola 2017 FD01 needs a Dymola runtime license to run.
+    A Dymola runtime license is not be needed if the FMU is exported with 
+    a version of Dymola which has the ``Binary Model Export`` license.
 
 
 
