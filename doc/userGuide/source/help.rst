@@ -7,6 +7,12 @@ Help
 
 This chapter lists potential issues encountered when using SimulatorToFMU.
 
+Compilation failed with Dymola
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If the export of the Simulator failed when compiling the model with Dymola, comment out ``"exit()"`` in 
+``parser\utilities\SimulatorModelica_Template_Dymola.mos`` with ``"//exit()"``, and re-run ``SimulatorToFMU.py`` 
+to see why the complation has failed.
 
 Simulation failed with Dymola FMUs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -18,7 +24,8 @@ You can also inspect the model description of the FMU to see if a Dymola runtime
 Compilation failed with OpenModelica
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If the compilation of Modelica models fails with OpenModelica, check if the ``OPENMODELICALIBRARY`` is defined in the Windows ``Environment Variables``.
+If the export of the Simulator failed when compiling the model with OpenModelica, 
+check if the variable ``OPENMODELICALIBRARY`` is defined in the Windows ``Environment Variables``.
 
 ``OPENMODELICALIBRARY`` is the path to the libraries which are required by OpenModelica to compile Modelica models.
 

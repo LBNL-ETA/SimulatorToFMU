@@ -34,7 +34,6 @@ SimulatorToFMU has been tested with:
 .. note:: 
 
    SimulatorToFMU can use OpenModelica and Dymola to export a Simulator as an FMU. 
-   
    However OpenModelica 1.11.0 (on Windows) and Dymola 2017 FD01 (on Linux) do not copy all required libraries dependencies to the FMU.
    As a workaround, SimulatorToFMU checks if there are missing libraries dependencies and copies the dependencies to the FMU.
 
@@ -93,7 +92,7 @@ The installation directory should contain the following subdirectories:
 
    .. code-block:: none
    
-      pip install -r bin/simulatortofmu-requirements.txt
+      pip install -r bin\simulatortofmu-requirements.txt
 
 
 
