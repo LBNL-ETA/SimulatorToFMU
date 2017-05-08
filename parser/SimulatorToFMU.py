@@ -43,7 +43,7 @@ An example of invoking ``SimulatorToFMU.py`` on Windows is
 .. code-block:: none
 
   # Windows:
-  > python parser\SimulatorToFMU.py -s parser\\utilities\\simulator_wrapper.py, d:\\calcEng.py
+  > python parser\SimulatorToFMU.py -s parser\\utilities\\simulator_wrapper.py, d:\\calc.py
 
 Following requirements must be met hen using SimulatorToFMU
 
@@ -60,13 +60,13 @@ Following requirements must be met hen using SimulatorToFMU
 |                                                    | Simulator.                                                        |
 |                                                    | The main Python script must be an extension                       |
 |                                                    | of the ``simulator_wrapper.py`` script which is provided in       |
-|                                                    | ``parser\\utilities\\simulator_wrapper.py``. The name of            |
+|                                                    | ``parser/utilities/simulator_wrapper.py``. The name of            |
 |                                                    | the main Python script must be ``simulator_wrapper.py``.          |
 +----------------------------------------------------+-------------------------------------------------------------------+
 | -c                                                 | Path to the Simulator model file.                                 |
 +----------------------------------------------------+-------------------------------------------------------------------+
 | -i                                                 | Path to the XML input file with the inputs/outputs of the FMU.    |
-|                                                    | Default is ``parser\\utilities\\SimulatorModelDescription.xml``     |
+|                                                    | Default is ``parser/utilities/SimulatorModelDescription.xml``     |
 +----------------------------------------------------+-------------------------------------------------------------------+
 | -v                                                 | FMI version. Options are ``1.0`` and ``2.0``. Default is ``2.0``  |
 +----------------------------------------------------+-------------------------------------------------------------------+

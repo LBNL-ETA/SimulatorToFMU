@@ -1,14 +1,10 @@
 #
-####### cymdistpy-requirements.txt #######
-# The release version of SimulatorToFMU.py was 
-# tested with the versions of following moduldes:
+####### simulatortofmu-requirements.txt #######
+# The release version of SimulatorToFMU.py  
+# need following modules:
 ###### Requirements without Version Specifiers ######
 jinja2
 lxml
 
-###### Requirements with Version Specifiers ######
-#   See https://www.python.org/dev/peps/pep-0440/#version-specifiers
-# lxml==3.4.4         # Version Matching.
-# jinja2==2.8
 
 

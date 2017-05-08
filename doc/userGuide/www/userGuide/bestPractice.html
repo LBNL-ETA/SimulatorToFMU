@@ -108,7 +108,7 @@ and implementing the Python wrapper which will interface with the Simulator.</p>
 <h2>4.1. Configuring the Simulator XML input file<a class="headerlink" href="#configuring-the-simulator-xml-input-file" title="Permalink to this headline">¶</a></h2>
 <p>To export Simulator as an FMU, the user needs to write an XML file which contains the list
 of inputs, outputs and parameters of the FMU. The XML snippet below shows how a user has to write such an input file.
-A template named <code class="docutils literal"><span class="pre">SimulatorModeldescritpion.xml</span></code> which shows such a file is provided in the <code class="docutils literal"><span class="pre">parser\utilities</span></code> installation folder of SimulatorToFMU.
+A template named <code class="docutils literal"><span class="pre">SimulatorModeldescritpion.xml</span></code> which shows such a file is provided in the <code class="docutils literal"><span class="pre">parser/utilities</span></code> installation folder of SimulatorToFMU.
 This template should be adapted to create new XML input file.</p>
 <p>The following snippet shows an input file where the user defines 1 input and 1 output variable.</p>
 <div class="highlight-xml"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -192,7 +192,7 @@ This is done by adding <code class="docutils literal"><span class="pre">ScalarVa
 <h2>4.2. Configuring the Python Wrapper Simulator<a class="headerlink" href="#configuring-the-python-wrapper-simulator" title="Permalink to this headline">¶</a></h2>
 <p>To export Simulator as an FMU, the user needs to write a Python wrapper which will interface with the Simulator.
 The wrapper will be embedded in the FMU when the Simulator is exported and used at runtime on the target machine.</p>
-<p>The user needs to extend the Python wrapper provided in <code class="docutils literal"><span class="pre">parser\utilities\simulator_wrapper.py</span></code>
+<p>The user needs to extend the Python wrapper provided in <code class="docutils literal"><span class="pre">parser/utilities/simulator_wrapper.py</span></code>
 and implements the function <code class="docutils literal"><span class="pre">exchange</span></code>.</p>
 <p>The following snippet shows the Simulator function.</p>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1

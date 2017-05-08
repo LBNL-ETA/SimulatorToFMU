@@ -118,7 +118,7 @@ This is the <code class="docutils literal"><span class="pre">parser</span></code
 See <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> for details.</p>
 <p>An example of invoking <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> on Windows is</p>
 <div class="highlight-none"><div class="highlight"><pre># Windows:
-&gt; python parser\SimulatorToFMU.py -s parser\utilities\simulator_wrapper.py, d:\calcEng.py
+&gt; python parser\SimulatorToFMU.py -s parser\utilities\simulator_wrapper.py, d:\calc.py
 </pre></div>
 </div>
 <p>Following requirements must be met hen using SimulatorToFMU</p>
@@ -143,7 +143,7 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
 Simulator.
 The main Python script must be an extension
 of the <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code> script which is provided in
-<code class="docutils literal"><span class="pre">parser\utilities\simulator_wrapper.py</span></code>. The name of
+<code class="docutils literal"><span class="pre">parser/utilities/simulator_wrapper.py</span></code>. The name of
 the main Python script must be <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code>.</td>
 </tr>
 <tr class="row-odd"><td>-c</td>
@@ -151,7 +151,7 @@ the main Python script must be <code class="docutils literal"><span class="pre">
 </tr>
 <tr class="row-even"><td>-i</td>
 <td>Path to the XML input file with the inputs/outputs of the FMU.
-Default is <code class="docutils literal"><span class="pre">parser\utilities\SimulatorModelDescription.xml</span></code></td>
+Default is <code class="docutils literal"><span class="pre">parser/utilities/SimulatorModelDescription.xml</span></code></td>
 </tr>
 <tr class="row-odd"><td>-v</td>
 <td>FMI version. Options are <code class="docutils literal"><span class="pre">1.0</span></code> and <code class="docutils literal"><span class="pre">2.0</span></code>. Default is <code class="docutils literal"><span class="pre">2.0</span></code></td>

@@ -11,7 +11,7 @@ Compilation failed with Dymola
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If the export of the Simulator failed when compiling the model with Dymola, comment out ``"exit()"`` in 
-``parser\utilities\SimulatorModelica_Template_Dymola.mos`` with ``"//exit()"``, and re-run ``SimulatorToFMU.py`` 
+``parser/utilities/SimulatorModelica_Template_Dymola.mos`` with ``"//exit()"``, and re-run ``SimulatorToFMU.py`` 
 to see why the complation has failed.
 
 Simulation failed with Dymola FMUs

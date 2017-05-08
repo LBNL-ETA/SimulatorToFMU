@@ -14,7 +14,7 @@ Configuring the Simulator XML input file
 
 To export Simulator as an FMU, the user needs to write an XML file which contains the list 
 of inputs, outputs and parameters of the FMU. The XML snippet below shows how a user has to write such an input file.
-A template named ``SimulatorModeldescritpion.xml`` which shows such a file is provided in the ``parser\utilities`` installation folder of SimulatorToFMU. 
+A template named ``SimulatorModeldescritpion.xml`` which shows such a file is provided in the ``parser/utilities`` installation folder of SimulatorToFMU. 
 This template should be adapted to create new XML input file.
 
 The following snippet shows an input file where the user defines 1 input and 1 output variable.
@@ -52,7 +52,7 @@ Configuring the Python Wrapper Simulator
 To export Simulator as an FMU, the user needs to write a Python wrapper which will interface with the Simulator.
 The wrapper will be embedded in the FMU when the Simulator is exported and used at runtime on the target machine.
 
-The user needs to extend the Python wrapper provided in ``parser\utilities\simulator_wrapper.py`` 
+The user needs to extend the Python wrapper provided in ``parser/utilities/simulator_wrapper.py`` 
 and implements the function ``exchange``.
 
 The following snippet shows the Simulator function.
