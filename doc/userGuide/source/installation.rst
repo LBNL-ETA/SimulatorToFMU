@@ -13,26 +13,29 @@ Software requirements
 
 To export a Simulator as an FMU, SimulatorToFMU needs:
 
-1. Python 
+1. Python and following dependencies:
 
-2. jinja2 (Python package)
+   - jinja2 
 
-3. lxml (Python package)
+   - lxml 
 
-4. Modelica compiler
+2. Modelica parser
+
+3. C-Compiler
 
 SimulatorToFMU has been tested with:
 
   - Python 2.7.13
   - Python 3.5.0 
-  - Dymola 2017 FD01 (Windows and Linux)
-  - OpenModelica 1.11.0 (Windows) 
+  - Dymola 2017 FD01 (Modelica parser, Windows and Linux)
+  - OpenModelica 1.11.0 (Modelica parser, Windows)
+  - Microsoft Visual Studio 10 Professional (C-Compiler) 
 
 .. note:: 
 
    SimulatorToFMU can use OpenModelica and Dymola to export a Simulator as an FMU. 
    
-   However OpenModelica (on Windows) and Dymola (on Linux) do not copy all required libraries dependencies to the FMU.
+   However OpenModelica 1.11.0 (on Windows) and Dymola 2017 FD01 (on Linux) do not copy all required libraries dependencies to the FMU.
    As a workaround, SimulatorToFMU checks if there are missing libraries dependencies and copies the dependencies to the FMU.
 
 .. _installation directory:

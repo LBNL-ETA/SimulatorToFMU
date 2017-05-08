@@ -21,18 +21,17 @@ def exchange(configuration_file, time, input_names,
         >>> output_names = ['i']
         >>> write_results = 0
         >>> output_values = simulator(configuration_file, time, input_names,
-                        input_values, output_names)
+                        input_values, output_names, write_results)
     """
 
     #######################################################################
     # EDIT AND INCLUDE CUSTOM CODE FOR TARGET SIMULATOR
-    # ***Include body of the function used to compute the output values***
-    # based on the inputs received by the simulator function
-    # This function currently returns the input values. 
-    # This will need to be adapted so it return the output_values instead.
-    # Assign the vector of output values with dummy values.
-	# If the list of output names has only one name, then only a scalar 
-	# must be returned.
+    # Include body of the function used to compute the output values
+    # based on the inputs received by the simulator function.
+    # This function currently returns dummy output values. 
+    # This will need to be adapted so it returns the correct output_values.
+    # If the list of output names has only one name, then only a scalar 
+    # must be returned.
     if (len(output_names) > 1):
         output_values = [1.0] * len(output_names)
     else:
