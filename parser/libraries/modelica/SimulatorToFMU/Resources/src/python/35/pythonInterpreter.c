@@ -254,7 +254,15 @@ void pythonExchangeVariables(const char * moduleName,
 		pArgs, *ModelicaFormatError
 		);
 
-	/* c) Convert double[]*/
+	/* c) Convert char **, an array of character arrays*/
+	if ( nStrWri > 0 ){
+		createPythonArgumentLists(STR_FLAG, nStrWri, 
+			0, strWri, NULL, pModule, 
+			pFunc, pArgs, *ModelicaFormatError
+			);
+	}
+
+	/* d) Convert double[]*/
 	if ( nDblWri > 0 ){
 		createPythonArgumentLists(DBL_FLAG, 0, 
 			nDblWri, NULL, dblValWri, pModule, 
@@ -262,13 +270,6 @@ void pythonExchangeVariables(const char * moduleName,
 			);
 	}
 
-	/* d) Convert char **, an array of character arrays*/
-	if ( nStrWri > 0 ){
-		createPythonArgumentLists(STR_FLAG, nStrWri, 
-			0, strWri, NULL, pModule, 
-			pFunc, pArgs, *ModelicaFormatError
-			);
-	}
 	/* e) Convert char **, an array of character arrays*/
 	if ( nStrRea > 0 ){
 		createPythonArgumentLists(STR_FLAG, 

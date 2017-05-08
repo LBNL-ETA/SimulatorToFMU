@@ -1,15 +1,15 @@
 # Main Python function to be modified to interface with the main simulator.
 
-def exchange(configuration_file, time, input_values, 
-            input_names, output_names, write_results):
+def exchange(configuration_file, time, input_names, 
+            input_values, output_names, write_results):
     """
     Return  a list of output values from the Python-based Simulator.
     The order of the output values must match the order of the output names.    
 
     :param configuration_file (String): Model configuration name
     :param time (Float): Simulation time
-    :param input_values (Floats): Input values 
-    :param input_names (Strings): Input names (same length as input_values)
+    :param input_names (Strings): Input names 
+    :param input_values (Floats): Input values (same length as input_names) 
     :param output_names (Strings): Output names
     :param write_results (Float): Store results to file (1 to store, 0 else)
         
