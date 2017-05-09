@@ -44,26 +44,7 @@ Installation
 
 To install SimulatorToFMU, 
 
-1. download the installation repository from the :doc:`download` page
-   into a directory (hereafter referred to as the "installation directory").
- 
-
-The installation directory should contain the following subdirectories:
-
-  - ``bin/``
-    (Python scripts for running unit tests)
-
-  - ``doc/``
-    (Documentation)
-
-  - ``fmus/``
-    (FMUs folder)
-
-  - ``parser/``
-    (Python scripts, Modelica templates and XML validator files)
-    
-
-2. Add following folders to your system path: 
+1. Add following folders to your system path: 
 
  - Python installation folder (e.g. ``C:\Python35``)
  - Python scripts folder (e.g. ``C:\Python35\Scripts``) 
@@ -87,16 +68,28 @@ The installation directory should contain the following subdirectories:
    To check if the variables have been correctly added to the system path, type ``python``, ``dymola``, or ``omc``
    into a command prompt to see if the right version of Python, Dymola, or OpenModelica starts up.
 
+2. download SimulatorToFMU as described on the :doc:`download` page.
+ 
+   The installation directory should contain the following subdirectories:
 
-4. Install Python dependencies by running
+    - ``bin/``
+      (Python scripts for running unit tests)
 
-   .. code-block:: none
-   
-      pip install -r bin\simulatortofmu-requirements.txt
+    - ``doc/``
+      (Documentation)
 
+    - ``fmus/``
+      (FMUs folder)
 
+    - ``parser/``
+      (Python scripts, Modelica templates and XML validator files)
 
 Uninstallation
 ^^^^^^^^^^^^^^
 
-To uninstall SimulatorToFMU, delete the `installation directory`_.
+To uninstall SimulatorToFMU, run
+
+.. code-block:: none
+
+    > pip uninstall SimulatorToFMU
+

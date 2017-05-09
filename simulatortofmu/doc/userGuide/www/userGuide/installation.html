@@ -137,23 +137,6 @@ As a workaround, SimulatorToFMU checks if there are missing libraries dependenci
 <span id="id1"></span><h2>3.2. Installation<a class="headerlink" href="#installation-directory" title="Permalink to this headline">¶</a></h2>
 <p>To install SimulatorToFMU,</p>
 <ol class="arabic simple">
-<li>download the installation repository from the <a class="reference internal" href="download.html"><span class="doc">Download</span></a> page
-into a directory (hereafter referred to as the &#8220;installation directory&#8221;).</li>
-</ol>
-<p>The installation directory should contain the following subdirectories:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">bin/</span></code>
-(Python scripts for running unit tests)</li>
-<li><code class="docutils literal"><span class="pre">doc/</span></code>
-(Documentation)</li>
-<li><code class="docutils literal"><span class="pre">fmus/</span></code>
-(FMUs folder)</li>
-<li><code class="docutils literal"><span class="pre">parser/</span></code>
-(Python scripts, Modelica templates and XML validator files)</li>
-</ul>
-</div></blockquote>
-<ol class="arabic simple" start="2">
 <li>Add following folders to your system path:</li>
 </ol>
 <blockquote>
@@ -179,17 +162,30 @@ into a command prompt to see if the right version of Python, Dymola, or OpenMode
 </li>
 </ul>
 </div></blockquote>
-<ol class="arabic" start="4">
-<li><p class="first">Install Python dependencies by running</p>
-<div class="highlight-none"><div class="highlight"><pre>pip install -r bin\simulatortofmu-requirements.txt
-</pre></div>
-</div>
+<ol class="arabic" start="2">
+<li><p class="first">download SimulatorToFMU as described on the <a class="reference internal" href="download.html"><span class="doc">Download</span></a> page.</p>
+<p>The installation directory should contain the following subdirectories:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">bin/</span></code>
+(Python scripts for running unit tests)</li>
+<li><code class="docutils literal"><span class="pre">doc/</span></code>
+(Documentation)</li>
+<li><code class="docutils literal"><span class="pre">fmus/</span></code>
+(FMUs folder)</li>
+<li><code class="docutils literal"><span class="pre">parser/</span></code>
+(Python scripts, Modelica templates and XML validator files)</li>
+</ul>
+</div></blockquote>
 </li>
 </ol>
 </div>
 <div class="section" id="uninstallation">
 <h2>3.3. Uninstallation<a class="headerlink" href="#uninstallation" title="Permalink to this headline">¶</a></h2>
-<p>To uninstall SimulatorToFMU, delete the <a class="reference internal" href="#installation-directory">installation directory</a>.</p>
+<p>To uninstall SimulatorToFMU, run</p>
+<div class="highlight-none"><div class="highlight"><pre>&gt; pip uninstall SimulatorToFMU
+</pre></div>
+</div>
 </div>
 </div>
 
