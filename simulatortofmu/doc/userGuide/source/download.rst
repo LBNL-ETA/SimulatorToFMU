@@ -12,7 +12,7 @@ To download SimulatorToFMU, run
 
 .. code-block:: none
 
- > pip install git+git://github.com/tsnouidui/SimulatorToFMU.git
+ > pip install git+git://github.com/LBNL-ETA/SimulatorToFMU.git
 
 follow the section :doc:`installation` to see additional requirements for using SimulatorToFMU. 
 
