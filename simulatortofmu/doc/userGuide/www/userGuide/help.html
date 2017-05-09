@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>7. Help &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
+    <title>6. Help &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,8 +27,8 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="8. Notation" href="notation.html" />
-    <link rel="prev" title="6. Development" href="development.html" /> 
+    <link rel="next" title="7. Notation" href="notation.html" />
+    <link rel="prev" title="5. Development" href="development.html" /> 
   </head>
   <body role="document">
 <div class="headerStyle">
@@ -45,10 +45,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="notation.html" title="8. Notation"
+          <a href="notation.html" title="7. Notation"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="development.html" title="6. Development"
+          <a href="development.html" title="5. Development"
              accesskey="P">previous</a> |</li>
     <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>
@@ -62,20 +62,20 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">7. Help</a><ul>
-<li><a class="reference internal" href="#compilation-failed-with-dymola">7.1. Compilation failed with Dymola</a></li>
-<li><a class="reference internal" href="#simulation-failed-with-dymola-fmus">7.2. Simulation failed with Dymola FMUs</a></li>
-<li><a class="reference internal" href="#compilation-failed-with-openmodelica">7.3. Compilation failed with OpenModelica</a></li>
+<li><a class="reference internal" href="#">6. Help</a><ul>
+<li><a class="reference internal" href="#compilation-failed-with-dymola">6.1. Compilation failed with Dymola</a></li>
+<li><a class="reference internal" href="#simulation-failed-with-dymola-fmus">6.2. Simulation failed with Dymola FMUs</a></li>
+<li><a class="reference internal" href="#compilation-failed-with-openmodelica">6.3. Compilation failed with OpenModelica</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="development.html"
-                        title="previous chapter">6. Development</a></p>
+                        title="previous chapter">5. Development</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="notation.html"
-                        title="next chapter">8. Notation</a></p>
+                        title="next chapter">7. Notation</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -102,22 +102,22 @@
           <div class="body" role="main">
             
   <div class="section" id="help">
-<span id="id1"></span><h1>7. Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>6. Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h1>
 <p>This chapter lists potential issues encountered when using SimulatorToFMU.</p>
 <div class="section" id="compilation-failed-with-dymola">
-<h2>7.1. Compilation failed with Dymola<a class="headerlink" href="#compilation-failed-with-dymola" title="Permalink to this headline">¶</a></h2>
+<h2>6.1. Compilation failed with Dymola<a class="headerlink" href="#compilation-failed-with-dymola" title="Permalink to this headline">¶</a></h2>
 <p>If the export of the Simulator failed when compiling the model with Dymola, comment out <code class="docutils literal"><span class="pre">&quot;exit()&quot;</span></code> in
 <code class="docutils literal"><span class="pre">parser/utilities/SimulatorModelica_Template_Dymola.mos</span></code> with <code class="docutils literal"><span class="pre">&quot;//exit()&quot;</span></code>, and re-run <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code>
 to see why the complation has failed.</p>
 </div>
 <div class="section" id="simulation-failed-with-dymola-fmus">
-<h2>7.2. Simulation failed with Dymola FMUs<a class="headerlink" href="#simulation-failed-with-dymola-fmus" title="Permalink to this headline">¶</a></h2>
+<h2>6.2. Simulation failed with Dymola FMUs<a class="headerlink" href="#simulation-failed-with-dymola-fmus" title="Permalink to this headline">¶</a></h2>
 <p>If an FMU exported using Dymola fails to run, check if the version of Dymola which exported the FMU had the <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license.
 The <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license is required to export FMUs which can be run without requiring a Dymola runtime license.
 You can also inspect the model description of the FMU to see if a Dymola runtime license is required to run the FMU.</p>
 </div>
 <div class="section" id="compilation-failed-with-openmodelica">
-<h2>7.3. Compilation failed with OpenModelica<a class="headerlink" href="#compilation-failed-with-openmodelica" title="Permalink to this headline">¶</a></h2>
+<h2>6.3. Compilation failed with OpenModelica<a class="headerlink" href="#compilation-failed-with-openmodelica" title="Permalink to this headline">¶</a></h2>
 <p>If the export of the Simulator failed when compiling the model with OpenModelica,
 check if the variable <code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is defined in the Windows <code class="docutils literal"><span class="pre">Environment</span> <span class="pre">Variables</span></code>.</p>
 <p><code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is the path to the libraries which are required by OpenModelica to compile Modelica models.</p>
@@ -140,10 +140,10 @@ check if the variable <code class="docutils literal"><span class="pre">OPENMODEL
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="notation.html" title="8. Notation"
+          <a href="notation.html" title="7. Notation"
              >next</a> |</li>
         <li class="right" >
-          <a href="development.html" title="6. Development"
+          <a href="development.html" title="5. Development"
              >previous</a> |</li>
     <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>

@@ -42,35 +42,39 @@ SimulatorToFMU has been tested with:
 Installation
 ^^^^^^^^^^^^
 
-To install SimulatorToFMU, 
+To install SimulatorToFMU, proceed as follows:
 
 1. Add following folders to your system path: 
 
  - Python installation folder (e.g. ``C:\Python35``)
- - Python scripts folder (e.g. ``C:\Python35\Scripts``) 
- - Dymola executable folder (e.g. ``C:\Program Files(x86)\Dymola2017 FD01\bin64``)
+ - Python scripts folder (e.g. ``C:\Python35\Scripts``), 
+ - Dymola executable folder (e.g. ``C:\Program Files(x86)\Dymola2017 FD01\bin``)
  - OpenModelica executable folder (e.g. ``C:\OpenModelica1.11.0-32bit\``)
 
-   .. note:: 
+   
+ You can add folders to your system path by performing following steps on Windows 8 or 10:
 
-     You can add folders to your system path by performing following steps on Windows 8 or 10:
-
-     In Search, search for and then select: System (Control Panel)
+ - In Search, search for and then select: System (Control Panel)
      
-     Click the Advanced system settings link.
+ - Click the Advanced system settings link.
      
-     Click Environment Variables. In the section System Variables, find the PATH environment variable and select it. Click Edit. 
+ - Click Environment Variables. In the section System Variables, find the PATH environment variable and select it. Click Edit. 
      
-     In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable (e.g. ``C:\Python35``, ``C:\Python35\Scripts``). Click OK. Close all remaining windows by clicking OK.
+ - In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable (e.g. ``C:\Python35``, ``C:\Python35\Scripts``). Click OK. Close all remaining windows by clicking OK.
      
-     Reopen Command prompt window for your changes to be active.
+ - Reopen Command prompt window for your changes to be active.
     
-   To check if the variables have been correctly added to the system path, type ``python``, ``dymola``, or ``omc``
-   into a command prompt to see if the right version of Python, Dymola, or OpenModelica starts up.
+ To check if the variables have been correctly added to the system path, type ``python``, ``dymola``, or ``omc``
+ into a command prompt to see if the right version of Python, Dymola or OpenModelica starts up.
 
-2. download SimulatorToFMU as described on the :doc:`download` page.
+
+2. To install SimulatorToFMU, run 
+
+  .. code-block:: none
+
+    > pip install SimulatorToFMU
  
-   The installation directory should contain the following subdirectories:
+  The installation directory should contain the following subdirectories:
 
     - ``bin/``
       (Python scripts for running unit tests)
@@ -84,6 +88,7 @@ To install SimulatorToFMU,
     - ``parser/``
       (Python scripts, Modelica templates and XML validator files)
 
+
 Uninstallation
 ^^^^^^^^^^^^^^
 
@@ -92,4 +97,3 @@ To uninstall SimulatorToFMU, run
 .. code-block:: none
 
     > pip uninstall SimulatorToFMU
-

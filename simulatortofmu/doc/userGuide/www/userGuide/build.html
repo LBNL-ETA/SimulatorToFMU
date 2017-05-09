@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>5. Creating an FMU &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
+    <title>4. Creating an FMU &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,8 +27,8 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Development" href="development.html" />
-    <link rel="prev" title="4. Best Practice" href="bestPractice.html" /> 
+    <link rel="next" title="5. Development" href="development.html" />
+    <link rel="prev" title="3. Best Practice" href="bestPractice.html" /> 
   </head>
   <body role="document">
 <div class="headerStyle">
@@ -45,10 +45,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="development.html" title="6. Development"
+          <a href="development.html" title="5. Development"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="bestPractice.html" title="4. Best Practice"
+          <a href="bestPractice.html" title="3. Best Practice"
              accesskey="P">previous</a> |</li>
     <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>
@@ -62,19 +62,19 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">5. Creating an FMU</a><ul>
-<li><a class="reference internal" href="#module-parser.SimulatorToFMU">5.1. Command-line use</a></li>
-<li><a class="reference internal" href="#outputs-of-simulatortofmu">5.2. Outputs of SimulatorToFMU</a></li>
+<li><a class="reference internal" href="#">4. Creating an FMU</a><ul>
+<li><a class="reference internal" href="#module-parser.SimulatorToFMU">4.1. Command-line use</a></li>
+<li><a class="reference internal" href="#outputs-of-simulatortofmu">4.2. Outputs of SimulatorToFMU</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="bestPractice.html"
-                        title="previous chapter">4. Best Practice</a></p>
+                        title="previous chapter">3. Best Practice</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="development.html"
-                        title="next chapter">6. Development</a></p>
+                        title="next chapter">5. Development</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -101,12 +101,12 @@
           <div class="body" role="main">
             
   <div class="section" id="creating-an-fmu">
-<span id="build"></span><h1>5. Creating an FMU<a class="headerlink" href="#creating-an-fmu" title="Permalink to this headline">¶</a></h1>
+<span id="build"></span><h1>4. Creating an FMU<a class="headerlink" href="#creating-an-fmu" title="Permalink to this headline">¶</a></h1>
 <p>This chapter describes how to create a Functional Mockup Unit.
 It assumes you have followed the <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> instructions, and that you have created the Simulator
 model description file as well as the Python script required to interface the Simulator following the <a class="reference internal" href="bestPractice.html"><span class="doc">Best Practice</span></a> guidelines.</p>
 <div class="section" id="module-parser.SimulatorToFMU">
-<span id="command-line-use"></span><h2>5.1. Command-line use<a class="headerlink" href="#module-parser.SimulatorToFMU" title="Permalink to this headline">¶</a></h2>
+<span id="command-line-use"></span><h2>4.1. Command-line use<a class="headerlink" href="#module-parser.SimulatorToFMU" title="Permalink to this headline">¶</a></h2>
 <p>To create an FMU,
 open a command-line window (see <a class="reference internal" href="notation.html"><span class="doc">Notation</span></a>).
 The standard invocation of the SimulatorToFMU tool is:</p>
@@ -192,7 +192,7 @@ provided for option <code class="docutils literal"><span class="pre">&lt;-s&gt;<
 </div>
 </div>
 <div class="section" id="outputs-of-simulatortofmu">
-<h2>5.2. Outputs of SimulatorToFMU<a class="headerlink" href="#outputs-of-simulatortofmu" title="Permalink to this headline">¶</a></h2>
+<h2>4.2. Outputs of SimulatorToFMU<a class="headerlink" href="#outputs-of-simulatortofmu" title="Permalink to this headline">¶</a></h2>
 <p>The main output from running <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> consists of an FMU named after the <code class="docutils literal"><span class="pre">modelName</span></code> specified in the input file.
 The FMU is written to the current working directory, that is, in the directory from which you entered the command.</p>
 <p>Any secondary output from running the SimulatorToFMU tools can be deleted safely.</p>
@@ -228,10 +228,10 @@ a version of Dymola which has the <code class="docutils literal"><span class="pr
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="development.html" title="6. Development"
+          <a href="development.html" title="5. Development"
              >next</a> |</li>
         <li class="right" >
-          <a href="bestPractice.html" title="4. Best Practice"
+          <a href="bestPractice.html" title="3. Best Practice"
              >previous</a> |</li>
     <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>

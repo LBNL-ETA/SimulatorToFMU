@@ -7,7 +7,6 @@ User Guide
    :maxdepth: 3
 
    introduction
-   download
    installation
    bestPractice
    build

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. Installation and Configuration &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
+    <title>2. Installation and Configuration &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,8 +27,8 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4. Best Practice" href="bestPractice.html" />
-    <link rel="prev" title="2. Download" href="download.html" /> 
+    <link rel="next" title="3. Best Practice" href="bestPractice.html" />
+    <link rel="prev" title="1. Introduction" href="introduction.html" /> 
   </head>
   <body role="document">
 <div class="headerStyle">
@@ -45,10 +45,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="bestPractice.html" title="4. Best Practice"
+          <a href="bestPractice.html" title="3. Best Practice"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="download.html" title="2. Download"
+          <a href="introduction.html" title="1. Introduction"
              accesskey="P">previous</a> |</li>
     <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>
@@ -62,20 +62,20 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">3. Installation and Configuration</a><ul>
-<li><a class="reference internal" href="#software-requirements">3.1. Software requirements</a></li>
-<li><a class="reference internal" href="#installation-directory">3.2. Installation</a></li>
-<li><a class="reference internal" href="#uninstallation">3.3. Uninstallation</a></li>
+<li><a class="reference internal" href="#">2. Installation and Configuration</a><ul>
+<li><a class="reference internal" href="#software-requirements">2.1. Software requirements</a></li>
+<li><a class="reference internal" href="#installation-directory">2.2. Installation</a></li>
+<li><a class="reference internal" href="#uninstallation">2.3. Uninstallation</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="download.html"
-                        title="previous chapter">2. Download</a></p>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">1. Introduction</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="bestPractice.html"
-                        title="next chapter">4. Best Practice</a></p>
+                        title="next chapter">3. Best Practice</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -102,10 +102,10 @@
           <div class="body" role="main">
             
   <div class="section" id="installation-and-configuration">
-<span id="installation"></span><h1>3. Installation and Configuration<a class="headerlink" href="#installation-and-configuration" title="Permalink to this headline">¶</a></h1>
+<span id="installation"></span><h1>2. Installation and Configuration<a class="headerlink" href="#installation-and-configuration" title="Permalink to this headline">¶</a></h1>
 <p>This chapter describes how to install, configure, and uninstall SimulatorToFMU.</p>
 <div class="section" id="software-requirements">
-<h2>3.1. Software requirements<a class="headerlink" href="#software-requirements" title="Permalink to this headline">¶</a></h2>
+<h2>2.1. Software requirements<a class="headerlink" href="#software-requirements" title="Permalink to this headline">¶</a></h2>
 <p>To export a Simulator as an FMU, SimulatorToFMU needs:</p>
 <ol class="arabic simple">
 <li>Python and following dependencies:<ul>
@@ -134,36 +134,36 @@ As a workaround, SimulatorToFMU checks if there are missing libraries dependenci
 </div>
 </div>
 <div class="section" id="installation-directory">
-<span id="id1"></span><h2>3.2. Installation<a class="headerlink" href="#installation-directory" title="Permalink to this headline">¶</a></h2>
-<p>To install SimulatorToFMU,</p>
+<span id="id1"></span><h2>2.2. Installation<a class="headerlink" href="#installation-directory" title="Permalink to this headline">¶</a></h2>
+<p>To install SimulatorToFMU, proceed as follows:</p>
 <ol class="arabic simple">
 <li>Add following folders to your system path:</li>
 </ol>
 <blockquote>
-<div><ul>
-<li><p class="first">Python installation folder (e.g. <code class="docutils literal"><span class="pre">C:\Python35</span></code>)</p>
-</li>
-<li><p class="first">Python scripts folder (e.g. <code class="docutils literal"><span class="pre">C:\Python35\Scripts</span></code>)</p>
-</li>
-<li><p class="first">Dymola executable folder (e.g. <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files(x86)\Dymola2017</span> <span class="pre">FD01\bin64</span></code>)</p>
-</li>
-<li><p class="first">OpenModelica executable folder (e.g. <code class="docutils literal"><span class="pre">C:\OpenModelica1.11.0-32bit\</span></code>)</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>You can add folders to your system path by performing following steps on Windows 8 or 10:</p>
-<p>In Search, search for and then select: System (Control Panel)</p>
-<p>Click the Advanced system settings link.</p>
-<p>Click Environment Variables. In the section System Variables, find the PATH environment variable and select it. Click Edit.</p>
-<p>In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable (e.g. <code class="docutils literal"><span class="pre">C:\Python35</span></code>, <code class="docutils literal"><span class="pre">C:\Python35\Scripts</span></code>). Click OK. Close all remaining windows by clicking OK.</p>
-<p class="last">Reopen Command prompt window for your changes to be active.</p>
-</div>
-<p>To check if the variables have been correctly added to the system path, type <code class="docutils literal"><span class="pre">python</span></code>, <code class="docutils literal"><span class="pre">dymola</span></code>, or <code class="docutils literal"><span class="pre">omc</span></code>
-into a command prompt to see if the right version of Python, Dymola, or OpenModelica starts up.</p>
-</li>
+<div><ul class="simple">
+<li>Python installation folder (e.g. <code class="docutils literal"><span class="pre">C:\Python35</span></code>)</li>
+<li>Python scripts folder (e.g. <code class="docutils literal"><span class="pre">C:\Python35\Scripts</span></code>),</li>
+<li>Dymola executable folder (e.g. <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files(x86)\Dymola2017</span> <span class="pre">FD01\bin</span></code>)</li>
+<li>OpenModelica executable folder (e.g. <code class="docutils literal"><span class="pre">C:\OpenModelica1.11.0-32bit\</span></code>)</li>
 </ul>
+<p>You can add folders to your system path by performing following steps on Windows 8 or 10:</p>
+<ul class="simple">
+<li>In Search, search for and then select: System (Control Panel)</li>
+<li>Click the Advanced system settings link.</li>
+<li>Click Environment Variables. In the section System Variables, find the PATH environment variable and select it. Click Edit.</li>
+<li>In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable (e.g. <code class="docutils literal"><span class="pre">C:\Python35</span></code>, <code class="docutils literal"><span class="pre">C:\Python35\Scripts</span></code>). Click OK. Close all remaining windows by clicking OK.</li>
+<li>Reopen Command prompt window for your changes to be active.</li>
+</ul>
+<p>To check if the variables have been correctly added to the system path, type <code class="docutils literal"><span class="pre">python</span></code>, <code class="docutils literal"><span class="pre">dymola</span></code>, or <code class="docutils literal"><span class="pre">omc</span></code>
+into a command prompt to see if the right version of Python, Dymola or OpenModelica starts up.</p>
 </div></blockquote>
-<ol class="arabic" start="2">
-<li><p class="first">download SimulatorToFMU as described on the <a class="reference internal" href="download.html"><span class="doc">Download</span></a> page.</p>
+<ol class="arabic simple" start="2">
+<li>To install SimulatorToFMU, run</li>
+</ol>
+<blockquote>
+<div><div class="highlight-none"><div class="highlight"><pre>&gt; pip install SimulatorToFMU
+</pre></div>
+</div>
 <p>The installation directory should contain the following subdirectories:</p>
 <blockquote>
 <div><ul class="simple">
@@ -177,11 +177,10 @@ into a command prompt to see if the right version of Python, Dymola, or OpenMode
 (Python scripts, Modelica templates and XML validator files)</li>
 </ul>
 </div></blockquote>
-</li>
-</ol>
+</div></blockquote>
 </div>
 <div class="section" id="uninstallation">
-<h2>3.3. Uninstallation<a class="headerlink" href="#uninstallation" title="Permalink to this headline">¶</a></h2>
+<h2>2.3. Uninstallation<a class="headerlink" href="#uninstallation" title="Permalink to this headline">¶</a></h2>
 <p>To uninstall SimulatorToFMU, run</p>
 <div class="highlight-none"><div class="highlight"><pre>&gt; pip uninstall SimulatorToFMU
 </pre></div>
@@ -205,10 +204,10 @@ into a command prompt to see if the right version of Python, Dymola, or OpenMode
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="bestPractice.html" title="4. Best Practice"
+          <a href="bestPractice.html" title="3. Best Practice"
              >next</a> |</li>
         <li class="right" >
-          <a href="download.html" title="2. Download"
+          <a href="introduction.html" title="1. Introduction"
              >previous</a> |</li>
     <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
     <a href="index.html">User Guide</a></li>
