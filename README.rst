@@ -34,7 +34,7 @@ To download, edit and add files from a command line, install first a `git` progr
 
 To download all files, run
 
-    git clone https://github.com/tsnouidui/SimulatorToFMU.git
+    git clone https://github.com/LBNL-ETA/SimulatorToFMU.git
 
 The edit a file, such as `README.md`, first edit the file, then enter
 
