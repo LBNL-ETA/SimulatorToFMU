@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>7. Help &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="8. Notation" href="notation.html" />
+    <link rel="prev" title="6. Development" href="development.html" /> 
+  </head>
+  <body role="document">
+<div class="headerStyle">
+<img src="_static/lbl-logo.png" alt="LBL logo" />
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="notation.html" title="8. Notation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="development.html" title="6. Development"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
+    <a href="index.html">User Guide</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a memoryless Python-based Simulator User Guide</a> &#187;</li> -->
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">7. Help</a><ul>
+<li><a class="reference internal" href="#compilation-failed-with-dymola">7.1. Compilation failed with Dymola</a></li>
+<li><a class="reference internal" href="#simulation-failed-with-dymola-fmus">7.2. Simulation failed with Dymola FMUs</a></li>
+<li><a class="reference internal" href="#compilation-failed-with-openmodelica">7.3. Compilation failed with OpenModelica</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="development.html"
+                        title="previous chapter">6. Development</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="notation.html"
+                        title="next chapter">8. Notation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/help.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="help">
+<span id="id1"></span><h1>7. Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h1>
+<p>This chapter lists potential issues encountered when using SimulatorToFMU.</p>
+<div class="section" id="compilation-failed-with-dymola">
+<h2>7.1. Compilation failed with Dymola<a class="headerlink" href="#compilation-failed-with-dymola" title="Permalink to this headline">¶</a></h2>
+<p>If the export of the Simulator failed when compiling the model with Dymola, comment out <code class="docutils literal"><span class="pre">&quot;exit()&quot;</span></code> in
+<code class="docutils literal"><span class="pre">parser/utilities/SimulatorModelica_Template_Dymola.mos</span></code> with <code class="docutils literal"><span class="pre">&quot;//exit()&quot;</span></code>, and re-run <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code>
+to see why the complation has failed.</p>
+</div>
+<div class="section" id="simulation-failed-with-dymola-fmus">
+<h2>7.2. Simulation failed with Dymola FMUs<a class="headerlink" href="#simulation-failed-with-dymola-fmus" title="Permalink to this headline">¶</a></h2>
+<p>If an FMU exported using Dymola fails to run, check if the version of Dymola which exported the FMU had the <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license.
+The <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license is required to export FMUs which can be run without requiring a Dymola runtime license.
+You can also inspect the model description of the FMU to see if a Dymola runtime license is required to run the FMU.</p>
+</div>
+<div class="section" id="compilation-failed-with-openmodelica">
+<h2>7.3. Compilation failed with OpenModelica<a class="headerlink" href="#compilation-failed-with-openmodelica" title="Permalink to this headline">¶</a></h2>
+<p>If the export of the Simulator failed when compiling the model with OpenModelica,
+check if the variable <code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is defined in the Windows <code class="docutils literal"><span class="pre">Environment</span> <span class="pre">Variables</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is the path to the libraries which are required by OpenModelica to compile Modelica models.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="notation.html" title="8. Notation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="development.html" title="6. Development"
+             >previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
+    <a href="index.html">User Guide</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a memoryless Python-based Simulator User Guide</a> &#187;</li> -->
+ 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>

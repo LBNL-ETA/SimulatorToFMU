@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5. Usage of Simulator as an FMU &mdash; FMU Export of Simulator User Guide</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="FMU Export of Simulator User Guide" href="index.html" />
+    <link rel="next" title="6. Best Practice" href="bestPractice.html" />
+    <link rel="prev" title="4. Creating an FMU" href="build.html" /> 
+  </head>
+  <body role="document">
+<div class="headerStyle">
+<img src="_static/lbl-logo.png" alt="LBL logo" />
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="bestPractice.html" title="6. Best Practice"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="build.html" title="4. Creating an FMU"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
+    <a href="index.html">User Guide</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of Simulator User Guide</a> &raquo;</li> -->
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="build.html"
+                        title="previous chapter">4. Creating an FMU</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="bestPractice.html"
+                        title="next chapter">6. Best Practice</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/usage.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="usage-of-cymdist-as-an-fmu">
+<span id="usage"></span><h1>5. Usage of Simulator as an FMU<a class="headerlink" href="#usage-of-cymdist-as-an-fmu" title="Permalink to this headline">¶</a></h1>
+<p>The following requirements must be met to import and run a Simulator FMU:</p>
+<ol class="arabic">
+<li><p class="first">Python 3.4 must be installed. This is needed by the master algorithm <a class="reference internal" href="glossary.html#term-pyfmi"><span class="xref std std-term">PyFMI</span></a>.</p>
+</li>
+<li><p class="first">CYME version 7.2 must be installed. CYME can be downloaded from <a class="reference external" href="https://www.cyme.com">www.cyme.com</a>.</p>
+</li>
+<li><p class="first">The <code class="docutils literal"><span class="pre">fmu_code</span></code> functions directory must be added to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>.
+This directory contains functions needed at runtime by the Simulator FMU.
+The <code class="docutils literal"><span class="pre">fmu_code</span></code> functions folder can be found at the top level of
+the distribution folder of CyDER. It is in <code class="docutils literal"><span class="pre">web\docker_django\worker\simulation</span></code>.</p>
+<p>To add the <code class="docutils literal"><span class="pre">fmu_code</span></code> functions folder to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>:</p>
+<ul>
+<li><p class="first">In Search, search for and then select: System (Control Panel).</p>
+</li>
+<li><p class="first">Click the Advanced system settings link.</p>
+</li>
+<li><p class="first">Click Environment Variables. In the section System Variables,
+find a variable named <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> environment variable and select it.</p>
+<blockquote>
+<div><p>If the variable does not exist, create it. Click Edit.</p>
+</div></blockquote>
+</li>
+<li><p class="first">In the Edit System Variable (or New System Variable) window,
+specify the value of the PYTHONPATH environment variable
+which should be in our case the full path to
+<code class="docutils literal"><span class="pre">web\docker_django\worker\simulation\fmu_code</span></code>.</p>
+</li>
+</ul>
+</li>
+<li><p class="first">The Simulator Python API directory must be added to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>.
+This directory contains scripts needed at runtime by the Simulator FMU.</p>
+<p>The Simulator Python API directory is in the installation folder of CYME.
+It can typically be found in <code class="docutils literal"><span class="pre">path_to_CYME\CYME\cympy</span></code>, where <code class="docutils literal"><span class="pre">path_to_CYME</span></code>
+is the path to the installation folder of CYME 7.2.</p>
+</li>
+</ol>
+<blockquote>
+<div>To add the Simulator Python API scripts folder to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>,
+add <code class="docutils literal"><span class="pre">path_to_CYME\CYME</span></code> to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>.
+Note that <code class="docutils literal"><span class="pre">cympy</span></code> is not included in the name of the variable.</div></blockquote>
+<ol class="arabic" start="5">
+<li><p class="first">The Simulator installation directory must be added to the system <code class="docutils literal"><span class="pre">PATH</span></code>.
+This directory contains runtime DLLS (<code class="docutils literal"><span class="pre">mkl_core.dll</span></code>, <code class="docutils literal"><span class="pre">mkl_def.dll</span></code>)
+that are needed at runtime by the Simulator FMU.</p>
+<p>The Simulator installation directory is typically found in <code class="docutils literal"><span class="pre">path_to_CYME\CYME\`,</span>
+<span class="pre">where</span> <span class="pre">``path_to_CYME</span></code> is the path to the installation folder of CYME 7.2.</p>
+</li>
+<li><p class="first">Upon request, the simulation results are saved in a result file which
+is created in the current working directory.
+The name of the result file is <code class="docutils literal"><span class="pre">xxx_result_.pickle</span></code>, where xxx
+is the FMU model name as defined in the XML input file.</p>
+</li>
+</ol>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="bestPractice.html" title="6. Best Practice"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="build.html" title="4. Creating an FMU"
+             >previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
+    <a href="index.html">User Guide</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of Simulator User Guide</a> &raquo;</li> -->
+ 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>

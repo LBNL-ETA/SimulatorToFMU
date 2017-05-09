@@ -1,0 +1,112 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction &mdash; FMU Export User Guide</title>
+    
+    <link rel="stylesheet" href="userGuide/_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="userGuide/_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="userGuide/_static/jquery.js"></script>
+    <script type="text/javascript" src="userGuide/_static/underscore.js"></script>
+    <script type="text/javascript" src="userGuide/_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="FMU Export of Simulator User Guide" href="index.html" />
+    <link rel="next" title="3. Download" href="download.html" />
+    <link rel="prev" title="1. Release Notes" href="releaseNotes.html" /> 
+  </head>
+  <body>
+<div class="headerStyle">
+<img src="userGuide/_static/lbl-logo.png" alt="LBL logo" />
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+   <li><a href="http://simulationresearch.lbl.gov/fmu/Simulator/export/index.html">Home</a> |
+    <a href="userGuide/index.html">User Guide</a> |
+    <a href="userGuide/download.html">Downloads</a> |
+    <a href="userGuide/development.html">Development</a> |
+    </br>
+<!--    
+        <li><a href="index.html">FMU Export of Simulator User Guide</a> &raquo;</li> -->
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<img src="../source/_img/cymdist-fmu.png" alt="some_text"> </center>
+<br/>
+<br>
+ <strong><big>News</big></strong> 
+<br/>
+ March 1, 2017: </br> Released <a href="userGuide/download.html">version 1.0.0</a>
+
+
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+
+<div class="section" id="introduction">
+<span id="id1"></span><h1>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h1>
+<p>This user manual explains how to install and use SimulatorToFMU.
+SimulatorToFMU is a software package written in Python which allows users to export the distribution simulation program <a class="reference external" href="http://www.cyme.com">Simulator</a> version 7.2 as a Functional Mock-up Unit(FMU) for model exchange using the Functional Mock-up Interface (FMI)
+standard <a class="reference external" href="https://svn.modelica.org/fmi/branches/public/specifications/v2.0/FMI_for_ModelExchange_and_CoSimulation_v2.0.pdf">version 2.0</a>.
+This FMU can then be imported into a variety of simulation programs that support the import of Functional Mock-up Units for model exchange. This capability allows for instance to model the distribution grid in Simulator, export the model as an FMU, import and link the model with a transmission grid developed in a tool such as <a class="reference external" href="https://github.com/LLNL/GridDyn"> GridDyn</a>.</p>
+</div>
+
+<img src="../source/_img/cyder.png" alt="some_text"> </center>
+
+<h2 id="License">License</h2>
+<span class="anchor" id="line-48"></span><p class="line862">SimulatorToFMU is available under the following <a href="userGuide/legal.html">open-source license</a>. <span class="anchor" id="line-49"></span><span class="anchor" id="line-50"></span><p class="line867">
+
+<h2 id="Contact">Contact</h2>
+<span class="anchor" id="line-51"></span><p class="line862">For help, send email at <a class="https" href="https://groups.google.com/group/cymdist-fmu">https://groups.google.com/group/cymdist-fmu</a>. This is an open group and everyone can join it. No invitation is needed. <span class="anchor" id="line-52"></span><span class="anchor" id="line-53"></span><p class="line867"><a href="http://eetd.lbl.gov/people/thierry-nouidui">Thierry S. Nouidui</a>, <a href="http://eetd.lbl.gov/staff/jonathan-coignard">Jonathan Coignard</a>, <a href="http://eetd.lbl.gov/people/michael-wetter">Michael Wetter</a><br>
+ <span class="anchor" id="line-54"></span>Lawrence Berkeley National Laboratory<br>
+ <span class="anchor" id="line-55"></span><a class="https" href="https://simulationresearch.lbl.gov/">Simulation Research Group</a><br>
+ <span class="anchor" id="line-56"></span><a class="mailto" href="mailto:TSNouidui@lbl.gov">TSNouidui@lbl.gov</a> <span class="anchor" id="line-57"></span><span class="anchor" id="bottom"></span></div><div class="footerLinks">
+ 
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+   <li><a href="http://simulationresearch.lbl.gov/fmu">Home</a> |
+    <a href="userGuide/index.html">User Guide</a> |
+    <a href="userGuide/download.html">Downloads</a> |
+    <a href="userGuide/development.html">Development</a> |
+    <a href="userGuide/help.html">Help</a></li>
+    </br>
+<!--    
+        <li><a href="index.html">FMU Export of Simulator User Guide</a> &raquo;</li> -->
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.1.
+    </div>
+  </body>
+</html>
