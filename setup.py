@@ -18,7 +18,8 @@ setup(
     url="https://github.com/LBNL-ETA/SimulatorToFMU/",
     install_requires=['lxml',
                       'jinja2'],
-    packages=['bin', 'doc', 'fmus', 'parser'],
+    packages=['simulatortofmu'],
+    include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
