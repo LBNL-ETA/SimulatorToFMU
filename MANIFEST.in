@@ -1,3 +1,4 @@
+include simulatortofmu/legal.html
 recursive-include simulatortofmu/bin *
 recursive-include simulatortofmu/doc *
 recursive-include simulatortofmu/fmus *
