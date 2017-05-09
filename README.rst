@@ -1,11 +1,14 @@
-# SimulatorToFMU
+SimulatorToFMU
+--------------
 
-## Overview
+Overview
+^^^^^^^^
 
 SimulatorToFMU is a Python package which allows exporting memory free simulation programs as
 Functional Mock-up Interface for Model Exchange and Co-Simulation.
 
-## Download
+Download
+^^^^^^^^
 
 Files can be downloaded individually, or as a whole repository.
 
