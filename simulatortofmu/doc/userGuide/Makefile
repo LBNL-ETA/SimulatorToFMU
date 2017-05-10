@@ -34,8 +34,10 @@ help:
 clean:
 	-rm -rf $(BUILDDIR)/*
 
+
 cleanpdf:
 	-rm -rf *.pdf
+	-rm -rf *.log
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
