@@ -16,4 +16,4 @@ User Guide
    glossary
    acknowledgments
    disclaimer
-   legal
+   license

@@ -21,7 +21,7 @@ is a simulation program which meets following requirements:
     depends only on the inputs at the time ``t``. 
   - The inputs and the outputs of the simulation program/script must be ``real`` numbers.
 
-The license is at simulatortofmu/legal.html
+The license is at simulatortofmu/LICENSE.rst
 
 Download
 ^^^^^^^^

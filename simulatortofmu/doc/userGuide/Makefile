@@ -99,14 +99,14 @@ release-html:
 	@echo "Copy html files to the www folder."
 	-cp -R $(BUILDDIR)/html/*.* www/userGuide
 	#-cp -R $(BUILDDIR)/html/_img www/userGuide
-	-cp -R $(BUILDDIR)/html/legal.html ../../../../
+	-cp -R source/license.rst ../../LICENSE.txt
 
 #dist:   clean cleanpdf latex html release-html copypdftodoc copydoctowww  
 dist:   clean cleanpdf latex html release-html copypdftodoc 
 
 copypdftodoc:
 	@echo "Copy pdf files to the userGuide folder."
-	-cp -R $(BUILDDIR)/latex/*.pdf .
+	-cp -R $(BUILDDIR)/latex/*.pdf ../../.
 
 copydoctowww:
 	@echo "Sent files to the server excluding .svn."
