@@ -32,12 +32,12 @@ help:
 	@echo "  copypdftodoc  to copy PDF file to userGuide folder for distribution"
 
 clean:
-	-rm -rf $(BUILDDIR)/*
+	-rm -rf $(BUILDDIR)
+	-rm -rf *.log
 
 
 cleanpdf:
 	-rm -rf *.pdf
-	-rm -rf *.log
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
