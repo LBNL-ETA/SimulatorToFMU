@@ -21,6 +21,14 @@ is a simulation program which meets following requirements:
     depends only on the inputs at the time ``t``. 
   - The inputs and the outputs of the simulation program/script must be ``real`` numbers.
 
+.. note::
+
+   The Python-driven script could invoke 
+   scripts written in languages such as 
+   MATLAB using the ``subprocess`` or ``os.system()``
+   module of Python or specifically for MATLAB 
+   using the MATLAB engine API for Python. 
+
 The license is at simulatortofmu/LICENSE.txt
 
 Download
