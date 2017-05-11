@@ -29,7 +29,8 @@ is a simulation program which meets following requirements:
    module of Python or specifically for MATLAB 
    using the MATLAB engine API for Python. 
 
-The license is at simulatortofmu/LICENSE.txt
+The license is at `simulatortofmu/LICENSE.txt <https://github.com/tsnouidui/SimulatorToFMU/blob/master/simulatortofmu/LICENSE.txt>`_
+
 
 Download
 ^^^^^^^^
