@@ -27,7 +27,7 @@ Simulation failed in OpenModelica and Dymola FMUs
 
 If the simulation failed with the exported FMU, check if the ``"modelname"`` + ``".scripts.zip"``
 was added to the ``PYTHONPATH`` as described in :ref:`build_output`. Please note that any software
-which is required to run the exported FMu will need to be installed on the target machine where teh FMU is run.
+which is required to run the exported FMU will need to be installed on the target machine where the FMU is run.
 
 Simulation failed with Dymola FMUs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
