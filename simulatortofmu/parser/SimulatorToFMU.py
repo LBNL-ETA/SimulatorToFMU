@@ -424,6 +424,7 @@ def check_duplicates(arr):
         # Assert if version is different from FMI 2.0
         assert(len_lst <= 0), 'Duplicates found in the list.'
 
+
 # Invalid symbols
 g_rexBadIdChars = re.compile(r'[^a-zA-Z0-9_]')
 
