@@ -15,16 +15,27 @@ Command-line use
 
 .. automodule:: parser.SimulatorToFMU
 
+.. _build_output:
 
 Outputs of SimulatorToFMU
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The main output from running ``SimulatorToFMU.py`` consists of an FMU named after the ``modelName`` specified in the input file.
-The FMU is written to the current working directory, that is, in the directory from which you entered the command.
+The main output from running ``SimulatorToFMU.py`` consists of an FMU named 
+after the ``modelName`` specified in the input file, and a zip 
+file called ``"modelname"`` + ``".scripts.zip"``. That is, if the ``modelName``
+is called ``Simulator``, then the outputs of ``SimulatorToFMU``
+will be ``Simulator.fmu`` and ``Simulator.scripts.zip``.
+
+The FMU and the zip file are written to the current 
+working directory, that is, in the directory from which you entered the command.
+
+``"modelname"`` + ``".scripts.zip"`` contains the Python scripts that are needed to 
+interface with the Simulator. The unzipped folder must be added 
+to the ``PYTHONPATH`` of the target machine where the FMU will be used.
 
 Any secondary output from running the SimulatorToFMU tools can be deleted safely.
 
-Note that the FMU is a zip file.
+Note that the FMU itself is a zip file.
 This means you can open and inspect its contents.
 To do so, it may help to change the "``.fmu``" extension to "``.zip``".
 
