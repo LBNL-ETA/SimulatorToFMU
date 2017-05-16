@@ -6,35 +6,35 @@
 # Make sure that the python path is set, such as by running
 # export PYTHONPATH=`pwd`
 
-def r1_r1(cS, iS, uR, uS, yS, iwR):
+def r1_r1(cS, iS, uS, uR, yS, iwR):
     f = open("r1_r1.txt", 'w')
     f.write(str(iS) + " " + str(uR) + " " + str(uS) + 
     " " + str(yS) + " " + " " + str(iwR))
     f.close()
     return uR
     
-def r2_r1(cS, iS, uR, uS, yS, iwR):
+def r2_r1(cS, iS, uS, uR, yS, iwR):
     f = open("r2_r1.txt", 'w')
     f.write(str(iS) + " " + str(uR) + " " + str(uS) + 
     " " + str(yS) + " " + str(iwR))
     f.close()
     return uR[0] + uR[1]
     
-def par3_r1(cS, iS, yS, parR, parS, iwR):
+def par3_r1(cS, iS, yS, parS, parR, iwR):
     f = open("par3_r1.txt", 'w')
     f.write(str(iS) + " " + str(yS) + 
     " " + str(parR) + " " + str(parS) + " " + str(iwR))
     f.close()
     return parR[0] + parR[1] + parR[2]   
     
-def r1_r2(cS, iS, uR, uS, yS, iwR):
+def r1_r2(cS, iS, uS, uR, yS, iwR):
     f = open("r1_r2.txt", 'w')
     f.write(str(iS) + " " + str(uR) + " " + str(uS) + 
     " " + str(yS) + " " + str(iwR))
     f.close()
     return [uR,  uR*2]       
     
-def r2p2_r2(cS, iS, uR, uS, yS, parR, parS, iwR):
+def r2p2_r2(cS, iS, uS, uR, yS, parS, parR, iwR):
     f = open("r2_r2.txt", 'w')
     f.write("The file reference value is: " + str(iS) + "." +
             " The input names are: " + uS[0] + ", " + uS[1] + "." +

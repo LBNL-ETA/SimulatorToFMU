@@ -214,9 +214,9 @@ void pythonExchangeVariables(const char * moduleName,
 	if (nDblWri > 0){
 		/* Increase the number of arguments to 2*/
 		/* One is for the vector of input names*/
-		/* to be sent to SimulatorToFMU, the second one is*/
+		/* to be sent to the CYMDIST FMU, the second one is*/
 		/* for the vector of input values to be sent*/
-		/* to SimulatorToFMU.*/
+		/* to the CYMDIST FMU.*/
 		nStrWri = nDblWri;
 		nArg = nArg + 2;
 	}
@@ -229,9 +229,9 @@ void pythonExchangeVariables(const char * moduleName,
 	if (nDblParWri > 0){
 		/* Increase the number of arguments to 2*/
 		/* One is for the vector of strings parameters*/
-		/* to be sent to SimulatorToFMU, the second one is */
+		/* to be sent to the CYMDIST FMU, the second one is */
 		/* for the vector of parameter values to be sent*/
-		/* to SimulatorToFMU.*/
+		/* to the CYMDIST FMU.*/
 		nStrParWri = nDblParWri;
 		nArg = nArg + 2;
 	}
@@ -278,20 +278,20 @@ void pythonExchangeVariables(const char * moduleName,
 			);
 	}
 
-	/* Convert the arguments*/
-	/* f) Convert double[]*/
-	if (nDblParWri > 0){
-		createPythonArgumentLists(DBL_FLAG, 0, 
-			nDblParWri, NULL, dblValParWri, 
+	/* f) Convert char **, an array of character arrays*/
+	if (nStrParWri > 0){
+		createPythonArgumentLists(STR_FLAG, 
+			nStrParWri, 0, strParWri, NULL, 
 			pModule, pFunc, pArgs, 
 			*ModelicaFormatError
 			);
 	}
-
-	/* g) Convert char **, an array of character arrays*/
-	if (nStrParWri > 0){
-		createPythonArgumentLists(STR_FLAG, 
-			nStrParWri, 0, strParWri, NULL, 
+	
+	/* Convert the arguments*/
+	/* g) Convert double[]*/
+	if (nDblParWri > 0){
+		createPythonArgumentLists(DBL_FLAG, 0, 
+			nDblParWri, NULL, dblValParWri, 
 			pModule, pFunc, pArgs, 
 			*ModelicaFormatError
 			);
@@ -449,7 +449,7 @@ void pythonExchangeVariables(const char * moduleName,
 	/* Undo all initializations*/
 	/* We uncommented Py_Finalize() because it caused a segmentation fault on Ubuntu 12.04 32 bit.*/
 	/* The segmentation fault was randomly produced by the statement, and often observed when running*/
-	/* simulateModel("SimulatorToFMU.Utilities.IO.Python35.Functions.Examples.TestPythonInterface");*/
+	/* simulateModel("the CYMDISTToFMU.Utilities.IO.Python35.Functions.Examples.TestPythonInterface");*/
 	/**/
 	/* See also the discussion at*/
 	/* http://stackoverflow.com/questions/7676314/py-initialize-py-finalize-not-working-twice-with-numpy*/
