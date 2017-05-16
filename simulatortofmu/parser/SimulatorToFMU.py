@@ -652,7 +652,7 @@ class SimulatorToFMU(object):
 
         # Get the model name to write the .mo file
         self.model_name = root.attrib.get('modelName')
-        
+
         # Remove Invalid characters from the model name as this is used
         # by the Modelica model and the FMU
         s = ('Invalid characters will be removed from the model name={!s}.').format(
@@ -831,7 +831,6 @@ class SimulatorToFMU(object):
         output_res = template.render(
             model_name=self.model_name,
             scalar_variables=scalar_variables,
-            python_scripts_path=self.python_scripts_path,
             input_variable_names=input_variable_names,
             output_variable_names=output_variable_names,
             parameter_variable_names=parameter_variable_names,
