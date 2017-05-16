@@ -15,38 +15,8 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
   input Integer nDblOut(min=0) "Number of double outputs to read from SimulatorToFMU";
   input Integer nDblPar(min=0) "Number of double parameters to send to SimulatorToFMU";
   input Real    resWri[1]  "Flag for enabling results writing. 1: write results, 0: else";
-  //   input Integer strLenRea(min=0)
-  //     "Maximum length of each string that is read. If exceeded, the simulation stops with an error";
   output Real dblOutVal[max(1, nDblOut)] "Double output values read from SimulatorToFMU";
-//   String pytPat "Value of PYTHONPATH environment variable";
-//   String pytPatSimulatorToFMU "PYTHONPATH of SimulatorToFMU library";
-//   Boolean havePytPat "true if PYTHONPATH is already set by the user";
-  //--  String filNam = "file://Utilities/IO/Python35/UsersGuide/package.mo"
-  //--    "Name to a file of the SimulatorToFMU library";
 algorithm
-//   // Get the directory to SimulatorToFMU/Resources/Python-Sources
-//   //-- The lines below do not work in Dymola 2014 due to an issue with the loadResource
-//   //-- (ticket #15168). This will be fixed in future versions.
-//   //-- pytPatSimulatorToFMU := SimulatorToFMU.BoundaryConditions.WeatherData.BaseClasses.getAbsolutePath(uri=filNam);
-//   //-- pytPatSimulatorToFMU := Modelica.Utilities.Strings.replace(
-//   //--   string=pytPatSimulatorToFMU,
-//   //--   searchString=filNam,
-//   //--   replaceString="Resources/Python-Sources");
-//   // The next line is a temporary fix for the above problem
-//   pytPatSimulatorToFMU := "Resources/Python-Sources";
-//   // Update the PYTHONPATH variable
-//   (
-// pytPat,havePytPat) := Modelica.Utilities.System.getEnvironmentVariable("PYTHONPATH");
-//   if havePytPat then
-//     Modelica.Utilities.Streams.print("Path is " + pytPat);
-//  Modelica.Utilities.System.setEnvironmentVariable(name="PYTHONPATH",
-//     content=pytPat + ":" + pytPatSimulatorToFMU);
-//
-//   else
-//  Modelica.Utilities.System.setEnvironmentVariable(name="PYTHONPATH",
-//     content=pytPatSimulatorToFMU);
-//         Modelica.Utilities.Streams.print("Simulator is " + pytPatSimulatorToFMU);
-//   end if;
   // Call the exchange function
 dblOutVal := BaseClasses.simulator(
       moduleName=moduleName,
@@ -62,15 +32,6 @@ dblOutVal := BaseClasses.simulator(
       dblParNam=dblParNam,
       dblParVal=dblParVal,
       resWri=resWri);
-  // Change the PYTHONPATH back to what it was so that the function has no
-  // side effects.
-//   if havePytPat then
-//  Modelica.Utilities.System.setEnvironmentVariable(name="PYTHONPATH",
-//     content=pytPat);
-//   else
-//  Modelica.Utilities.System.setEnvironmentVariable(name="PYTHONPATH",
-//     content="");
-//   end if;
 annotation (Documentation(info="<html>
 <p>
 This function is a wrapper for 

@@ -32,8 +32,8 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
                                     dblParVal,
                                     resWri)
     annotation (Library={"SimulatorToFMUPython35", "python35"},
-      LibraryDirectory={"modelica://SimulatorToFMU.Resources/Library"},
-      IncludeDirectory="modelica://SimulatorToFMU.Resources/C-Sources",
+      LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"},
+      IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
       Include="#include \"pythonWrapper.c\"");
   annotation (Documentation(info="<html>
 <p>
