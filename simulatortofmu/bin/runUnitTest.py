@@ -245,6 +245,12 @@ class Tester(unittest.TestCase):
                 '_configurationFileName')
 
             # Set the configuration file
+            # Setting strings failed in JModelica. This seems to be a bug
+            # since JModelica set the variability of models which contain
+            # a string parameter to constant. Consequently the FMU cannot
+            # be modified at runtime. The workaround will be to pass the
+            # path to the configuration file when invoking SimulatorToFMU so
+            # it has the configuration file in its resource folders.
             simulator.set_string(
                 [simulator_con_val_ref],
                 [simulator_con_val_str])
