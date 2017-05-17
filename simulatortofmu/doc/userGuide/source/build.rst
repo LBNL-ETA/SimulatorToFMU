@@ -43,8 +43,9 @@ To do so, it may help to change the "``.fmu``" extension to "``.zip``".
 
 .. note::
 
-  - FMUs exported using OpenModelica 1.11.0 needs almost ``10`` times 
-    more compilation/simulation time compared to Dymola 2017 FD01.
+  - FMUs exported using OpenModelica 1.11.0 needs significantly 
+    longger compilation/simulation time compared to the tested versions 
+    of Dymola and JModelica.
 
   - FMUs exported using Dymola 2017 FD01 needs a Dymola runtime license to run.
     A Dymola runtime license is not be needed if the FMU is exported with 

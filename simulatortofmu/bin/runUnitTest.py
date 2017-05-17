@@ -27,6 +27,7 @@ NEEDSEXECUTIONTOOL = 'needsExecutionTool'
 MODELDESCRIPTION = 'modelDescription.xml'
 SimulatorModelicaTemplate_MO = 'SimulatorModelicaTemplate.mo'
 SimulatorModelicaTemplate_Dymola_MOS = 'SimulatorModelicaTemplate_Dymola.mos'
+SimulatorModelicaTemplate_JModelica_MOS = 'SimulatorModelicaTemplate_JModelica.py'
 SimulatorModelicaTemplate_OpenModelica_MOS = 'SimulatorModelicaTemplate_OpenModelica.mos'
 XML_MODELDESCRIPTION = 'SimulatorModelDescription.xml'
 # Get the path to the templates files
@@ -36,6 +37,8 @@ PYTHON_SCRIPT_PATH = os.path.join(utilities_path, 'simulator_wrapper.py')
 MO_TEMPLATE_PATH = os.path.join(utilities_path, SimulatorModelicaTemplate_MO)
 MOS_TEMPLATE_PATH_DYMOLA = os.path.join(
     utilities_path, SimulatorModelicaTemplate_Dymola_MOS)
+MOS_TEMPLATE_PATH_JMODELICA = os.path.join(
+    utilities_path, SimulatorModelicaTemplate_JModelica_MOS)
 MOS_TEMPLATE_PATH_OPENMODELICA = os.path.join(
     utilities_path, SimulatorModelicaTemplate_OpenModelica_MOS)
 XSD_FILE_PATH = os.path.join(utilities_path, XSD_SCHEMA)
@@ -59,9 +62,10 @@ Simulator_T = simulator.SimulatorToFMU('con_path',
                                        XSD_FILE_PATH,
                                        '35',
                                        python_scripts_path,
-                                       '2',
+                                       '2.0',
                                        'me',
                                        'dymola',
+                                       None,
                                        'MODELICAPATH',
                                        'false')
 
@@ -125,25 +129,28 @@ class Tester(unittest.TestCase):
         # Testing function to print Modelica model.
         Simulator_T.print_mo()
 
-    @unittest.skip("Export Simulator using multiple options.")
+    #@unittest.skip("Export Simulator using multiple options.")
     def test_simulator_to_fmu(self):
         '''
         Test the export of an FMU with various options.
 
         '''
 
-        for tool in ['dymola', 'omc']:
+        for tool in ['dymola', 'jmodelica', 'omc']:
             if (platform.system().lower() == 'linux' and tool == 'omc'):
                 print ('tool={!s} is not supported on Linux.'.format(tool))
                 continue
             if tool == 'omc':
                 modPat = 'OPENMODELICALIBRARY'
                 mosT = MOS_TEMPLATE_PATH_OPENMODELICA
-            else:
+            elif tool == 'dymola':
                 modPat = 'MODELICAPATH'
                 mosT = MOS_TEMPLATE_PATH_DYMOLA
+            elif tool == 'jmodelica':
+                modPat = None
+                mosT = MOS_TEMPLATE_PATH_JMODELICA
             for version in ['1', '2']:
-                if (tool == 'omc'):
+                if (tool == 'omc' or tool == 'jmodelica'):
                     version = str(float(version))
                 for api in ['me']:
                     if (tool == 'omc' and version == '1.0' and api == 'cs'):
@@ -166,6 +173,7 @@ class Tester(unittest.TestCase):
                             version,
                             api,
                             tool,
+                            None,
                             modPat,
                             cs_xml)
 
@@ -182,13 +190,13 @@ class Tester(unittest.TestCase):
                             'Export Simulator as an FMU in {!s} seconds.'.format(
                                 (end - start).total_seconds()))
 
-    #@unittest.skip("Run the FMU using PyFMI")
+    @unittest.skip("Run the FMU using PyFMI")
     def test_run_simulator_fmu(self):
         '''
         Test the execution of one Simulator FMU.
 
         '''
-        for tool in ['Dymola', 'OpenModelica']:
+        for tool in ['Dymola', 'JModelica', 'OpenModelica']:
             if platform.system().lower() == 'windows':
                 fmu_path = os.path.join(
                     script_path, '..', 'fmus', tool, 'windows', 'Simulator.fmu')

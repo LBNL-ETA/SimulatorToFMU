@@ -233,7 +233,7 @@ def main():
         export_tool_path = os.path.abspath(export_tool_path)
         if(platform.system().lower() == 'windows'):
             export_tool_path = export_tool_path.replace('\\', '\\\\')
-        
+      
     # Get the FMI version
     fmi_version = args.fmi_version
 
@@ -924,11 +924,16 @@ class SimulatorToFMU(object):
         loader = jja2.FileSystemLoader(self.mosT_path)
         env = jja2.Environment(loader=loader)
         template = env.get_template('')
+        
+        # Convert path to the correct format for PYTHON
+        sim_lib_path_jm = os.path.abspath(self.simulatortofmu_path)
+        if(platform.system().lower() == 'windows'):
+            sim_lib_path_jm = sim_lib_path_jm.replace('\\', '\\\\')
 
         output_res = template.render(model_name=self.model_name,
                                      fmi_version=self.fmi_version,
                                      fmi_api=self.fmi_api,
-                                     sim_lib_path = self.simulatortofmu_path)
+                                     sim_lib_path = sim_lib_path_jm)
                 
         # Write results in mo file which has the same name as the class name
         
@@ -937,9 +942,9 @@ class SimulatorToFMU(object):
         
         
         if (self.export_tool == 'jmodelica'):
-            output_file = self.model_name + rand_name + '.py'
+            output_file = rand_name + '_' + self.model_name + '.py'
         elif (self.export_tool == 'dymola' or self.export_tool == 'omc'):
-            output_file = self.model_name + rand_name + '.mos'
+            output_file = rand_name + '_' + self.model_name + '.mos'
         if os.path.isfile(output_file):
             s = ('The output file {!s} exists and will be overwritten.').format(
                 output_file)
@@ -964,9 +969,9 @@ class SimulatorToFMU(object):
                     command = os.path.join('jm_python.sh')
             elif(platform.system().lower()=='windows'):
                 if (not (self.export_tool_path is None)):
-                    command = os.path.join(self.export_tool_path, 'pylab.bat')
+                    command = os.path.join(self.export_tool_path, 'setenv.bat')
                 else:
-                    command = 'pylab.bat'
+                    command = 'setenv.bat'
         # Create command for OpenModelica
         if (self.export_tool == 'omc'):
             if (not (self.export_tool_path is None)):
@@ -983,9 +988,10 @@ class SimulatorToFMU(object):
             if(platform.system().lower()=='linux'):
                 sp.call([command, output_file])
             else:
-                sp.call([command])
-                # run the script
-                sp.call(['run', output_file])
+                # 
+                output_cmd = 'python ' + str(output_file)
+                # Run multiple commands in the same shell
+                os.system(command + "&&" + output_cmd )
             
         # Compile the FMU using OpenModelica 
         if (self.export_tool == 'omc'):
@@ -1027,7 +1033,7 @@ class SimulatorToFMU(object):
         dir_name = self.model_name +'.scripts'
         if os.path.exists(dir_name):
             shutil.rmtree(dir_name)
-        log.info('Create the folder Simulator.scripts with scripts to be added to the PYTHONPATH')
+        log.info('Create the folder Simulator.scripts with scripts to be added to the PYTHONPATH.')
         os.makedirs(dir_name)
         for python_script_path in self.python_scripts_path:
             shutil.copy2(python_script_path, dir_name)

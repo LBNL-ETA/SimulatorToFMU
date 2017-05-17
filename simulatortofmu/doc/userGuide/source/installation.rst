@@ -28,6 +28,7 @@ SimulatorToFMU has been tested with:
   - Python 2.7.13
   - Python 3.5.0 
   - Dymola 2017 FD01 (Modelica parser, Windows and Linux)
+  - JModelica 2.0 (Windows) and trunk version on Linux
   - OpenModelica 1.11.0 (Modelica parser, Windows)
   - Microsoft Visual Studio 10 Professional (C-Compiler) 
 
@@ -49,7 +50,8 @@ To install SimulatorToFMU, proceed as follows:
  - Python installation folder (e.g. ``C:\Python35``)
  - Python scripts folder (e.g. ``C:\Python35\Scripts``), 
  - Dymola executable folder (e.g. ``C:\Program Files(x86)\Dymola2017 FD01\bin``)
- - OpenModelica executable folder (e.g. ``C:\OpenModelica1.11.0-32bit\``)
+ - JModelica installation folder (e.g. C:\JModelica.org-2.0)
+ - OpenModelica executable folder (e.g. ``C:\OpenModelica1.11.0-32bit\bin``)
 
    
  You can add folders to your system path by performing following steps on Windows 8 or 10:
@@ -69,9 +71,9 @@ To install SimulatorToFMU, proceed as follows:
 
 .. note:: 
 
-   An alternative to add Dymola or OpenModelica to the system path is to provide the path
-   to these folders at invocation of SimulatorToFMU.py. See :ref:`build_cmd` for the lists of arguments 
-   of SimulatorToFMU.py.
+   To avoid adding Dymola, JModelica, or OpenModelica to the system path, provide the path
+   to the executables to SimulatorToFMU.py. See :ref:`build_cmd` for the lists of arguments 
+   of SimulatorToFMU.
 
 2. To install SimulatorToFMU, run 
 
