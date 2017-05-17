@@ -67,6 +67,11 @@ To install SimulatorToFMU, proceed as follows:
  To check if the variables have been correctly added to the system path, type ``python``, ``dymola``, or ``omc``
  into a command prompt to see if the right version of Python, Dymola or OpenModelica starts up.
 
+.. note:: 
+
+   An alternative to add Dymola or OpenModelica to the system path is to provide the path
+   to these folders at invocation of SimulatorToFMU.py. See :ref:`build_cmd` for the lists of arguments 
+   of SimulatorToFMU.py.
 
 2. To install SimulatorToFMU, run 
 

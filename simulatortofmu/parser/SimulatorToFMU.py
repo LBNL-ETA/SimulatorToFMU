@@ -81,8 +81,10 @@ Following requirements must be met hen using SimulatorToFMU
 | -a                                                 | FMI API version. Options are ``cs`` (co-simulation) and ``me``    |
 |                                                    | (model exchange). Default is ``me``.                              |
 +----------------------------------------------------+-------------------------------------------------------------------+
-| -t                                                 | Modelica compiler. Options are ``dymola`` (Dymola) and ``omc``    |
-|                                                    | (OpenModelica). Default is ``dymola``.                            |
+| -t                                                 | Modelica compiler. Options are ``dymola`` (Dymola), ``jmodelica`` |
+|                                                    | (JModelica), and ``omc`` (OpenModelica). Default is ``dymola``.   |
++----------------------------------------------------+-------------------------------------------------------------------+
+| -pt                                                | Path to the Modelica executable compiler.                         |
 +----------------------------------------------------+-------------------------------------------------------------------+
 
 The main functions of SimulatorToFMU are
@@ -107,6 +109,7 @@ import shutil
 import zipfile
 import re
 import platform
+import random, string
 
 log.basicConfig(filename='Simulator.log', filemode='w',
                 level=log.DEBUG, format='%(asctime)s %(message)s',
@@ -131,10 +134,12 @@ NEEDSEXECUTIONTOOL = 'needsExecutionTool'
 MODELDESCRIPTION = 'modelDescription.xml'
 MO_TEMPLATE = 'SimulatorModelicaTemplate.mo'
 MOS_TEMPLATE_DYMOLA = 'SimulatorModelicaTemplate_Dymola.mos'
+MOS_TEMPLATE_JMODELICA = 'SimulatorModelicaTemplate_JModelica.py'
 MOS_TEMPLATE_OPENMODELICA = 'SimulatorModelicaTemplate_OpenModelica.mos'
 XML_MODELDESCRIPTION = 'SimulatorModelDescription.xml'
 MO_TEMPLATE_PATH = os.path.join(utilities_path, MO_TEMPLATE)
 MOS_TEMPLATE_PATH_DYMOLA = os.path.join(utilities_path, MOS_TEMPLATE_DYMOLA)
+MOS_TEMPLATE_PATH_JMODELICA = os.path.join(utilities_path, MOS_TEMPLATE_JMODELICA)
 MOS_TEMPLATE_PATH_OPENMODELICA = os.path.join(
     utilities_path, MOS_TEMPLATE_OPENMODELICA)
 XSD_FILE_PATH = os.path.join(utilities_path, XSD_SCHEMA)
@@ -181,9 +186,11 @@ def main():
                                  + ' Default is <me>')
     simulator_group.add_argument("-t", "--export-tool",
                                  help='Modelica compiler. Valid options are '
-                                 + '<dymola> for Dymola and'
-                                 + ' <omc> for OpenModelica'
+                                 + '<dymola> for Dymola, <jmodelica> '
+                                 + 'for JModelica, and <omc> for OpenModelica'
                                  + ' Default is <dymola>')
+    simulator_group.add_argument("-pt", "--export-tool-path",
+                                 help='Path to the Modelica executable compiler.')
 #     simulator_group.add_argument("-n", "--needs-tool",
 #                                  help='Flag to indicate if FMU needs an '
 #                                  + 'external execution tool to run. '
@@ -212,7 +219,21 @@ def main():
         log.info(
             'SimulatorToFMU is only supported on Windows when using OpenModelica as the Modelica compiler.')
         return
-
+    
+    # Get export tool Path
+    export_tool_path = args.export_tool_path
+    
+    if export_tool_path is None:
+        s = 'Path to the installation folder of tool={!s} was not specified.'\
+        ' Make sure that the tool is on the system path otherwise compilation will fail.'.format(export_tool)
+        log.warning(s)
+        
+    # Make sure we have correct path delimiters
+    if not (export_tool_path is None):
+        export_tool_path = os.path.abspath(export_tool_path)
+        if(platform.system().lower() == 'windows'):
+            export_tool_path = export_tool_path.replace('\\', '\\\\')
+        
     # Get the FMI version
     fmi_version = args.fmi_version
 
@@ -246,8 +267,8 @@ def main():
         export_tool = 'dymola'
 
     # Check if export tool is valid
-    if not (export_tool.lower() in ['dymola', 'omc']):
-        s = 'Export tool specified is neither Dymola (dymola) nor OpenModelica(omc).'
+    if not (export_tool.lower() in ['dymola', 'jmodelica', 'omc']):
+        s = 'Supported export tools are Dymola (dymola), Jmodelica (jmodelica) and OpenModelica(omc).'
         log.error(s)
         raise ValueError(s)
 
@@ -258,11 +279,18 @@ def main():
         if fmi_version in ['1.0', '2.0']:
             fmi_version = str(int(float(fmi_version)))
         modelica_path = 'MODELICAPATH'
+    if(export_tool.lower() == 'jmodelica'):
+        mos_template_path = MOS_TEMPLATE_PATH_JMODELICA
+        if fmi_version in ['1', '2']:
+            fmi_version = str(float(fmi_version)*1.0)
+        modelica_path = None
     elif(export_tool.lower() == 'omc'):
         if fmi_version in ['1', '2']:
             fmi_version = str(float(fmi_version)*1.0)
         mos_template_path = MOS_TEMPLATE_PATH_OPENMODELICA
         modelica_path = 'OPENMODELICALIBRARY'
+
+        
 
     # Check if user is trying to export a 1.0 co-simulation FMU with
     # OpenModelica
@@ -350,6 +378,7 @@ def main():
                                fmi_version,
                                fmi_api,
                                export_tool,
+                               export_tool_path,
                                modelica_path,
                                needs_tool.lower())
 
@@ -542,8 +571,10 @@ class SimulatorToFMU(object):
                  fmi_version,
                  fmi_api,
                  export_tool,
+                 export_tool_path,
                  modelica_path,
                  needs_tool):
+        
         """
         Initialize the class.
 
@@ -561,6 +592,9 @@ class SimulatorToFMU(object):
         :param fmi_version (str): The FMI version.
         :param fmi_api (str): The FMI API.
         :param export_tool (str): The Modelica compiler.
+        :param export_tool_path (str): The path to the Modelica compiler.
+        :param modelica_path (str): The path to the libraries to be added 
+               to the MODELICAPATH.
         :param needs_tool (str): Needs execution tool on target machine.
 
         """
@@ -577,6 +611,7 @@ class SimulatorToFMU(object):
         self.fmi_version = fmi_version
         self.fmi_api = fmi_api
         self.export_tool = export_tool
+        self.export_tool_path = export_tool_path
         self.modelica_path = modelica_path
         self.needs_tool = needs_tool
 
@@ -875,15 +910,16 @@ class SimulatorToFMU(object):
 
         """
 
-        # Set the Modelica path to point to the Simulator Library
-        current_library_path = os.environ.get(self.modelica_path)
 
         # Check if library path is none
-        if (current_library_path is None):
-            os.environ[self.modelica_path] = self.simulatortofmu_path
-        else:
-            os.environ[self.modelica_path] = self.simulatortofmu_path \
-                + os.pathsep + current_library_path
+        if not(self.export_tool == 'jmodelica'):
+            # Set the Modelica path to point to the Simulator Library
+            current_library_path = os.environ.get(self.modelica_path)
+            if (current_library_path is None):
+                os.environ[self.modelica_path] = self.simulatortofmu_path
+            else:
+                os.environ[self.modelica_path] = self.simulatortofmu_path \
+                    + os.pathsep + current_library_path
 
         loader = jja2.FileSystemLoader(self.mosT_path)
         env = jja2.Environment(loader=loader)
@@ -891,9 +927,19 @@ class SimulatorToFMU(object):
 
         output_res = template.render(model_name=self.model_name,
                                      fmi_version=self.fmi_version,
-                                     fmi_api=self.fmi_api)
+                                     fmi_api=self.fmi_api,
+                                     sim_lib_path = self.simulatortofmu_path)
+                
         # Write results in mo file which has the same name as the class name
-        output_file = self.model_name + '.mos'
+        
+        rand_name = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for _ in range(6))
+        
+        
+        if (self.export_tool == 'jmodelica'):
+            output_file = self.model_name + rand_name + '.py'
+        elif (self.export_tool == 'dymola' or self.export_tool == 'omc'):
+            output_file = self.model_name + rand_name + '.mos'
         if os.path.isfile(output_file):
             s = ('The output file {!s} exists and will be overwritten.').format(
                 output_file)
@@ -901,18 +947,58 @@ class SimulatorToFMU(object):
         with open(output_file, 'w') as fh:
             fh.write(str(output_res))
         fh.close()
-
+        
+        # Create different commands for different tools
+        # Create command for Dymola
         if (self.export_tool == 'dymola'):
-            sp.call([self.export_tool, output_file])
-            #output_sp = os.system(self.export_tool + ' ' +  output_file)
-
+            if (not (self.export_tool_path is None)):
+                command = os.path.join(self.export_tool_path, 'dymola')
+            else:
+                command = 'dymola' 
+        # Create command for JModelica     
+        if(self.export_tool == 'jmodelica'):
+            if(platform.system().lower()=='linux'):
+                if (not (self.export_tool_path is None)):
+                    command = os.path.join(self.export_tool_path, 'jm_python.sh')
+                else:
+                    command = os.path.join('jm_python.sh')
+            elif(platform.system().lower()=='windows'):
+                if (not (self.export_tool_path is None)):
+                    command = os.path.join(self.export_tool_path, 'pylab.bat')
+                else:
+                    command = 'pylab.bat'
+        # Create command for OpenModelica
         if (self.export_tool == 'omc'):
-            sp.call([self.export_tool, output_file, 'SimulatorToFMU'])
+            if (not (self.export_tool_path is None)):
+                command = os.path.join(self.export_tool_path, 'omc')
+            else:
+                command = 'omc'
+                
+        # Compile the FMU using Dymola      
+        if (self.export_tool == 'dymola'):
+            sp.call([command, output_file])
+
+        # Compile the FMU using JModelica
+        if (self.export_tool == 'jmodelica'):
+            if(platform.system().lower()=='linux'):
+                sp.call([command, output_file])
+            else:
+                sp.call([command])
+                # run the script
+                sp.call(['run', output_file])
+            
+        # Compile the FMU using OpenModelica 
+        if (self.export_tool == 'omc'):
+            sp.call([command, output_file, 'SimulatorToFMU'])
             #output_sp = os.system(self.export_tool + ' ' + output_file + ' ' + 'SimulatorToFMU')
 
         # Reset the library path to the default
-        if not(current_library_path is None):
-            os.environ[self.modelica_path] = current_library_path
+        if not(self.export_tool == 'jmodelica'):
+            if not(current_library_path is None):
+                os.environ[self.modelica_path] = current_library_path
+        
+        # removd the output file
+        os.remove(output_file)
 
         # Renamed the FMU to indicate target Python simulator
         fmu_name = self.model_name + '.fmu'

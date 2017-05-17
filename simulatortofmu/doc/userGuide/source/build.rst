@@ -10,6 +10,8 @@ This chapter describes how to create a Functional Mockup Unit.
 It assumes you have followed the :doc:`installation` instructions, and that you have created the Simulator 
 model description file as well as the Python script required to interface the Simulator following the :doc:`bestPractice` guidelines.
 
+.. _build_cmd:
+
 Command-line use
 ^^^^^^^^^^^^^^^^
 
