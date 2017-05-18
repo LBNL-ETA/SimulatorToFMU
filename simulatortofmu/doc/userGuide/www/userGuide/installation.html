@@ -119,12 +119,14 @@
 <p>SimulatorToFMU has been tested with:</p>
 <blockquote>
 <div><ul class="simple">
-<li>Python 2.7.13</li>
-<li>Python 3.5.0</li>
-<li>Dymola 2017 FD01 (Modelica parser, Windows and Linux)</li>
-<li>JModelica 2.0 (Windows) and trunk version on Linux</li>
-<li>OpenModelica 1.11.0 (Modelica parser, Windows)</li>
-<li>Microsoft Visual Studio 10 Professional (C-Compiler)</li>
+<li>Python 2.7.13 and 3.5.0</li>
+<li>Three Modelica parsers<ul>
+<li>Dymola 2017 FD01 on Windows and Linux</li>
+<li>JModelica 2.0 on Windows, and JModelica trunk version 9899 on Linux</li>
+<li>OpenModelica 1.11.0 on Windows</li>
+</ul>
+</li>
+<li>C:Compiler: Microsoft Visual Studio 10 Professional</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
@@ -145,7 +147,7 @@ As a workaround, SimulatorToFMU checks if there are missing libraries dependenci
 <li>Python installation folder (e.g. <code class="docutils literal"><span class="pre">C:\Python35</span></code>)</li>
 <li>Python scripts folder (e.g. <code class="docutils literal"><span class="pre">C:\Python35\Scripts</span></code>),</li>
 <li>Dymola executable folder (e.g. <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files(x86)\Dymola2017</span> <span class="pre">FD01\bin</span></code>)</li>
-<li>JModelica installation folder (e.g. C:JModelica.org-2.0)</li>
+<li>JModelica installation folder (e.g. <code class="docutils literal"><span class="pre">C:\JModelica.org-2.0</span></code>)</li>
 <li>OpenModelica executable folder (e.g. <code class="docutils literal"><span class="pre">C:\OpenModelica1.11.0-32bit\bin</span></code>)</li>
 </ul>
 <p>You can add folders to your system path by performing following steps on Windows 8 or 10:</p>
@@ -169,7 +171,7 @@ of SimulatorToFMU.</p>
 <li>To install SimulatorToFMU, run</li>
 </ol>
 <blockquote>
-<div><div class="highlight-none"><div class="highlight"><pre><span></span>&gt; pip install SimulatorToFMU
+<div><div class="highlight-none"><div class="highlight"><pre>&gt; pip install SimulatorToFMU
 </pre></div>
 </div>
 <p>The installation directory should contain the following subdirectories:</p>
@@ -190,7 +192,7 @@ of SimulatorToFMU.</p>
 <div class="section" id="uninstallation">
 <h2>2.3. Uninstallation<a class="headerlink" href="#uninstallation" title="Permalink to this headline">¶</a></h2>
 <p>To uninstall SimulatorToFMU, run</p>
-<div class="highlight-none"><div class="highlight"><pre><span></span>&gt; pip uninstall SimulatorToFMU
+<div class="highlight-none"><div class="highlight"><pre>&gt; pip uninstall SimulatorToFMU
 </pre></div>
 </div>
 </div>

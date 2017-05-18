@@ -196,91 +196,92 @@ class Tester(unittest.TestCase):
         Test the execution of one Simulator FMU.
 
         '''
-        for tool in ['Dymola', 'JModelica', 'OpenModelica']:
-            if platform.system().lower() == 'windows':
-                fmu_path = os.path.join(
-                    script_path, '..', 'fmus', tool, 'windows', 'Simulator.fmu')
-            elif platform.system().lower() == 'linux':
-                fmu_path = os.path.join(
-                    script_path, '..', 'fmus', tool, 'linux', 'Simulator.fmu')
-            if (tool == 'OpenModelica' and platform.system().lower() == 'linux'):
-                continue
-            # Parameters which will be arguments of the function
-            start_time = 0.0
-            stop_time = 5.0
-
-            print ('Starting the simulation')
-            start = datetime.now()
-            # Path to configuration file
-            simulator_con_val_str = os.path.abspath('config.json')
-            if sys.version_info.major > 2:
-                simulator_con_val_str = bytes(simulator_con_val_str, 'utf-8')
-
-            simulator_input_valref = []
-            simulator_output_valref = []
-
-            simulator = load_fmu(fmu_path, log_level=7)
-            simulator.setup_experiment(
-                start_time=start_time, stop_time=stop_time)
-
-            # Define the inputs
-            simulator_input_names = ['v']
-            simulator_input_values = [220.0]
-            simulator_output_names = ['i']
-
-            # Get the value references of simulator inputs
-            for elem in simulator_input_names:
-                simulator_input_valref.append(
-                    simulator.get_variable_valueref(elem))
-
-            # Get the value references of simulator outputs
-            for elem in simulator_output_names:
-                simulator_output_valref.append(
-                    simulator.get_variable_valueref(elem))
-
-            # Set the flag to save the results
-            simulator.set('_saveToFile', 0)
-            # Get value reference of the configuration file
-            simulator_con_val_ref = simulator.get_variable_valueref(
-                '_configurationFileName')
-
-            # Set the configuration file
-            # Setting strings failed in JModelica. This seems to be a bug
-            # since JModelica set the variability of models which contain
-            # a string parameter to constant. Consequently the FMU cannot
-            # be modified at runtime. The workaround will be to pass the
-            # path to the configuration file when invoking SimulatorToFMU so
-            # it has the configuration file in its resource folders.
-            simulator.set_string(
-                [simulator_con_val_ref],
-                [simulator_con_val_str])
-
-            # Initialize the FMUs
-            simulator.initialize()
-
-            # Call event update prior to entering continuous mode.
-            simulator.event_update()
-
-            # Enter continuous time mode
-            simulator.enter_continuous_time_mode()
-
-            simulator.set_real(simulator_input_valref, simulator_input_values)
-
-            # Terminate FMUs
-            simulator.terminate()
-            end = datetime.now()
-
-            print(
-                'Ran a single Simulator simulation with {!s} FMU={!s} in {!s} seconds.'.format(
-                    tool, fmu_path, (end - start).total_seconds()))
-            if(tool == 'Dymola'):
-                # PyFMI fails to get the output of an OpenModelica FMU whereas Dymola does.
-                # Hence we only assert for Dymola FMUs
-                self.assertEqual(
-                    simulator.get_real(
-                        simulator.get_variable_valueref('i')),
-                    1.0,
-                    'Values are not matching.')
+        if platform.system().lower() == 'windows':
+            for tool in ['Dymola', 'JModelica', 'OpenModelica']:
+                if platform.system().lower() == 'windows':
+                    fmu_path = os.path.join(
+                        script_path, '..', 'fmus', tool, 'windows', 'Simulator.fmu')
+                elif platform.system().lower() == 'linux':
+                    fmu_path = os.path.join(
+                        script_path, '..', 'fmus', tool, 'linux', 'Simulator.fmu')
+                if (tool in [ 'OpenModelica' , 'JModelica'] and platform.system().lower() == 'linux'):
+                    continue
+                # Parameters which will be arguments of the function
+                start_time = 0.0
+                stop_time = 5.0
+    
+                print ('Starting the simulation')
+                start = datetime.now()
+                # Path to configuration file
+                simulator_con_val_str = os.path.abspath('config.json')
+                if sys.version_info.major > 2:
+                    simulator_con_val_str = bytes(simulator_con_val_str, 'utf-8')
+    
+                simulator_input_valref = []
+                simulator_output_valref = []
+    
+                simulator = load_fmu(fmu_path, log_level=7)
+                simulator.setup_experiment(
+                    start_time=start_time, stop_time=stop_time)
+    
+                # Define the inputs
+                simulator_input_names = ['v']
+                simulator_input_values = [220.0]
+                simulator_output_names = ['i']
+    
+                # Get the value references of simulator inputs
+                for elem in simulator_input_names:
+                    simulator_input_valref.append(
+                        simulator.get_variable_valueref(elem))
+    
+                # Get the value references of simulator outputs
+                for elem in simulator_output_names:
+                    simulator_output_valref.append(
+                        simulator.get_variable_valueref(elem))
+    
+                # Set the flag to save the results
+                simulator.set('_saveToFile', 0)
+                # Get value reference of the configuration file
+                simulator_con_val_ref = simulator.get_variable_valueref(
+                    '_configurationFileName')
+    
+                # Set the configuration file
+                # Setting strings failed in JModelica. This seems to be a bug
+                # since JModelica set the variability of models which contain
+                # a string parameter to constant. Consequently the FMU cannot
+                # be modified at runtime. The workaround will be to pass the
+                # path to the configuration file when invoking SimulatorToFMU so
+                # it has the configuration file in its resource folders.
+                if not (tool=='JModelica'):
+                    simulator.set_string(
+                        [simulator_con_val_ref],
+                        [simulator_con_val_str])
+    
+                # Initialize the FMUs
+                simulator.initialize()
+    
+                # Call event update prior to entering continuous mode.
+                simulator.event_update()
+    
+                # Enter continuous time mode
+                simulator.enter_continuous_time_mode()
+    
+                simulator.set_real(simulator_input_valref, simulator_input_values)
+    
+                # Terminate FMUs
+                simulator.terminate()
+                end = datetime.now()
+    
+                print(
+                    'Ran a single Simulator simulation with {!s} FMU={!s} in {!s} seconds.'.format(
+                        tool, fmu_path, (end - start).total_seconds()))
+                if(tool in ['Dymola', 'JModelica']):
+                    # PyFMI fails to get the output of an OpenModelica FMU 
+                    self.assertEqual(
+                        simulator.get_real(
+                            simulator.get_variable_valueref('i')),
+                        1.0,
+                        'Values are not matching.')
 
 
 if __name__ == "__main__":
