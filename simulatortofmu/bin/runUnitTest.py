@@ -204,7 +204,7 @@ class Tester(unittest.TestCase):
                 elif platform.system().lower() == 'linux':
                     fmu_path = os.path.join(
                         script_path, '..', 'fmus', tool, 'linux', 'Simulator.fmu')
-                if (tool in [ 'OpenModelica' , 'JModelica'] and platform.system().lower() == 'linux'):
+                if (tool in ['OpenModelica', 'JModelica'] and platform.system().lower() == 'linux'):
                     continue
                 # Parameters which will be arguments of the function
                 start_time = 0.0
