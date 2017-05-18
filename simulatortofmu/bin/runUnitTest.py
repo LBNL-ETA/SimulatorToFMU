@@ -48,11 +48,8 @@ SimulatorToFMU_LIB_PATH = os.path.join(
 python_scripts_path = [PYTHON_SCRIPT_PATH]
 
 if(platform.system().lower() == 'windows'):
-    print ("Convert path to Python script={!s} to valid Windows path".format(
-        PYTHON_SCRIPT_PATH))
     python_scripts_path = [item.replace('\\', '\\\\') for item in [
         PYTHON_SCRIPT_PATH]]
-    print ("The valid Python script path is {!s}.".format(python_scripts_path))
 
 Simulator_T = simulator.SimulatorToFMU('con_path',
                                        XML_INPUT_FILE,
@@ -129,7 +126,7 @@ class Tester(unittest.TestCase):
         # Testing function to print Modelica model.
         Simulator_T.print_mo()
 
-    #@unittest.skip("Export Simulator using multiple options.")
+    @unittest.skip("Export Simulator using multiple options.")
     def test_simulator_to_fmu(self):
         '''
         Test the export of an FMU with various options.
@@ -190,27 +187,21 @@ class Tester(unittest.TestCase):
                             'Export Simulator as an FMU in {!s} seconds.'.format(
                                 (end - start).total_seconds()))
 
-    @unittest.skip("Run the FMU using PyFMI")
+    #@unittest.skip("Run the FMU using PyFMI")
     def test_run_simulator_fmu(self):
         '''
         Test the execution of one Simulator FMU.
 
         '''
         if platform.system().lower() == 'windows':
-            for tool in ['Dymola', 'JModelica', 'OpenModelica']:
-                if platform.system().lower() == 'windows':
-                    fmu_path = os.path.join(
+            for tool in ['OpenModelica', 'JModelica', 'Dymola']:
+                fmu_path = os.path.join(
                         script_path, '..', 'fmus', tool, 'windows', 'Simulator.fmu')
-                elif platform.system().lower() == 'linux':
-                    fmu_path = os.path.join(
-                        script_path, '..', 'fmus', tool, 'linux', 'Simulator.fmu')
-                if (tool in ['OpenModelica', 'JModelica'] and platform.system().lower() == 'linux'):
-                    continue
                 # Parameters which will be arguments of the function
                 start_time = 0.0
                 stop_time = 5.0
     
-                print ('Starting the simulation')
+                print ('Starting the simulation with {!s}'.format(tool))
                 start = datetime.now()
                 # Path to configuration file
                 simulator_con_val_str = os.path.abspath('config.json')
@@ -267,6 +258,8 @@ class Tester(unittest.TestCase):
                 simulator.enter_continuous_time_mode()
     
                 simulator.set_real(simulator_input_valref, simulator_input_values)
+                
+
     
                 # Terminate FMUs
                 simulator.terminate()
@@ -275,13 +268,16 @@ class Tester(unittest.TestCase):
                 print(
                     'Ran a single Simulator simulation with {!s} FMU={!s} in {!s} seconds.'.format(
                         tool, fmu_path, (end - start).total_seconds()))
-                if(tool in ['Dymola', 'JModelica']):
+                if not (tool=='OpenModelica'):
                     # PyFMI fails to get the output of an OpenModelica FMU 
                     self.assertEqual(
                         simulator.get_real(
                             simulator.get_variable_valueref('i')),
                         1.0,
                         'Values are not matching.')
+        else:
+            print('The unit tests for simulating FMUs only run on Windows')
+                    
 
 
 if __name__ == "__main__":

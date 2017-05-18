@@ -228,17 +228,12 @@ def main():
     
     # Get export tool Path
     export_tool_path = args.export_tool_path
-    
     if export_tool_path is None:
         s = 'Path to the installation folder of tool={!s} was not specified.'\
         ' Make sure that the tool is on the system path otherwise compilation will fail.'.format(export_tool)
         log.warning(s)
-        
-    # Make sure we have correct path delimiters
-    if not (export_tool_path is None):
-        export_tool_path = os.path.abspath(export_tool_path)
-        if(platform.system().lower() == 'windows'):
-            export_tool_path = export_tool_path.replace('\\', '\\\\')
+    else:   
+        export_tool_path = fix_path_delimiters(export_tool_path)
       
     # Get the FMI version
     fmi_version = args.fmi_version
@@ -353,6 +348,11 @@ def main():
 
     # Set the default configuration file
     con_path = args.con_fil_path
+    # Make sure we have correct path delimiters
+    if not (con_path is None):        
+        con_path = fix_path_delimiters(con_path)
+    
+    # Check configuration file for JModelica
     if con_path is None and export_tool=='jmodelica':
         s = ('JModelica requires to provide the path to a configuration file.')
         log.error(s)
@@ -500,6 +500,22 @@ def sanitize_name(name):
     #
     return(name)
 
+
+def fix_path_delimiters(name):
+    
+    """
+    Make a valid path.
+
+    :param name(str): Path name to be sanitized.
+    :return: Sanitized path name.
+
+    """
+    
+    if not (name is None):
+        name = os.path.abspath(name)
+    if(platform.system().lower() == 'windows'):
+        name = name.replace('\\', '\\\\')
+    return name
 
 def zip_fmu(dirPath=None, zipFilePath=None, includeDirInZip=True):
     """
@@ -939,8 +955,7 @@ class SimulatorToFMU(object):
         
         # Convert path to the correct format for PYTHON
         sim_lib_path_jm = os.path.abspath(self.simulatortofmu_path)
-        if(platform.system().lower() == 'windows'):
-            sim_lib_path_jm = sim_lib_path_jm.replace('\\', '\\\\')
+        sim_lib_path_jm = fix_path_delimiters(sim_lib_path_jm)
 
         output_res = template.render(model_name=self.model_name,
                                      fmi_version=self.fmi_version,
