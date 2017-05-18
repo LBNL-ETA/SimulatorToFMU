@@ -106,18 +106,18 @@
 It assumes you have followed the <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> instructions, and that you have created the Simulator
 model description file as well as the Python script required to interface the Simulator following the <a class="reference internal" href="bestPractice.html"><span class="doc">Best Practice</span></a> guidelines.</p>
 <div class="section" id="module-parser.SimulatorToFMU">
-<span id="command-line-use"></span><h2>4.1. Command-line use<a class="headerlink" href="#module-parser.SimulatorToFMU" title="Permalink to this headline">¶</a></h2>
+<span id="command-line-use"></span><span id="build-cmd"></span><h2>4.1. Command-line use<a class="headerlink" href="#module-parser.SimulatorToFMU" title="Permalink to this headline">¶</a></h2>
 <p>To create an FMU,
 open a command-line window (see <a class="reference internal" href="notation.html"><span class="doc">Notation</span></a>).
 The standard invocation of the SimulatorToFMU tool is:</p>
-<div class="highlight-none"><div class="highlight"><pre>&gt; python  &lt;scriptDir&gt;SimulatorToFMU.py -s &lt;python-scripts-path&gt;
+<div class="highlight-none"><div class="highlight"><pre><span></span>&gt; python  &lt;scriptDir&gt;SimulatorToFMU.py -s &lt;python-scripts-path&gt;
 </pre></div>
 </div>
 <p>where <code class="docutils literal"><span class="pre">scriptDir</span></code> is the path to the scripts directory of SimulatorToFMU.
 This is the <code class="docutils literal"><span class="pre">parser</span></code> subdirectory of the installation directory.
 See <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> for details.</p>
 <p>An example of invoking <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> on Windows is</p>
-<div class="highlight-none"><div class="highlight"><pre># Windows:
+<div class="highlight-none"><div class="highlight"><pre><span></span># Windows:
 &gt; python parser\SimulatorToFMU.py -s parser\utilities\simulator_wrapper.py, d:\calc.py
 </pre></div>
 </div>
@@ -161,8 +161,11 @@ Default is <code class="docutils literal"><span class="pre">parser/utilities/Sim
 (model exchange). Default is <code class="docutils literal"><span class="pre">me</span></code>.</td>
 </tr>
 <tr class="row-odd"><td>-t</td>
-<td>Modelica compiler. Options are <code class="docutils literal"><span class="pre">dymola</span></code> (Dymola) and <code class="docutils literal"><span class="pre">omc</span></code>
-(OpenModelica). Default is <code class="docutils literal"><span class="pre">dymola</span></code>.</td>
+<td>Modelica compiler. Options are <code class="docutils literal"><span class="pre">dymola</span></code> (Dymola), <code class="docutils literal"><span class="pre">jmodelica</span></code>
+(JModelica), and <code class="docutils literal"><span class="pre">omc</span></code> (OpenModelica). Default is <code class="docutils literal"><span class="pre">dymola</span></code>.</td>
+</tr>
+<tr class="row-even"><td>-pt</td>
+<td>Path to the Modelica executable compiler.</td>
 </tr>
 </tbody>
 </table>
@@ -176,6 +179,11 @@ This includes removing and replacing invalid characters in variable names such a
 for model exchange or co-simulation <code class="docutils literal"><span class="pre">1.0</span></code> or <code class="docutils literal"><span class="pre">2.0</span></code>.</li>
 </ul>
 </div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Argument <code class="docutils literal"><span class="pre">&lt;c&gt;</span></code> is required when using JModelica. This is because of a a limitation
+in JModelica version 2.0 which does not allow to set string parameter at runtime.</p>
+</div>
 </div>
 <div class="section" id="outputs-of-simulatortofmu">
 <span id="build-output"></span><h2>4.2. Outputs of SimulatorToFMU<a class="headerlink" href="#outputs-of-simulatortofmu" title="Permalink to this headline">¶</a></h2>
@@ -196,8 +204,9 @@ To do so, it may help to change the &#8220;<code class="docutils literal"><span 
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <ul class="last simple">
-<li>FMUs exported using OpenModelica 1.11.0 needs almost <code class="docutils literal"><span class="pre">10</span></code> times
-more compilation/simulation time compared to Dymola 2017 FD01.</li>
+<li>FMUs exported using OpenModelica 1.11.0 needs significantly
+longer compilation/simulation time compared to the tested versions
+of Dymola and JModelica.</li>
 <li>FMUs exported using Dymola 2017 FD01 needs a Dymola runtime license to run.
 A Dymola runtime license is not be needed if the FMU is exported with
 a version of Dymola which has the <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license.</li>

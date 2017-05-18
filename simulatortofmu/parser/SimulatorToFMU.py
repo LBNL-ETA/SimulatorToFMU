@@ -96,6 +96,12 @@ The main functions of SimulatorToFMU are
    for model exchange or co-simulation ``1.0`` or ``2.0``.
 
 
+.. note::
+
+  Argument ``<c>`` is required when using JModelica. This is because of a a limitation
+  in JModelica version 2.0 which does not allow to set string parameter at runtime.
+
+
 """
 
 from lxml import etree
@@ -346,7 +352,13 @@ def main():
         io_file_path = XML_INPUT_FILE
 
     # Set the default configuration file
-    con_path = ''
+    con_path = args.con_fil_path
+    if con_path is None and export_tool=='jmodelica':
+        s = ('JModelica requires to provide the path to a configuration file.')
+        log.error(s)
+        raise ValueError(s)
+    elif (con_path is None):
+        con_path = ''
 
     # Get the need execution
     #needs_tool = args.needs_tool
