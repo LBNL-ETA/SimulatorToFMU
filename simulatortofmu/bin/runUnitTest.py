@@ -238,7 +238,7 @@ class Tester(unittest.TestCase):
     
                 # Set the configuration file
                 # Setting strings failed in JModelica. This seems to be a bug
-                # since JModelica set the variability of models which contain
+                # since JModelica sets the variability of models which contain
                 # a string parameter to constant. Consequently the FMU cannot
                 # be modified at runtime. The workaround will be to pass the
                 # path to the configuration file when invoking SimulatorToFMU so
@@ -259,8 +259,6 @@ class Tester(unittest.TestCase):
     
                 simulator.set_real(simulator_input_valref, simulator_input_values)
                 
-
-    
                 # Terminate FMUs
                 simulator.terminate()
                 end = datetime.now()

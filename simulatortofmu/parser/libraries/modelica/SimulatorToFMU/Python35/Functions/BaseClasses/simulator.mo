@@ -14,8 +14,6 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
   input Integer nDblOut(min=0) "Number of double outputs to read from SimulatorToFMU";
   input Integer nDblPar(min=0) "Number of double parameters to send to SimulatorToFMU";
   input Real    resWri[1]  "Flag for enabling results writing. 1: write results, 0: else";
-//   input Integer strLenRea(min=0)
-//     "Maximum length of each string that is read. If exceeded, the simulation stops with an error";
   output Real    dblOutVal[max(1, nDblOut)] "Double output values read from SimulatorToFMU";
   external "C" modelicaToSimulator(moduleName,
                                     functionName,
