@@ -71,7 +71,7 @@ Following requirements must be met hen using SimulatorToFMU
 |                                                    | ``parser/utilities/simulator_wrapper.py``. The name of            |
 |                                                    | the main Python script must be ``simulator_wrapper.py``.          |
 +----------------------------------------------------+-------------------------------------------------------------------+
-| -c                                                 | Path to the Simulator model file.                                 |
+| -c                                                 | Path to the Simulator model or configuration file.                |
 +----------------------------------------------------+-------------------------------------------------------------------+
 | -i                                                 | Path to the XML input file with the inputs/outputs of the FMU.    |
 |                                                    | Default is ``parser/utilities/SimulatorModelDescription.xml``     |
@@ -95,11 +95,80 @@ The main functions of SimulatorToFMU are
  - invoking a Modelica compiler to compile the :term:`Modelica` code as an FMU 
    for model exchange or co-simulation ``1.0`` or ``2.0``.
 
+The next section discusses requirements onf some of the arguments of SimulatorToFMU
+
+Simulation model or configuration file 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+An FMU exported by SimulatorToFMU requires a configuration file to run.
+There are two ways of providing the configuration file to the FMU
+
+  1. The path to the configuration file can be passed as argument ``"<-c>"`` 
+     to SimulatorToFMU. In this situation, the configuration file is copied 
+     in the resources folder of the FMU
+  2. The path to the configuration is set by the master algorithm before initializing the FMU.
+     
 
 .. note::
 
-  Argument ``<c>`` is required when using JModelica. This is because of a a limitation
-  in JModelica version 2.0 which does not allow to set string parameter at runtime.
+   The name of the configuration variable is ``_configurationFileName``. 
+   This name is reserved and should not be used for FMU input and output names.
+  
+Depending on the tool used to export the FMU, following requirements/restrictions apply:
+
+
+Dymola
+******
+
+- If the path to a configuration file is provided,  then
+  Dymola copies the file to its resources folder and uses the configuration file at runtime.
+  In this case, the path to the configuration file can't be set and changed by the master algorithm. 
+
+- If the configuration file is not provided, then the path to the configuration file must 
+  be set by the master algorithm prior to initializing the FMU.  
+
+JModelica
+*********
+
+- If the path to a configuration file is provided,  then
+  JModelica will not copy it to the resources folder of the FMU. 
+  Instead the path to the configuration is hard-coded in the FMU. 
+  In this case, the path to the configuration file can't be set and changed by the master algorithm. 
+ 
+  This is a limitation in JModelica 2.0 which is currently investigated by the JModelica team.
+  The workaround is to make sure that the path of the configuration file is 
+  the same on the machine where the FMU will be run.
+  
+- If the configuration file is not provided, then SimilarToFMU will exit with an error . 
+
+
+OpenModelica
+************
+
+- If the path to a configuration file is provided,  then
+  OpenModelica will not copy it to the resources folder of the FMU. 
+  Instead the path to the configuration is hard-coded in the FMU. 
+  In this case, the path to the configuration file can be set and changed by the master algorithm. 
+
+  This is a limitation in OpenModelica 1.11.0 which is currently investigated by the OpenModelica team.
+  The workaround is to either make sure that the path of the configuration file is 
+  the same on the machine where the FMU will be run or set the path of the configuration 
+  when running the FMU.
+  
+- If the configuration file is not provided, then the path to the configuration file must 
+  be set by master algorithm prior to initializing the FMU. 
+
+
+Reserved variable names 
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Following variables names are not allowed to be used as FMU input, output, or parameter names.
+
+- ``_configurationFileName``: Variable name used to set the path to a simulation model or configuration file
+- ``_saveToFile``: Variable used to set the flag for storing simulation results or not (1 for storing, 0 else)
+- ``time``: Internal FMU simulation time.
+
+If any of these variables is used for an FMU input or output name, SimulatorToFMu will exit with an error.
 
 
 """
@@ -847,12 +916,23 @@ class SimulatorToFMU(object):
             # perform some checks on variables to avoid name clash
             # before returning the variables to Modelica
             log.info(
-                'Check for duplicates in input, output and parameter variable names')
+                'Check for duplicates in input, output and parameter variable names.')
             for i in [modelica_input_variable_names,
                       modelica_output_variable_names,
                       modelica_parameter_variable_names]:
                 check_duplicates(i)
-
+                
+            for elm in ['_configurationFileName', '_saveToFile', 'time']:
+                for nam in [modelica_input_variable_names,
+                      modelica_output_variable_names,
+                      modelica_parameter_variable_names]:
+                    if elm in nam:
+                        s = 'Reserved name={!s} is in the list '\
+                            'of input/output/parameters variables={!s}. '\
+                            'Check the XML input file={!s} and correct the variable name.'.format(elm, nam, self.xml_path)
+                        log.error(s)
+                        raise ValueError(s)
+                        
             s = 'Parsing of {!s} was successfull.'.format(self.xml_path)
             log.info(s)
             return scalar_variables, input_variable_names, \
