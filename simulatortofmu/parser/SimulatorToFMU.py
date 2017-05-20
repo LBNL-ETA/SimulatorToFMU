@@ -105,7 +105,7 @@ There are two ways of providing the configuration file to the FMU
 
   1. The path to the configuration file can be passed as argument ``"<-c>"`` 
      to SimulatorToFMU. In this situation, the configuration file is copied 
-     in the resources folder of the FMU
+     in the resources folder of the FMU.
   2. The path to the configuration is set by the master algorithm before initializing the FMU.
      
 

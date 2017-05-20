@@ -32,7 +32,7 @@ SimulatorToFMU has been tested with:
     - JModelica 2.0 on Windows, and JModelica trunk version 9899 on Linux
     - OpenModelica 1.11.0 on Windows
 
-  - C:Compiler: Microsoft Visual Studio 10 Professional
+  - C-Compiler: Microsoft Visual Studio 10 Professional
 
 .. note:: 
 
@@ -68,8 +68,8 @@ To install SimulatorToFMU, proceed as follows:
      
  - Reopen Command prompt window for your changes to be active.
     
- To check if the variables have been correctly added to the system path, type ``python``, ``dymola``, or ``omc``
- into a command prompt to see if the right version of Python, Dymola or OpenModelica starts up.
+ To check if the variables have been correctly added to the system path, type ``python``, ``dymola``, ``pylab``, or ``omc``
+ into a command prompt to see if the right version of Python, Dymola, JModelica, or OpenModelica starts up.
 
 .. note:: 
 
