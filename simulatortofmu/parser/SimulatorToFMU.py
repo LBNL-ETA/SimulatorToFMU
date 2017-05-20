@@ -132,7 +132,7 @@ JModelica
 
 - If the path to a configuration file is provided,  then
   JModelica will not copy it to the resources folder of the FMU. 
-  Instead the path to the configuration is hard-coded in the FMU. 
+  Instead, the path to the configuration is hard-coded in the FMU. 
   In this case, the path to the configuration file can't be set and changed by the master algorithm. 
  
   This is a limitation in JModelica 2.0 which is currently investigated by the JModelica team.
@@ -147,7 +147,7 @@ OpenModelica
 
 - If the path to a configuration file is provided,  then
   OpenModelica will not copy it to the resources folder of the FMU. 
-  Instead the path to the configuration is hard-coded in the FMU. 
+  Instead, the path to the configuration is hard-coded in the FMU. 
   In this case, the path to the configuration file can be set and changed by the master algorithm. 
 
   This is a limitation in OpenModelica 1.11.0 which is currently investigated by the OpenModelica team.
