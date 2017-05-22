@@ -12,7 +12,7 @@ and implementing the Python wrapper which will interface with the Simulator.
 Configuring the Simulator XML input file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To export Simulator as an FMU, the user needs to write an XML file which contains the list 
+To export a Simulator as an FMU, the user needs to write an XML file which contains the list 
 of inputs, outputs and parameters of the FMU. The XML snippet below shows how a user has to write such an input file.
 A template named ``SimulatorModeldescritpion.xml`` which shows such a file is provided in the ``parser/utilities`` installation folder of SimulatorToFMU. 
 This template should be adapted to create new XML input file.
@@ -26,7 +26,7 @@ The following snippet shows an input file where the user defines 1 input and 1 o
 To create such an input file, the user needs to specify the name of the FMU (Line 5). 
 This is the ``modelName`` which should be unique.
 The user then needs to define the inputs and outputs of the FMUs. 
-This is done by adding ``ScalarVariable`` into the list of ``ModelVariables``.
+This is done by adding a ``ScalarVariable`` into the list of ``ModelVariables``.
 
 To parametrize the ``ScalarVariable`` as an input variable, the user needs to
 
@@ -49,7 +49,7 @@ To parametrize the ``ScalarVariable`` as an output variable, the user needs to
 Configuring the Python Wrapper Simulator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To export Simulator as an FMU, the user needs to write a Python wrapper which will interface with the Simulator.
+To export Simulator as an FMU, the user needs to write the Python wrapper which will interface with the Simulator.
 The wrapper will be embedded in the FMU when the Simulator is exported and used at runtime on the target machine.
 
 The user needs to extend the Python wrapper provided in ``parser/utilities/simulator_wrapper.py`` 
@@ -66,7 +66,7 @@ The arguments of the functions are in the next table
 +----------------------------------------------------+-------------------------------------------------------------------+
 | Arguments                                          | Description                                                       | 
 +====================================================+===================================================================+
-| ``configuration_file``                             | The Simulator model path or configuration file                    |
+| ``configuration_file``                             | The Path to the Simulator model or configuration file             |
 +----------------------------------------------------+-------------------------------------------------------------------+
 | ``time``                                           | The current simulation model time                                 |   
 +----------------------------------------------------+-------------------------------------------------------------------+
@@ -83,11 +83,10 @@ The arguments of the functions are in the next table
 
 .. note:: 
 
-   - The function ``exchange`` must return a list of output values which matchs the order of the output names. 
+   - The function ``exchange`` must return a list of output values which matches the order of the output names. 
    - The function ``exchange`` can be used to invoke external programs/scripts which do not ship with the FMU. 
-     In this situation, the FMU will must be exported with the option ``<-n>`` set to ``true``. 
      The external programs/scripts will have to be installed on the target machine where the 
      FMU is run. See :doc:`build` for details on command line options. 
-   - Once ``simulation_wrapper.py`` is implemented, it must be saved under the same name and used as required argument for ``SimulatorToFMU.py``.
+   - Once ``simulator_wrapper.py`` is implemented, it must be saved under the same name, and its path used as required argument for ``SimulatorToFMU.py``.
 
   

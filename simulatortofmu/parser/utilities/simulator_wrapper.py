@@ -6,7 +6,7 @@ def exchange(configuration_file, time, input_names,
     Return  a list of output values from the Python-based Simulator.
     The order of the output values must match the order of the output names.    
 
-    :param configuration_file (String): Model configuration name
+    :param configuration_file (String): Path to the Simulator model or configuration file
     :param time (Float): Simulation time
     :param input_names (Strings): Input names 
     :param input_values (Floats): Input values (same length as input_names) 

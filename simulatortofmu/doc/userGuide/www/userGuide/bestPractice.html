@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. Best Practice &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
+    <title>3. Best Practice &#8212; FMU Export of a Memoryless Python-based Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -54,7 +54,7 @@
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a memoryless Python-based Simulator User Guide</a> &#187;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
@@ -106,7 +106,7 @@
 and implementing the Python wrapper which will interface with the Simulator.</p>
 <div class="section" id="configuring-the-simulator-xml-input-file">
 <h2>3.1. Configuring the Simulator XML input file<a class="headerlink" href="#configuring-the-simulator-xml-input-file" title="Permalink to this headline">¶</a></h2>
-<p>To export Simulator as an FMU, the user needs to write an XML file which contains the list
+<p>To export a Simulator as an FMU, the user needs to write an XML file which contains the list
 of inputs, outputs and parameters of the FMU. The XML snippet below shows how a user has to write such an input file.
 A template named <code class="docutils literal"><span class="pre">SimulatorModeldescritpion.xml</span></code> which shows such a file is provided in the <code class="docutils literal"><span class="pre">parser/utilities</span></code> installation folder of SimulatorToFMU.
 This template should be adapted to create new XML input file.</p>
@@ -165,7 +165,7 @@ This template should be adapted to create new XML input file.</p>
 <p>To create such an input file, the user needs to specify the name of the FMU (Line 5).
 This is the <code class="docutils literal"><span class="pre">modelName</span></code> which should be unique.
 The user then needs to define the inputs and outputs of the FMUs.
-This is done by adding <code class="docutils literal"><span class="pre">ScalarVariable</span></code> into the list of <code class="docutils literal"><span class="pre">ModelVariables</span></code>.</p>
+This is done by adding a <code class="docutils literal"><span class="pre">ScalarVariable</span></code> into the list of <code class="docutils literal"><span class="pre">ModelVariables</span></code>.</p>
 <p>To parametrize the <code class="docutils literal"><span class="pre">ScalarVariable</span></code> as an input variable, the user needs to</p>
 <blockquote>
 <div><ul class="simple">
@@ -190,7 +190,7 @@ This is done by adding <code class="docutils literal"><span class="pre">ScalarVa
 </div>
 <div class="section" id="configuring-the-python-wrapper-simulator">
 <h2>3.2. Configuring the Python Wrapper Simulator<a class="headerlink" href="#configuring-the-python-wrapper-simulator" title="Permalink to this headline">¶</a></h2>
-<p>To export Simulator as an FMU, the user needs to write a Python wrapper which will interface with the Simulator.
+<p>To export Simulator as an FMU, the user needs to write the Python wrapper which will interface with the Simulator.
 The wrapper will be embedded in the FMU when the Simulator is exported and used at runtime on the target machine.</p>
 <p>The user needs to extend the Python wrapper provided in <code class="docutils literal"><span class="pre">parser/utilities/simulator_wrapper.py</span></code>
 and implements the function <code class="docutils literal"><span class="pre">exchange</span></code>.</p>
@@ -243,7 +243,7 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 <span class="sd">    Return  a list of output values from the Python-based Simulator.</span>
 <span class="sd">    The order of the output values must match the order of the output names.    </span>
 
-<span class="sd">    :param configuration_file (String): Model configuration name</span>
+<span class="sd">    :param configuration_file (String): Path to the Simulator model or configuration file</span>
 <span class="sd">    :param time (Float): Simulation time</span>
 <span class="sd">    :param input_names (Strings): Input names </span>
 <span class="sd">    :param input_values (Floats): Input values (same length as input_names) </span>
@@ -291,7 +291,7 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">configuration_file</span></code></td>
-<td>The Simulator model path or configuration file</td>
+<td>The Path to the Simulator model or configuration file</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">time</span></code></td>
 <td>The current simulation model time</td>
@@ -316,12 +316,11 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <ul class="last simple">
-<li>The function <code class="docutils literal"><span class="pre">exchange</span></code> must return a list of output values which matchs the order of the output names.</li>
+<li>The function <code class="docutils literal"><span class="pre">exchange</span></code> must return a list of output values which matches the order of the output names.</li>
 <li>The function <code class="docutils literal"><span class="pre">exchange</span></code> can be used to invoke external programs/scripts which do not ship with the FMU.
-In this situation, the FMU will must be exported with the option <code class="docutils literal"><span class="pre">&lt;-n&gt;</span></code> set to <code class="docutils literal"><span class="pre">true</span></code>.
 The external programs/scripts will have to be installed on the target machine where the
 FMU is run. See <a class="reference internal" href="build.html"><span class="doc">Creating an FMU</span></a> for details on command line options.</li>
-<li>Once <code class="docutils literal"><span class="pre">simulation_wrapper.py</span></code> is implemented, it must be saved under the same name and used as required argument for <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code>.</li>
+<li>Once <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code> is implemented, it must be saved under the same name, and its path used as required argument for <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code>.</li>
 </ul>
 </div>
 </div>
@@ -352,7 +351,7 @@ FMU is run. See <a class="reference internal" href="build.html"><span class="doc
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a memoryless Python-based Simulator User Guide</a> &#187;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>

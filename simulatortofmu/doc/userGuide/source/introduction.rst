@@ -29,7 +29,7 @@ is a simulation program which meets following requirements:
    The Python-driven script could invoke 
    scripts written in languages such as 
    MATLAB using the ``subprocess`` or ``os.system()``
-   module of Python or specifically for MATLAB 
+   module of Python, or specifically for MATLAB 
    using the MATLAB engine API for Python. 
     
    

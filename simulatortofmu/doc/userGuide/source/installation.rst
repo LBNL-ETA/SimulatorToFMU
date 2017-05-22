@@ -77,7 +77,7 @@ To install SimulatorToFMU, proceed as follows:
    to the executables to SimulatorToFMU.py. See :ref:`build_cmd` for the lists of arguments 
    of SimulatorToFMU.
 
-2. To install SimulatorToFMU, run 
+2. Install SimulatorToFMU by running 
 
   .. code-block:: none
 
@@ -86,10 +86,10 @@ To install SimulatorToFMU, proceed as follows:
   The installation directory should contain the following subdirectories:
 
     - ``bin/``
-      (Python scripts for running unit tests)
+      (Scripts for running unit tests)
 
     - ``doc/``
-      (Documentation)
+      (Documentation sources)
 
     - ``fmus/``
       (FMUs folder)

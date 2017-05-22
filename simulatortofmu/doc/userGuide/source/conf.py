@@ -108,7 +108,7 @@ html_theme = 'sphinxdoc'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = "FMU Export of a memoryless Python-based Simulator User Guide"
+html_title = "FMU Export of a Memoryless Python-based Simulator User Guide"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -177,7 +177,7 @@ htmlhelp_basename = 'User Guide'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'userGuide.tex', u'FMU Export of a memoryless Python-driven Simulator',
+  ('index', 'userGuide.tex', u'FMU Export of a Memoryless Python-driven Simulator',
    u'LBNL - Building Technology and Urban Systems Division', 'manual'),
 ]
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>4. Creating an FMU &#8212; FMU Export of a memoryless Python-based Simulator User Guide</title>
+    <title>4. Creating an FMU &#8212; FMU Export of a Memoryless Python-based Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -54,7 +54,7 @@
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a memoryless Python-based Simulator User Guide</a> &#187;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
@@ -130,7 +130,7 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
 &gt; python parser\SimulatorToFMU.py -s parser\utilities\simulator_wrapper.py, d:\calc.py
 </pre></div>
 </div>
-<p>Following requirements must be met hen using SimulatorToFMU</p>
+<p>Following requirements must be met when using SimulatorToFMU</p>
 <ul class="simple">
 <li>All file paths can be absolute or relative.</li>
 <li>If any file path contains spaces, then it must be surrounded with double quotes.</li>
@@ -188,15 +188,15 @@ This includes removing and replacing invalid characters in variable names such a
 for model exchange or co-simulation <code class="docutils literal"><span class="pre">1.0</span></code> or <code class="docutils literal"><span class="pre">2.0</span></code>.</li>
 </ul>
 </div></blockquote>
-<p>The next section discusses requirements onf some of the arguments of SimulatorToFMU</p>
+<p>The next section discusses requirements of some of the arguments of SimulatorToFMU.</p>
 <div class="section" id="simulation-model-or-configuration-file">
 <h3>4.1.1. Simulation model or configuration file<a class="headerlink" href="#simulation-model-or-configuration-file" title="Permalink to this headline">¶</a></h3>
 <p>An FMU exported by SimulatorToFMU requires a configuration file to run.
-There are two ways of providing the configuration file to the FMU</p>
+There are two ways of providing the configuration file to the FMU:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>The path to the configuration file can be passed as argument <code class="docutils literal"><span class="pre">&quot;&lt;-c&gt;&quot;</span></code> 
-to SimulatorToFMU. In this situation, the configuration file is copied 
+<li>The path to the configuration file is passed as the comamnd line argument <code class="docutils literal"><span class="pre">&quot;&lt;-c&gt;&quot;</span></code> 
+of SimulatorToFMU.py. In this situation, the configuration file is copied 
 in the resources folder of the FMU.</li>
 <li>The path to the configuration is set by the master algorithm before initializing the FMU.</li>
 </ol>
@@ -210,7 +210,7 @@ This name is reserved and should not be used for FMU input and output names.</p>
 <div class="section" id="dymola">
 <h4>4.1.1.1. Dymola<a class="headerlink" href="#dymola" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
-<li>If the path to a configuration file is provided,  then
+<li>If the path to the configuration file is provided,  then
 Dymola copies the file to its resources folder and uses the configuration file at runtime.
 In this case, the path to the configuration file can&#8217;t be set and changed by the master algorithm.</li>
 <li>If the configuration file is not provided, then the path to the configuration file must 
@@ -220,11 +220,11 @@ be set by the master algorithm prior to initializing the FMU.</li>
 <div class="section" id="jmodelica">
 <h4>4.1.1.2. JModelica<a class="headerlink" href="#jmodelica" title="Permalink to this headline">¶</a></h4>
 <ul>
-<li><p class="first">If the path to a configuration file is provided,  then
+<li><p class="first">If the path to the configuration file is provided,  then
 JModelica will not copy it to the resources folder of the FMU. 
 Instead, the path to the configuration is hard-coded in the FMU. 
-In this case, the path to the configuration file can&#8217;t be set and changed by the master algorithm.</p>
-<p>This is a limitation in JModelica 2.0 which is currently investigated by the JModelica team.
+As a further restriction, the path to the configuration file can&#8217;t be set and changed by the master algorithm.</p>
+<p>These are known limitations in JModelica 2.0.
 The workaround is to make sure that the path of the configuration file is 
 the same on the machine where the FMU will be run.</p>
 </li>
@@ -238,10 +238,10 @@ the same on the machine where the FMU will be run.</p>
 <li><p class="first">If the path to a configuration file is provided,  then
 OpenModelica will not copy it to the resources folder of the FMU. 
 Instead, the path to the configuration is hard-coded in the FMU. 
-In this case, the path to the configuration file can be set and changed by the master algorithm.</p>
-<p>This is a limitation in OpenModelica 1.11.0 which is currently investigated by the OpenModelica team.
+However, the path to the configuration file can be set and changed by the master algorithm.</p>
+<p>This is a known limitation in OpenModelica 1.11.0.
 The workaround is to either make sure that the path of the configuration file is 
-the same on the machine where the FMU will be run or set the path of the configuration 
+the same on the machine where the FMU will be run, or set the path of the configuration file
 when running the FMU.</p>
 </li>
 <li><p class="first">If the configuration file is not provided, then the path to the configuration file must 
@@ -254,11 +254,11 @@ be set by master algorithm prior to initializing the FMU.</p>
 <h3>4.1.2. Reserved variable names<a class="headerlink" href="#reserved-variable-names" title="Permalink to this headline">¶</a></h3>
 <p>Following variables names are not allowed to be used as FMU input, output, or parameter names.</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">_configurationFileName</span></code>: Variable name used to set the path to a simulation model or configuration file</li>
-<li><code class="docutils literal"><span class="pre">_saveToFile</span></code>: Variable used to set the flag for storing simulation results or not (1 for storing, 0 else)</li>
+<li><code class="docutils literal"><span class="pre">_configurationFileName</span></code>: Variable name used to set the path to the Simulator model or configuration file.</li>
+<li><code class="docutils literal"><span class="pre">_saveToFile</span></code>: Variable used to set the flag for storing simulation results (1 for storing, 0 else).</li>
 <li><code class="docutils literal"><span class="pre">time</span></code>: Internal FMU simulation time.</li>
 </ul>
-<p>If any of these variables is used for an FMU input or output name, SimulatorToFMu will exit with an error.</p>
+<p>If any of these variables is used for an FMU input or output name, SimulatorToFMU will exit with an error.</p>
 </div>
 </div>
 <div class="section" id="outputs-of-simulatortofmu">
@@ -316,7 +316,7 @@ a version of Dymola which has the <code class="docutils literal"><span class="pr
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a memoryless Python-based Simulator User Guide</a> &#187;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
