@@ -134,7 +134,7 @@ class Tester(unittest.TestCase):
 
         '''
 
-        for tool in ['omc', 'jmodelica', 'dymola', ]:
+        for tool in ['omc', 'jmodelica', 'dymola']:
             if (platform.system().lower() == 'linux' and tool == 'omc'):
                 print ('tool={!s} is not supported on Linux.'.format(tool))
                 continue
