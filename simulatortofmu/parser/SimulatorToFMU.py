@@ -1110,7 +1110,7 @@ class SimulatorToFMU(object):
             retStr=retStr.lower()
             if sys.version_info.major > 2:
                 retStr = str(retStr, 'utf-8')
-            if('error'.find(retStr)!=-1):
+            if('error'.find(retStr)<0):
                 s='{!s} failed to export {!s} as an FMU with error={!s}'.format(self.export_tool,
                                                                         self.model_name,
                                                                         retStr)
