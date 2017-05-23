@@ -350,7 +350,7 @@ def main():
         if fmi_version in ['1.0', '2.0']:
             fmi_version = str(int(float(fmi_version)))
         modelica_path = 'MODELICAPATH'
-    if(export_tool.lower() == 'jmodelica'):
+    elif(export_tool.lower() == 'jmodelica'):
         mos_template_path = MOS_TEMPLATE_PATH_JMODELICA
         if fmi_version in ['1', '2']:
             fmi_version = str(float(fmi_version)*1.0)
@@ -1068,6 +1068,7 @@ class SimulatorToFMU(object):
                 command = os.path.join(self.export_tool_path, 'dymola')
             else:
                 command = 'dymola' 
+            
         # Create command for JModelica     
         if(self.export_tool == 'jmodelica'):
             if(platform.system().lower()=='linux'):
