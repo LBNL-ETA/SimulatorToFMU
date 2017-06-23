@@ -269,7 +269,75 @@ class Tester(unittest.TestCase):
         Test the execution of one Simulator FMU.
 
         '''
+        
+        # Run the cases
         if platform.system().lower() == 'windows':
+            # Export FMUs which are needed to run the cases.
+            for tool in ['dymola', 'jmodelica', 'omc']:
+                if tool == 'omc':
+                    modPat = 'OPENMODELICALIBRARY'
+                    mosT = MOS_TEMPLATE_PATH_OPENMODELICA
+                elif tool == 'dymola':
+                    modPat = 'MODELICAPATH'
+                    mosT = MOS_TEMPLATE_PATH_DYMOLA
+                elif tool == 'jmodelica':
+                    os.environ['MODELICAPATH']=''
+                    modPat = None
+                    mosT = MOS_TEMPLATE_PATH_JMODELICA
+                for version in ['2']:
+                    if (tool == 'omc' or tool == 'jmodelica'):
+                        version = str(float(version))
+                    for api in ['me']:
+                        if (tool == 'omc' and version == '1.0' and api == 'cs'):
+                            print (
+                                'tool={!s} with FMI version={!s} and FMI API={!s} is not supported.'.format(
+                                    tool, version, api))
+                            continue
+                        for cs_xml in ['true']:
+                            if (version == '1'):
+                                continue
+                            Simulator_Test = simulator.SimulatorToFMU(
+                                'con_path',
+                                XML_INPUT_FILE,
+                                SimulatorToFMU_LIB_PATH,
+                                MO_TEMPLATE_PATH,
+                                mosT,
+                                XSD_FILE_PATH,
+                                '35',
+                                python_scripts_path,
+                                version,
+                                api,
+                                tool,
+                                None,
+                                modPat,
+                                cs_xml)
+    
+                            print (
+                                'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(
+                                    tool, version, api))
+                            start = datetime.now()
+                            Simulator_Test.print_mo()
+                            Simulator_Test.generate_fmu()
+                            Simulator_Test.clean_temporary()
+                            Simulator_Test.rewrite_fmu()
+                            end = datetime.now()
+                            print(
+                                'Export Simulator as an FMU in {!s} seconds.'.format(
+                                    (end - start).total_seconds()))
+                            
+                            if(tool=='dymola'):
+                                tool_folder='Dymola'
+                            elif(tool=='jmodelica'):
+                                tool_folder='JModelica'
+                            elif(tool=='omc'):
+                                tool_folder='OpenModelica'
+                            fmu_path = os.path.join(
+                            script_path, '..', 'fmus', tool_folder, platform.system().lower())
+                            print(
+                                'Copy Simulator.fmu to {!s}.'.format(fmu_path))
+                            shutil.copy2('Simulator.fmu', fmu_path)
+        
+    
             # OMC needs to be run first otherwise PyFMI will segfault.
             # It seems like either Dymola or JModelica is not releasing
             # resources hence causing OpenModelica to fail.
@@ -290,8 +358,8 @@ class Tester(unittest.TestCase):
                 simulator_input_valref = []
                 simulator_output_valref = []
     
-                simulator = load_fmu(fmu_path, log_level=7)
-                simulator.setup_experiment(
+                sim_mod = load_fmu(fmu_path, log_level=7)
+                sim_mod.setup_experiment(
                     start_time=start_time, stop_time=stop_time)
     
                 # Define the inputs
@@ -302,17 +370,17 @@ class Tester(unittest.TestCase):
                 # Get the value references of simulator inputs
                 for elem in simulator_input_names:
                     simulator_input_valref.append(
-                        simulator.get_variable_valueref(elem))
+                        sim_mod.get_variable_valueref(elem))
     
                 # Get the value references of simulator outputs
                 for elem in simulator_output_names:
                     simulator_output_valref.append(
-                        simulator.get_variable_valueref(elem))
+                        sim_mod.get_variable_valueref(elem))
     
                 # Set the flag to save the results
-                simulator.set('_saveToFile', 0)
+                sim_mod.set('_saveToFile', 0)
                 # Get value reference of the configuration file
-                simulator_con_val_ref = simulator.get_variable_valueref(
+                simulator_con_val_ref = sim_mod.get_variable_valueref(
                     '_configurationFileName')
     
                 # Set the configuration file
@@ -323,20 +391,20 @@ class Tester(unittest.TestCase):
                 # path to the configuration file when invoking SimulatorToFMU so
                 # it has the configuration file in its resource folders.
                 if not (tool=='JModelica'):
-                    simulator.set_string(
+                    sim_mod.set_string(
                         [simulator_con_val_ref],
                         [simulator_con_val_str])
     
                 # Initialize the FMUs
-                simulator.initialize()
+                sim_mod.initialize()
     
                 # Call event update prior to entering continuous mode.
-                simulator.event_update()
+                sim_mod.event_update()
     
                 # Enter continuous time mode
-                simulator.enter_continuous_time_mode()
+                sim_mod.enter_continuous_time_mode()
     
-                simulator.set_real(simulator_input_valref, simulator_input_values)
+                sim_mod.set_real(simulator_input_valref, simulator_input_values)
                 
                 end = datetime.now()
     
@@ -346,13 +414,13 @@ class Tester(unittest.TestCase):
                 if not (tool=='OpenModelica'):
                     # PyFMI fails to get the output of an OpenModelica FMU 
                     self.assertEqual(
-                        simulator.get_real(
-                            simulator.get_variable_valueref('i')),
+                        sim_mod.get_real(
+                            sim_mod.get_variable_valueref('i')),
                         1.0,
                         'Values are not matching.')
                     
                 # Terminate FMUs
-                simulator.terminate()
+                sim_mod.terminate()
         else:
             print('The unit tests for simulating FMUs only run on Windows')
                                             
