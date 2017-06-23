@@ -168,7 +168,7 @@ Following variables names are not allowed to be used as FMU input, output, or pa
 - ``_saveToFile``: Variable used to set the flag for storing simulation results (1 for storing, 0 else).
 - ``time``: Internal FMU simulation time.
 
-If any of these variables is used for an FMU input or output name, SimulatorToFMU will exit with an error.
+If any of these variables is used for an FMU input, output, or paramter name, SimulatorToFMU will exit with an error.
 
 
 """
