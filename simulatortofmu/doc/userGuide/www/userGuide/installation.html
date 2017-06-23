@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Installation and Configuration &#8212; FMU Export of a Memoryless Python-based Simulator User Guide</title>
+    <title>2. Installation and Configuration &mdash; FMU Export of a Memoryless Python-based Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -17,25 +17,23 @@
         VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="FMU Export of a Memoryless Python-based Simulator User Guide" href="index.html" />
     <link rel="next" title="3. Best Practice" href="bestPractice.html" />
     <link rel="prev" title="1. Introduction" href="introduction.html" /> 
   </head>
-  <body role="document">
+  <body>
 <div class="headerStyle">
 <img src="_static/lbl-logo.png" alt="LBL logo" />
 </div>
 
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -54,11 +52,11 @@
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
+        <li><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &raquo;</li> -->
  
       </ul>
     </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -76,21 +74,22 @@
   <h4>Next topic</h4>
   <p class="topless"><a href="bestPractice.html"
                         title="next chapter">3. Best Practice</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/installation.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/installation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -99,7 +98,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <div class="section" id="installation-and-configuration">
 <span id="installation"></span><h1>2. Installation and Configuration<a class="headerlink" href="#installation-and-configuration" title="Permalink to this headline">¶</a></h1>
@@ -144,27 +143,27 @@ As a workaround, SimulatorToFMU checks if there are missing libraries dependenci
 </ol>
 <blockquote>
 <div><ul class="simple">
-<li>Python installation folder (e.g. <code class="docutils literal"><span class="pre">C:\Python35</span></code>)</li>
-<li>Python scripts folder (e.g. <code class="docutils literal"><span class="pre">C:\Python35\Scripts</span></code>),</li>
-<li>Dymola executable folder (e.g. <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files(x86)\Dymola2017</span> <span class="pre">FD01\bin</span></code>)</li>
-<li>JModelica installation folder (e.g. <code class="docutils literal"><span class="pre">C:\JModelica.org-2.0</span></code>)</li>
-<li>OpenModelica executable folder (e.g. <code class="docutils literal"><span class="pre">C:\OpenModelica1.11.0-32bit\bin</span></code>)</li>
+<li>Python installation folder (e.g. <tt class="docutils literal"><span class="pre">C:\Python35</span></tt>)</li>
+<li>Python scripts folder (e.g. <tt class="docutils literal"><span class="pre">C:\Python35\Scripts</span></tt>),</li>
+<li>Dymola executable folder (e.g. <tt class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files(x86)\Dymola2017</span> <span class="pre">FD01\bin</span></tt>)</li>
+<li>JModelica installation folder (e.g. <tt class="docutils literal"><span class="pre">C:\JModelica.org-2.0</span></tt>)</li>
+<li>OpenModelica executable folder (e.g. <tt class="docutils literal"><span class="pre">C:\OpenModelica1.11.0-32bit\bin</span></tt>)</li>
 </ul>
 <p>You can add folders to your system path by performing following steps on Windows 8 or 10:</p>
 <ul class="simple">
 <li>In Search, search for and then select: System (Control Panel)</li>
 <li>Click the Advanced system settings link.</li>
 <li>Click Environment Variables. In the section System Variables, find the PATH environment variable and select it. Click Edit.</li>
-<li>In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable (e.g. <code class="docutils literal"><span class="pre">C:\Python35</span></code>, <code class="docutils literal"><span class="pre">C:\Python35\Scripts</span></code>). Click OK. Close all remaining windows by clicking OK.</li>
+<li>In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable (e.g. <tt class="docutils literal"><span class="pre">C:\Python35</span></tt>, <tt class="docutils literal"><span class="pre">C:\Python35\Scripts</span></tt>). Click OK. Close all remaining windows by clicking OK.</li>
 <li>Reopen Command prompt window for your changes to be active.</li>
 </ul>
-<p>To check if the variables have been correctly added to the system path, type <code class="docutils literal"><span class="pre">python</span></code>, <code class="docutils literal"><span class="pre">dymola</span></code>, <code class="docutils literal"><span class="pre">pylab</span></code>, or <code class="docutils literal"><span class="pre">omc</span></code>
+<p>To check if the variables have been correctly added to the system path, type <tt class="docutils literal"><span class="pre">python</span></tt>, <tt class="docutils literal"><span class="pre">dymola</span></tt>, <tt class="docutils literal"><span class="pre">pylab</span></tt>, or <tt class="docutils literal"><span class="pre">omc</span></tt>
 into a command prompt to see if the right version of Python, Dymola, JModelica, or OpenModelica starts up.</p>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">To avoid adding Dymola, JModelica, or OpenModelica to the system path, provide the path
-to the executables to SimulatorToFMU.py. See <a class="reference internal" href="build.html#build-cmd"><span class="std std-ref">Command-line use</span></a> for the lists of arguments
+to the executables to SimulatorToFMU.py. See <a class="reference internal" href="build.html#build-cmd"><em>Command-line use</em></a> for the lists of arguments
 of SimulatorToFMU.</p>
 </div>
 <ol class="arabic simple" start="2">
@@ -177,13 +176,13 @@ of SimulatorToFMU.</p>
 <p>The installation directory should contain the following subdirectories:</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">bin/</span></code>
+<li><tt class="docutils literal"><span class="pre">bin/</span></tt>
 (Scripts for running unit tests)</li>
-<li><code class="docutils literal"><span class="pre">doc/</span></code>
+<li><tt class="docutils literal"><span class="pre">doc/</span></tt>
 (Documentation sources)</li>
-<li><code class="docutils literal"><span class="pre">fmus/</span></code>
+<li><tt class="docutils literal"><span class="pre">fmus/</span></tt>
 (FMUs folder)</li>
-<li><code class="docutils literal"><span class="pre">parser/</span></code>
+<li><tt class="docutils literal"><span class="pre">parser/</span></tt>
 (Python scripts, Modelica templates and XML validator files)</li>
 </ul>
 </div></blockquote>
@@ -204,7 +203,7 @@ of SimulatorToFMU.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -223,13 +222,13 @@ of SimulatorToFMU.</p>
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
+        <li><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &raquo;</li> -->
  
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    <div class="footer">
+        &copy; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
