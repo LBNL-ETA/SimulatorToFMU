@@ -37,7 +37,7 @@ To install run
 
 For more information visit the development page at `https://github.com/LBNL-ETA/SimulatorToFMU <https://github.com/LBNL-ETA/SimulatorToFMU>`_
 
-The license is at `simulatortofmu/LICENSE.txt <https://github.com/tsnouidui/SimulatorToFMU/blob/master/simulatortofmu/LICENSE.txt>`_
+The license is at `LICENSE.txt <https://github.com/tsnouidui/SimulatorToFMU/blob/master/simulatortofmu/LICENSE.txt>`_
 
 
 
