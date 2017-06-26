@@ -26,9 +26,20 @@ Requirements
 - `jinja2 <https://pypi.python.org/pypi/Jinja2>`_
 - `lxml <http://pypi.python.org/pypi/lxml>`_
 
-The license is at `simulatortofmu/LICENSE.txt <https://github.com/tsnouidui/SimulatorToFMU/blob/master/simulatortofmu/LICENSE.txt>`_
+
+Installation
+^^^^^^^^^^^^
+To install run
+
+.. code-block:: none
+
+   pip install simulatortofmu
 
 For more information visit the development page at `https://github.com/LBNL-ETA/SimulatorToFMU <https://github.com/LBNL-ETA/SimulatorToFMU>`_
+
+The license is at `simulatortofmu/LICENSE.txt <https://github.com/tsnouidui/SimulatorToFMU/blob/master/simulatortofmu/LICENSE.txt>`_
+
+
 
 
 
