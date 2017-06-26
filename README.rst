@@ -28,7 +28,7 @@ Requirements
 
 The license is at `simulatortofmu/LICENSE.txt <https://github.com/tsnouidui/SimulatorToFMU/blob/master/simulatortofmu/LICENSE.txt>`_
 
-For more information visit the development page at `simulatortofmu <https://github.com/LBNL-ETA/SimulatorToFMU>`_
+For more information visit the development page at `https://github.com/LBNL-ETA/SimulatorToFMU <https://github.com/LBNL-ETA/SimulatorToFMU>`_
 
 
 
