@@ -4,7 +4,7 @@ Copyright and License
 Copyright
 ---------
 
-"SimulatorToFMU v0.1" Copyright (c) 2017, 
+Copyright (c) 2017, 
 The Regents of the University of California, 
 through Lawrence Berkeley National Laboratory 
 (subject to receipt of any required approvals from the U.S. Dept. of Energy).  
@@ -26,7 +26,7 @@ and perform publicly and display publicly, and to permit others to do so.
 License Agreement
 -----------------
 
-"SimulatorToFMU v0.1" Copyright (c) 2017, 
+Copyright (c) 2017, 
 The Regents of the University of California, 
 through Lawrence Berkeley National Laboratory 
 (subject to receipt of any required approvals from the U.S. Dept. of Energy).  

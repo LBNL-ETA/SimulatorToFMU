@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>4. Creating an FMU &mdash; FMU Export of a Memoryless Python-based Simulator User Guide</title>
+    <title>4. Creating an FMU &#8212; FMU Export of a Memoryless Python-based Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,26 +14,28 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.0',
+        VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="FMU Export of a Memoryless Python-based Simulator User Guide" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="5. Development" href="development.html" />
     <link rel="prev" title="3. Best Practice" href="bestPractice.html" /> 
   </head>
-  <body>
+  <body role="document">
 <div class="headerStyle">
 <img src="_static/lbl-logo.png" alt="LBL logo" />
 </div>
 
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -52,11 +54,11 @@
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -82,22 +84,21 @@
   <h4>Next topic</h4>
   <p class="topless"><a href="development.html"
                         title="next chapter">5. Development</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/build.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/build.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -106,25 +107,25 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="creating-an-fmu">
 <span id="build"></span><h1>4. Creating an FMU<a class="headerlink" href="#creating-an-fmu" title="Permalink to this headline">¶</a></h1>
 <p>This chapter describes how to create a Functional Mockup Unit.
-It assumes you have followed the <a class="reference internal" href="installation.html"><em>Installation and Configuration</em></a> instructions, and that you have created the Simulator
-model description file as well as the Python script required to interface the Simulator following the <a class="reference internal" href="bestPractice.html"><em>Best Practice</em></a> guidelines.</p>
+It assumes you have followed the <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> instructions, and that you have created the Simulator
+model description file as well as the Python script required to interface the Simulator following the <a class="reference internal" href="bestPractice.html"><span class="doc">Best Practice</span></a> guidelines.</p>
 <div class="section" id="module-parser.SimulatorToFMU">
 <span id="command-line-use"></span><span id="build-cmd"></span><h2>4.1. Command-line use<a class="headerlink" href="#module-parser.SimulatorToFMU" title="Permalink to this headline">¶</a></h2>
 <p>To create an FMU,
-open a command-line window (see <a class="reference internal" href="notation.html"><em>Notation</em></a>).
+open a command-line window (see <a class="reference internal" href="notation.html"><span class="doc">Notation</span></a>).
 The standard invocation of the SimulatorToFMU tool is:</p>
 <div class="highlight-none"><div class="highlight"><pre>&gt; python  &lt;scriptDir&gt;SimulatorToFMU.py -s &lt;python-scripts-path&gt;
 </pre></div>
 </div>
-<p>where <tt class="docutils literal"><span class="pre">scriptDir</span></tt> is the path to the scripts directory of SimulatorToFMU.
-This is the <tt class="docutils literal"><span class="pre">parser</span></tt> subdirectory of the installation directory.
-See <a class="reference internal" href="installation.html"><em>Installation and Configuration</em></a> for details.</p>
-<p>An example of invoking <tt class="docutils literal"><span class="pre">SimulatorToFMU.py</span></tt> on Windows is</p>
+<p>where <code class="docutils literal"><span class="pre">scriptDir</span></code> is the path to the scripts directory of SimulatorToFMU.
+This is the <code class="docutils literal"><span class="pre">parser</span></code> subdirectory of the installation directory.
+See <a class="reference internal" href="installation.html"><span class="doc">Installation and Configuration</span></a> for details.</p>
+<p>An example of invoking <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> on Windows is</p>
 <div class="highlight-none"><div class="highlight"><pre># Windows:
 &gt; python parser\SimulatorToFMU.py -s parser\utilities\simulator_wrapper.py, d:\calc.py
 </pre></div>
@@ -134,7 +135,7 @@ See <a class="reference internal" href="installation.html"><em>Installation and 
 <li>All file paths can be absolute or relative.</li>
 <li>If any file path contains spaces, then it must be surrounded with double quotes.</li>
 </ul>
-<p><tt class="docutils literal"><span class="pre">SimulatorToFMU.py</span></tt> supports the following command-line switches:</p>
+<p><code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> supports the following command-line switches:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="44%" />
@@ -150,27 +151,27 @@ See <a class="reference internal" href="installation.html"><em>Installation and 
 <td>Paths to python scripts required to run the
 Simulator.
 The main Python script must be an extension
-of the <tt class="docutils literal"><span class="pre">simulator_wrapper.py</span></tt> script which is provided in
-<tt class="docutils literal"><span class="pre">parser/utilities/simulator_wrapper.py</span></tt>. The name of
-the main Python script must be <tt class="docutils literal"><span class="pre">simulator_wrapper.py</span></tt>.</td>
+of the <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code> script which is provided in
+<code class="docutils literal"><span class="pre">parser/utilities/simulator_wrapper.py</span></code>. The name of
+the main Python script must be <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code>.</td>
 </tr>
 <tr class="row-odd"><td>-c</td>
 <td>Path to the Simulator model or configuration file.</td>
 </tr>
 <tr class="row-even"><td>-i</td>
 <td>Path to the XML input file with the inputs/outputs of the FMU.
-Default is <tt class="docutils literal"><span class="pre">parser/utilities/SimulatorModelDescription.xml</span></tt></td>
+Default is <code class="docutils literal"><span class="pre">parser/utilities/SimulatorModelDescription.xml</span></code></td>
 </tr>
 <tr class="row-odd"><td>-v</td>
-<td>FMI version. Options are <tt class="docutils literal"><span class="pre">1.0</span></tt> and <tt class="docutils literal"><span class="pre">2.0</span></tt>. Default is <tt class="docutils literal"><span class="pre">2.0</span></tt></td>
+<td>FMI version. Options are <code class="docutils literal"><span class="pre">1.0</span></code> and <code class="docutils literal"><span class="pre">2.0</span></code>. Default is <code class="docutils literal"><span class="pre">2.0</span></code></td>
 </tr>
 <tr class="row-even"><td>-a</td>
-<td>FMI API version. Options are <tt class="docutils literal"><span class="pre">cs</span></tt> (co-simulation) and <tt class="docutils literal"><span class="pre">me</span></tt>
-(model exchange). Default is <tt class="docutils literal"><span class="pre">me</span></tt>.</td>
+<td>FMI API version. Options are <code class="docutils literal"><span class="pre">cs</span></code> (co-simulation) and <code class="docutils literal"><span class="pre">me</span></code>
+(model exchange). Default is <code class="docutils literal"><span class="pre">me</span></code>.</td>
 </tr>
 <tr class="row-odd"><td>-t</td>
-<td>Modelica compiler. Options are <tt class="docutils literal"><span class="pre">dymola</span></tt> (Dymola), <tt class="docutils literal"><span class="pre">jmodelica</span></tt>
-(JModelica), and <tt class="docutils literal"><span class="pre">omc</span></tt> (OpenModelica). Default is <tt class="docutils literal"><span class="pre">dymola</span></tt>.</td>
+<td>Modelica compiler. Options are <code class="docutils literal"><span class="pre">dymola</span></code> (Dymola), <code class="docutils literal"><span class="pre">jmodelica</span></code>
+(JModelica), and <code class="docutils literal"><span class="pre">omc</span></code> (OpenModelica). Default is <code class="docutils literal"><span class="pre">dymola</span></code>.</td>
 </tr>
 <tr class="row-even"><td>-pt</td>
 <td>Path to the Modelica executable compiler.</td>
@@ -181,10 +182,10 @@ Default is <tt class="docutils literal"><span class="pre">parser/utilities/Simul
 <blockquote>
 <div><ul class="simple">
 <li>reading, validating, and parsing the Simulator XML input file.
-This includes removing and replacing invalid characters in variable names such as <tt class="docutils literal"><span class="pre">*+-</span></tt> with <tt class="docutils literal"><span class="pre">_</span></tt>,</li>
+This includes removing and replacing invalid characters in variable names such as <code class="docutils literal"><span class="pre">*+-</span></code> with <code class="docutils literal"><span class="pre">_</span></code>,</li>
 <li>writing Modelica code with valid inputs and outputs names,</li>
-<li>invoking a Modelica compiler to compile the <a class="reference internal" href="glossary.html#term-modelica"><em class="xref std std-term">Modelica</em></a> code as an FMU 
-for model exchange or co-simulation <tt class="docutils literal"><span class="pre">1.0</span></tt> or <tt class="docutils literal"><span class="pre">2.0</span></tt>.</li>
+<li>invoking a Modelica compiler to compile the <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> code as an FMU 
+for model exchange or co-simulation <code class="docutils literal"><span class="pre">1.0</span></code> or <code class="docutils literal"><span class="pre">2.0</span></code>.</li>
 </ul>
 </div></blockquote>
 <p>The next section discusses requirements of some of the arguments of SimulatorToFMU.</p>
@@ -194,7 +195,7 @@ for model exchange or co-simulation <tt class="docutils literal"><span class="pr
 There are two ways of providing the configuration file to the FMU:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>The path to the configuration file is passed as the comamnd line argument <tt class="docutils literal"><span class="pre">&quot;&lt;-c&gt;&quot;</span></tt> 
+<li>The path to the configuration file is passed as the comamnd line argument <code class="docutils literal"><span class="pre">&quot;&lt;-c&gt;&quot;</span></code> 
 of SimulatorToFMU.py. In this situation, the configuration file is copied 
 in the resources folder of the FMU.</li>
 <li>The path to the configuration is set by the master algorithm before initializing the FMU.</li>
@@ -202,7 +203,7 @@ in the resources folder of the FMU.</li>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The name of the configuration variable is <tt class="docutils literal"><span class="pre">_configurationFileName</span></tt>. 
+<p class="last">The name of the configuration variable is <code class="docutils literal"><span class="pre">_configurationFileName</span></code>. 
 This name is reserved and should not be used for FMU input and output names.</p>
 </div>
 <p>Depending on the tool used to export the FMU, following requirements/restrictions apply:</p>
@@ -253,29 +254,29 @@ be set by master algorithm prior to initializing the FMU.</p>
 <h3>4.1.2. Reserved variable names<a class="headerlink" href="#reserved-variable-names" title="Permalink to this headline">¶</a></h3>
 <p>Following variables names are not allowed to be used as FMU input, output, or parameter names.</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">_configurationFileName</span></tt>: Variable name used to set the path to the Simulator model or configuration file.</li>
-<li><tt class="docutils literal"><span class="pre">_saveToFile</span></tt>: Variable used to set the flag for storing simulation results (1 for storing, 0 else).</li>
-<li><tt class="docutils literal"><span class="pre">time</span></tt>: Internal FMU simulation time.</li>
+<li><code class="docutils literal"><span class="pre">_configurationFileName</span></code>: Variable name used to set the path to the Simulator model or configuration file.</li>
+<li><code class="docutils literal"><span class="pre">_saveToFile</span></code>: Variable used to set the flag for storing simulation results (1 for storing, 0 else).</li>
+<li><code class="docutils literal"><span class="pre">time</span></code>: Internal FMU simulation time.</li>
 </ul>
 <p>If any of these variables is used for an FMU input, output, or paramter name, SimulatorToFMU will exit with an error.</p>
 </div>
 </div>
 <div class="section" id="outputs-of-simulatortofmu">
 <span id="build-output"></span><h2>4.2. Outputs of SimulatorToFMU<a class="headerlink" href="#outputs-of-simulatortofmu" title="Permalink to this headline">¶</a></h2>
-<p>The main output from running <tt class="docutils literal"><span class="pre">SimulatorToFMU.py</span></tt> consists of an FMU named
-after the <tt class="docutils literal"><span class="pre">modelName</span></tt> specified in the input file, and a zip
-file called <tt class="docutils literal"><span class="pre">&quot;modelname&quot;</span></tt> + <tt class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></tt>. That is, if the <tt class="docutils literal"><span class="pre">modelName</span></tt>
-is called <tt class="docutils literal"><span class="pre">Simulator</span></tt>, then the outputs of <tt class="docutils literal"><span class="pre">SimulatorToFMU</span></tt>
-will be <tt class="docutils literal"><span class="pre">Simulator.fmu</span></tt> and <tt class="docutils literal"><span class="pre">Simulator.scripts.zip</span></tt>.</p>
+<p>The main output from running <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> consists of an FMU named
+after the <code class="docutils literal"><span class="pre">modelName</span></code> specified in the input file, and a zip
+file called <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></code>. That is, if the <code class="docutils literal"><span class="pre">modelName</span></code>
+is called <code class="docutils literal"><span class="pre">Simulator</span></code>, then the outputs of <code class="docutils literal"><span class="pre">SimulatorToFMU</span></code>
+will be <code class="docutils literal"><span class="pre">Simulator.fmu</span></code> and <code class="docutils literal"><span class="pre">Simulator.scripts.zip</span></code>.</p>
 <p>The FMU and the zip file are written to the current
 working directory, that is, in the directory from which you entered the command.</p>
-<p><tt class="docutils literal"><span class="pre">&quot;modelname&quot;</span></tt> + <tt class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></tt> contains the Python scripts that are needed to
+<p><code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></code> contains the Python scripts that are needed to
 interface with the Simulator. The unzipped folder must be added
-to the <tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt> of the target machine where the FMU will be used.</p>
+to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> of the target machine where the FMU will be used.</p>
 <p>Any secondary output from running the SimulatorToFMU tools can be deleted safely.</p>
 <p>Note that the FMU itself is a zip file.
 This means you can open and inspect its contents.
-To do so, it may help to change the &#8220;<tt class="docutils literal"><span class="pre">.fmu</span></tt>&#8221; extension to &#8220;<tt class="docutils literal"><span class="pre">.zip</span></tt>&#8221;.</p>
+To do so, it may help to change the &#8220;<code class="docutils literal"><span class="pre">.fmu</span></code>&#8221; extension to &#8220;<code class="docutils literal"><span class="pre">.zip</span></code>&#8221;.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <ul class="last simple">
@@ -284,7 +285,7 @@ longer compilation/simulation time compared to the tested versions
 of Dymola and JModelica.</li>
 <li>FMUs exported using Dymola 2017 FD01 needs a Dymola runtime license to run.
 A Dymola runtime license is not be needed if the FMU is exported with
-a version of Dymola which has the <tt class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></tt> license.</li>
+a version of Dymola which has the <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license.</li>
 </ul>
 </div>
 </div>
@@ -296,7 +297,7 @@ a version of Dymola which has the <tt class="docutils literal"><span class="pre"
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -315,13 +316,13 @@ a version of Dymola which has the <tt class="docutils literal"><span class="pre"
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

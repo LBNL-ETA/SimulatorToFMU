@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>6. Help &mdash; FMU Export of a Memoryless Python-based Simulator User Guide</title>
+    <title>6. Help &#8212; FMU Export of a Memoryless Python-based Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,26 +14,28 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.0',
+        VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="FMU Export of a Memoryless Python-based Simulator User Guide" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="7. Notation" href="notation.html" />
     <link rel="prev" title="5. Development" href="development.html" /> 
   </head>
-  <body>
+  <body role="document">
 <div class="headerStyle">
 <img src="_static/lbl-logo.png" alt="LBL logo" />
 </div>
 
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -52,11 +54,11 @@
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -75,22 +77,21 @@
   <h4>Next topic</h4>
   <p class="topless"><a href="notation.html"
                         title="next chapter">7. Notation</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/help.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/help.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -99,33 +100,33 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="help">
 <span id="id1"></span><h1>6. Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h1>
 <p>This chapter lists potential issues encountered when using SimulatorToFMU.</p>
 <div class="section" id="compilation-failed-with-dymola">
 <h2>6.1. Compilation failed with Dymola<a class="headerlink" href="#compilation-failed-with-dymola" title="Permalink to this headline">¶</a></h2>
-<p>If the export of the Simulator failed when compiling the model with Dymola, comment out <tt class="docutils literal"><span class="pre">&quot;exit()&quot;</span></tt> in
-<tt class="docutils literal"><span class="pre">parser/utilities/SimulatorModelica_Template_Dymola.mos</span></tt> with <tt class="docutils literal"><span class="pre">&quot;//exit()&quot;</span></tt>, and re-run <tt class="docutils literal"><span class="pre">SimulatorToFMU.py</span></tt>
+<p>If the export of the Simulator failed when compiling the model with Dymola, comment out <code class="docutils literal"><span class="pre">&quot;exit()&quot;</span></code> in
+<code class="docutils literal"><span class="pre">parser/utilities/SimulatorModelica_Template_Dymola.mos</span></code> with <code class="docutils literal"><span class="pre">&quot;//exit()&quot;</span></code>, and re-run <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code>
 to see why the complation has failed.</p>
 </div>
 <div class="section" id="compilation-failed-with-openmodelica">
 <h2>6.2. Compilation failed with OpenModelica<a class="headerlink" href="#compilation-failed-with-openmodelica" title="Permalink to this headline">¶</a></h2>
 <p>If the export of the Simulator failed when compiling the model with OpenModelica,
-check if the variable <tt class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></tt> is defined in the Windows <tt class="docutils literal"><span class="pre">Environment</span> <span class="pre">Variables</span></tt>.</p>
-<p><tt class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></tt> is the path to the libraries which are required by OpenModelica to compile Modelica models.</p>
+check if the variable <code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is defined in the Windows <code class="docutils literal"><span class="pre">Environment</span> <span class="pre">Variables</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is the path to the libraries which are required by OpenModelica to compile Modelica models.</p>
 </div>
 <div class="section" id="simulation-failed-in-openmodelica-and-dymola-fmus">
 <h2>6.3. Simulation failed in OpenModelica and Dymola FMUs<a class="headerlink" href="#simulation-failed-in-openmodelica-and-dymola-fmus" title="Permalink to this headline">¶</a></h2>
-<p>If the simulation failed with the exported FMU, check if the <tt class="docutils literal"><span class="pre">&quot;modelname&quot;</span></tt> + <tt class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></tt>
-was added to the <tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt> as described in <a class="reference internal" href="build.html#build-output"><em>Outputs of SimulatorToFMU</em></a>. Please note that any software
+<p>If the simulation failed with the exported FMU, check if the <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></code>
+was added to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> as described in <a class="reference internal" href="build.html#build-output"><span class="std std-ref">Outputs of SimulatorToFMU</span></a>. Please note that any software
 which is required to run the exported FMU will need to be installed on the target machine where the FMU is run.</p>
 </div>
 <div class="section" id="simulation-failed-with-dymola-fmus">
 <h2>6.4. Simulation failed with Dymola FMUs<a class="headerlink" href="#simulation-failed-with-dymola-fmus" title="Permalink to this headline">¶</a></h2>
-<p>If an FMU exported using Dymola fails to run, check if the version of Dymola which exported the FMU had the <tt class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></tt> license.
-The <tt class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></tt> license is required to export FMUs which can be run without requiring a Dymola runtime license.
+<p>If an FMU exported using Dymola fails to run, check if the version of Dymola which exported the FMU had the <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license.
+The <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license is required to export FMUs which can be run without requiring a Dymola runtime license.
 You can also inspect the model description of the FMU to see if a Dymola runtime license is required to run the FMU.</p>
 </div>
 </div>
@@ -136,7 +137,7 @@ You can also inspect the model description of the FMU to see if a Dymola runtime
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -155,13 +156,13 @@ You can also inspect the model description of the FMU to see if a Dymola runtime
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015-2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>
