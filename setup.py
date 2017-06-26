@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
     name="SimulatorToFMU",
-    version="0.1.0",
+    version="1.0.0",
     author="Thierry S. Nouidui",
     author_email="TSNouidui@lbl.gov",
     description=("Package for exporting a Simulator as a Functional Mock-up Unit"),
