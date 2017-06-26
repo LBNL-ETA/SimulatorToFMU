@@ -14,11 +14,11 @@ that support the import of Functional Mock-up Units.
 A memoryless Python-driven simulation program/script 
 is a simulation program which meets following requirements:
    
-  - The simulation program/script can be invoked through a Python script.
-  - The invocation of the simulation program/script is memoryless. That is, 
-    the output of the simulation program at any invocation time ``t`` 
-    depends only on the inputs at the time ``t``. 
-  - The inputs and the outputs of the simulation program/script must be ``real`` numbers.
+- The simulation program/script can be invoked through a Python script.
+- The invocation of the simulation program/script is memoryless. That is, 
+  the output of the simulation program at any invocation time ``t`` 
+  depends only on the inputs at the time ``t``. 
+- The inputs and the outputs of the simulation program/script must be ``real`` numbers.
   
 .. note::
 
