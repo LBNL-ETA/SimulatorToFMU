@@ -31,7 +31,9 @@ Installation
 ^^^^^^^^^^^^
 To install run
 
-pip install simulatortofmu
+.. code:: text
+
+   pip install simulatortofmu
 
 For more information visit the development page at `https://github.com/LBNL-ETA/SimulatorToFMU <https://github.com/LBNL-ETA/SimulatorToFMU>`_
 
