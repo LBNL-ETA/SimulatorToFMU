@@ -22,11 +22,12 @@ Command-line use
 Outputs of SimulatorToFMU
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The main output from running ``SimulatorToFMU.py`` consists of an FMU named 
-after the ``modelName`` specified in the input file, and a zip 
-file called ``"modelname"`` + ``".scripts.zip"``. That is, if the ``modelName``
+The main outputs from running ``SimulatorToFMU.py`` consist of an FMU named 
+after the ``modelName`` specified in the input file, a zip 
+file called ``"modelname"`` + ``".scripts.zip"``, and a zip 
+file called ``"modelname"`` + ``".binaries.zip"``.  That is, if the ``modelName``
 is called ``Simulator``, then the outputs of ``SimulatorToFMU``
-will be ``Simulator.fmu`` and ``Simulator.scripts.zip``.
+will be ``Simulator.fmu``, ``Simulator.scripts.zip``, and ``Simulator.binaries.zip``.
 
 The FMU and the zip file are written to the current 
 working directory, that is, in the directory from which you entered the command.
@@ -34,6 +35,10 @@ working directory, that is, in the directory from which you entered the command.
 ``"modelname"`` + ``".scripts.zip"`` contains the Python scripts that are needed to 
 interface with the Simulator. The unzipped folder must be added 
 to the ``PYTHONPATH`` of the target machine where the FMU will be used.
+
+``"modelname"`` + ``".binaries.zip"`` contains the binaries files that are needed to 
+interface with the Simulator. The unzipped folder must be added 
+to the system ``PATH`` of the target machine where the FMU will be used.
 
 Any secondary output from running the SimulatorToFMU tools can be deleted safely.
 

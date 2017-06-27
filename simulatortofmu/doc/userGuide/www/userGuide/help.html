@@ -65,7 +65,7 @@
 <li><a class="reference internal" href="#">6. Help</a><ul>
 <li><a class="reference internal" href="#compilation-failed-with-dymola">6.1. Compilation failed with Dymola</a></li>
 <li><a class="reference internal" href="#compilation-failed-with-openmodelica">6.2. Compilation failed with OpenModelica</a></li>
-<li><a class="reference internal" href="#simulation-failed-in-openmodelica-and-dymola-fmus">6.3. Simulation failed in OpenModelica and Dymola FMUs</a></li>
+<li><a class="reference internal" href="#simulation-failed-when-running-simulator-fmu">6.3. Simulation failed when running <code class="docutils literal"><span class="pre">Simulator.fmu</span></code></a></li>
 <li><a class="reference internal" href="#simulation-failed-with-dymola-fmus">6.4. Simulation failed with Dymola FMUs</a></li>
 </ul>
 </li>
@@ -115,13 +115,21 @@ to see why the complation has failed.</p>
 <h2>6.2. Compilation failed with OpenModelica<a class="headerlink" href="#compilation-failed-with-openmodelica" title="Permalink to this headline">¶</a></h2>
 <p>If the export of the Simulator failed when compiling the model with OpenModelica,
 check if the variable <code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is defined in the Windows <code class="docutils literal"><span class="pre">Environment</span> <span class="pre">Variables</span></code>.</p>
-<p><code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is the path to the libraries which are required by OpenModelica to compile Modelica models.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is the path to the libraries which are required by OpenModelica to compile Modelica models.</p>
 </div>
-<div class="section" id="simulation-failed-in-openmodelica-and-dymola-fmus">
-<h2>6.3. Simulation failed in OpenModelica and Dymola FMUs<a class="headerlink" href="#simulation-failed-in-openmodelica-and-dymola-fmus" title="Permalink to this headline">¶</a></h2>
-<p>If the simulation failed with the exported FMU, check if the <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></code>
-was added to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> as described in <a class="reference internal" href="build.html#build-output"><span class="std std-ref">Outputs of SimulatorToFMU</span></a>. Please note that any software
-which is required to run the exported FMU will need to be installed on the target machine where the FMU is run.</p>
+</div>
+<div class="section" id="simulation-failed-when-running-simulator-fmu">
+<h2>6.3. Simulation failed when running <code class="docutils literal"><span class="pre">Simulator.fmu</span></code><a class="headerlink" href="#simulation-failed-when-running-simulator-fmu" title="Permalink to this headline">¶</a></h2>
+<p>If the simulation failed with the exported FMU, check if
+the unzipped <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></code>, and <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.binaries.zip&quot;</span></code>
+were added to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>, and the system <code class="docutils literal"><span class="pre">PATH</span></code> respectively as described in <a class="reference internal" href="build.html#build-output"><span class="std std-ref">Outputs of SimulatorToFMU</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Any software which is required to run the exported FMU will need to
+be installed on the target machine where the FMU is run.</p>
+</div>
 </div>
 <div class="section" id="simulation-failed-with-dymola-fmus">
 <h2>6.4. Simulation failed with Dymola FMUs<a class="headerlink" href="#simulation-failed-with-dymola-fmus" title="Permalink to this headline">¶</a></h2>

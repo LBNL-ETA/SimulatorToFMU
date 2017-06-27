@@ -20,14 +20,21 @@ Compilation failed with OpenModelica
 If the export of the Simulator failed when compiling the model with OpenModelica, 
 check if the variable ``OPENMODELICALIBRARY`` is defined in the Windows ``Environment Variables``.
 
-``OPENMODELICALIBRARY`` is the path to the libraries which are required by OpenModelica to compile Modelica models.
+.. note::
 
-Simulation failed in OpenModelica and Dymola FMUs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ``OPENMODELICALIBRARY`` is the path to the libraries which are required by OpenModelica to compile Modelica models.
 
-If the simulation failed with the exported FMU, check if the ``"modelname"`` + ``".scripts.zip"``
-was added to the ``PYTHONPATH`` as described in :ref:`build_output`. Please note that any software
-which is required to run the exported FMU will need to be installed on the target machine where the FMU is run.
+Simulation failed when running ``Simulator.fmu``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If the simulation failed with the exported FMU, check if 
+the unzipped ``"modelname"`` + ``".scripts.zip"``, and ``"modelname"`` + ``".binaries.zip"``
+were added to the ``PYTHONPATH``, and the system ``PATH`` respectively as described in :ref:`build_output`. 
+
+.. note::
+
+  Any software which is required to run the exported FMU will need to 
+  be installed on the target machine where the FMU is run.
 
 Simulation failed with Dymola FMUs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

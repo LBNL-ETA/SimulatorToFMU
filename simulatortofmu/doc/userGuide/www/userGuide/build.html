@@ -263,16 +263,20 @@ be set by master algorithm prior to initializing the FMU.</p>
 </div>
 <div class="section" id="outputs-of-simulatortofmu">
 <span id="build-output"></span><h2>4.2. Outputs of SimulatorToFMU<a class="headerlink" href="#outputs-of-simulatortofmu" title="Permalink to this headline">¶</a></h2>
-<p>The main output from running <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> consists of an FMU named
-after the <code class="docutils literal"><span class="pre">modelName</span></code> specified in the input file, and a zip
-file called <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></code>. That is, if the <code class="docutils literal"><span class="pre">modelName</span></code>
+<p>The main outputs from running <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> consist of an FMU named
+after the <code class="docutils literal"><span class="pre">modelName</span></code> specified in the input file, a zip
+file called <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></code>, and a zip
+file called <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.binaries.zip&quot;</span></code>.  That is, if the <code class="docutils literal"><span class="pre">modelName</span></code>
 is called <code class="docutils literal"><span class="pre">Simulator</span></code>, then the outputs of <code class="docutils literal"><span class="pre">SimulatorToFMU</span></code>
-will be <code class="docutils literal"><span class="pre">Simulator.fmu</span></code> and <code class="docutils literal"><span class="pre">Simulator.scripts.zip</span></code>.</p>
+will be <code class="docutils literal"><span class="pre">Simulator.fmu</span></code>, <code class="docutils literal"><span class="pre">Simulator.scripts.zip</span></code>, and <code class="docutils literal"><span class="pre">Simulator.binaries.zip</span></code>.</p>
 <p>The FMU and the zip file are written to the current
 working directory, that is, in the directory from which you entered the command.</p>
 <p><code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></code> contains the Python scripts that are needed to
 interface with the Simulator. The unzipped folder must be added
 to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> of the target machine where the FMU will be used.</p>
+<p><code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.binaries.zip&quot;</span></code> contains the binaries files that are needed to
+interface with the Simulator. The unzipped folder must be added
+to the system <code class="docutils literal"><span class="pre">PATH</span></code> of the target machine where the FMU will be used.</p>
 <p>Any secondary output from running the SimulatorToFMU tools can be deleted safely.</p>
 <p>Note that the FMU itself is a zip file.
 This means you can open and inspect its contents.
