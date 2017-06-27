@@ -25,7 +25,7 @@ check if the variable ``OPENMODELICALIBRARY`` is defined in the Windows ``Enviro
   ``OPENMODELICALIBRARY`` is the path to the libraries which are required by OpenModelica to compile Modelica models.
 
 Simulation failed when running ``Simulator.fmu``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If the simulation failed with the exported FMU, check if 
 the unzipped ``"modelname"`` + ``".scripts.zip"``, and ``"modelname"`` + ``".binaries.zip"``
