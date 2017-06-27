@@ -489,6 +489,14 @@ def main():
         raise ValueError(s)
     
     ret_val = -1
+    ret_val = Simulator.create_binaries_folder()
+    if(ret_val != 0):
+        s = 'Could not create the binaries folder. Error in create_binaries_folder().'
+        parser.print_help()
+        log.error(s)
+        raise ValueError(s)
+    
+    ret_val = -1
     ret_val = Simulator.clean_temporary()
     if(ret_val != 0):
         s = 'Could not clean temporary files. Error in clean_temporary().'
@@ -1170,6 +1178,67 @@ class SimulatorToFMU(object):
         shutil.rmtree(dir_name)   
         
         return 0
+    
+    
+    def create_binaries_folder(self):
+        
+        """
+        Create folder which contains the binaries to be 
+        added to the system PATH of the target machine where 
+        the FMU will be run.
+
+        :return: 0 if success.
+
+        """
+        
+        # Copy all resources file in a directory
+        dir_name = self.model_name +'.binaries'
+        if os.path.exists(dir_name):
+            shutil.rmtree(dir_name)
+        log.info('Create the folder Simulator.binaries with binaries to be added to the system PATH.')
+        os.makedirs(dir_name)
+        
+        # Path to the libraries
+        fil_path = os.path.join(
+                        self.simulatortofmu_path,
+                        'SimulatorToFMU',
+                        'Resources',
+                        'Library')
+        
+        libraries=[]
+        for arch in ['win32', 'win64']:
+            for libr in ['SimulatorToFMUPython35.dll', 'python35.dll']:
+                libraries.append(os.path.join(fil_path, arch, libr))
+                
+        for arch in ['linux32', 'linux64']:
+            for libr in ['libSimulatorToFMUPython35.so', 'libpython35.so']:
+                libraries.append(os.path.join(fil_path, arch, libr))
+
+        for cur_fil in libraries:
+            if (os.path.isfile(cur_fil)):
+                s = '{!s} will be copied to the binaries folder {!s}.' \
+                        .format(cur_fil, dir_name)
+                log.info(s)
+                shutil.copy2(cur_fil, dir_name)
+            else:
+                s = '{!s} does not exist and will need to be compiled.'.format(fil_path)
+                raise ValueError(s)
+
+        fnam = os.path.join(dir_name, "README.txt")
+        fh = open(fnam, "w")
+        readme = 'IMPORTANT:\n\n' + \
+                 'The files contains in this folder must be added to the system PATH.\n' + \
+                 'This can be done by adding the folder ' + dir_name + ' to the system PATH.\n\n'
+        fh.write(readme)
+        fh.close()
+        dir_name_zip = dir_name + '.zip'
+        if os.path.exists(dir_name_zip):
+            os.remove(dir_name_zip)
+        zip_fmu(dir_name, includeDirInZip=False)
+        # Delete the folder created
+        shutil.rmtree(dir_name)   
+        
+        return 0
 
     def clean_temporary(self):
         """
@@ -1275,15 +1344,13 @@ class SimulatorToFMU(object):
                                     arch,
                                     cur_fil)
                                 if (os.path.isfile(fil_path)):
-                                    log.info(
-                                        cur_fil +
-                                        ' is missing in the FMU.\n' +
-                                        fil_path +
-                                        ' will be copied to it.')
+                                    s = '{!s} is missing in the FMU. {!s} will ' \
+                                    'be copied to it.'.format(cur_fil, fil_path)
+                                    log.info(s)
                                     shutil.copy2(fil_path, path_bin)
                                 else:
-                                    raise ValueError(
-                                        fil_path + ' does not exist and will need to be compiled.')
+                                    s='{!s} does not exist and will need to be compiled.'.format(fil_path)
+                                    raise ValueError(s)
 
             if (float(fmi_version) > 1.0 and self.needs_tool == 'true'):
                 s = ('The model description file will be rewritten' +
