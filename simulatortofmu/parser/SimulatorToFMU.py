@@ -1206,13 +1206,14 @@ class SimulatorToFMU(object):
                         'Library')
         
         libraries=[]
-        for arch in ['win32', 'win64']:
-            for libr in ['SimulatorToFMUPython35.dll', 'python35.dll']:
-                libraries.append(os.path.join(fil_path, arch, libr))
-                
-        for arch in ['linux32', 'linux64']:
-            for libr in ['libSimulatorToFMUPython35.so', 'libpython35.so']:
-                libraries.append(os.path.join(fil_path, arch, libr))
+        if(platform.system().lower() == 'windows'):
+            for arch in ['win32', 'win64']:
+                for libr in ['SimulatorToFMUPython35.dll', 'python35.dll']:
+                    libraries.append(os.path.join(fil_path, arch, libr))
+        if(platform.system().lower() == 'linux'):        
+            for arch in ['linux32', 'linux64']:
+                for libr in ['libSimulatorToFMUPython35.so', 'libpython35.so']:
+                    libraries.append(os.path.join(fil_path, arch, libr))
 
         for cur_fil in libraries:
             if (os.path.isfile(cur_fil)):
