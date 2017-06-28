@@ -214,9 +214,9 @@ void pythonExchangeVariables(const char * moduleName,
 	if (nDblWri > 0){
 		/* Increase the number of arguments to 2*/
 		/* One is for the vector of input names*/
-		/* to be sent to the CYMDIST FMU, the second one is*/
+		/* to be sent to the Simulator FMU, the second one is*/
 		/* for the vector of input values to be sent*/
-		/* to the CYMDIST FMU.*/
+		/* to the Simulator FMU.*/
 		nStrWri = nDblWri;
 		nArg = nArg + 2;
 	}
@@ -229,9 +229,9 @@ void pythonExchangeVariables(const char * moduleName,
 	if (nDblParWri > 0){
 		/* Increase the number of arguments to 2*/
 		/* One is for the vector of strings parameters*/
-		/* to be sent to the CYMDIST FMU, the second one is */
+		/* to be sent to the Simulator FMU, the second one is */
 		/* for the vector of parameter values to be sent*/
-		/* to the CYMDIST FMU.*/
+		/* to the Simulator FMU.*/
 		nStrParWri = nDblParWri;
 		nArg = nArg + 2;
 	}
@@ -449,7 +449,7 @@ void pythonExchangeVariables(const char * moduleName,
 	/* Undo all initializations*/
 	/* We uncommented Py_Finalize() because it caused a segmentation fault on Ubuntu 12.04 32 bit.*/
 	/* The segmentation fault was randomly produced by the statement, and often observed when running*/
-	/* simulateModel("the CYMDISTToFMU.Utilities.IO.Python35.Functions.Examples.TestPythonInterface");*/
+	/* simulateModel("the SimulatorToFMU.Utilities.IO.Python35.Functions.Examples.TestPythonInterface");*/
 	/**/
 	/* See also the discussion at*/
 	/* http://stackoverflow.com/questions/7676314/py-initialize-py-finalize-not-working-twice-with-numpy*/
