@@ -16,7 +16,6 @@ To export a Simulator as an FMU, SimulatorToFMU needs:
 1. Python and following dependencies:
 
    - jinja2 
-
    - lxml 
 
 2. Modelica parser
@@ -25,14 +24,14 @@ To export a Simulator as an FMU, SimulatorToFMU needs:
 
 SimulatorToFMU has been tested with:
 
-  - Python 2.7.13 and 3.5.0 
-  - Three Modelica parsers
+- Python 2.7.13 and 3.5.0 
+- Three Modelica parsers
 
-    - Dymola 2017 FD01 on Windows and Linux
-    - JModelica 2.0 on Windows, and JModelica trunk version 9899 on Linux
-    - OpenModelica 1.11.0 on Windows
+  - Dymola 2017 FD01 on Windows and Linux
+  - JModelica 2.0 on Windows, and JModelica trunk version 9899 on Linux
+  - OpenModelica 1.11.0 on Windows
 
-  - C-Compiler: Microsoft Visual Studio 10 Professional
+- C-Compiler: Microsoft Visual Studio 10 Professional
 
 .. note:: 
 
@@ -71,31 +70,31 @@ To install SimulatorToFMU, proceed as follows:
  To check if the variables have been correctly added to the system path, type ``python``, ``dymola``, ``pylab``, or ``omc``
  into a command prompt to see if the right version of Python, Dymola, JModelica, or OpenModelica starts up.
 
-.. note:: 
+ .. note:: 
 
-   To avoid adding Dymola, JModelica, or OpenModelica to the system path, provide the path
-   to the executables to SimulatorToFMU.py. See :ref:`build_cmd` for the lists of arguments 
-   of SimulatorToFMU.
+    To avoid adding Dymola, JModelica, or OpenModelica to the system path, provide the path
+    to the executables to SimulatorToFMU.py. See :ref:`build_cmd` for the lists of arguments 
+    of SimulatorToFMU.
 
 2. Install SimulatorToFMU by running 
 
-  .. code-block:: none
+ .. code-block:: none
 
-    > pip install SimulatorToFMU
+   > pip install SimulatorToFMU
  
-  The installation directory should contain the following subdirectories:
+ The installation directory should contain the following subdirectories:
 
-    - ``bin/``
-      (Scripts for running unit tests)
+ - ``bin/``
+   (Scripts for running unit tests)
 
-    - ``doc/``
-      (Documentation sources)
+ - ``doc/``
+   (Documentation sources)
 
-    - ``fmus/``
-      (FMUs folder)
+ - ``fmus/``
+   (FMUs folder)
 
-    - ``parser/``
-      (Python scripts, Modelica templates and XML validator files)
+ - ``parser/``
+   (Python scripts, Modelica templates and XML validator files)
 
 
 Uninstallation
