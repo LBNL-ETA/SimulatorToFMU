@@ -9,10 +9,6 @@ import sys
 import platform
 import subprocess
 import shutil
-try:
-    from pyfmi import load_fmu
-except BaseException:
-    pass
 from datetime import datetime
 
 # Appending parser_path to the system path os required to be able
@@ -269,6 +265,12 @@ class Tester(unittest.TestCase):
         Test the execution of one Simulator FMU.
 
         '''
+        
+        try:
+            from pyfmi import load_fmu
+        except BaseException:
+            print ('PyFMI not installed. Test will not be be run.')
+            return
         
         # Run the cases
         if platform.system().lower() == 'windows':
