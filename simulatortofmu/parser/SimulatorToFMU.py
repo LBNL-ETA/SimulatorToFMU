@@ -1167,7 +1167,7 @@ class SimulatorToFMU(object):
         fh = open(fnam, "w")
         readme = 'IMPORTANT:\n\n' + \
                  'The files contains in this folder must be added to the PYTHONPATH.\n' + \
-                 'This can be done by adding the folder ' + dir_name + ' to the PYTHONPATH.\n\n'
+                 'This can be done by adding the unzipped folder ' + dir_name + ' to the PYTHONPATH.\n\n'
         fh.write(readme)
         fh.close()
         dir_name_zip = dir_name + '.zip'
@@ -1229,7 +1229,7 @@ class SimulatorToFMU(object):
         fh = open(fnam, "w")
         readme = 'IMPORTANT:\n\n' + \
                  'The files contains in this folder must be added to the system PATH.\n' + \
-                 'This can be done by adding the folder ' + dir_name + ' to the system PATH.\n\n'
+                 'This can be done by adding the unzipped folder ' + dir_name + ' to the system PATH.\n\n'
         fh.write(readme)
         fh.close()
         dir_name_zip = dir_name + '.zip'
