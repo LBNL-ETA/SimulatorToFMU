@@ -1196,7 +1196,6 @@ class SimulatorToFMU(object):
         if os.path.exists(dir_name):
             shutil.rmtree(dir_name)
         log.info('Create the folder Simulator.binaries with binaries to be added to the system PATH.')
-        os.makedirs(dir_name)
         
         # Path to the libraries
         fil_path = os.path.join(
@@ -1205,31 +1204,42 @@ class SimulatorToFMU(object):
                         'Resources',
                         'Library')
         
-        libraries=[]
         if(platform.system().lower() == 'windows'):
             for arch in ['win32', 'win64']:
+                zip_path = os.path.join(dir_name, arch)
+                os.makedirs(zip_path)
                 for libr in ['SimulatorToFMUPython35.dll', 'python35.dll']:
-                    libraries.append(os.path.join(fil_path, arch, libr))
-        if(platform.system().lower() == 'linux'):        
-            for arch in ['linux32', 'linux64']:
-                for libr in ['libSimulatorToFMUPython35.so', 'libpython35.so']:
-                    libraries.append(os.path.join(fil_path, arch, libr))
+                    lib_path = os.path.join(fil_path, arch, libr)
+                    if (os.path.isfile(lib_path)):
+                        s = '{!s} will be copied to the binaries folder {!s}.' \
+                        .format(lib_path, zip_path)
+                        log.info(s)
+                        shutil.copy2(lib_path, zip_path)
+                    else:
+                        s = '{!s} does not exist and will need to be compiled.'.format(fil_path)
+                        raise ValueError(s)
 
-        for cur_fil in libraries:
-            if (os.path.isfile(cur_fil)):
-                s = '{!s} will be copied to the binaries folder {!s}.' \
-                        .format(cur_fil, dir_name)
-                log.info(s)
-                shutil.copy2(cur_fil, dir_name)
-            else:
-                s = '{!s} does not exist and will need to be compiled.'.format(fil_path)
-                raise ValueError(s)
+        if(platform.system().lower() == 'linux'):       
+            for arch in ['linux32', 'linux64']:
+                zip_path = os.path.join(dir_name, arch)
+                os.makedirs(zip_path)
+                for libr in ['libSimulatorToFMUPython35.so', 'libpython35.so']:
+                    lib_path = os.path.join(fil_path, arch, libr)
+                    if (os.path.isfile(lib_path)):
+                        s = '{!s} will be copied to the binaries folder {!s}.' \
+                        .format(lib_path, zip_path)
+                        log.info(s)
+                        shutil.copy2(lib_path, zip_path)
+                    else:
+                        s = '{!s} does not exist and will need to be compiled.'.format(fil_path)
+                        raise ValueError(s)
 
         fnam = os.path.join(dir_name, "README.txt")
         fh = open(fnam, "w")
         readme = 'IMPORTANT:\n\n' + \
                  'The files contains in this folder must be added to the system PATH.\n' + \
-                 'This can be done by adding the unzipped folder ' + dir_name + ' to the system PATH.\n\n'
+                 'This can be done by adding subdirectories of the unzipped folder '+ \
+                 dir_name + ' to the system PATH.\n\n'
         fh.write(readme)
         fh.close()
         dir_name_zip = dir_name + '.zip'

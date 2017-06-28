@@ -36,9 +36,12 @@ working directory, that is, in the directory from which you entered the command.
 interface with the Simulator. The unzipped folder must be added 
 to the ``PYTHONPATH`` of the target machine where the FMU will be used.
 
-``"modelname"`` + ``".binaries.zip"`` contains the binaries files that are needed to 
-interface with the Simulator. The unzipped folder must be added 
-to the system ``PATH`` of the target machine where the FMU will be used.
+``"modelname"`` + ``".binaries.zip"`` contains subdirectories 
+with binaries files that are needed to interface with the Simulator. 
+Subdirectories with binaries to be supported by the FMU must be added 
+to the system ``PATH``. That is, if the FMU is exported for Windows 32 bit,
+then the subdirectory ``"win32"`` must be added to the system ``PATH`` of 
+the target machine where the FMU is run.
 
 Any secondary output from running the SimulatorToFMU tools can be deleted safely.
 

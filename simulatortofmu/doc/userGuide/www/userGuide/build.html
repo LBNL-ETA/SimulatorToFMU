@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0.0.rc2',
+        VERSION:     '1.0.0.rc3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -274,9 +274,12 @@ working directory, that is, in the directory from which you entered the command.
 <p><code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></code> contains the Python scripts that are needed to
 interface with the Simulator. The unzipped folder must be added
 to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> of the target machine where the FMU will be used.</p>
-<p><code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.binaries.zip&quot;</span></code> contains the binaries files that are needed to
-interface with the Simulator. The unzipped folder must be added
-to the system <code class="docutils literal"><span class="pre">PATH</span></code> of the target machine where the FMU will be used.</p>
+<p><code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.binaries.zip&quot;</span></code> contains subdirectories
+with binaries files that are needed to interface with the Simulator.
+Subdirectories with binaries to be supported by the FMU must be added
+to the system <code class="docutils literal"><span class="pre">PATH</span></code>. That is, if the FMU is exported for Windows 32 bit,
+then the subdirectory <code class="docutils literal"><span class="pre">&quot;win32&quot;</span></code> must be added to the system <code class="docutils literal"><span class="pre">PATH</span></code> of
+the target machine where the FMU is run.</p>
 <p>Any secondary output from running the SimulatorToFMU tools can be deleted safely.</p>
 <p>Note that the FMU itself is a zip file.
 This means you can open and inspect its contents.
