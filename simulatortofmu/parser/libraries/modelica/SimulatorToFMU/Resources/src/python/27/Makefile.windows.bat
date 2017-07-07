@@ -16,8 +16,8 @@ REM ############################################################################
 SET SRCS=pythonInterpreter.c
 SET LIBS=pythonInterpreter.lib
 
-SET MOD_DLL=SimulatorToFMUPython35.dll
-SET MOD_LIB=SimulatorToFMUPython35.lib
+SET MOD_DLL=SimulatorToFMUPython27.dll
+SET MOD_LIB=SimulatorToFMUPython27.lib
 
 :: Check if we are on a 32 or 64 bit machine
 ::IF "%DevEnvDir%"=="" (
@@ -26,8 +26,8 @@ REG.exe Query %RegQry% > checkOS.txt
 Find /i "x86" < CheckOS.txt > StringCheck.txt
 IF %ERRORLEVEL% == 0 (
   REM Set path to the directory on 32 bit machine
-  SET PYTHONInc="C:\Program Files (x86)\Python 3.5\include"
-  SET PYTHONLibs="C:\Program Files (x86)\Python 3.5\libs\python35.lib"
+  SET PYTHONInc="C:\Python27\include"
+  SET PYTHONLibs="C:\Python27\libs\python27.lib"
   CALL "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"  >nul 2>&1
     IF ERRORLEVEL 1 (
       ECHO Problem configuring the Visual Studio tools for command-line use
@@ -37,8 +37,8 @@ IF %ERRORLEVEL% == 0 (
   SET BINDIR=..\..\..\Library\win32 
 )ELSE (
     REM Set path to the directory on 64 bit machine
-    SET PYTHONInc="C:\Program Files\Python 3.5\include"
-    SET PYTHONLibs="C:\Program Files\Python 3.5\libs\python35.lib"
+    SET PYTHONInc="C:\Python27_x64\include"
+    SET PYTHONLibs="C:\Python27_x64\libs\python27.lib"
     CALL "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64\vcvars64.bat"  >nul 2>&1
       IF ERRORLEVEL 1 (
         ECHO Problem configuring the Visual Studio tools for command-line use
