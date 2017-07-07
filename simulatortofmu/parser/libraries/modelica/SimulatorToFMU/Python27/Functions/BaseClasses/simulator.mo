@@ -1,4 +1,4 @@
-within SimulatorToFMU.Python35.Functions.BaseClasses;
+within SimulatorToFMU.Python27.Functions.BaseClasses;
 function simulator "Function that communicates with the SimulatorToFMU Python API"
   input String moduleName
     "Name of the python module that contains the function";
@@ -29,7 +29,7 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
                                     dblParNam,
                                     dblParVal,
                                     resWri)
-    annotation (Library={"SimulatorToFMUPython35", "python35"},
+    annotation (Library={"SimulatorToFMUPython27", "python27"},
       LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"},
       IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
       Include="#include \"pythonWrapper.c\"");
@@ -37,11 +37,11 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
 <p>
 This function exchanges data with a Simulator through its Python API.
 See 
-<a href=\"modelica://SimulatorToFMU.Python35.UsersGuide\">
-SimulatorToFMU.Python35.UsersGuide</a>
+<a href=\"modelica://SimulatorToFMU.Python27.UsersGuide\">
+SimulatorToFMU.Python27.UsersGuide</a>
 for instructions, and 
-<a href=\"modelica://SimulatorToFMU.Python35.Functions.Examples\">
-SimulatorToFMU.Python35.Functions.Examples</a>
+<a href=\"modelica://SimulatorToFMU.Python27.Functions.Examples\">
+SimulatorToFMU.Python27.Functions.Examples</a>
 for examples.
 </p>
 </html>", revisions="<html>

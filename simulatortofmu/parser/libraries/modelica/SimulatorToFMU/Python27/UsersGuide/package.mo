@@ -1,4 +1,4 @@
-within SimulatorToFMU.Python35;
+within SimulatorToFMU.Python27;
 package UsersGuide "User's Guide"
   extends Modelica.Icons.Information;
 
@@ -13,12 +13,12 @@ with web services, with hardware, or to do other computations
 inside a Python module.
 </p>
 <p>
-The code has been tested with Python 3.5 on
+The code has been tested with Python 2.7 on
 Linux 32 and 64 bit and Windows 32 and 64 bit.
 </p>
 <h4>Software configuration to use classes from this package</h4>
 <p>
-To use classes from this package, a Python 3.5
+To use classes from this package, a Python 2.7
 runtime environment must be installed.
 Also, the system environment variable
 <code>PYTHONPATH</code> must be set in order for Python
@@ -239,16 +239,16 @@ of pure and impure functions.
 <h4>Examples</h4>
 <p>
 The example
-<a href=\"modelica://SimulatorToFMU.Python35.Functions.Examples.Exchange\">
-SimulatorToFMU.Python35.Functions.Examples.Exchange</a>
+<a href=\"modelica://SimulatorToFMU.Python27.Functions.Examples.Exchange\">
+SimulatorToFMU.Python27.Functions.Examples.Exchange</a>
 contains various calls to different Python functions.
 The Python functions are stored in the directory
 <code>SimulatorToFMU.Resources/Python-Sources</code>.
 </p>
 <p>
 The example
-<a href=\"modelica://SimulatorToFMU.Python35.Examples.KalmanFilter\">
-SimulatorToFMU.Python35.Examples.KalmanFilter</a>
+<a href=\"modelica://SimulatorToFMU.Python27.Examples.KalmanFilter\">
+SimulatorToFMU.Python27.Examples.KalmanFilter</a>
 shows how to implement in a Modelica block a call to a Python function.
 </p>
 

@@ -1,4 +1,4 @@
-within SimulatorToFMU.Python35.Functions.Examples;
+within SimulatorToFMU.Python27.Functions.Examples;
 model Simulator "Test model for simulator functions"
   extends Modelica.Icons.Example;
   Real yR1[1] "Real function value";
@@ -9,7 +9,7 @@ model Simulator "Test model for simulator functions"
     "Empty list of parameters names";
   parameter Real emptyDblParVal[0]=zeros(0) "Empty vector of parameters values";
 algorithm
-  yR1 := SimulatorToFMU.Python35.Functions.simulator(
+  yR1 := SimulatorToFMU.Python27.Functions.simulator(
     moduleName="testSimulator",
     functionName="r1_r1",
     conFilNam="config.csv",
@@ -24,7 +24,7 @@ algorithm
     dblParVal=emptyDblParVal,
     resWri={0});
   assert(abs(15 - yR1[1]) < 1e-5, "Error in function r1_r1");
-  yR1 := SimulatorToFMU.Python35.Functions.simulator(
+  yR1 := SimulatorToFMU.Python27.Functions.simulator(
     moduleName="testSimulator",
     functionName="r2_r1",
     conFilNam="config.csv",
@@ -39,7 +39,7 @@ algorithm
     dblParVal=emptyDblParVal,
     resWri={0});
   assert(abs(45 - yR1[1]) < 1e-5, "Error in function r2_r1");
-  yR1 := SimulatorToFMU.Python35.Functions.simulator(
+  yR1 := SimulatorToFMU.Python27.Functions.simulator(
     moduleName="testSimulator",
     functionName="par3_r1",
     conFilNam="config.csv",
@@ -54,7 +54,7 @@ algorithm
     dblParVal={1.0,2.0,3.0},
     resWri={1});
   assert(abs(6 - yR1[1]) < 1e-5, "Error in function par3_r1");
-  yR2 := SimulatorToFMU.Python35.Functions.simulator(
+  yR2 := SimulatorToFMU.Python27.Functions.simulator(
     moduleName="testSimulator",
     functionName="r1_r2",
     conFilNam="config.csv",
@@ -69,7 +69,7 @@ algorithm
     dblParVal=emptyDblParVal,
     resWri={0});
   assert(abs(yR2[1] - 30) + abs(yR2[2] - 60) < 1E-5, "Error in function r1_r2");
-  yR2 := SimulatorToFMU.Python35.Functions.simulator(
+  yR2 := SimulatorToFMU.Python27.Functions.simulator(
     moduleName="testSimulator",
     functionName="r2p2_r2",
     conFilNam="config.csv",
@@ -86,7 +86,7 @@ algorithm
   assert(abs(yR2[1] - 1) + abs(yR2[2] - 20) < 1E-5, "Error in function r2p2_r2");
   annotation (
     experiment(StopTime=1.0),
-    __Dymola_Commands(file="modelica://SimulatorToFMU.Resources/Scripts/Dymola/Python35/Functions/Examples/Simulator.mos"
+    __Dymola_Commands(file="modelica://SimulatorToFMU.Resources/Scripts/Dymola/Python27/Functions/Examples/Simulator.mos"
         "Simulate and plot"),
     Documentation(info="<html>
 <p>

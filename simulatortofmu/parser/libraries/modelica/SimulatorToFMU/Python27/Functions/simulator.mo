@@ -1,4 +1,4 @@
-within SimulatorToFMU.Python35.Functions;
+within SimulatorToFMU.Python27.Functions;
 function simulator "Function that communicates with the SimulatorToFMU Python API"
   extends Modelica.Icons.Function;
   input String moduleName
@@ -35,19 +35,19 @@ dblOutVal := BaseClasses.simulator(
 annotation (Documentation(info="<html>
 <p>
 This function is a wrapper for 
-<a href=\"modelica://SimulatorToFMU.Python35.Functions.BaseClasses.simulator\">
-SimulatorToFMU.Python35.Functions.BaseClasses.simulator</a>.
+<a href=\"modelica://SimulatorToFMU.Python27.Functions.BaseClasses.simulator\">
+SimulatorToFMU.Python27.Functions.BaseClasses.simulator</a>.
 It adds the directory <code>modelica://SimulatorToFMU/Resources/Python-Sources</code>
 to the environment variable <code>PYTHONPATH</code>
 prior to calling the function that exchanges data with Python.
 After the function call, the <code>PYTHONPATH</code> is set back to what
 it used to be when entering this function.
 See 
-<a href=\"modelica://SimulatorToFMU.Python35.UsersGuide\">
-SimulatorToFMU.Python35.UsersGuide</a>
+<a href=\"modelica://SimulatorToFMU.Python27.UsersGuide\">
+SimulatorToFMU.Python27.UsersGuide</a>
 for instructions, and 
-<a href=\"modelica://SimulatorToFMU.Python35.Functions.Examples\">
-SimulatorToFMU.Python35.Functions.Examples</a>
+<a href=\"modelica://SimulatorToFMU.Python27.Functions.Examples\">
+SimulatorToFMU.Python27.Functions.Examples</a>
 for examples.
 </p>
 </html>",
