@@ -39,6 +39,12 @@ For more information visit the development page at `https://github.com/LBNL-ETA/
 
 The license is at `LICENSE.txt <https://github.com/tsnouidui/SimulatorToFMU/blob/master/simulatortofmu/LICENSE.txt>`_
 
+Help
+^^^^
+
+- For support questions use the `SimulatortoFMU Forum <https://groups.google.com/forum/#!forum/simulatortofmu>`_
+- For bug reports use the `SimulatortoFMU GitHub Issues <https://github.com/LBNL-ETA/SimulatorToFMU/issues>`_
+
 
 
 
