@@ -13,7 +13,7 @@ BINDIR = ../../../Library/linux$(ARCH)
 
 # Get python version, see
 # http://stackoverflow.com/questions/4933285/how-to-detemine-python-version-in-makefile
-python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python3 --version 2>&1)))
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python --version 2>&1)))
 python_version_major := $(word 1,${python_version_full})
 python_version_minor := $(word 2,${python_version_full})
 python_version_patch := $(word 3,${python_version_full})
@@ -22,8 +22,8 @@ python_version_patch := $(word 3,${python_version_full})
 ## Compilation flags
 CC = gcc
 
-CC_FLAGS_32 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I/usr/local/include/python2.7/ -lpython27 -lm -m32 
-CC_FLAGS_64 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I/usr/local/include/python2.7/ -lpython27 -lm -m64
+CC_FLAGS_32 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I/usr/include/python2.7/ -lpython27 -lm -m32 
+CC_FLAGS_64 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I/usr/include/python2.7/ -lpython27 -lm -m64
 
 
 

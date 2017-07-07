@@ -2,7 +2,7 @@
 // https://github.com/lbl-srg/modelica-buildings/issues/559
 Advanced_CompileWith64_ori=Advanced.CompileWith64;
 Advanced.CompileWith64 = 2;
-simulateModel("SimulatorToFMU.Python35.Functions.Examples.Simulator", method="dassl", resultFile="Simulator");
+simulateModel("SimulatorToFMU.Python27.Functions.Examples.Simulator", method="dassl", resultFile="Simulator");
 createPlot(id=1, 
  position={15, 10, 584, 420}, 
  y={"yR1[1]", "yR2[1]", "yR2[2]"}, 
