@@ -282,7 +282,7 @@ def main():
     # we want to include different versions of Python in the
     # Modelica model and use the correct one by detecting the version
     # of Python used to run the script.
-    python_vers = '35'
+    python_vers = '27'
 
     # Check command line options
     if not(platform.system().lower() in ['windows', 'linux']):
@@ -1208,7 +1208,7 @@ class SimulatorToFMU(object):
             for arch in ['win32', 'win64']:
                 zip_path = os.path.join(dir_name, arch)
                 os.makedirs(zip_path)
-                for libr in ['SimulatorToFMUPython35.dll', 'python35.dll']:
+                for libr in ['SimulatorToFMUPython27.dll', 'python27.dll']:
                     lib_path = os.path.join(fil_path, arch, libr)
                     if (os.path.isfile(lib_path)):
                         s = '{!s} will be copied to the binaries folder {!s}.' \
@@ -1223,7 +1223,7 @@ class SimulatorToFMU(object):
             for arch in ['linux32', 'linux64']:
                 zip_path = os.path.join(dir_name, arch)
                 os.makedirs(zip_path)
-                for libr in ['libSimulatorToFMUPython35.so', 'libpython35.so']:
+                for libr in ['libSimulatorToFMUPython27.so', 'libpython27.so']:
                     lib_path = os.path.join(fil_path, arch, libr)
                     if (os.path.isfile(lib_path)):
                         s = '{!s} will be copied to the binaries folder {!s}.' \
@@ -1338,10 +1338,10 @@ class SimulatorToFMU(object):
                     if (os.path.exists(path_bin)):
                         if(platform.system().lower() == 'windows'):
                             libraries = [
-                                'SimulatorToFMUPython35.dll', 'python35.dll']
+                                'SimulatorToFMUPython27.dll', 'python27.dll']
                         elif(platform.system().lower() == 'linux'):
                             libraries = [
-                                'libSimulatorToFMUPython35.so', 'libpython35.so']
+                                'libSimulatorToFMUPython27.so', 'libpython27.so']
                         for cur_fil in libraries:
                             cur_dll = os.path.join(path_bin, cur_fil)
                             if(os.path.isfile(cur_dll)):
