@@ -24,7 +24,7 @@ To export a Simulator as an FMU, SimulatorToFMU needs:
 
 SimulatorToFMU has been tested with:
 
-- Python 2.7.13 and 3.5.0 
+- Python 2.7.13 and 2.7.0 
 - Three Modelica parsers
 
   - Dymola 2017 FD01 on Windows and Linux
@@ -48,8 +48,8 @@ To install SimulatorToFMU, proceed as follows:
 
 1. Add following folders to your system path: 
 
- - Python installation folder (e.g. ``C:\Python35``)
- - Python scripts folder (e.g. ``C:\Python35\Scripts``), 
+ - Python installation folder (e.g. ``C:\Python27``)
+ - Python scripts folder (e.g. ``C:\Python27\Scripts``), 
  - Dymola executable folder (e.g. ``C:\Program Files(x86)\Dymola2017 FD01\bin``)
  - JModelica installation folder (e.g. ``C:\JModelica.org-2.0``)
  - OpenModelica executable folder (e.g. ``C:\OpenModelica1.11.0-32bit\bin``)
@@ -63,7 +63,7 @@ To install SimulatorToFMU, proceed as follows:
      
  - Click Environment Variables. In the section System Variables, find the PATH environment variable and select it. Click Edit. 
      
- - In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable (e.g. ``C:\Python35``, ``C:\Python35\Scripts``). Click OK. Close all remaining windows by clicking OK.
+ - In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable (e.g. ``C:\Python27``, ``C:\Python27\Scripts``). Click OK. Close all remaining windows by clicking OK.
      
  - Reopen Command prompt window for your changes to be active.
     
