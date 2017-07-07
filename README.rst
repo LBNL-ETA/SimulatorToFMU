@@ -42,8 +42,8 @@ The license is at `LICENSE.txt <https://github.com/tsnouidui/SimulatorToFMU/blob
 Help
 ^^^^
 
-- For support questions use the `SimulatortoFMU Forum <https://groups.google.com/forum/#!forum/simulatortofmu>`_
-- For bug reports use the `SimulatortoFMU GitHub Issues <https://github.com/LBNL-ETA/SimulatorToFMU/issues>`_
+- For support questions use the `SimulatorToFMU Forum <https://groups.google.com/forum/#!forum/simulatortofmu>`_
+- For bug reports use the `SimulatorToFMU GitHub Issues <https://github.com/LBNL-ETA/SimulatorToFMU/issues>`_
 
 
 
