@@ -453,7 +453,7 @@ class Tester(unittest.TestCase):
         for tool in  ['dymola', 'jmodelica', 'openmodelica']:       
             retVal=self.find_executable(tool)
             if (retVal!=1):
-                print("======tool={!s} was found. Unit Test will be run".format(tool))
+                print("======tool={!s} was found. Unit Test will be run.".format(tool))
             else:
                 continue
             print('=======The unit test will be run for tool={!s}.'.format(tool))
@@ -467,7 +467,7 @@ class Tester(unittest.TestCase):
         
         retVal=self.find_executable('dymola')
         if (retVal!=1):
-            print("======tool=dymola was found. Unit Test will be run")
+            print("======tool=dymola was found. Unit Test will be run.")
         else:
             return
         
@@ -485,7 +485,7 @@ class Tester(unittest.TestCase):
         
         retVal=self.find_executable('jmodelica')
         if (retVal!=1):
-            print("======tool=jmodelica was found. Unit Test will be run")
+            print("======tool=jmodelica was found. Unit Test will be run.")
         else:
             return
         print('=======The unit test will be run for JModelica.')
@@ -502,7 +502,7 @@ class Tester(unittest.TestCase):
         
         retVal=self.find_executable('openmodelica')
         if (retVal!=1):
-            print("======tool=openmodelica was found. Unit Test will be run")
+            print("======tool=openmodelica was found. Unit Test will be run.")
         else:
             return
         
