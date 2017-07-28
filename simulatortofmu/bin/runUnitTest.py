@@ -76,6 +76,11 @@ class Tester(unittest.TestCase):
 
     def run_simulator (self, tool):
         
+        '''
+        Function for running FMUs exported from Dymola, JModelica, and OpenModelica with PyFMI.
+
+        '''
+        
         try:
             from pyfmi import load_fmu
         except BaseException:
@@ -279,7 +284,7 @@ class Tester(unittest.TestCase):
         # Testing function to print Modelica model.
         Simulator_T.print_mo()
 
-    #@unittest.skip("Export Simulator using multiple options.")
+    @unittest.skip("Export Simulator using multiple options.")
     def test_simulator_to_fmu(self):
         '''
         Test the export of an FMU with various options.
@@ -341,7 +346,7 @@ class Tester(unittest.TestCase):
                             'Export Simulator as an FMU in {!s} seconds.'.format(
                                 (end - start).total_seconds()))
                         
-    #@unittest.skip("Export Simulator using multiple options.")
+    @unittest.skip("Updates FMUs.")
     def test_updates_fmu(self):
         '''
         Test the export and updates of FMUs.
@@ -408,7 +413,7 @@ class Tester(unittest.TestCase):
                             'Copy Simulator.fmu to {!s}.'.format(fmu_path))
                         shutil.copy2('Simulator.fmu', fmu_path)
 
-    #@unittest.skip("Run the FMU using PyFMI")
+    @unittest.skip("Run FMUs using PyFMI")
     def test_run_simulator_all(self):
         '''
         Test the execution of one Simulator FMU.
@@ -420,7 +425,7 @@ class Tester(unittest.TestCase):
             print('=======The unit test will be run for tool={!s}.'.format(tool))
             self.run_simulator (tool)
 
-    #@unittest.skip("Run the FMU using PyFMI")
+    @unittest.skip("Run Dymola's FMU using PyFMI")
     def test_run_simulator_dymola(self):
         '''
         Test the execution of one Simulator FMU.
@@ -431,7 +436,7 @@ class Tester(unittest.TestCase):
         # Run the cases
         self.run_simulator ('dymola')
     
-    #@unittest.skip("Run the FMU using PyFMI")
+    @unittest.skip("Run JModelica's FMU using PyFMI")
     def test_run_simulator_jmodelica(self):
         '''
         Test the execution of one Simulator FMU.
@@ -442,7 +447,7 @@ class Tester(unittest.TestCase):
         # Run the cases
         self.run_simulator ('jmodelica')
         
-    #@unittest.skip("Run the FMU using PyFMI")
+    @unittest.skip("Run OpenModelica's FMU using PyFMI")
     def test_run_simulator_openmodelica(self):
         '''
         Test the execution of one Simulator FMU.
