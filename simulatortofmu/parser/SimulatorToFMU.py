@@ -1081,9 +1081,9 @@ class SimulatorToFMU(object):
         if(self.export_tool == 'jmodelica'):
             if(platform.system().lower()=='linux'):
                 if (not (self.export_tool_path is None)):
-                    command = os.path.join(self.export_tool_path, 'jm_ipython.sh')
+                    command = os.path.join(self.export_tool_path, 'jm_python.sh')
                 else:
-                    command = os.path.join('jm_ipython.sh')
+                    command = os.path.join('jm_python.sh')
             elif(platform.system().lower()=='windows'):
                 if (not (self.export_tool_path is None)):
                     command = os.path.join(self.export_tool_path, 'setenv.bat')
