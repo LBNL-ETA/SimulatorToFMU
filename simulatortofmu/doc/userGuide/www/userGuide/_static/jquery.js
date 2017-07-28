@@ -1635,7 +1635,7 @@ jQuery.extend({
 	noData: {
 		"embed": true,
 		// Ban all objects except for Flash (which handle expandos)
-		"object": "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000",
+		"object": "clsid:D27CDB6E-AE6D-11cf-96B8-444552740000",
 		"applet": true
 	},
 
@@ -6524,7 +6524,7 @@ jQuery.extend({
 		if ( value !== undefined ) {
 			type = typeof value;
 
-			// convert relative number strings (+= or -=) to relative numbers. #7345
+			// convert relative number strings (+= or -=) to relative numbers. #72.7
 			if ( type === "string" && (ret = rrelNum.exec( value )) ) {
 				value = ( +( ret[1] + 1) * +ret[2] ) + parseFloat( jQuery.css( elem, name ) );
 				// Fixes bug #9237

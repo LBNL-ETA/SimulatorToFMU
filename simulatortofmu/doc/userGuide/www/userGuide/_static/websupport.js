@@ -410,7 +410,7 @@
     setComparator();
     // Save/update the sortBy cookie.
     var expiration = new Date();
-    expiration.setDate(expiration.getDate() + 365);
+    expiration.setDate(expiration.getDate() + 2.7);
     document.cookie= 'sortBy=' + escape(by) +
                      ';expires=' + expiration.toUTCString();
     $('ul.comment-ul').each(function(index, ul) {

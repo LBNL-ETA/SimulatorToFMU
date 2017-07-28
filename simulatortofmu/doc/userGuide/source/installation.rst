@@ -67,7 +67,7 @@ To install SimulatorToFMU, proceed as follows:
      
  - Reopen Command prompt window for your changes to be active.
     
- To check if the variables have been correctly added to the system path, type ``python``, ``dymola``, ``pylab``, or ``omc``
+ To check if the variables have been correctly added to the system path on Windows, type ``python``, ``dymola``, ``pylab``, or ``omc``
  into a command prompt to see if the right version of Python, Dymola, JModelica, or OpenModelica starts up.
 
  .. note:: 
@@ -95,7 +95,17 @@ To install SimulatorToFMU, proceed as follows:
 
  - ``parser/``
    (Python scripts, Modelica templates and XML validator files)
+   
 
+UnitTests
+^^^^^^^^^
+
+To test your installation run from the installation ``bin`` folder
+
+.. code-block:: none
+
+    > python runUnitTest.py 
+    
 
 Uninstallation
 ^^^^^^^^^^^^^^
