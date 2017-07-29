@@ -90,7 +90,7 @@ class Tester(unittest.TestCase):
         try: 
             subprocess.call([cmd, tool])
         except: 
-            print "No executable for tool={!s}".format(tool)
+            print ("No executable for tool={!s}".format(tool))
             retVal = 1
             return retVal
 
