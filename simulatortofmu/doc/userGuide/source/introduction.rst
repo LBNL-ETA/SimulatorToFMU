@@ -23,6 +23,10 @@ is a simulation program which meets following requirements:
     the output of the simulation program at any invocation time ``t`` 
     depends only on the inputs at the time ``t``. 
   - The inputs and the outputs of the simulation program/script must be ``real`` numbers.
+
+.. note::
+
+  The FMU uses the Python 2.7/ C API for executing the Python-driven simulation program/script.
     
    
 

@@ -33,8 +33,9 @@ were added to the ``PYTHONPATH``, and the system ``PATH`` respectively as descri
 
 .. note::
 
-  Any software which is required to run the exported FMU will need to 
+  Any software or Python 2.7 module which is required to run the exported FMU will need to 
   be installed on the target machine where the FMU is run.
+
 
 Simulation failed with Dymola FMUs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

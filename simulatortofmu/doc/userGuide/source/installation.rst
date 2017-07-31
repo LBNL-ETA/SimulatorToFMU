@@ -5,7 +5,7 @@
 Installation and Configuration
 ==============================
 
-This chapter describes how to install, configure, and uninstall SimulatorToFMU.
+This chapter describes how to install, configure, and uninstall SimulatorToFMU on Windows and Linux operating systems. SimulatorToFMU is currently not supported on Mac OS.
 
 
 Software requirements
@@ -24,7 +24,7 @@ To export a Simulator as an FMU, SimulatorToFMU needs:
 
 SimulatorToFMU has been tested with:
 
-- Python 2.7.13 and 2.7.0 
+- Python 2.7.12 (Linux) and 2.7.13 (Windows) 
 - Three Modelica parsers
 
   - Dymola 2017 FD01 on Windows and Linux
