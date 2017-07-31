@@ -21,6 +21,10 @@ is a simulation program which meets following requirements:
   depends only on the inputs at the time ``t``. 
 - The inputs and the outputs of the simulation program/script must be ``real`` numbers.
 
+.. note::
+
+  The FMU uses the Python 2.7/ C API for executing the Python-driven simulation program/script.
+
 Requirements
 ^^^^^^^^^^^^
 - `jinja2 <https://pypi.python.org/pypi/Jinja2>`_

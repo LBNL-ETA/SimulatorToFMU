@@ -27,6 +27,10 @@ is a simulation program which meets following requirements:
    MATLAB using the ``subprocess`` or ``os.system()``
    module of Python or specifically for MATLAB 
    using the MATLAB engine API for Python. 
+   
+.. note::
+
+  The FMU uses the Python 2.7/ C API for executing the Python-driven simulation program/script.
 
 __author__ = "Thierry S. Nouidui"
 __email__ = "TSNouidui@lbl.gov"
@@ -169,7 +173,7 @@ Following variables names are not allowed to be used as FMU input, output, or pa
 - ``_saveToFile``: Variable used to set the flag for storing simulation results (1 for storing, 0 else).
 - ``time``: Internal FMU simulation time.
 
-If any of these variables is used for an FMU input, output, or paramter name, SimulatorToFMU will exit with an error.
+If any of these variables is used for an FMU input, output, or parameter name, SimulatorToFMU will exit with an error.
 
 
 """
