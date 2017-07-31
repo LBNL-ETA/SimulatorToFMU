@@ -23,7 +23,7 @@ is a simulation program which meets following requirements:
 
 .. note::
 
-  The FMU uses the Python 2.7/ C API for executing the Python-driven simulation program/script.
+  SimulatorToFMU generates FMUs that use the Python 2.7/ C API for executing Python-driven simulation programs/scripts.
 
 Requirements
 ^^^^^^^^^^^^

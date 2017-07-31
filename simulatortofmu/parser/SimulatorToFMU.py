@@ -30,8 +30,8 @@ is a simulation program which meets following requirements:
    
 .. note::
 
-  The FMU uses the Python 2.7/ C API for executing the Python-driven simulation program/script.
-
+  SimulatorToFMU generates FMUs that use the Python 2.7/ C API for executing Python-driven simulation programs/scripts.
+  
 __author__ = "Thierry S. Nouidui"
 __email__ = "TSNouidui@lbl.gov"
 __license__ = "BSD"
