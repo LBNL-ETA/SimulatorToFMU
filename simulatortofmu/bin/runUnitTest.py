@@ -514,7 +514,7 @@ class Tester(unittest.TestCase):
                                             
 if __name__ == "__main__":
         # Check command line options
-    if not(platform.system().lower() in ['windows', 'linux']):
-        print('=========SimulatorToFMU is only supported on Linux and Windows')
-        return
-    unittest.main()
+    if (platform.system().lower() in ['windows', 'linux']):
+        unittest.main()
+    else:
+        print('=========SimulatorToFMU is only supported on Linux and Windows.')
