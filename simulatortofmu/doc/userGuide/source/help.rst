@@ -29,7 +29,7 @@ Simulation failed when running ``Simulator.fmu``
 
 If the simulation failed with the exported FMU, check if 
 the unzipped ``"modelname"`` + ``".scripts.zip"``, and  the subdirectories of ``"modelname"`` + ``".binaries.zip"``
-were added to the ``PYTHONPATH``, and the system ``PATH`` respectively as described in :ref:`build_output`. 
+were added to the ``PYTHONPATH``, and the system ``PATH`` (Windows) /``LD_LIBRARY_PATH`` (Linux) respectively as described in :ref:`build_output`. 
 
 .. note::
 

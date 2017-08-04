@@ -39,7 +39,8 @@ to the ``PYTHONPATH`` of the target machine where the FMU will be used.
 ``"modelname"`` + ``".binaries.zip"`` contains subdirectories 
 with binaries files that are needed to interface with the Simulator. 
 Subdirectories with binaries to be supported by the FMU must be added 
-to the system ``PATH``. That is, if the FMU is exported for Windows 32 bit,
+to the system ``PATH`` on Windows or the ``LD_LIBRARY_PATH`` on Linux. 
+That is, if the FMU is exported for Windows 32 bit,
 then the subdirectory ``"win32"`` must be added to the system ``PATH`` of 
 the target machine where the FMU is run.
 
