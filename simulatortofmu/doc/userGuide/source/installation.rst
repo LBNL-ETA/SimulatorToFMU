@@ -80,9 +80,14 @@ To install SimulatorToFMU, proceed as follows:
 
  .. code-block:: none
 
-   > pip install SimulatorToFMU
+    > pip install --user SimulatorToFMU
+
+ .. note::
+
+   Use the ``--user`` command line option to install SimulatorToFMU so it can be installed in your user directory. The user directory is typically ``C:\Users\YourUserName\AppData\Roaming\Python\Python27\site-packages`` on Windows, and ``/home/YourUserName/.local/lib/python2.7/site-packages`` on Linux where ``YourUserName`` is your login user name. This is because of  SimulatorToFMU which needs to write files to the disk and hence needs to have write permissions on the folder where the FMU is generated.
+
  
- The installation directory should contain the following subdirectories:
+The installation directory should contain the following subdirectories:
 
  - ``bin/``
    (Scripts for running unit tests)

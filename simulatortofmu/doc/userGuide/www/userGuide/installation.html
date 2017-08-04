@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0.0rc7',
+        VERSION:     '1.0.0rc8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -170,11 +170,17 @@ of SimulatorToFMU.</p>
 <li>Install SimulatorToFMU by running</li>
 </ol>
 <blockquote>
-<div><div class="highlight-none"><div class="highlight"><pre>&gt; pip install SimulatorToFMU
+<div><div class="highlight-none"><div class="highlight"><pre>&gt; pip install --user SimulatorToFMU
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Use the <code class="docutils literal"><span class="pre">--user</span></code> command line option to install SimulatorToFMU so it can be installed in your user directory. The user directory is typically <code class="docutils literal"><span class="pre">C:\Users\YourUserName\AppData\Roaming\Python\Python27\site-packages</span></code> on Windows, and <code class="docutils literal"><span class="pre">/home/YourUserName/.local/lib/python2.7/site-packages</span></code> on Linux where <code class="docutils literal"><span class="pre">YourUserName</span></code> is your login user name. This is because of  SimulatorToFMU which needs to write files to the disk and hence needs to have write permissions on the folder where the FMU is generated.</p>
+</div>
+</div></blockquote>
 <p>The installation directory should contain the following subdirectories:</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><code class="docutils literal"><span class="pre">bin/</span></code>
 (Scripts for running unit tests)</li>
 <li><code class="docutils literal"><span class="pre">doc/</span></code>
