@@ -80,7 +80,6 @@ class Tester(unittest.TestCase):
 
         '''
         
-        retVal = 0
         if tool == 'jmodelica' and platform.system().lower() == "windows":
             tool = 'pylab'
         else:
@@ -88,11 +87,10 @@ class Tester(unittest.TestCase):
             
         cmd = "where" if platform.system() == "Windows" else "which"
         try: 
-            subprocess.call([cmd, tool])
+            return subprocess.call([cmd, tool])
         except: 
             print ("No executable for tool={!s}".format(tool))
-            retVal = 1
-            return retVal
+            return 1
 
     def run_simulator (self, tool):
         
@@ -294,7 +292,7 @@ class Tester(unittest.TestCase):
 
         for tool in  ['dymola', 'jmodelica', 'openmodelica']:       
             retVal=self.find_executable(tool)
-            if (retVal!=1):
+            if ((retVal is not None) and retVal!=1):
                 print("======tool={!s} was found. Unit Test will be run".format(tool))
             else:
                 continue
@@ -309,7 +307,8 @@ class Tester(unittest.TestCase):
                 modPat = 'MODELICAPATH'
                 mosT = MOS_TEMPLATE_PATH_DYMOLA
             elif tool == 'jmodelica':
-                del os.environ['MODELICAPATH']
+                if (os.environ.get('MODELICAPATH') is not None):
+                    del os.environ['MODELICAPATH']
                 modPat = None
                 mosT = MOS_TEMPLATE_PATH_JMODELICA
             for version in ['1', '2']:
@@ -361,7 +360,7 @@ class Tester(unittest.TestCase):
 
         for tool in  ['dymola', 'jmodelica', 'openmodelica']:       
             retVal=self.find_executable(tool)
-            if (retVal!=1):
+            if ((retVal is not None) and retVal!=1):
                 print("======tool={!s} was found. Unit Test will be run".format(tool))
             else:
                 continue
@@ -376,7 +375,8 @@ class Tester(unittest.TestCase):
                 modPat = 'MODELICAPATH'
                 mosT = MOS_TEMPLATE_PATH_DYMOLA
             elif tool == 'jmodelica':
-                del os.environ['MODELICAPATH']
+                if (os.environ.get('MODELICAPATH') is not None):
+                    del os.environ['MODELICAPATH']
                 modPat = None
                 mosT = MOS_TEMPLATE_PATH_JMODELICA
             for version in ['2']:
@@ -434,12 +434,13 @@ class Tester(unittest.TestCase):
         # Export FMUs which are needed to run the cases.
         for tool in  ['dymola', 'jmodelica', 'openmodelica']:       
             retVal=self.find_executable(tool)
-            if (retVal!=1):
+            if ((retVal is not None) and retVal!=1):
                 print("======tool={!s} was found. Unit Test will be run.".format(tool))
+                print('=======The unit test will be run for tool={!s}.'.format(tool))
+                self.run_simulator (tool)
             else:
                 continue
-            print('=======The unit test will be run for tool={!s}.'.format(tool))
-            self.run_simulator (tool)
+
 
     def test_run_simulator_dymola(self):
         '''
@@ -448,15 +449,16 @@ class Tester(unittest.TestCase):
         '''
         
         retVal=self.find_executable('dymola')
-        if (retVal!=1):
+        if ((retVal is not None) and retVal!=1):
             print("======tool=dymola was found. Unit Test will be run.")
+            print('=======The unit test will be run for Dymola.')
+            print('=======Make sure that Dymola is on the System Path otherwise the simulation will fail.')
+            # Run the cases
+            self.run_simulator ('dymola')
         else:
             return
         
-        print('=======The unit test will be run for Dymola.')
-        print('=======Make sure that Dymola is on the System Path otherwise the simulation will fail.')
-        # Run the cases
-        self.run_simulator ('dymola')
+
     
 
     def test_run_simulator_jmodelica(self):
@@ -466,14 +468,15 @@ class Tester(unittest.TestCase):
         '''
         
         retVal=self.find_executable('jmodelica')
-        if (retVal!=1):
+        if ((retVal is not None) and retVal!=1):
             print("======tool=jmodelica was found. Unit Test will be run.")
+            print('=======The unit test will be run for JModelica.')
+            print('=======Make sure that JModelica is on the System Path otherwise the simulation will fail.')
+            # Run the cases
+            self.run_simulator ('jmodelica')
         else:
             return
-        print('=======The unit test will be run for JModelica.')
-        print('=======Make sure that JModelica is on the System Path otherwise the simulation will fail.')
-        # Run the cases
-        self.run_simulator ('jmodelica')
+
         
 
     def test_run_simulator_openmodelica(self):
@@ -483,15 +486,17 @@ class Tester(unittest.TestCase):
         '''
         
         retVal=self.find_executable('openmodelica')
-        if (retVal!=1):
+        print ("This is retVal={!s}".format(retVal))
+        if ((retVal is not None) and retVal!=1):
             print("======tool=openmodelica was found. Unit Test will be run.")
+            print('=======The unit test will be run for OpenModelica.')
+            print('=======Make sure that OpenModelica is on the System Path otherwise the simulation will fail.')
+            # Run the cases
+            self.run_simulator ('openmodelica')
         else:
             return
         
-        print('=======The unit test will be run for OpenModelica.')
-        print('=======Make sure that OpenModelica is on the System Path otherwise the simulation will fail.')
-        # Run the cases
-        self.run_simulator ('openmodelica')
+
 
                                             
 if __name__ == "__main__":
