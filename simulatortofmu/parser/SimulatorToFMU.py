@@ -55,7 +55,7 @@ An example of invoking ``SimulatorToFMU.py`` on Windows is
 .. code-block:: none
 
   # Windows:
-  > python parser\SimulatorToFMU.py -s parser\\utilities\\simulator_wrapper.py, d:\\calc.py
+  > python parser\\SimulatorToFMU.py -s parser\\utilities\\simulator_wrapper.py,d:\\calc.py
 
 Following requirements must be met when using SimulatorToFMU
 

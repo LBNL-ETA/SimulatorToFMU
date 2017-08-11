@@ -1,7 +1,7 @@
 #######################################################
 # Script with unit tests for SimulatorToFMU
 #
-# TSNouidui@lbl.gov                            2016-09-06
+# TSNouidui@lbl.gov                          2016-09-06
 #######################################################
 import unittest
 import os
@@ -82,8 +82,11 @@ class Tester(unittest.TestCase):
         
         if tool == 'jmodelica' and platform.system().lower() == "windows":
             tool = 'pylab'
-        else:
+        if tool == 'jmodelica' and platform.system().lower() == "linux":
             tool = 'jm_python.sh'
+            
+        if tool == 'openmodelica' and platform.system().lower() == "windows":
+            tool = 'omc'
             
         cmd = "where" if platform.system() == "Windows" else "which"
         try: 
@@ -230,7 +233,6 @@ class Tester(unittest.TestCase):
         # Terminate FMUs
         sim_mod.terminate()
 
-
     def test_check_duplicates(self):
         '''
         Test the function check_duplicates().
@@ -351,7 +353,7 @@ class Tester(unittest.TestCase):
                         print(
                             'Export Simulator as an FMU in {!s} seconds.'.format(
                                 (end - start).total_seconds()))
-                        
+                              
     def test_updates_fmu(self):
         '''
         Test the export and updates of FMUs.
@@ -424,7 +426,7 @@ class Tester(unittest.TestCase):
                         print(
                             'Copy Simulator.fmu to {!s}.'.format(fmu_path))
                         shutil.copy2('Simulator.fmu', fmu_path)
-
+                        
     def test_run_simulator_all(self):
         '''
         Test the execution of one Simulator FMU.
@@ -441,7 +443,6 @@ class Tester(unittest.TestCase):
             else:
                 continue
 
-
     def test_run_simulator_dymola(self):
         '''
         Test the execution of one Simulator FMU.
@@ -457,10 +458,7 @@ class Tester(unittest.TestCase):
             self.run_simulator ('dymola')
         else:
             return
-        
-
     
-
     def test_run_simulator_jmodelica(self):
         '''
         Test the execution of one Simulator FMU.
@@ -476,9 +474,7 @@ class Tester(unittest.TestCase):
             self.run_simulator ('jmodelica')
         else:
             return
-
         
-
     def test_run_simulator_openmodelica(self):
         '''
         Test the execution of one Simulator FMU.
@@ -486,7 +482,6 @@ class Tester(unittest.TestCase):
         '''
         
         retVal=self.find_executable('openmodelica')
-        print ("This is retVal={!s}".format(retVal))
         if ((retVal is not None) and retVal!=1):
             print("======tool=openmodelica was found. Unit Test will be run.")
             print('=======The unit test will be run for OpenModelica.')
@@ -495,10 +490,7 @@ class Tester(unittest.TestCase):
             self.run_simulator ('openmodelica')
         else:
             return
-        
-
-
-                                            
+                                    
 if __name__ == "__main__":
         # Check command line options
     if (platform.system().lower() in ['windows', 'linux']):
