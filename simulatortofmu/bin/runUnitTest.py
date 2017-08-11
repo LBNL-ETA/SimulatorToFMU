@@ -120,7 +120,8 @@ class Tester(unittest.TestCase):
                 mosT = MOS_TEMPLATE_PATH_DYMOLA
             elif tool == 'jmodelica':
                 # Unset environment variable
-                del os.environ['MODELICAPATH']
+                if (os.environ.get('MODELICAPATH') is not None):
+                    del os.environ['MODELICAPATH']
                 modPat = None
                 mosT = MOS_TEMPLATE_PATH_JMODELICA
             for version in ['2']:
@@ -178,10 +179,6 @@ class Tester(unittest.TestCase):
 
         print ('Starting the simulation with {!s}'.format(tool))
         start = datetime.now()
-        # Path to configuration file
-        simulator_con_val_str = os.path.abspath('config.json')
-        if sys.version_info.major > 2:
-            simulator_con_val_str = bytes(simulator_con_val_str, 'utf-8')
 
         simulator_input_valref = []
         simulator_output_valref = []
@@ -207,21 +204,6 @@ class Tester(unittest.TestCase):
 
         # Set the flag to save the results
         sim_mod.set('_saveToFile', 0)
-        # Get value reference of the configuration file
-        simulator_con_val_ref = sim_mod.get_variable_valueref(
-            '_configurationFileName')
-
-        # Set the configuration file
-        # Setting strings failed in JModelica. This seems to be a bug
-        # since JModelica sets the variability of models which contain
-        # a string parameter to constant. Consequently the FMU cannot
-        # be modified at runtime. The workaround will be to pass the
-        # path to the configuration file when invoking SimulatorToFMU so
-        # it has the configuration file in its resource folders.
-        if not (tool=='jmodelica'):
-            sim_mod.set_string(
-                [simulator_con_val_ref],
-                [simulator_con_val_str])
 
         # Initialize the FMUs
         sim_mod.initialize()
