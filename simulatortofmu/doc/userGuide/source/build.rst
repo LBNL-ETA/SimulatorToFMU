@@ -56,7 +56,7 @@ To do so, it may help to change the "``.fmu``" extension to "``.zip``".
     longer compilation/simulation time compared to the tested versions 
     of Dymola and JModelica.
 
-  - FMUs exported using Dymola 2017 FD01 needs a Dymola runtime license to run.
+  - FMUs exported using Dymola 2018 needs a Dymola runtime license to run.
     A Dymola runtime license is not be needed if the FMU is exported with 
     a version of Dymola which has the ``Binary Model Export`` license.
 

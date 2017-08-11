@@ -27,7 +27,7 @@ SimulatorToFMU has been tested with:
 - Python 2.7.12 (Linux) and 2.7.13 (Windows) 
 - Three Modelica parsers
 
-  - Dymola 2017 FD01 on Windows and Linux
+  - Dymola 2018 on Windows and Linux
   - JModelica 2.0 on Windows, and JModelica trunk version 9899 on Linux
   - OpenModelica 1.11.0 on Windows
 
@@ -36,7 +36,7 @@ SimulatorToFMU has been tested with:
 .. note:: 
 
    SimulatorToFMU can use OpenModelica and Dymola to export a Simulator as an FMU. 
-   However OpenModelica 1.11.0 (on Windows) and Dymola 2017 FD01 (on Linux) do not copy all required libraries dependencies to the FMU.
+   However OpenModelica 1.11.0 (on Windows) and Dymola 2018 (on Linux) do not copy all required libraries dependencies to the FMU.
    As a workaround, SimulatorToFMU checks if there are missing libraries dependencies and copies the dependencies to the FMU.
 
 .. _installation directory:
@@ -50,7 +50,7 @@ To install SimulatorToFMU, proceed as follows:
 
  - Python installation folder (e.g. ``C:\Python27``)
  - Python scripts folder (e.g. ``C:\Python27\Scripts``), 
- - Dymola executable folder (e.g. ``C:\Program Files(x86)\Dymola2017 FD01\bin``)
+ - Dymola executable folder (e.g. ``C:\Program Files(x86)\Dymola2018\bin``)
  - JModelica installation folder (e.g. ``C:\JModelica.org-2.0``)
  - OpenModelica executable folder (e.g. ``C:\OpenModelica1.11.0-32bit\bin``)
 
@@ -72,9 +72,9 @@ To install SimulatorToFMU, proceed as follows:
 
  .. note:: 
 
-    To avoid adding Dymola, JModelica, or OpenModelica to the system path, provide the path
-    to the executables to SimulatorToFMU.py. See :ref:`build_cmd` for the lists of arguments 
-    of SimulatorToFMU.
+    - To avoid adding Dymola, JModelica, or OpenModelica to the system path, provide the path to the executables to SimulatorToFMU.py. See :ref:`build_cmd` for the lists of arguments of SimulatorToFMU.
+
+    - SimulatorToFMU sets the hidden Dymola 2018's flag ``Advanced.AllowStringParametersForFMU`` to ``true`` when exporting a simulation program/script as an FMU. The flag is not available in older versions of Dymola. The flag is required to allow a master algorithm to set the path to the configuration file of an FMU. See section :ref:`build_cmd` for more details.
 
 2. Install SimulatorToFMU by running 
 

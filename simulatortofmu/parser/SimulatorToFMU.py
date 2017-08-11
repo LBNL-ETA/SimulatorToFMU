@@ -105,7 +105,7 @@ The next section discusses requirements of some of the arguments of SimulatorToF
 Simulation model or configuration file 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-An FMU exported by SimulatorToFMU requires a configuration file to run.
+An FMU exported by SimulatorToFMU needs in certain cases a configuration file to run.
 There are two ways of providing the configuration file to the FMU:
 
   1. The path to the configuration file is passed as the comamnd line argument ``"-c"`` 

@@ -113,13 +113,6 @@ protected
   parameter String functionName="exchange" 
     "Name of the Python function";
   
-initial algorithm 
-  assert(_configurationFileName <> "",
-    "Parameter _configurationFileName: " +
-     _configurationFileName + " must be set to " +
-     "the path to the Simulator input file. " +
-     "This must be done prior to entering the " +
-     "initialization mode of the FMU.");
 algorithm 
 
   // Compute values that will be sent to Simulator
