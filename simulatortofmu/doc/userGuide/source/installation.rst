@@ -33,12 +33,6 @@ SimulatorToFMU has been tested with:
 
 - C-Compiler: Microsoft Visual Studio 10 Professional
 
-.. note:: 
-
-   SimulatorToFMU can use OpenModelica and Dymola to export a Simulator as an FMU. 
-   However OpenModelica 1.11.0 (on Windows) and Dymola 2018 (on Linux) do not copy all required libraries dependencies to the FMU.
-   As a workaround, SimulatorToFMU checks if there are missing libraries dependencies and copies the dependencies to the FMU.
-
 .. _installation directory:
 
 Installation

@@ -1337,37 +1337,6 @@ class SimulatorToFMU(object):
             if os.path.isfile(fmu_name):
                 os.remove(fmu_name)
 
-            if (self.export_tool == 'openmodelica' or platform.system().lower() == 'linux'):
-                for arch in ['win32', 'win64', 'linux32', 'linux64']:
-                    path_bin = os.path.join(fmutmp_path, 'binaries', arch)
-                    if (os.path.exists(path_bin)):
-                        if(platform.system().lower() == 'windows'):
-                            libraries = [
-                                'SimulatorToFMUPython27.dll', 'python27.dll']
-                        elif(platform.system().lower() == 'linux'):
-                            libraries = [
-                                'libSimulatorToFMUPython27.so', 'libpython27.so']
-                        for cur_fil in libraries:
-                            cur_dll = os.path.join(path_bin, cur_fil)
-                            if(os.path.isfile(cur_dll)):
-                                continue
-                            else:
-                                fil_path = os.path.join(
-                                    self.simulatortofmu_path,
-                                    'SimulatorToFMU',
-                                    'Resources',
-                                    'Library',
-                                    arch,
-                                    cur_fil)
-                                if (os.path.isfile(fil_path)):
-                                    s = '{!s} is missing in the FMU. {!s} will ' \
-                                    'be copied to it.'.format(cur_fil, fil_path)
-                                    log.info(s)
-                                    shutil.copy2(fil_path, path_bin)
-                                else:
-                                    s='{!s} does not exist and will need to be compiled.'.format(fil_path)
-                                    raise ValueError(s)
-
             if (float(fmi_version) > 1.0 and self.needs_tool == 'true'):
                 s = ('The model description file will be rewritten' +
                      ' to include the attribute {!s} set to true.').format(
