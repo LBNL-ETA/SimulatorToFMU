@@ -144,7 +144,7 @@ JModelica
   The workaround is to make sure that the path of the configuration file is 
   the same on the machine where the FMU will be run.
   
-- If the configuration file is not provided, then SimilarToFMU will exit with an error . 
+- If the configuration file is not provided, then SimularToFMU will issue a warning. 
 
 
 OpenModelica
@@ -412,7 +412,10 @@ def main():
                 python_script_path)
             log.error(s)
             raise ValueError(s)
-                
+    
+    print('============Exporting scripts={!s} as Functional Mock-up Unit. API={!s}, Version={!s}, Export Tool={!s}'.format(python_scripts_path, 
+                                    fmi_api, fmi_version, export_tool))
+           
     # Get the xml files
     io_file_path = args.io_file_path
     if io_file_path is None:
@@ -429,12 +432,19 @@ def main():
     
     # Check configuration file for JModelica
     if con_path is None and export_tool=='jmodelica':
-        s = ('JModelica requires to provide the path to a configuration file.')
-        log.error(s)
-        raise ValueError(s)
+        s = ('No configuration file was provided.'+\
+             ' JModelica does not allow to set the path'+
+             ' to a configuration file at runtime.' +\
+             ' Hence if the exported simulation program/script'+\
+             ' needs a configuration file to run, then the path'+\
+             ' to the configuration file must be provided'+\
+             ' when creating the FMU. Otherwise the FMU'+\
+             ' will fail to run.')
+        log.warning(s)
+        con_path = ''
     elif (con_path is None):
         con_path = ''
-
+        
     # Get the need execution
     #needs_tool = args.needs_tool
     # Leave this to eventually avoid having
@@ -1091,6 +1101,7 @@ class SimulatorToFMU(object):
                     command = os.path.join('jm_python.sh')
             elif(platform.system().lower()=='windows'):
                 if (not (self.export_tool_path is None)):
+                    
                     command = os.path.join(self.export_tool_path, 'setenv.bat')
                 else:
                     command = 'setenv.bat'
@@ -1112,6 +1123,7 @@ class SimulatorToFMU(object):
             else:
                 # 
                 output_cmd = 'python ' + str(output_file)
+                print ("command is {!s}".format(command + "&&" + output_cmd))
                 # Run multiple commands in the same shell
                 retStr = sp.check_output(command + "&&" + output_cmd, shell=True)
 
