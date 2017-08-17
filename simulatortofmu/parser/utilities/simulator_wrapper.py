@@ -16,9 +16,9 @@ def exchange(configuration_file, time, input_names,
     Example:
         >>> configuration_file = 'config.json'
         >>> time = 0
-        >>> input_names = ['v']
-        >>> input_values = [220.0]
-        >>> output_names = ['i']
+        >>> input_names = 'v'
+        >>> input_values = 220.0
+        >>> output_names = 'i'
         >>> write_results = 0
         >>> output_values = simulator(configuration_file, time, input_names,
                         input_values, output_names, write_results)
