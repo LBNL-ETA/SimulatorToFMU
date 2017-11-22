@@ -48,7 +48,7 @@ To parametrize the ``ScalarVariable`` as an output variable, the user needs to
 
 .. note:: 
 
-   If valid `Modelica` units can't be used (Line 15 and Line 21), then remove the `unit` field from the input file
+   If valid :term:`Modelica` units can't be used (Line 15 and Line 21), then remove the `unit` field from the input file
    when defining new ``ScalarVariable``. 
 
 Configuring the Python Wrapper Simulator
