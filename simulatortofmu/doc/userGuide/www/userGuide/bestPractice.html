@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. Best Practice &mdash; FMU Export of a Memoryless Python-based Simulator User Guide</title>
+    <title>3. Best Practice &#8212; FMU Export of a Memoryless Python-based Simulator User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,17 +14,19 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0.0rc11',
+        VERSION:     '1.0.0rc12',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="FMU Export of a Memoryless Python-based Simulator User Guide" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="4. Creating an FMU" href="build.html" />
     <link rel="prev" title="2. Installation and Configuration" href="installation.html" /> 
   </head>
@@ -51,7 +53,7 @@
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
@@ -75,21 +77,18 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/bestPractice.txt"
+      <li><a href="_sources/bestPractice.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -187,6 +186,11 @@ This is done by adding a <code class="docutils literal"><span class="pre">Scalar
 <li>give the unit of the variable (Currently only valid <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> units are supported) (Line 22)</li>
 </ul>
 </div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If valid <cite>Modelica</cite> units can&#8217;t be used (Line 15 and Line 21), then remove the <cite>unit</cite> field from the input file
+when defining new <code class="docutils literal"><span class="pre">ScalarVariable</span></code>.</p>
+</div>
 </div>
 <div class="section" id="configuring-the-python-wrapper-simulator">
 <h2>3.2. Configuring the Python Wrapper Simulator<a class="headerlink" href="#configuring-the-python-wrapper-simulator" title="Permalink to this headline">¶</a></h2>
@@ -253,9 +257,9 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; configuration_file = &#39;config.json&#39;</span>
 <span class="sd">        &gt;&gt;&gt; time = 0</span>
-<span class="sd">        &gt;&gt;&gt; input_names = [&#39;v&#39;]</span>
-<span class="sd">        &gt;&gt;&gt; input_values = [220.0]</span>
-<span class="sd">        &gt;&gt;&gt; output_names = [&#39;i&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; input_names = &#39;v&#39;</span>
+<span class="sd">        &gt;&gt;&gt; input_values = 220.0</span>
+<span class="sd">        &gt;&gt;&gt; output_names = &#39;i&#39;</span>
 <span class="sd">        &gt;&gt;&gt; write_results = 0</span>
 <span class="sd">        &gt;&gt;&gt; output_values = simulator(configuration_file, time, input_names,</span>
 <span class="sd">                        input_values, output_names, write_results)</span>
@@ -319,7 +323,7 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 <li>The function <code class="docutils literal"><span class="pre">exchange</span></code> must return a list of output values which matches the order of the output names.</li>
 <li>The function <code class="docutils literal"><span class="pre">exchange</span></code> can be used to invoke external programs/scripts which do not ship with the FMU.
 The external programs/scripts will have to be installed on the target machine where the
-FMU is run. See <a class="reference internal" href="build.html"><em>Creating an FMU</em></a> for details on command line options.</li>
+FMU is run. See <a class="reference internal" href="build.html"><span class="doc">Creating an FMU</span></a> for details on command line options.</li>
 <li>Once <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code> is implemented, it must be saved under the same name, and its path used as required argument for <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code>.</li>
 </ul>
 </div>
@@ -350,13 +354,13 @@ FMU is run. See <a class="reference internal" href="build.html"><em>Creating an 
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &raquo;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2017, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
+        &#169; Copyright 2017, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>
