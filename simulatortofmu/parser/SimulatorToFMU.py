@@ -933,7 +933,11 @@ class SimulatorToFMU(object):
                     scalar_variable['causality'] = causality
 
                 scalar_variable['vartype'] = vartype
+                # Check if unit is defined
+                if(unit is None):
+                    unit = "1"
                 scalar_variable['unit'] = unit
+                # Check if start is defined
                 if not (start is None):
                     scalar_variable['start'] = start
                 scalar_variables.append(scalar_variable)
@@ -957,6 +961,18 @@ class SimulatorToFMU(object):
                         log.error(s)
                         raise ValueError(s)
                         
+            if(len(modelica_input_variable_names) < 1):
+                s = 'The XML input file={!s} does not contain any input variable. '\
+                'At least, one input variable needs to be defined'.format(self.xml_path)
+                log.error(s)
+                raise ValueError(s)
+            
+            if(len(modelica_output_variable_names) < 1):
+                s = 'The XML input file={!s} does not contain any output variable. '\
+                'At least, one output variable needs to be defined'.format(self.xml_path)
+                log.error(s)
+                raise ValueError(s)
+            
             s = 'Parsing of {!s} was successfull.'.format(self.xml_path)
             log.info(s)
             return scalar_variables, input_variable_names, \
