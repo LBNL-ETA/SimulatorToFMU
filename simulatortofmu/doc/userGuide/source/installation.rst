@@ -78,7 +78,13 @@ To install SimulatorToFMU, proceed as follows:
 
  .. note::
 
-   Use the ``--user`` command line option to install SimulatorToFMU so it can be installed in your Python 2.7 user installation directory and can write files to your disk. The Python 2.7 user installation directory is typically ``C:\Users\YourUserName\AppData\Roaming\Python\Python27\site-packages`` on Windows, and ``/home/YourUserName/.local/lib/python2.7/site-packages`` on Linux where ``YourUserName`` is your system login user name. 
+   Use the ``--user`` command line option to install SimulatorToFMU 
+   so it can be installed in your Python 2.7 user installation directory 
+   and can write files to your disk. The Python 2.7 user 
+   installation directory is typically 
+   ``C:\Users\YourUserName\AppData\Roaming\Python\Python27\site-packages`` 
+   on Windows, and ``/home/YourUserName/.local/lib/python2.7/site-packages`` 
+   on Linux where ``YourUserName`` is your system login user name. 
 
  
 The installation directory should contain the following subdirectories:
