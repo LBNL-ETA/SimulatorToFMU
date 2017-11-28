@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0.0rc12',
+        VERSION:     '1.0.0rc13',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -137,8 +137,8 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
 <p><code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> supports the following command-line switches:</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="44%" />
-<col width="56%" />
+<col width="41%" />
+<col width="59%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Options</th>
@@ -147,12 +147,11 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>-s</td>
-<td>Paths to python scripts required to run the
-Simulator.
-The main Python script must be an extension
-of the <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code> script which is provided in
-<code class="docutils literal"><span class="pre">parser/utilities/simulator_wrapper.py</span></code>. The name of
-the main Python script must be <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code>.</td>
+<td>Paths to python scripts required to run the Simulator.
+The main Python script must be an extension of the
+<code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code> script which is provided in
+<code class="docutils literal"><span class="pre">parser/utilities/simulator_wrapper.py</span></code>. The name of the main
+Python script must be of the form <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;_wrapper.py&quot;</span></code>.</td>
 </tr>
 <tr class="row-odd"><td>-c</td>
 <td>Path to the Simulator model or configuration file.</td>

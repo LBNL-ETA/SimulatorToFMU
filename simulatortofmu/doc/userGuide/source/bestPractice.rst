@@ -92,6 +92,7 @@ The arguments of the functions are in the next table
    - The function ``exchange`` can be used to invoke external programs/scripts which do not ship with the FMU. 
      The external programs/scripts will have to be installed on the target machine where the 
      FMU is run. See :doc:`build` for details on command line options. 
-   - Once ``simulator_wrapper.py`` is implemented, it must be saved under the same name, and its path used as required argument for ``SimulatorToFMU.py``.
+   - Once ``simulator_wrapper.py`` is implemented, it must be saved under a name of the form ``"modelname"`` + ``"_wrapper.py"``,  
+     and its path used as required argument for ``SimulatorToFMU.py``.
 
   

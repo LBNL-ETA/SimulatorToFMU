@@ -65,32 +65,31 @@ Following requirements must be met when using SimulatorToFMU
 
 ``SimulatorToFMU.py`` supports the following command-line switches:
 
-+----------------------------------------------------+-------------------------------------------------------------------+
-| Options                                            | Purpose                                                           |
-+====================================================+===================================================================+
-| -s                                                 | Paths to python scripts required to run the                       |
-|                                                    | Simulator.                                                        |
-|                                                    | The main Python script must be an extension                       |
-|                                                    | of the ``simulator_wrapper.py`` script which is provided in       |
-|                                                    | ``parser/utilities/simulator_wrapper.py``. The name of            |
-|                                                    | the main Python script must be ``simulator_wrapper.py``.          |
-+----------------------------------------------------+-------------------------------------------------------------------+
-| -c                                                 | Path to the Simulator model or configuration file.                |
-+----------------------------------------------------+-------------------------------------------------------------------+
-| -i                                                 | Path to the XML input file with the inputs/outputs of the FMU.    |
-|                                                    | Default is ``parser/utilities/SimulatorModelDescription.xml``     |
-+----------------------------------------------------+-------------------------------------------------------------------+
-| -v                                                 | FMI version. Options are ``1.0`` and ``2.0``. Default is ``2.0``  |
-+----------------------------------------------------+-------------------------------------------------------------------+
-| -a                                                 | FMI API version. Options are ``cs`` (co-simulation) and ``me``    |
-|                                                    | (model exchange). Default is ``me``.                              |
-+----------------------------------------------------+-------------------------------------------------------------------+
-| -t                                                 | Modelica compiler. Options are ``dymola`` (Dymola), ``jmodelica`` |
-|                                                    | (JModelica), and ``openmodelica`` (OpenModelica).                 |
-|                                                    | Default is ``dymola``.                                            |
-+----------------------------------------------------+-------------------------------------------------------------------+
-| -pt                                                | Path to the Modelica executable compiler.                         |
-+----------------------------------------------------+-------------------------------------------------------------------+
++----------------------------------------------------+--------------------------------------------------------------------------+
+| Options                                            | Purpose                                                                  |
++====================================================+==========================================================================+
+| -s                                                 | Paths to python scripts required to run the Simulator.                   |
+|                                                    | The main Python script must be an extension of the                       |
+|                                                    | ``simulator_wrapper.py`` script which is provided in                     |
+|                                                    | ``parser/utilities/simulator_wrapper.py``. The name of the main          |
+|                                                    | Python script must be of the form ``"modelname"`` + ``"_wrapper.py"``.   |
++----------------------------------------------------+--------------------------------------------------------------------------+
+| -c                                                 | Path to the Simulator model or configuration file.                       |
++----------------------------------------------------+--------------------------------------------------------------------------+
+| -i                                                 | Path to the XML input file with the inputs/outputs of the FMU.           |
+|                                                    | Default is ``parser/utilities/SimulatorModelDescription.xml``            |
++----------------------------------------------------+--------------------------------------------------------------------------+
+| -v                                                 | FMI version. Options are ``1.0`` and ``2.0``. Default is ``2.0``         |
++----------------------------------------------------+--------------------------------------------------------------------------+
+| -a                                                 | FMI API version. Options are ``cs`` (co-simulation) and ``me``           |
+|                                                    | (model exchange). Default is ``me``.                                     |
++----------------------------------------------------+--------------------------------------------------------------------------+
+| -t                                                 | Modelica compiler. Options are ``dymola`` (Dymola), ``jmodelica``        |
+|                                                    | (JModelica), and ``openmodelica`` (OpenModelica).                        |
+|                                                    | Default is ``dymola``.                                                   |
++----------------------------------------------------+--------------------------------------------------------------------------+
+| -pt                                                | Path to the Modelica executable compiler.                                |
++----------------------------------------------------+--------------------------------------------------------------------------+
 
 The main functions of SimulatorToFMU are
 
@@ -192,7 +191,7 @@ import re
 import platform
 import random, string
 
-log.basicConfig(filename='Simulator.log', filemode='w',
+log.basicConfig(filename='simulator.log', filemode='w',
                 level=log.DEBUG, format='%(asctime)s %(message)s',
                 datefmt='%m/%d/%Y %I:%M:%S %p')
 stderrLogger = log.StreamHandler()
@@ -291,7 +290,7 @@ def main():
 
     # Check command line options
     if not(platform.system().lower() in ['windows', 'linux']):
-        log.info('SimulatorToFMU is only supported on Linux and Windows')
+        log.info('SimulatorToFMU is only supported on Linux and Windows.')
         return
 
     # Check export tool
@@ -387,14 +386,15 @@ def main():
         python_scripts_path = [item.replace('\\', '\\\\')
                                for item in python_scripts_path]
 
-    python_scripts_base = [os.path.basename(item)
-                           for item in python_scripts_path]
-    # Check if simulator_wrapper.py is in the list of functions
-    if not('simulator_wrapper.py' in python_scripts_base):
-        s = ('simulator_wrapper.py no found in the list of Python scripts={!s}').format(
-            python_scripts_path)
-        log.error(s)
-        raise ValueError(s)
+#     python_scripts_base = [os.path.basename(item)
+#                            for item in python_scripts_path]
+#     # Check if simulator_wrapper.py is in the list of functions
+#     # Moved this check later one to use the model name as name of the scipt
+#     if not('simulator_wrapper.py' in python_scripts_base):
+#         s = ('simulator_wrapper.py no found in the list of Python scripts={!s}').format(
+#             python_scripts_path)
+#         log.error(s)
+#         raise ValueError(s)
 
     # Check if the path exists
     for python_script_path in python_scripts_path:
@@ -808,7 +808,7 @@ class SimulatorToFMU(object):
 
         # Get the model name to write the .mo file
         self.model_name = root.attrib.get('modelName')
-
+        
         # Remove Invalid characters from the model name as this is used
         # by the Modelica model and the FMU
         s = ('Invalid characters will be removed from the model name={!s}.').format(
@@ -817,7 +817,23 @@ class SimulatorToFMU(object):
         self.model_name = sanitize_name(self.model_name)
         s = ('The new model name is {!s}.').format(self.model_name)
         log.info(s)
-
+        
+        # Specify the module name which shouldn't contain invalid characters
+        self.module_name=self.model_name+'_wrapper'
+        s = ('Declare the Python module name as {!s}.').format(
+            self.module_name)
+        log.info(s)
+        
+        # Check if the script fort the module name is in the list of Python scripts
+        python_scripts_base = [os.path.basename(item)
+                           for item in self.python_scripts_path]
+        if not(self.module_name+'.py' in python_scripts_base):
+            s = (self.module_name+'.py' +' no found in the list of Python scripts={!s}.'\
+                 ' The name of the model is {!s}. Hence the name of the Python wrapper script must be {!s}.').format(
+                self.python_scripts_path, self.module_name, self.module_name+'.py')
+            log.error(s)
+            raise ValueError(s)
+        
         # Iterate through the XML file and get the ModelVariables.
         input_variable_names = []
         modelica_input_variable_names = []
@@ -1011,8 +1027,9 @@ class SimulatorToFMU(object):
         template = env.get_template('')
 
         # Call template with parameters
-        output_res = template.render(
+        output_res = template.render(   
             model_name=self.model_name,
+            module_name=self.module_name,
             scalar_variables=scalar_variables,
             input_variable_names=input_variable_names,
             output_variable_names=output_variable_names,

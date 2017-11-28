@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0.0rc12',
+        VERSION:     '1.0.0rc13',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -138,7 +138,7 @@ This template should be adapted to create new XML input file.</p>
 <span class="nt">&lt;SimulatorModelDescription</span>
   <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
   <span class="na">fmiVersion=</span><span class="s">&quot;2.0&quot;</span>
-  <span class="na">modelName=</span><span class="s">&quot;Simulator&quot;</span>
+  <span class="na">modelName=</span><span class="s">&quot;simulator&quot;</span>
   <span class="na">description=</span><span class="s">&quot;Input data for a Simulator FMU&quot;</span>
   <span class="na">generationTool=</span><span class="s">&quot;SimulatorToFMU&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;ModelVariables&gt;</span>
@@ -324,7 +324,8 @@ and implements the function <code class="docutils literal"><span class="pre">exc
 <li>The function <code class="docutils literal"><span class="pre">exchange</span></code> can be used to invoke external programs/scripts which do not ship with the FMU.
 The external programs/scripts will have to be installed on the target machine where the
 FMU is run. See <a class="reference internal" href="build.html"><span class="doc">Creating an FMU</span></a> for details on command line options.</li>
-<li>Once <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code> is implemented, it must be saved under the same name, and its path used as required argument for <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code>.</li>
+<li>Once <code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code> is implemented, it must be saved under a name of the form <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;_wrapper.py&quot;</span></code>,
+and its path used as required argument for <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code>.</li>
 </ul>
 </div>
 </div>
