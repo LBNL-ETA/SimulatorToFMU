@@ -143,7 +143,7 @@ JModelica
   The workaround is to make sure that the path of the configuration file is 
   the same on the machine where the FMU will be run.
   
-- If the configuration file is not provided, then SimularToFMU will issue a warning. 
+- If the configuration file is not provided, then SimulatorToFMU will issue a warning. 
 
 
 OpenModelica
