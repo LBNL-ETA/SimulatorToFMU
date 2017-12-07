@@ -107,7 +107,7 @@ Simulation model or configuration file
 An FMU exported by SimulatorToFMU needs in certain cases a configuration file to run.
 There are two ways of providing the configuration file to the FMU:
 
-  1. The path to the configuration file is passed as the comamnd line argument ``"-c"`` 
+  1. The path to the configuration file is passed as the command line argument ``"-c"`` 
      of SimulatorToFMU.py. In this situation, the configuration file is copied 
      in the resources folder of the FMU.
   2. The path to the configuration is set by the master algorithm before initializing the FMU.
