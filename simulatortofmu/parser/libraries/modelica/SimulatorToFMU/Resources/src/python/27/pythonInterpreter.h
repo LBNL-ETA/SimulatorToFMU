@@ -30,6 +30,8 @@
 #include <Python.h>
 #endif
 
+#include "pythonObjectStructure.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -67,6 +69,8 @@ to not export all symbols but only the needed ones */
  * @param resWri the result flag
  * @param ModelicaFormatError the pointer
  * to the inModelicaFormatError
+ * @param memory a Python object               
+ * @param have_memory the flag indicating a Python object          
  */
 LBNLPYTHONINTERPRETER_EXPORT void pythonExchangeVariables(const char * moduleName,
 							const char * functionName, 
@@ -81,7 +85,13 @@ LBNLPYTHONINTERPRETER_EXPORT void pythonExchangeVariables(const char * moduleNam
 							const char ** strParWri, 
 							double * dblValParWri, 
 							double * resWri,
-							void(*inModelicaFormatError)(const char *string, ...));
+							void(*inModelicaFormatError)(const char *string, ...),
+                          				void* object,
+                          				int have_memory);
+
+LBNLPYTHONINTERPRETER_EXPORT void* initPythonMemory();
+
+LBNLPYTHONINTERPRETER_EXPORT void freePythonMemory(void* object);
 
 #ifdef __cplusplus
 }
