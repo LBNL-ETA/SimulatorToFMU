@@ -3,6 +3,9 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
   input String moduleName
     "Name of the python module that contains the function";
   input String functionName=moduleName "Name of the python function";
+  input BaseClasses.PythonObject pytObj "Memory that holds the Python object";
+  input Boolean passPythonObject
+    "Set to true if the Python function returns and receives an object, see User's Guide";
   input String  conFilNam "Name of the python function";
   input Real    modTim[1] "Model time";
   input Real    dblParVal[nDblPar] "Parameter variables values to send to SimulatorToFMU";
@@ -28,7 +31,9 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
                                     nDblPar,
                                     dblParNam,
                                     dblParVal,
-                                    resWri)
+                                    resWri,
+                                    pytObj,
+                                    passPythonObject)
     annotation (Library={"SimulatorToFMUPython27", "python27"},
       LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"},
       IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
