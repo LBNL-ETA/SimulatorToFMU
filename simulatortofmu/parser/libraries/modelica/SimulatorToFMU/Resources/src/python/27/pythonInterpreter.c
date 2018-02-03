@@ -441,7 +441,7 @@ void pythonExchangeVariables(const char * moduleName,
 				*/
 				/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p))
 				*/
-				if (PyFloat_Check(pItemDbl) || PyLong_Check(pItemDbl) || PyLong_Check(pItemDbl))
+				if (PyFloat_Check(pItemDbl) || PyLong_Check(pItemDbl) || PyInt_Check(pItemDbl))
 					dblValRea[0] = PyFloat_AsDouble(pItemDbl);
 				else
 					(*ModelicaFormatError)("Python function \"%s\" returns an invalid object for a scalar double value.\n\
@@ -457,7 +457,7 @@ void pythonExchangeVariables(const char * moduleName,
 					*/
 					/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p))
 					*/
-					if (PyFloat_Check(p) || PyLong_Check(p) || PyLong_Check(p))
+					if (PyFloat_Check(p) || PyLong_Check(p) || PyInt_Check(p))
 						dblValRea[pIndVal] = PyFloat_AsDouble(p);
 					else
 						(*ModelicaFormatError)("Python function \"%s\" returns an invalid object for a scalar double value.\n\
@@ -521,3 +521,10 @@ str, strLen);
 return;
 }
 */
+void freePythonMemory(void* object)
+{
+  if ( object != NULL ){
+    pythonPtr* p = (pythonPtr*) object;
+    free(p);
+  }
+}
