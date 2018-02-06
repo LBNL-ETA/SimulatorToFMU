@@ -23,15 +23,26 @@ model {{model_name}}
   parameter Real _saveToFile = 0 "Flag for writing results"; 
   
 protected   
+
+  {%- if has_memory=="false" %}
+  parameter Boolean passPythonObject = false
+    "Set to true if the Python function returns and receives an object, see User's Guide";
+  {%- else  %}
+  parameter Boolean passPythonObject = true
+    "Set to true if the Python function returns and receives an object, see User's Guide";
+  {%- endif %}
+
   parameter Integer nDblPar={{parameter_variable_names|length}} 
     "Number of double parameter values to sent to Simulator";
   parameter Integer nDblInp(min=1)={{input_variable_names|length}} 
     "Number of double input values to sent to Simulator";
   parameter Integer nDblOut(min=1)={{output_variable_names|length}}  
     "Number of double output values to receive from Simulator";
+  
+  SimulatorToFMU.Python{{python_vers}}.Functions.BaseClasses.PythonObject pytObj=
+  SimulatorToFMU.Python{{python_vers}}.Functions.BaseClasses.PythonObject();
   Real resWri[1]= {_saveToFile} "Flag for writing results";
   Real dblInpVal[nDblInp] "Value to be sent to Simulator";
-  
   
   {% if (input_variable_names|length==0) -%} 
   Real uR[nDblInp]
@@ -112,6 +123,7 @@ protected
     "Name of the Python module that contains the function";
   parameter String functionName="exchange" 
     "Name of the Python function";
+
   
 algorithm 
 
@@ -134,6 +146,8 @@ algorithm
 	  nDblPar=nDblPar,
 	  dblParNam=dblParNam,
 	  dblParVal=dblParVal,
-	  resWri=resWri); 
+	  resWri=resWri,
+	  pytObj=pytObj,
+      passPythonObject=passPythonObject); 
 
 end {{model_name}};

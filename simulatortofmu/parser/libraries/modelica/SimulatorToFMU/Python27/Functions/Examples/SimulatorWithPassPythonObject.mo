@@ -32,14 +32,14 @@ algorithm
     resWri={0},
     pytObj=pytObj,
     passPythonObject=passPythonObject);
-    //assert(abs(16 - yR1[1]) < 1e-5, "Error in function r1_r1PassPythonObject");
+    //assert(abs(28 - yR1[1]) < 1e-5, "Error in function r1_r1PassPythonObject");
   annotation (
     experiment(StopTime=1.0),
-    __Dymola_Commands(file="modelica://SimulatorToFMU.Resources/Scripts/Dymola/Python27/Functions/Examples/Simulator.mos"
+    __Dymola_Commands(file="modelica://SimulatorToFMU.Resources/Scripts/Dymola/Python27/Functions/Examples/SimulatorWithPassPythonObject.mos"
         "Simulate and plot"),
     Documentation(info="<html>
 <p>
-This example calls various functions in the Python module <code>testSimulator.py</code>.
+This example calls a function in the Python module <code>testSimulator.py</code>.
 It tests whether arguments and return values are passed correctly.
 The functions in  <code>testSimulator.py</code> are very simple in order to test
 whether they compute correctly, and whether the data conversion between Modelica and
@@ -50,7 +50,7 @@ the simulation if the return value is different from the expected value.
 </html>", revisions="<html>
 <ul>
 <li>
-October 17, 2016, by Thierry S. Nouidui:<br/>
+February 05, 2018, by Thierry S. Nouidui:<br/>
 First implementation.
 </li>
 </ul>

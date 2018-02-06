@@ -47,14 +47,13 @@ def r2p2_r2(cS, iS, uS, uR, yS, parS, parR, iwR):
 def r1_r1PassPythonObject(cS, iS, uS, uR, yS, iwR, obj):
     if obj == None:
         # Initialize the Python object
-        obj = {'a': uR, 'b': 1.0}
+        obj = {'a': uR}
     else:
         # Use the python object
-        obj['a'] = obj['a'] + uR
-        obj['b'] = obj['b'] + 10.0
-    # Return the sum of the dictionary,
+        obj['a'] = obj['a'] + 1 
+    # Increment a by one at every invocation the sum of the dictionary,
     # and also return the dictionary so that it can be used again at the next
     # invocation.
-    res = obj['a'] + obj['b']
-    raise Exception("Result is {}".format(res))
+    res = obj['a']
+    #raise Exception("Result is {}".format(res))
     return [res, obj]

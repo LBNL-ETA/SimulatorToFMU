@@ -271,6 +271,13 @@ def main():
                                  + ' Default is <dymola>')
     simulator_group.add_argument("-pt", "--export-tool-path",
                                  help='Path to the Modelica executable compiler.')
+    simulator_group.add_argument("-hm", "--has-memory",
+                                 help='Export model with memory or not.'
+                                 + ' Valid options are <true> and <false>. Default is <true>.')
+    simulator_group.add_argument("-se", "--specific-export",
+                                 help='Export specific tool.'
+                                 + ' Current valid option is <cyme> and <none>. Default is <none>.')
+    
 #     simulator_group.add_argument("-n", "--needs-tool",
 #                                  help='Flag to indicate if FMU needs an '
 #                                  + 'external execution tool to run. '
@@ -280,13 +287,30 @@ def main():
 
     # Parse the arguments
     args = parser.parse_args()
+    
+    # Export CYME using SimulatorToFMU
+    tool_export = args.specific_export
+    if(tool_export in ["cyme"]):
+        python_vers = '34'
+                # Check command line options
+        if not(platform.system().lower() in ['windows']):
+            log.info('SimulatorToFMU can only export CYME for Windows.')
+            return
+    else:
+        tool_export = None
+        python_vers = '27'
+    
+    # Get the memory flag
+    has_memory = args.has_memory
+    if(has_memory is None):
+        has_memory = "true"
 
     # Set the Python version
     # Here we set the Python version. We keep this in case
     # we want to include different versions of Python in the
     # Modelica model and use the correct one by detecting the version
     # of Python used to run the script.
-    python_vers = '27'
+    #python_vers = '27'
 
     # Check command line options
     if not(platform.system().lower() in ['windows', 'linux']):
@@ -477,7 +501,9 @@ def main():
                                export_tool,
                                export_tool_path,
                                modelica_path,
-                               needs_tool.lower())
+                               needs_tool.lower(),
+                               has_memory,
+                               tool_export)
 
     start = datetime.now()
     ret_val = Simulator.print_mo()
@@ -694,7 +720,9 @@ class SimulatorToFMU(object):
                  export_tool,
                  export_tool_path,
                  modelica_path,
-                 needs_tool):
+                 needs_tool,
+                 has_memory,
+                 tool_export):
         
         """
         Initialize the class.
@@ -716,7 +744,8 @@ class SimulatorToFMU(object):
         :param export_tool_path (str): The path to the Modelica compiler.
         :param modelica_path (str): The path to the libraries to be added 
                to the MODELICAPATH.
-        :param needs_tool (str): Needs execution tool on target machine.
+        :param has_memory (str): The flag to indicate if simulator has memory.
+        :param needs_tool (str): Indicate if a specific tool should be exported.
 
         """
 
@@ -735,6 +764,8 @@ class SimulatorToFMU(object):
         self.export_tool_path = export_tool_path
         self.modelica_path = modelica_path
         self.needs_tool = needs_tool
+        self.has_memory = has_memory
+        self.tool_export = tool_export
 
     def xml_validator(self):
         """
@@ -1039,7 +1070,8 @@ class SimulatorToFMU(object):
             modelica_output_variable_names=modelica_output_variable_names,
             modelica_parameter_variable_names=modelica_parameter_variable_names,
             con_path=self.con_path,
-            python_vers=self.python_vers)
+            python_vers=self.python_vers,
+            has_memory=self.has_memory)
         # Write results in mo file which has the same name as the class name
         output_file = self.model_name + '.mo'
         if os.path.isfile(output_file):
