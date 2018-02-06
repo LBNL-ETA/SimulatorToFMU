@@ -85,10 +85,22 @@ The arguments of the functions are in the next table
 +----------------------------------------------------+-------------------------------------------------------------------+
 | ``write_results``                                  | A flag for writing results to a file                              | 
 +----------------------------------------------------+-------------------------------------------------------------------+
+| ``python_object_memory``                           | A variable that holds the memory of a Python object               | 
+|                                                    | This argument is required only if the simulator or script has     |
+|                                                    | variables which have memory.                                      |
++----------------------------------------------------+-------------------------------------------------------------------+
+
+If the simulator does not have memory, then the function ``exchange`` will be defined as 
+
+.. literalinclude:: ../../../parser/utilities/simulator_wrapper_no_memory.py
+   :language: python
+   :linenos:
 
 .. note:: 
 
    - The function ``exchange`` must return a list of output values which matches the order of the output names. 
+   - If the simulator has memory, then the function ``exchange`` must return in addition to the output values, 
+     the variable which holds the memory of the Python object which should be kept between invocations.
    - The function ``exchange`` can be used to invoke external programs/scripts which do not ship with the FMU. 
      The external programs/scripts will have to be installed on the target machine where the 
      FMU is run. See :doc:`build` for details on command line options. 
