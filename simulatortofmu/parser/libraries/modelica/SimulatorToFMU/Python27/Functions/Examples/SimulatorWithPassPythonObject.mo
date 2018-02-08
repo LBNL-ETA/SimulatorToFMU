@@ -20,7 +20,7 @@ algorithm
     moduleName="testSimulator",
     functionName="r1_r1PassPythonObject",
     conFilNam="config.csv",
-    modTim={time},
+    modTim=time,
     nDblInp=1,
     dblInpNam={"u"},
     dblInpVal={15.0},
@@ -29,7 +29,7 @@ algorithm
     nDblPar=0,
     dblParNam=emptyDblParNam,
     dblParVal=emptyDblParVal,
-    resWri={0},
+    resWri=false,
     pytObj=pytObj,
     passPythonObject=passPythonObject);
     //assert(abs(28 - yR1[1]) < 1e-5, "Error in function r1_r1PassPythonObject");

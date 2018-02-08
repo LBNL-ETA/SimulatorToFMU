@@ -27,7 +27,7 @@
 void modelicaToSimulator(const char * moduleName,
 							const char * functionName, 
 							const char * configFileName, 
-							double * time,
+							double time,
 							const size_t nDblWri, 
 							const char ** strWri,
 							double * dblValWri, 
@@ -37,7 +37,7 @@ void modelicaToSimulator(const char * moduleName,
 							size_t nDblParWri,
 							const char ** strParWri, 
 							double * dblValParWri, 
-							double * resWri,
+							int resWri,
 							void* object,
 							int passPythonObject)
 {

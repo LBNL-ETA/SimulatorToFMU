@@ -130,7 +130,7 @@ void createPythonArgumentLists(int typ,
 void pythonExchangeVariables(const char * moduleName,
 	const char * functionName,
 	const char * configFileName,
-	double * modTim,
+	double modTim,
 	const size_t nDblWri, 
 	const char ** strWri, 
 	double * dblValWri, 
@@ -140,7 +140,7 @@ void pythonExchangeVariables(const char * moduleName,
 	size_t nDblParWri, 
 	const char ** strParWri, 
 	double * dblValParWri, 
-	double *resWri,
+	int resWri,
 	void (*ModelicaFormatError)(const char *string,...),
 	void* memory, int passPythonObject){
 
@@ -276,10 +276,24 @@ void pythonExchangeVariables(const char * moduleName,
 		);
 
 	/* b) Convert double[]*/
+        /*
 	createPythonArgumentLists(DBL_FLAG, 0, 1, 
 		NULL, modTim, ptrMemory->pModule, ptrMemory->pFunc, 
 		pArgs, *ModelicaFormatError
 		);
+         */
+
+	 /* b) Convert resWri*/
+         pValue = PyFloat_FromDouble(modTim);
+	 if (!pValue) {
+		  /* Failed to convert argument.*/
+		  Py_DECREF(ptrMemory->pModule);
+		  /* According to the Modelica specification,*/
+		  /* the function ModelicaError never returns to the calling function.*/
+		  (*ModelicaFormatError)("Cannot convert the model time %f to Python format.", modTim);
+		}
+         PyTuple_SetItem(pArgs, iArg, pValue);
+	 iArg++;
 
 	/* c) Convert char **, an array of character arrays*/
 	if ( nStrWri > 0 ){
@@ -326,10 +340,23 @@ void pythonExchangeVariables(const char * moduleName,
 
 	/* Convert the arguments*/
 	/* h) Convert double[]*/
-	createPythonArgumentLists(DBL_FLAG, 0, 
+	/*createPythonArgumentLists(DBL_FLAG, 0, 
 		1, NULL, resWri, ptrMemory->pModule, ptrMemory->pFunc, 
 		pArgs, *ModelicaFormatError
 		);
+         */
+
+	 /* h) Convert resWri*/
+         pValue = PyLong_FromLong((long)resWri);
+	 if (!pValue) {
+		  /* Failed to convert argument.*/
+		  Py_DECREF(ptrMemory->pModule);
+		  /* According to the Modelica specification,*/
+		  /* the function ModelicaError never returns to the calling function.*/
+		  (*ModelicaFormatError)("Cannot convert the flag for saving results) %d to Python format.", resWri);
+		}
+         PyTuple_SetItem(pArgs, iArg, pValue);
+	 iArg++;
 
 	 /* i) Convert object*/
 	 if ( passPythonObject > 0 ){

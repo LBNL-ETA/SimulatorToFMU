@@ -22,7 +22,7 @@ algorithm
     pytObj=pytObj[1],
     passPythonObject=passPythonObject,
     conFilNam="config.csv",
-    modTim={time},
+    modTim=time,
     nDblInp=1,
     dblInpNam={"u"},
     dblInpVal={15.0},
@@ -31,7 +31,7 @@ algorithm
     nDblPar=0,
     dblParNam=emptyDblParNam,
     dblParVal=emptyDblParVal,
-    resWri={0});
+    resWri=false);
   assert(abs(15 - yR1[1]) < 1e-5, "Error in function r1_r1");
 
   yR1 := SimulatorToFMU.Python27.Functions.simulator(
@@ -40,7 +40,7 @@ algorithm
     pytObj=pytObj[2],
     passPythonObject=passPythonObject,
     conFilNam="config.csv",
-    modTim={time},
+    modTim=time,
     nDblInp=2,
     dblInpNam={"u","u1"},
     dblInpVal={15.0,30.0},
@@ -49,7 +49,7 @@ algorithm
     nDblPar=0,
     dblParNam=emptyDblParNam,
     dblParVal=emptyDblParVal,
-    resWri={0});
+    resWri=false);
   assert(abs(45 - yR1[1]) < 1e-5, "Error in function r2_r1");
 
   yR1 := SimulatorToFMU.Python27.Functions.simulator(
@@ -58,7 +58,7 @@ algorithm
     pytObj=pytObj[3],
     passPythonObject=passPythonObject,
     conFilNam="config.csv",
-    modTim={time},
+    modTim=time,
     nDblInp=0,
     dblInpNam={""},
     dblInpVal={0},
@@ -67,7 +67,7 @@ algorithm
     nDblPar=3,
     dblParNam={"par1","par2","par3"},
     dblParVal={1.0,2.0,3.0},
-    resWri={1});
+    resWri=false);
   assert(abs(6 - yR1[1]) < 1e-5, "Error in function par3_r1");
 
   yR2 := SimulatorToFMU.Python27.Functions.simulator(
@@ -76,7 +76,7 @@ algorithm
     pytObj=pytObj[4],
     passPythonObject=passPythonObject,
     conFilNam="config.csv",
-    modTim={time},
+    modTim=time,
     nDblInp=1,
     dblInpNam={"u"},
     dblInpVal={30.0},
@@ -85,7 +85,7 @@ algorithm
     nDblPar=0,
     dblParNam=emptyDblParNam,
     dblParVal=emptyDblParVal,
-    resWri={0});
+    resWri=false);
   assert(abs(yR2[1] - 30) + abs(yR2[2] - 60) < 1E-5, "Error in function r1_r2");
 
   yR2 := SimulatorToFMU.Python27.Functions.simulator(
@@ -94,7 +94,7 @@ algorithm
     pytObj=pytObj[5],
     passPythonObject=passPythonObject,
     conFilNam="config.csv",
-    modTim={time},
+    modTim=time,
     nDblInp=2,
     dblInpNam={"u","u1"},
     dblInpVal={1.0,2.0},
@@ -103,7 +103,7 @@ algorithm
     nDblPar=2,
     dblParNam={"par1","par2"},
     dblParVal={1.0,10.0},
-    resWri={1});
+    resWri=true);
   assert(abs(yR2[1] - 1) + abs(yR2[2] - 20) < 1E-5, "Error in function r2p2_r2");
   annotation (
     experiment(StopTime=1.0),

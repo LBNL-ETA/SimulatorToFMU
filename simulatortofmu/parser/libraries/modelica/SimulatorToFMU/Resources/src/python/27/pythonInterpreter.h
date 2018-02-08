@@ -75,7 +75,7 @@ to not export all symbols but only the needed ones */
 LBNLPYTHONINTERPRETER_EXPORT void pythonExchangeVariables(const char * moduleName,
 							const char * functionName, 
 							const char * configFileName,
-							double * modTim,
+							double modTim,
 							const size_t nDblWri, 
 							const char ** strWri,
 							double * dblValWri, 
@@ -84,7 +84,7 @@ LBNLPYTHONINTERPRETER_EXPORT void pythonExchangeVariables(const char * moduleNam
 							double * dblValRea, size_t nDblParWri,
 							const char ** strParWri, 
 							double * dblValParWri, 
-							double * resWri,
+							int resWri,
 							void(*inModelicaFormatError)(const char *string, ...),
                           				void* object,
                           				int have_memory);

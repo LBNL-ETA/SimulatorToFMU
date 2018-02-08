@@ -14,7 +14,8 @@ model exchange or co-simulation using the :term:`Functional Mock-up Interface` (
 standard `version 1.0 or 2.0 <https://www.fmi-standard.org>`_.
 This FMU can then be imported into a variety of simulation programs 
 that support the import of Functional Mock-up Units.
-In the remainder of this document, we define a Python-driven simulation program or script as a simulator.
+In the remainder of this document, we define a Python-driven simulation program, 
+and a Python script as a Simulator.
 
 .. note::
 

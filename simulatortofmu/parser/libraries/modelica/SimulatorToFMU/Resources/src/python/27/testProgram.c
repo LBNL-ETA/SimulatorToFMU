@@ -16,7 +16,7 @@ int main(int nArgs, char ** args){
 	const char * moduleName="testSimulator";
 	const char * functionName="r1_r1PassPythonObject";
 	const char * configFileName="config.csv";
-	double time[]={0.0};
+	double time=0.0;
 
 	size_t nDblWri=1;
 	double dblValWri[]={15.0};
@@ -29,7 +29,7 @@ int main(int nArgs, char ** args){
 	size_t nDblParWri=0;
 	const char * strParWri[]={""};
 	double dblValParWri[]={0};
-	double resWri[]={0};
+	int resWri=1;
 
 	int i;
         pythonPtr* ptr = malloc(sizeof(pythonPtr));

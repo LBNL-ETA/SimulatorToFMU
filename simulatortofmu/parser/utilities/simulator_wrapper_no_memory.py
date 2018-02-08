@@ -1,15 +1,24 @@
 # Dummy Python-driven simulator
-def simulator(configuration_file, time, input_names, 
+class Simulator():
+    """
+    Dummy simulator Python-driven simulator
+    which increments in its doTimeSteo method the input values by 1.
+    This class is for illustration purposes only.
+    """
+    def __init__(self, configuration_file, time, input_names, 
             input_values, output_names, write_results):
-    """
-    Dummy simulator Python-driven program
-    which returns the input values.
-    This function is only for illustration purposes/
-    """
-    
-    return input_values
+        self.configuration_file = configuration_file
+        self.input_values = input_values
 
-# Main Python function to be modified to interface with a simulator which doesn't have memory.
+    
+    def doTimeStep(self):
+        """
+        This function increments the input variables by 1
+        """
+        
+        return self.input_values + 1
+
+# Main Python function to be modified to interface with a simulator which has memory.
 def exchange(configuration_file, time, input_names, 
             input_values, output_names, write_results):
     """
@@ -21,32 +30,29 @@ def exchange(configuration_file, time, input_names,
     :param input_names (Strings): Input names 
     :param input_values (Floats): Input values (same length as input_names) 
     :param output_names (Strings): Output names
-    :param write_results (Float): Store results to file (1 to store, 0 else)
+    :param write_results (Integers): Store results to file (1 to store, 0 else)
         
-    Example:
-        >>> configuration_file = 'config.json'
-        >>> time = 0
-        >>> input_names = 'v'
-        >>> input_values = 220.0
-        >>> output_names = 'i'
-        >>> write_results = 0
-        >>> output_values = simulator(configuration_file, time, input_names,
-                        input_values, output_names, write_results)
     """
 
     #######################################################################
     # EDIT AND INCLUDE CUSTOM CODE FOR TARGET SIMULATOR
     # Include body of the function used to compute the output values
-    # based on the inputs received by the simulator function.
-    # This function currently returns dummy output values. 
+    # based on the inputs received by the simulator function. 
     # This will need to be adapted so it returns the correct output_values.
     # If the list of output names has only one name, then only a scalar 
     # must be returned.
-    output_values = simulator(configuration_file, time, input_names,
-                        input_values, output_names, write_results)
+    s = Simulator(configuration_file, time, input_names,
+                    input_values, output_names, write_results)
+
+    output_values = s.doTimeStep()
     # Check if return values are correct
-    if(len(output_values)!=len(output_names)):
+    # Store the new state of the simulator
+    if(output_values < input_values):
         raise("...")
     #########################################################################
-    return [output_values]
+    return output_values
     
+if __name__ == "__main__":
+    memory = None
+    print(exchange("test.csv", 1.0, "i1", 0.0, "y1", 1))
+    print(exchange("test.csv", 2.0, "i1", 1.0, "y1", 1))
