@@ -61,7 +61,9 @@ Simulator_T = simulator.SimulatorToFMU('con_path',
                                        'dymola',
                                        None,
                                        None,
-                                       'false')
+                                       'true',
+                                       'true',
+                                       None)
 
 
 
@@ -151,7 +153,9 @@ class Tester(unittest.TestCase):
                             tool,
                             None,
                             modPat,
-                            cs_xml)
+                            cs_xml,
+                            'true',
+                            None)
 
                         print (
                             'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(
@@ -204,7 +208,7 @@ class Tester(unittest.TestCase):
                 sim_mod.get_variable_valueref(elem))
 
         # Set the flag to save the results
-        sim_mod.set('_saveToFile', 0)
+        sim_mod.set('_saveToFile', 'false')
 
         # Initialize the FMUs
         sim_mod.initialize()
@@ -339,7 +343,9 @@ class Tester(unittest.TestCase):
                             tool,
                             None,
                             modPat,
-                            cs_xml)
+                            cs_xml,
+                            'true',
+                            None)
 
                         print (
                             'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(
@@ -407,7 +413,9 @@ class Tester(unittest.TestCase):
                             tool,
                             None,
                             modPat,
-                            cs_xml)
+                            cs_xml,
+                            'true',
+                            None)
 
                         print (
                             'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(

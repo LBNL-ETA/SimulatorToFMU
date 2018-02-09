@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>4. Creating an FMU &#8212; FMU Export of a Memoryless Python-based Simulator User Guide</title>
+    <title>4. Creating an FMU &#8212; FMU Export of a Python-driven Simulation Program User Guide</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0.0rc13',
+        VERSION:     '1.0.0rc15',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -53,7 +53,7 @@
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Python-driven Simulation Program User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
@@ -153,7 +153,7 @@ The main Python script must be an extension of the
 <code class="docutils literal"><span class="pre">parser/utilities/simulator_wrapper.py</span></code>. The name of the main
 Python script must be of the form <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;_wrapper.py&quot;</span></code>.</td>
 </tr>
-<tr class="row-odd"><td>-c</td>
+<tr class="row-odd"><td>-cf</td>
 <td>Path to the Simulator model or configuration file.</td>
 </tr>
 <tr class="row-even"><td>-i</td>
@@ -175,6 +175,9 @@ Default is <code class="docutils literal"><span class="pre">dymola</span></code>
 <tr class="row-even"><td>-pt</td>
 <td>Path to the Modelica executable compiler.</td>
 </tr>
+<tr class="row-odd"><td>-hm</td>
+<td>Flag to indicate if simulator has memory. Default is <code class="docutils literal"><span class="pre">true</span></code>.</td>
+</tr>
 </tbody>
 </table>
 <p>The main functions of SimulatorToFMU are</p>
@@ -194,7 +197,7 @@ for model exchange or co-simulation <code class="docutils literal"><span class="
 There are two ways of providing the configuration file to the FMU:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>The path to the configuration file is passed as the comamnd line argument <code class="docutils literal"><span class="pre">&quot;-c&quot;</span></code> 
+<li>The path to the configuration file is passed as the command line argument <code class="docutils literal"><span class="pre">&quot;-c&quot;</span></code> 
 of SimulatorToFMU.py. In this situation, the configuration file is copied 
 in the resources folder of the FMU.</li>
 <li>The path to the configuration is set by the master algorithm before initializing the FMU.</li>
@@ -253,8 +256,8 @@ be set by master algorithm prior to initializing the FMU.</p>
 <h3>4.1.2. Reserved variable names<a class="headerlink" href="#reserved-variable-names" title="Permalink to this headline">¶</a></h3>
 <p>Following variables names are not allowed to be used as FMU input, output, or parameter names.</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">_configurationFileName</span></code>: Variable name used to set the path to the Simulator model or configuration file.</li>
-<li><code class="docutils literal"><span class="pre">_saveToFile</span></code>: Variable used to set the flag for storing simulation results (1 for storing, 0 else).</li>
+<li><code class="docutils literal"><span class="pre">_configurationFileName</span></code>: String variable name used to set the path to the Simulator model or configuration file.</li>
+<li><code class="docutils literal"><span class="pre">_saveToFile</span></code>: Boolean variable used to set the flag for storing simulation results (true for storing, false else).</li>
 <li><code class="docutils literal"><span class="pre">time</span></code>: Internal FMU simulation time.</li>
 </ul>
 <p>If any of these variables is used for an FMU input, output, or parameter name, SimulatorToFMU will exit with an error.</p>
@@ -322,12 +325,12 @@ a version of Dymola which has the <code class="docutils literal"><span class="pr
     <a href="index.html">User Guide</a></li>
     </br>
 <!--    
-        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Memoryless Python-based Simulator User Guide</a> &#187;</li> -->
+        <li class="nav-item nav-item-0"><a href="index.html">FMU Export of a Python-driven Simulation Program User Guide</a> &#187;</li> -->
  
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+        &#169; Copyright 2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>

@@ -4,25 +4,19 @@
 
 ___int_doc:
 SimulatorToFMU is a software package written in Python which allows 
-users to export a memoryless Python-driven simulation program or script 
+users to export a Python-driven simulation program or script 
 as a :term:`Functional Mock-up Unit` (FMU) for  
 model exchange or co-simulation using the :term:`Functional Mock-up Interface` (FMI) 
 standard `version 1.0 or 2.0 <https://www.fmi-standard.org>`_.
 This FMU can then be imported into a variety of simulation programs 
 that support the import of Functional Mock-up Units.
-
-A memoryless Python-driven simulation program/script 
-is a simulation program which meets following requirements:
-   
-- The simulation program/script can be invoked through a Python script.
-- The invocation of the simulation program/script is memoryless. That is, 
-  the output of the simulation program at any invocation time ``t`` 
-  depends only on the inputs at the time ``t``. 
-- The inputs and the outputs of the simulation program/script must be ``real`` numbers.
   
 .. note::
 
-   The Python-driven script could invoke 
+   - The inputs and the outputs of the simulation program/script 
+     must be ``real`` numbers.
+
+   - The Python-driven script could invoke 
    scripts written in languages such as 
    MATLAB using the ``subprocess`` or ``os.system()``
    module of Python or specifically for MATLAB 
@@ -74,7 +68,7 @@ Following requirements must be met when using SimulatorToFMU
 |                                                    | ``parser/utilities/simulator_wrapper.py``. The name of the main          |
 |                                                    | Python script must be of the form ``"modelname"`` + ``"_wrapper.py"``.   |
 +----------------------------------------------------+--------------------------------------------------------------------------+
-| -c                                                 | Path to the Simulator model or configuration file.                       |
+| -cf                                                | Path to the Simulator model or configuration file.                       |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -i                                                 | Path to the XML input file with the inputs/outputs of the FMU.           |
 |                                                    | Default is ``parser/utilities/SimulatorModelDescription.xml``            |
@@ -89,6 +83,8 @@ Following requirements must be met when using SimulatorToFMU
 |                                                    | Default is ``dymola``.                                                   |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -pt                                                | Path to the Modelica executable compiler.                                |
++----------------------------------------------------+--------------------------------------------------------------------------+
+| -hm                                                | Flag to indicate if simulator has memory. Default is ``true``.           |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 
 The main functions of SimulatorToFMU are
@@ -168,9 +164,10 @@ Reserved variable names
 
 Following variables names are not allowed to be used as FMU input, output, or parameter names.
 
-- ``_configurationFileName``: Variable name used to set the path to the Simulator model or configuration file.
-- ``_saveToFile``: Variable used to set the flag for storing simulation results (1 for storing, 0 else).
+- ``_configurationFileName``: String variable name used to set the path to the Simulator model or configuration file.
+- ``_saveToFile``: Boolean variable used to set the flag for storing simulation results (true for storing, false else).
 - ``time``: Internal FMU simulation time.
+
 
 If any of these variables is used for an FMU input, output, or parameter name, SimulatorToFMU will exit with an error.
 
@@ -252,7 +249,7 @@ def main():
             lambda s: [
                 item for item in s.split(',')]))
 
-    simulator_group.add_argument('-c', '--con-fil-path',
+    simulator_group.add_argument('-cf', '--con-fil-path',
                                  help='Path to the configuration file')
     simulator_group.add_argument('-i', '--io-file-path',
                                  help='Path to the XML input file')
@@ -271,6 +268,13 @@ def main():
                                  + ' Default is <dymola>')
     simulator_group.add_argument("-pt", "--export-tool-path",
                                  help='Path to the Modelica executable compiler.')
+    simulator_group.add_argument("-hm", "--has-memory",
+                                 help='Export model with memory or not.'
+                                 + ' Valid options are <true> and <false>. Default is <true>.')
+    simulator_group.add_argument("-se", "--specific-export",
+                                 help='Export specific tool.'
+                                 + ' Current valid option is <cyme> and <none>. Default is <none>.')
+    
 #     simulator_group.add_argument("-n", "--needs-tool",
 #                                  help='Flag to indicate if FMU needs an '
 #                                  + 'external execution tool to run. '
@@ -280,13 +284,33 @@ def main():
 
     # Parse the arguments
     args = parser.parse_args()
-
+    
+    # Export CYME using SimulatorToFMU
+    tool_export = args.specific_export
+    if(tool_export in ["cyme"]):
+        python_vers = '34'
+                # Check command line options
+        if not(platform.system().lower() in ['windows']):
+            log.info('SimulatorToFMU can only export CYME for Windows.')
+            return
+    else:
+        tool_export = None
+        python_vers = '27'
+    
+    # Get the memory flag
+    has_memory = args.has_memory
+    if(has_memory is None):
+        has_memory = "true"
+    if not (has_memory in ['true', 'false']):
+        log.error('The flag -hm must either be true or false.')
+        return
+        
     # Set the Python version
     # Here we set the Python version. We keep this in case
     # we want to include different versions of Python in the
     # Modelica model and use the correct one by detecting the version
     # of Python used to run the script.
-    python_vers = '27'
+    #python_vers = '27'
 
     # Check command line options
     if not(platform.system().lower() in ['windows', 'linux']):
@@ -451,7 +475,7 @@ def main():
     # to add "model_name".scripts to the python path
     # Currently adding an import statement in the Python
     # main script will cause the module to fail 
-    needs_tool = 'True'
+    needs_tool = 'true'
     # Check if fmi api is none
     if(needs_tool is None):
         log.info(
@@ -477,7 +501,9 @@ def main():
                                export_tool,
                                export_tool_path,
                                modelica_path,
-                               needs_tool.lower())
+                               needs_tool.lower(),
+                               has_memory,
+                               tool_export)
 
     start = datetime.now()
     ret_val = Simulator.print_mo()
@@ -694,7 +720,9 @@ class SimulatorToFMU(object):
                  export_tool,
                  export_tool_path,
                  modelica_path,
-                 needs_tool):
+                 needs_tool,
+                 has_memory,
+                 tool_export):
         
         """
         Initialize the class.
@@ -716,7 +744,9 @@ class SimulatorToFMU(object):
         :param export_tool_path (str): The path to the Modelica compiler.
         :param modelica_path (str): The path to the libraries to be added 
                to the MODELICAPATH.
-        :param needs_tool (str): Needs execution tool on target machine.
+        :param needs_tool (str): Indicate if is co-simulation tool coupling.
+        :param has_memory (str): The flag to indicate if simulator has memory.
+        :param tool_export (str): Indicate if a specific tool should be exported.
 
         """
 
@@ -735,6 +765,8 @@ class SimulatorToFMU(object):
         self.export_tool_path = export_tool_path
         self.modelica_path = modelica_path
         self.needs_tool = needs_tool
+        self.has_memory = has_memory
+        self.tool_export = tool_export
 
     def xml_validator(self):
         """
@@ -1039,7 +1071,8 @@ class SimulatorToFMU(object):
             modelica_output_variable_names=modelica_output_variable_names,
             modelica_parameter_variable_names=modelica_parameter_variable_names,
             con_path=self.con_path,
-            python_vers=self.python_vers)
+            python_vers=self.python_vers,
+            has_memory=self.has_memory)
         # Write results in mo file which has the same name as the class name
         output_file = self.model_name + '.mo'
         if os.path.isfile(output_file):
@@ -1349,7 +1382,7 @@ class SimulatorToFMU(object):
 
         fmi_version = float(self.fmi_version)
         if (self.export_tool == 'openmodelica' or platform.system().lower() == 'linux'
-                or (float(fmi_version) > 1.0 and self.needs_tool == 'true')):
+                or (float(fmi_version) > 1.0 and self.needs_tool.lower() == 'true')):
 
             fmutmp = self.model_name + '.tmp'
             zipdir = fmutmp + '.zip'
@@ -1382,7 +1415,7 @@ class SimulatorToFMU(object):
             if os.path.isfile(fmu_name):
                 os.remove(fmu_name)
 
-            if (float(fmi_version) > 1.0 and self.needs_tool == 'true'):
+            if (float(fmi_version) > 1.0 and self.needs_tool.lower() == 'true'):
                 s = ('The model description file will be rewritten' +
                      ' to include the attribute {!s} set to true.').format(
                     NEEDSEXECUTIONTOOL)

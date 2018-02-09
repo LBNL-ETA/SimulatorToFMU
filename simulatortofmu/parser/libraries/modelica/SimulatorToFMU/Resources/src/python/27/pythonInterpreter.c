@@ -5,6 +5,19 @@
 #include "pythonInterpreter.h"
 #define STR_FLAG 1
 #define DBL_FLAG 0
+
+/* Create the structure and initialize its pointer to NULL. */
+void* initPythonMemory()
+{
+  pythonPtr* ptr = malloc(sizeof(pythonPtr));
+  /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
+  ptr->ptr = NULL;
+  ptr->isInitialized = 0;
+  ptr->pModule = NULL;
+  ptr->pFunc = NULL;
+  return (void*) ptr;
+}
+
 static Py_ssize_t iArg = 0;
 
 /*
@@ -17,8 +30,8 @@ static Py_ssize_t iArg = 0;
  * @param nDbls the number of double variables
  * @param strs the string variables\
  * @param dbls the double variables
- * @param pModule the module name
- * @param pFunc the function name
+ * @param ptrMemory->pModule the module name
+ * @param ptrMemory->pFunc the function name
  * @param pArgs the number of arguments
  * @param ModelicaFormatError the pointer
  * to the ModelicaFormatError
@@ -67,6 +80,7 @@ void createPythonArgumentLists(int typ,
 
 			for (i = 0; i < nStrs; ++i) {
 				/* Convert argument to a python float*/
+				/* PyUnicode in Python27 is PyString in Python34*/
 				pValue = PyUnicode_FromString(strs[i]);
 
 				if (!pValue) {
@@ -110,11 +124,13 @@ void createPythonArgumentLists(int typ,
  * @param resWri the result flag
  * @param ModelicaFormatError the pointer
  * to the ModelicaFormatError
+ * @param memory a Python object               
+ * @param have_memory the flag indicating a Python object   
  */
 void pythonExchangeVariables(const char * moduleName,
 	const char * functionName,
 	const char * configFileName,
-	double * modTim,
+	double modTim,
 	const size_t nDblWri, 
 	const char ** strWri, 
 	double * dblValWri, 
@@ -124,16 +140,17 @@ void pythonExchangeVariables(const char * moduleName,
 	size_t nDblParWri, 
 	const char ** strParWri, 
 	double * dblValParWri, 
-	double *resWri,
-	void (*ModelicaFormatError)(const char *string,...))
-{
+	int resWri,
+	void (*ModelicaFormatError)(const char *string,...),
+	void* memory, int passPythonObject){
 
-	PyObject *pName, *pModule, *pFunc;
+	PyObject *pName;
 	PyObject *pValue;
 	PyObject *pArgs;
 
 	Py_ssize_t pIndVal;
 	PyObject *pItemDbl;
+  	PyObject* obj;
 
 	char* arg="";
 	Py_ssize_t nStrWri = 0;
@@ -147,13 +164,15 @@ void pythonExchangeVariables(const char * moduleName,
 	Py_ssize_t nArg = 3;
 	Py_ssize_t iRet = 0;
 	Py_ssize_t nRet = 0;
+  	pythonPtr* ptrMemory = (pythonPtr*)memory;
 
 	const char *confFilNam [] = {configFileName};
 
 	/*//////////////////////////////////////////////////////////////////////////*/
 	/* Initialize Python interpreter*/
 	/*_CrtDumpMemoryLeaks(); //DEBUGGING*/
-	Py_Initialize();
+        if (!Py_IsInitialized())
+      	    Py_Initialize();
 	/* Set the entries for sys.argv.*/
 	/* This is required if a script uses sys.argv, such as bacpypes.*/
 	/* See also http://stackoverflow.com/questions/19381441/python-modelica-connection-fails-due-to-import-error*/
@@ -162,17 +181,22 @@ void pythonExchangeVariables(const char * moduleName,
 
 	/*//////////////////////////////////////////////////////////////////////////*/
 	/* Load Python module*/
-	pName = PyUnicode_FromString(moduleName);
-	if (!pName) {
-		(*ModelicaFormatError)("Failed to convert moduleName '%s' to Python object.\n", moduleName);
-	}
 
-	pModule = PyImport_Import(pName);
+        if (!ptrMemory->isInitialized) {
+          /* PyUnicode in Python27 is PyString in Python34*/
+          /*pName = PyString_FromString(moduleName);*/
+          /* PyUnicode in Python27 is PyString in Python34*/
+          pName = PyUnicode_FromString(moduleName);
+          if (!pName) {
+            (*ModelicaFormatError)("Failed to convert moduleName '%s' to Python object.\n", moduleName);
+          }
+
+	ptrMemory->pModule = PyImport_Import(pName);
 	/* Decrement the reference counter */
 	/* causes sometimes a segmentation fault Py_DECREF(pName);*/
 	/* when exported as an FMU and run with PyFMI*/
 	/*Py_DECREF(pName);*/
-	if (!pModule) {
+	if (!ptrMemory->pModule) {
 		/*    PyErr_Print();*/
 		PyObject *pValue, *pType, *pTraceBack;
 		PyErr_Fetch(&pType, &pValue, &pTraceBack);
@@ -192,10 +216,10 @@ void pythonExchangeVariables(const char * moduleName,
 	/*//////////////////////////////////////////////////////////////////////////*/
 	/* Python module is successfully loaded.*/
 	/* Load function*/
-	pFunc = PyObject_GetAttrString(pModule, functionName);
-	/* pFunc is a new reference */
+	ptrMemory->pFunc = PyObject_GetAttrString(ptrMemory->pModule, functionName);
+	/* ptrMemory->pFunc is a new reference */
 
-	if (!(pFunc && PyCallable_Check(pFunc))){
+	if (!(ptrMemory->pFunc && PyCallable_Check(ptrMemory->pFunc))){
 		if (PyErr_Occurred())
 			PyErr_Print();
 		/* Py_Finalize(); // removed, see note at other Py_Finalize() statement*/
@@ -203,6 +227,8 @@ void pythonExchangeVariables(const char * moduleName,
 			"Cannot find function \"%s\".\nMake sure PYTHONPATH contains the path of the module that contains this function.\n",
 			functionName);
 	}
+       ptrMemory->isInitialized = 1;
+     }
 
 	/*//////////////////////////////////////////////////////////////////////////*/
 	/* The function is loaded.*/
@@ -224,7 +250,7 @@ void pythonExchangeVariables(const char * moduleName,
 		/* Increase the number of argument to 1*/
 		/* This is for the vector of output names.*/
 		nStrRea = nDblRea;
-		nArg=nArg+1;
+		nArg++;
 	}
 	if (nDblParWri > 0){
 		/* Increase the number of arguments to 2*/
@@ -235,7 +261,8 @@ void pythonExchangeVariables(const char * moduleName,
 		nStrParWri = nDblParWri;
 		nArg = nArg + 2;
 	}
-
+        if (passPythonObject > 0)
+                nArg++;
 	if (nArg > 0)
 		pArgs = PyTuple_New(nArg);
 	else
@@ -244,37 +271,51 @@ void pythonExchangeVariables(const char * moduleName,
 	/* Convert the arguments*/
 	/* a) Convert the configuration file name*/
 	createPythonArgumentLists(STR_FLAG, 1, 
-		0, confFilNam, NULL, pModule, 
-		pFunc, pArgs, *ModelicaFormatError
+		0, confFilNam, NULL, ptrMemory->pModule, 
+		ptrMemory->pFunc, pArgs, *ModelicaFormatError
 		);
 
 	/* b) Convert double[]*/
+        /*
 	createPythonArgumentLists(DBL_FLAG, 0, 1, 
-		NULL, modTim, pModule, pFunc, 
+		NULL, modTim, ptrMemory->pModule, ptrMemory->pFunc, 
 		pArgs, *ModelicaFormatError
 		);
+         */
+
+	 /* b) Convert resWri*/
+         pValue = PyFloat_FromDouble(modTim);
+	 if (!pValue) {
+		  /* Failed to convert argument.*/
+		  Py_DECREF(ptrMemory->pModule);
+		  /* According to the Modelica specification,*/
+		  /* the function ModelicaError never returns to the calling function.*/
+		  (*ModelicaFormatError)("Cannot convert the model time %f to Python format.", modTim);
+		}
+         PyTuple_SetItem(pArgs, iArg, pValue);
+	 iArg++;
 
 	/* c) Convert char **, an array of character arrays*/
 	if ( nStrWri > 0 ){
 		createPythonArgumentLists(STR_FLAG, nStrWri, 
-			0, strWri, NULL, pModule, 
-			pFunc, pArgs, *ModelicaFormatError
+			0, strWri, NULL, ptrMemory->pModule, 
+			ptrMemory->pFunc, pArgs, *ModelicaFormatError
 			);
 	}
 
 	/* d) Convert double[]*/
 	if ( nDblWri > 0 ){
 		createPythonArgumentLists(DBL_FLAG, 0, 
-			nDblWri, NULL, dblValWri, pModule, 
-			pFunc, pArgs, *ModelicaFormatError
+			nDblWri, NULL, dblValWri, ptrMemory->pModule, 
+			ptrMemory->pFunc, pArgs, *ModelicaFormatError
 			);
 	}
 
 	/* e) Convert char **, an array of character arrays*/
 	if ( nStrRea > 0 ){
 		createPythonArgumentLists(STR_FLAG, 
-			nStrRea, 0, strRea, NULL, pModule, 
-			pFunc, pArgs, *ModelicaFormatError
+			nStrRea, 0, strRea, NULL, ptrMemory->pModule, 
+			ptrMemory->pFunc, pArgs, *ModelicaFormatError
 			);
 	}
 
@@ -282,7 +323,7 @@ void pythonExchangeVariables(const char * moduleName,
 	if (nStrParWri > 0){
 		createPythonArgumentLists(STR_FLAG, 
 			nStrParWri, 0, strParWri, NULL, 
-			pModule, pFunc, pArgs, 
+			ptrMemory->pModule, ptrMemory->pFunc, pArgs, 
 			*ModelicaFormatError
 			);
 	}
@@ -292,23 +333,45 @@ void pythonExchangeVariables(const char * moduleName,
 	if (nDblParWri > 0){
 		createPythonArgumentLists(DBL_FLAG, 0, 
 			nDblParWri, NULL, dblValParWri, 
-			pModule, pFunc, pArgs, 
+			ptrMemory->pModule, ptrMemory->pFunc, pArgs, 
 			*ModelicaFormatError
 			);
 	}
 
 	/* Convert the arguments*/
 	/* h) Convert double[]*/
-	createPythonArgumentLists(DBL_FLAG, 0, 
-		1, NULL, resWri, pModule, pFunc, 
+	/*createPythonArgumentLists(DBL_FLAG, 0, 
+		1, NULL, resWri, ptrMemory->pModule, ptrMemory->pFunc, 
 		pArgs, *ModelicaFormatError
 		);
+         */
+
+	 /* h) Convert resWri*/
+         pValue = PyLong_FromLong((long)resWri);
+	 if (!pValue) {
+		  /* Failed to convert argument.*/
+		  Py_DECREF(ptrMemory->pModule);
+		  /* According to the Modelica specification,*/
+		  /* the function ModelicaError never returns to the calling function.*/
+		  (*ModelicaFormatError)("Cannot convert the flag for saving results) %d to Python format.", resWri);
+		}
+         PyTuple_SetItem(pArgs, iArg, pValue);
+	 iArg++;
+
+	 /* i) Convert object*/
+	 if ( passPythonObject > 0 ){
+	   /* Put the memory into the argument list.*/
+	   /* In the first call, put Py_None int obj, but in subsequent calls, use ptr. */
+		obj = (ptrMemory->ptr == NULL) ? Py_None : ptrMemory->ptr;
+	   	PyTuple_SetItem(pArgs, iArg, obj);
+	   	iArg++;
+	 }
 
 	/*//////////////////////////////////////////////////////////////////////////*/
 	/*//////////////////////////////////////////////////////////////////////////*/
 	/* Call the Python function*/
 
-	pValue = PyObject_CallObject(pFunc, pArgs);
+	pValue = PyObject_CallObject(ptrMemory->pFunc, pArgs);
 
 	/*//////////////////////////////////////////////////////////////////////////*/
 	/* Decrement the reference counter when pArgs != NULL*/
@@ -329,8 +392,8 @@ void pythonExchangeVariables(const char * moduleName,
 			Py_DECREF(pType);
 		if (pTraceBack != NULL)
 			Py_DECREF(pTraceBack);
-		Py_DECREF(pFunc);
-		Py_DECREF(pModule);
+		Py_DECREF(ptrMemory->pFunc);
+		Py_DECREF(ptrMemory->pModule);
 		/* Py_Finalize(); // removed, see note at other Py_Finalize() statement*/
 		(*ModelicaFormatError)("Call to Python function \"%s\" failed.\n \
 							   This is often due to an error in the Python script,\n \
@@ -345,7 +408,8 @@ void pythonExchangeVariables(const char * moduleName,
 	/* Set up the variables that indicate the return data types of the function*/
 	if ( nDblRea > 0)
 		nRet++;
-
+	if (passPythonObject)
+	    	nRet++;
 	/* Check whether the function must returns some values*/
 	if (nRet > 0){
 		/*//////////////////////////////////////////////////////////////////////////*/
@@ -404,7 +468,7 @@ void pythonExchangeVariables(const char * moduleName,
 				*/
 				/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p))
 				*/
-				if (PyFloat_Check(pItemDbl) || PyLong_Check(pItemDbl) || PyLong_Check(pItemDbl))
+				if (PyFloat_Check(pItemDbl) || PyLong_Check(pItemDbl) || PyInt_Check(pItemDbl))
 					dblValRea[0] = PyFloat_AsDouble(pItemDbl);
 				else
 					(*ModelicaFormatError)("Python function \"%s\" returns an invalid object for a scalar double value.\n\
@@ -420,7 +484,7 @@ void pythonExchangeVariables(const char * moduleName,
 					*/
 					/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p))
 					*/
-					if (PyFloat_Check(p) || PyLong_Check(p) || PyLong_Check(p))
+					if (PyFloat_Check(p) || PyLong_Check(p) || PyInt_Check(p))
 						dblValRea[pIndVal] = PyFloat_AsDouble(p);
 					else
 						(*ModelicaFormatError)("Python function \"%s\" returns an invalid object for a scalar double value.\n\
@@ -438,14 +502,20 @@ void pythonExchangeVariables(const char * moduleName,
 			*/
 			dblValRea[0] = 0;
 		}
+    		/*//////////////////////////////////////////////////////////////////////////*/
+    		/* Parse the memory to the Python object*/
+    		if (passPythonObject > 0){
+      			ptrMemory->ptr = (void*)PyList_GetItem(pValue, iRet);
+     			 iRet++;
+    }
 
 	} /* end of if (nRet > 0)*/
 
 	/*//////////////////////////////////////////////////////////////////////////*/
 	/* Decrement the reference counters*/
 	/* causes sometimes a segmentation fault    Py_DECREF(pValue);*/
-	/* causes sometimes a segmentation fault    Py_DECREF(pFunc);*/
-	/* causes sometimes a segmentation fault    Py_DECREF(pModule);*/
+	/* causes sometimes a segmentation fault    Py_DECREF(ptrMemory->pFunc);*/
+	/* causes sometimes a segmentation fault    Py_DECREF(ptrMemory->pModule);*/
 	/* Undo all initializations*/
 	/* We uncommented Py_Finalize() because it caused a segmentation fault on Ubuntu 12.04 32 bit.*/
 	/* The segmentation fault was randomly produced by the statement, and often observed when running*/
@@ -478,3 +548,10 @@ str, strLen);
 return;
 }
 */
+void freePythonMemory(void* object)
+{
+  if ( object != NULL ){
+    pythonPtr* p = (pythonPtr*) object;
+    free(p);
+  }
+}

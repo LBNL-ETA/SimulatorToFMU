@@ -19,13 +19,15 @@
  * @param strParWri the string parameters to write
  * @param dblValParWri the double parameters to write
  * @param resWri the result flag
+ * @param memory a Python object               
+ * @param have_memory the flag indicating a Python object   
  */
 #include <ModelicaUtilities.h>
 
 void modelicaToSimulator(const char * moduleName,
 							const char * functionName, 
 							const char * configFileName, 
-							double * time,
+							double time,
 							const size_t nDblWri, 
 							const char ** strWri,
 							double * dblValWri, 
@@ -35,7 +37,9 @@ void modelicaToSimulator(const char * moduleName,
 							size_t nDblParWri,
 							const char ** strParWri, 
 							double * dblValParWri, 
-							double * resWri)
+							int resWri,
+							void* object,
+							int passPythonObject)
 {
   pythonExchangeVariables(moduleName,
    functionName,
@@ -51,7 +55,9 @@ void modelicaToSimulator(const char * moduleName,
    strParWri,
    dblValParWri, 
    resWri,
-   ModelicaFormatError
+   ModelicaFormatError,
+   object,
+   passPythonObject /* have_memory is true */
   );
 }
 

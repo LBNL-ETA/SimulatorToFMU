@@ -4,8 +4,11 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
   input String moduleName
   "Name of the python module that contains the function";
   input String functionName=moduleName "Name of the python function";
+  input BaseClasses.PythonObject pytObj "Memory that holds the Python object";
+  input Boolean passPythonObject
+    "Set to true if the Python function returns and receives an object, see User's Guide";
   input String  conFilNam "Name of the python function";
-  input Real    modTim[1] "Model time";
+  input Real    modTim "Model time";
   input Real    dblParVal[nDblPar] "Parameter variables values to send to SimulatorToFMU";
   input Real    dblInpVal[max(1, nDblInp)] "Input variables values to be sent to SimulatorToFMU";
   input String  dblParNam[nDblPar] "Parameter variables names to send to SimulatorToFMU";
@@ -14,7 +17,7 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
   input Integer nDblInp(min=0) "Number of double inputs to send to SimulatorToFMU";
   input Integer nDblOut(min=0) "Number of double outputs to read from SimulatorToFMU";
   input Integer nDblPar(min=0) "Number of double parameters to send to SimulatorToFMU";
-  input Real    resWri[1]  "Flag for enabling results writing. 1: write results, 0: else";
+  input Boolean resWri  "Flag for enabling results writing. 1: write results, 0: else";
   output Real dblOutVal[max(1, nDblOut)] "Double output values read from SimulatorToFMU";
 algorithm
   // Call the exchange function
@@ -31,7 +34,9 @@ dblOutVal := BaseClasses.simulator(
       nDblPar=nDblPar,
       dblParNam=dblParNam,
       dblParVal=dblParVal,
-      resWri=resWri);
+      resWri=resWri,
+      pytObj=pytObj,
+      passPythonObject=passPythonObject);
 annotation (Documentation(info="<html>
 <p>
 This function is a wrapper for 

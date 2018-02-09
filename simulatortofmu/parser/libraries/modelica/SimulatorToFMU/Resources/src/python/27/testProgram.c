@@ -14,9 +14,9 @@ int main(int nArgs, char ** args){
 
 	/* Parameters for testing simulator interface*/
 	const char * moduleName="testSimulator";
-	const char * functionName="r1_r1";
+	const char * functionName="r1_r1PassPythonObject";
 	const char * configFileName="config.csv";
-	double time[]={0.0};
+	double time=0.0;
 
 	size_t nDblWri=1;
 	double dblValWri[]={15.0};
@@ -29,9 +29,14 @@ int main(int nArgs, char ** args){
 	size_t nDblParWri=0;
 	const char * strParWri[]={""};
 	double dblValParWri[]={0};
-	double resWri[]={0};
+	int resWri=1;
 
 	int i;
+        pythonPtr* ptr = malloc(sizeof(pythonPtr));
+        /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
+        ptr->ptr = NULL;
+        ptr->isInitialized = 0;
+	
 	/*_CrtDumpMemoryLeaks(); //DEBUGGING*/
 	for(i=0; i < 10; i++){
 		printf("Calling with i for simulator = %d.\n", i);
@@ -49,7 +54,9 @@ int main(int nArgs, char ** args){
 			strParWri, 
 			dblValParWri, 
 			resWri,
-			ModelicaFormatError);
+			ModelicaFormatError,
+			ptr,
+			1);
 	}
 
 	return 0;

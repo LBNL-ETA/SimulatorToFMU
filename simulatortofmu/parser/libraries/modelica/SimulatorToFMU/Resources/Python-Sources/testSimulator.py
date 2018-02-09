@@ -42,3 +42,18 @@ def r2p2_r2(cS, iS, uS, uR, yS, parS, parR, iwR):
             " The parameter names are: " + parS[0] + ", " + parS[1])
     f.close()
     return [uR[0] *parR[0],  uR[1]*parR[1]]
+
+# Functions with memory
+def r1_r1PassPythonObject(cS, iS, uS, uR, yS, iwR, obj):
+    if obj == None:
+        # Initialize the Python object
+        obj = {'a': uR}
+    else:
+        # Use the python object
+        obj['a'] = obj['a'] + 1 
+    # Increment a by one at every invocation the sum of the dictionary,
+    # and also return the dictionary so that it can be used again at the next
+    # invocation.
+    res = obj['a']
+    #raise Exception("Result is {}".format(res))
+    return [res, obj]
