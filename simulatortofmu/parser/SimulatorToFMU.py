@@ -68,7 +68,7 @@ Following requirements must be met when using SimulatorToFMU
 |                                                    | ``parser/utilities/simulator_wrapper.py``. The name of the main          |
 |                                                    | Python script must be of the form ``"modelname"`` + ``"_wrapper.py"``.   |
 +----------------------------------------------------+--------------------------------------------------------------------------+
-| -c                                                 | Path to the Simulator model or configuration file.                       |
+| -cf                                                | Path to the Simulator model or configuration file.                       |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -i                                                 | Path to the XML input file with the inputs/outputs of the FMU.           |
 |                                                    | Default is ``parser/utilities/SimulatorModelDescription.xml``            |
@@ -164,9 +164,10 @@ Reserved variable names
 
 Following variables names are not allowed to be used as FMU input, output, or parameter names.
 
-- ``_configurationFileName``: Variable name used to set the path to the Simulator model or configuration file.
-- ``_saveToFile``: Variable used to set the flag for storing simulation results (1 for storing, 0 else).
+- ``_configurationFileName``: String variable name used to set the path to the Simulator model or configuration file.
+- ``_saveToFile``: Boolean variable used to set the flag for storing simulation results (true for storing, false else).
 - ``time``: Internal FMU simulation time.
+
 
 If any of these variables is used for an FMU input, output, or parameter name, SimulatorToFMU will exit with an error.
 
@@ -248,7 +249,7 @@ def main():
             lambda s: [
                 item for item in s.split(',')]))
 
-    simulator_group.add_argument('-c', '--con-fil-path',
+    simulator_group.add_argument('-cf', '--con-fil-path',
                                  help='Path to the configuration file')
     simulator_group.add_argument('-i', '--io-file-path',
                                  help='Path to the XML input file')
@@ -300,7 +301,10 @@ def main():
     has_memory = args.has_memory
     if(has_memory is None):
         has_memory = "true"
-
+    if not (has_memory in ['true', 'false']):
+        log.error('The flag -hm must either be true or false.')
+        return
+        
     # Set the Python version
     # Here we set the Python version. We keep this in case
     # we want to include different versions of Python in the
@@ -471,7 +475,7 @@ def main():
     # to add "model_name".scripts to the python path
     # Currently adding an import statement in the Python
     # main script will cause the module to fail 
-    needs_tool = 'True'
+    needs_tool = 'true'
     # Check if fmi api is none
     if(needs_tool is None):
         log.info(
@@ -740,8 +744,9 @@ class SimulatorToFMU(object):
         :param export_tool_path (str): The path to the Modelica compiler.
         :param modelica_path (str): The path to the libraries to be added 
                to the MODELICAPATH.
+        :param needs_tool (str): Indicate if is co-simulation tool coupling.
         :param has_memory (str): The flag to indicate if simulator has memory.
-        :param needs_tool (str): Indicate if a specific tool should be exported.
+        :param tool_export (str): Indicate if a specific tool should be exported.
 
         """
 
@@ -1377,7 +1382,7 @@ class SimulatorToFMU(object):
 
         fmi_version = float(self.fmi_version)
         if (self.export_tool == 'openmodelica' or platform.system().lower() == 'linux'
-                or (float(fmi_version) > 1.0 and self.needs_tool == 'true')):
+                or (float(fmi_version) > 1.0 and self.needs_tool.lower() == 'true')):
 
             fmutmp = self.model_name + '.tmp'
             zipdir = fmutmp + '.zip'
@@ -1410,7 +1415,7 @@ class SimulatorToFMU(object):
             if os.path.isfile(fmu_name):
                 os.remove(fmu_name)
 
-            if (float(fmi_version) > 1.0 and self.needs_tool == 'true'):
+            if (float(fmi_version) > 1.0 and self.needs_tool.lower() == 'true'):
                 s = ('The model description file will be rewritten' +
                      ' to include the attribute {!s} set to true.').format(
                     NEEDSEXECUTIONTOOL)
