@@ -48,7 +48,7 @@ if(platform.system().lower() == 'windows'):
     python_scripts_path = [item.replace('\\', '\\\\') for item in [
         PYTHON_SCRIPT_PATH]]
 
-Simulator_T = simulator.SimulatorToFMU('con_path',
+Simulator_T = simulator.SimulatorToFMU('',
                                        XML_INPUT_FILE,
                                        SimulatorToFMU_LIB_PATH,
                                        MO_TEMPLATE_PATH,
@@ -140,7 +140,7 @@ class Tester(unittest.TestCase):
                         if (version == '1'):
                             continue
                         Simulator_Test = simulator.SimulatorToFMU(
-                            'con_path',
+                            '',
                             XML_INPUT_FILE,
                             SimulatorToFMU_LIB_PATH,
                             MO_TEMPLATE_PATH,
@@ -167,17 +167,17 @@ class Tester(unittest.TestCase):
                         Simulator_Test.rewrite_fmu()
                         end = datetime.now()
                         print(
-                            'Export Simulator as an FMU in {!s} seconds.'.format(
+                            'Export the simulator as an FMU in {!s} seconds.'.format(
                                 (end - start).total_seconds()))
                         
                         fmu_path = os.path.join(
                         script_path, '..', 'fmus', tool, platform.system().lower())
                         print(
-                            'Copy Simulator.fmu to {!s}.'.format(fmu_path))
-                        shutil.copy2('Simulator.fmu', fmu_path)
+                            'Copy simulator.fmu to {!s}.'.format(fmu_path))
+                        shutil.copy2('simulator.fmu', fmu_path)
     
         fmu_path = os.path.join(
-                script_path, '..', 'fmus', tool, platform.system().lower(), 'Simulator.fmu')
+                script_path, '..', 'fmus', tool, platform.system().lower(), 'simulator.fmu')
         # Parameters which will be arguments of the function
         start_time = 0.0
         stop_time = 5.0
@@ -330,7 +330,7 @@ class Tester(unittest.TestCase):
                         if (version == '1'):
                             continue
                         Simulator_Test = simulator.SimulatorToFMU(
-                            'con_path',
+                            '',
                             XML_INPUT_FILE,
                             SimulatorToFMU_LIB_PATH,
                             MO_TEMPLATE_PATH,
@@ -400,7 +400,7 @@ class Tester(unittest.TestCase):
                         if (version == '1'):
                             continue
                         Simulator_Test = simulator.SimulatorToFMU(
-                            'con_path',
+                            '',
                             XML_INPUT_FILE,
                             SimulatorToFMU_LIB_PATH,
                             MO_TEMPLATE_PATH,
@@ -427,13 +427,13 @@ class Tester(unittest.TestCase):
                         Simulator_Test.rewrite_fmu()
                         end = datetime.now()
                         print(
-                            'Export Simulator as an FMU in {!s} seconds.'.format(
+                            'Export the simulator as an FMU in {!s} seconds.'.format(
                                 (end - start).total_seconds()))
                         fmu_path = os.path.join(
                         script_path, '..', 'fmus', tool, platform.system().lower())
                         print(
-                            'Copy Simulator.fmu to {!s}.'.format(fmu_path))
-                        shutil.copy2('Simulator.fmu', fmu_path)
+                            'Copy simulator.fmu to {!s}.'.format(fmu_path))
+                        shutil.copy2('simulator.fmu', fmu_path)
                         
     def test_run_simulator_all(self):
         '''
