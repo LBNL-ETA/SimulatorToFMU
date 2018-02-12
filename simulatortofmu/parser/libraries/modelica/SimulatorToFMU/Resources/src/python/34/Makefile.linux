@@ -27,7 +27,7 @@ CC_FLAGS_64 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I ~/opt/Python-3.4.4
 
 
 
-SRCS = pythonInterpreter.c
+SRCS = ../27/pythonInterpreter.c
 OBJS = pythonInterpreter.o
 LIB  = libSimulatorToFMUPython34.so
 
@@ -40,7 +40,7 @@ all: clean
 	@echo "==== library generated in $(BINDIR)"
 
 prg: clean
-	$(CC) -g testProgram.c $(SRCS) -o testProgram  $(CC_FLAGS_$(ARCH))
+	$(CC) -g ../27/testProgram.c $(SRCS) -o testProgram  $(CC_FLAGS_$(ARCH))
 
 clean:
 	rm -f $(OBJS) $(LIB) main.o main

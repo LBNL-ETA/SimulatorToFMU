@@ -5,6 +5,14 @@
 #include "pythonInterpreter.h"
 #define STR_FLAG 1
 #define DBL_FLAG 0
+#if PY_MAJOR_VERSION >= 3
+#define IS_PY3K
+#endif
+
+/* Must define Py_TYPE for Python 2.5 or older */
+#ifndef PyInt_Check
+# define PyInt_Check PyLong_Check
+#endif
 
 /* Create the structure and initialize its pointer to NULL. */
 void* initPythonMemory()
@@ -183,9 +191,7 @@ void pythonExchangeVariables(const char * moduleName,
 	/* Load Python module*/
 
         if (!ptrMemory->isInitialized) {
-          /* PyUnicode in Python27 is PyString in Python34*/
           /*pName = PyString_FromString(moduleName);*/
-          /* PyUnicode in Python27 is PyString in Python34*/
           pName = PyUnicode_FromString(moduleName);
           if (!pName) {
             (*ModelicaFormatError)("Failed to convert moduleName '%s' to Python object.\n", moduleName);
@@ -466,7 +472,7 @@ void pythonExchangeVariables(const char * moduleName,
 			if (nDblRea == 1){
 				/* Check whether it is a float or an integer.
 				*/
-				/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p))
+				/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p) and PyInt_Check(pItemDbl)))
 				*/
 				if (PyFloat_Check(pItemDbl) || PyLong_Check(pItemDbl) || PyInt_Check(pItemDbl))
 					dblValRea[0] = PyFloat_AsDouble(pItemDbl);
@@ -482,7 +488,7 @@ void pythonExchangeVariables(const char * moduleName,
 					PyObject *p = PyList_GetItem(pItemDbl, pIndVal);
 					/* Check whether it is a float or an integer.
 					*/
-					/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p))
+					/* (For integers, PyFloat_Check(p) returns false, hence we also call PyLong_Check(p) and PyInt_Check(pItemDbl)))
 					*/
 					if (PyFloat_Check(p) || PyLong_Check(p) || PyInt_Check(p))
 						dblValRea[pIndVal] = PyFloat_AsDouble(p);
