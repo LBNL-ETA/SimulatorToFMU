@@ -50,14 +50,18 @@ def exchange(configuration_file, time, input_names,
     # Call the Simulator
     s = Simulator(configuration_file, time, input_names,
                         input_values, output_names, write_results)
-    output_values=s.doTimeStep(input_values)
+    if not (input_values is None):
+        output_values=s.doTimeStep(input_values)
+    else:
+        # Return default output value
+        output_values = 1.0
 
     # Handle errors
     if(output_values < 0.0):
             raise("The memory['outpus'] cannot be negative.")
     # Save the output of the Simulator
     #########################################################################
-    return [output_values]
+    return output_values
 
-#if __name__ == "__main__":
-#    print(exchange("dummy.csv", 0.0, "v", 1.0, "i", 0))
+if __name__ == "__main__":
+    print(exchange("dummy.csv", 0.0, "v", 1.0, "i", 0))
