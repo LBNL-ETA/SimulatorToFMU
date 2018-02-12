@@ -285,6 +285,9 @@ def main():
     # Parse the arguments
     args = parser.parse_args()
     
+    # Default Python version
+    python_vers = '27' 
+    
     # Export CYME using SimulatorToFMU
     tool_export = args.specific_export
     if(tool_export in ["cyme"]):
@@ -297,7 +300,7 @@ def main():
         log.error("CYME is the only supported custom tool.")
         return
     
-    python_vers = '27'   
+  
     
     # Get the memory flag
     has_memory = args.has_memory

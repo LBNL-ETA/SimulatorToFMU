@@ -30,9 +30,9 @@ CC = cc
 CC_FLAGS_64 = -Wall -m64
 
 
-SRCS = pythonInterpreter.c
+SRCS = ../27/pythonInterpreter.c
 OBJS = pythonInterpreter.o
-LIB  = libSimulatorToFMUPython${python_version_major}${python_version_minor}.dylib
+LIB  = libSimulatorToFMUPython34.dylib
 
 # Note that -fPIC is recommended on Linux according to the Modelica specification
 
@@ -52,7 +52,7 @@ python-version:
 
 
 prg: clean
-	$(CC) -g testProgram.c $(SRCS) -lpython -o testProgram  $(CC_FLAGS_$(ARCH))
+	$(CC) -g ../27/testProgram.c $(SRCS) -lpython -o testProgram  $(CC_FLAGS_$(ARCH))
 	@rm -rf testProgram.dSYM
 
 clean:
