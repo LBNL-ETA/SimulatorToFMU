@@ -34,7 +34,7 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
                                     resWri,
                                     pytObj,
                                     passPythonObject)
-    annotation (Library={"SimulatorToFMUPython34", "python27"},
+    annotation (Library={"SimulatorToFMUPython34", "python34"},
       LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"},
       IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
       Include="#include \"pythonWrapper.c\"");

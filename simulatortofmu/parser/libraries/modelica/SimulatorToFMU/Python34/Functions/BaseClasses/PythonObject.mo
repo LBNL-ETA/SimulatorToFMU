@@ -6,7 +6,7 @@ class PythonObject
     "Construct an external object that can be used to store a Python object"
   output PythonObject pytObj;
   external "C" pytObj = initPythonMemory()
-      annotation (Library={"SimulatorToFMUPython34",  "python27"},
+      annotation (Library={"SimulatorToFMUPython34",  "python34"},
         LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
 
   annotation(Documentation(info="<html>
@@ -33,7 +33,7 @@ First implementation.
 function destructor "Release memory"
   input PythonObject pytObj;
   external "C" freePythonMemory(pytObj)
-    annotation (Library={"SimulatorToFMUPython34",  "python27"},
+    annotation (Library={"SimulatorToFMUPython34",  "python34"},
       LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
 annotation(Documentation(info="<html>
 <p>
