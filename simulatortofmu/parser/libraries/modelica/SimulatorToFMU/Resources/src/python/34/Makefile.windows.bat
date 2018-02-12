@@ -13,7 +13,7 @@ REM # Adapt the path to PYTHONInc and PYTHONLibs for your operating system
 REM # This script has been tested with Microsoft Visual Studio 10.0 Professional
 REM ############################################################################
 
-SET SRCS=pythonInterpreter.c
+SET SRCS=..\27\pythonInterpreter.c
 SET LIBS=pythonInterpreter.lib
 
 SET MOD_DLL=SimulatorToFMUPython34.dll
@@ -24,10 +24,10 @@ SET MOD_LIB=SimulatorToFMUPython34.lib
 Set RegQry=HKLM\Hardware\Description\System\CentralProcessor\0
 REG.exe Query %RegQry% > checkOS.txt
 Find /i "x86" < CheckOS.txt > StringCheck.txt
-IF %ERRORLEVEL% == 0 (
+IF %ERRORLEVEL% == 1 (
   REM Set path to the directory on 32 bit machine
   SET PYTHONInc="C:\Python34\include"
-  SET PYTHONLibs="C:\Python34\libs\python27.lib"
+  SET PYTHONLibs="C:\Python34\libs\python34.lib"
   CALL "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"  >nul 2>&1
     IF ERRORLEVEL 1 (
       ECHO Problem configuring the Visual Studio tools for command-line use
@@ -38,7 +38,7 @@ IF %ERRORLEVEL% == 0 (
 )ELSE (
     REM Set path to the directory on 64 bit machine
     SET PYTHONInc="C:\Python34_x64\include"
-    SET PYTHONLibs="C:\Python34_x64\libs\python27.lib"
+    SET PYTHONLibs="C:\Python34_x64\libs\python34.lib"
     CALL "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64\vcvars64.bat"  >nul 2>&1
       IF ERRORLEVEL 1 (
         ECHO Problem configuring the Visual Studio tools for command-line use
@@ -55,7 +55,7 @@ CL /LD /MT /I%PYTHONInc% %SRCS% %PYTHONLibs% /link /out:%MOD_DLL%
 :: lib /def:%MOD_DEF%
 
 :: Compiling the test Program
-CL /I%PYTHONInc% testProgram.c %SRCS%  %PYTHONLibs%
+CL /I%PYTHONInc% ..\27\testProgram.c %SRCS%  %PYTHONLibs%
 
 :: Running the testProgram
 ECHO Run the testProgram.exe
