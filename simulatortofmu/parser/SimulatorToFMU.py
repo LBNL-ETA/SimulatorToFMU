@@ -304,13 +304,6 @@ def main():
     if not (has_memory in ['true', 'false']):
         log.error('The flag -hm must either be true or false.')
         return
-        
-    # Set the Python version
-    # Here we set the Python version. We keep this in case
-    # we want to include different versions of Python in the
-    # Modelica model and use the correct one by detecting the version
-    # of Python used to run the script.
-    #python_vers = '27'
 
     # Check command line options
     if not(platform.system().lower() in ['windows', 'linux']):
@@ -1291,7 +1284,7 @@ class SimulatorToFMU(object):
             for arch in ['win32', 'win64']:
                 zip_path = os.path.join(dir_name, arch)
                 os.makedirs(zip_path)
-                for libr in ['SimulatorToFMUPython27.dll', 'python27.dll']:
+                for libr in ['SimulatorToFMUPython'+self.python_vers+'.dll', 'python'+self.python_vers+'.dll']:
                     lib_path = os.path.join(fil_path, arch, libr)
                     if (os.path.isfile(lib_path)):
                         s = '{!s} will be copied to the binaries folder {!s}.' \
@@ -1306,7 +1299,7 @@ class SimulatorToFMU(object):
             for arch in ['linux32', 'linux64']:
                 zip_path = os.path.join(dir_name, arch)
                 os.makedirs(zip_path)
-                for libr in ['libSimulatorToFMUPython27.so', 'libpython27.so']:
+                for libr in ['libSimulatorToFMUPython'+self.python_vers+'.so', 'libpython'+self.python_vers+'.so']:
                     lib_path = os.path.join(fil_path, arch, libr)
                     if (os.path.isfile(lib_path)):
                         s = '{!s} will be copied to the binaries folder {!s}.' \
