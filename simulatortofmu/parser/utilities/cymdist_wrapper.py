@@ -1,6 +1,6 @@
 # import numpy
-# def cymdist(configuration_filename, time, input_voltage_names,
-            # input_voltage_values, output_names, input_save_to_file):
+# def cymdist(configuration_filename, time, input_names,
+            # input_values, output_names, save_to_file):
 			# #print("This is the configuration={!s}".format(configuration_filename))
 			# return [0,1,2,3,4,5]
 import json
@@ -11,29 +11,29 @@ except:
     pass
 
 
-def exchange(configuration_filename, time, input_voltage_names,
-            input_voltage_values, output_names, input_save_to_file):
+def exchange(configuration_filename, tim, input_names,
+            input_values, output_names, save_to_file, memory):
 
     """Communicate with the FMU to launch a Cymdist simulation
 
     Args:
         configuration_filename (String): filename for the model configurations
-        time (Float): Simulation time
-        input_voltage_names (Strings): voltage vector names
-        input_voltage_values (Floats): voltage vector values (same length as voltage_names)
+        tim (Float): Simulation time
+        input_names (Strings): voltage vector names
+        input_values (Floats): voltage vector values (same length as voltage_names)
         output_names (Strings): vector of name matching CymDIST nomenclature
-        input_save_to_file (1 or 0): save all nodes results to a file
+        save_to_file (1 or 0): save all nodes results to a file
 
     Example:
-        >>> time = 0
-        >>> input_save_to_file = 0
-        >>> input_voltage_names = ['VMAG_A', 'VMAG_B', 'VMAG_C', 'VANG_A', 'VANG_B', 'VANG_C']
-        >>> input_voltage_values = [2520, 2520, 2520, 0, -120, 120]
+        >>> tim = 0
+        >>> save_to_file = 0
+        >>> input_names = ['VMAG_A', 'VMAG_B', 'VMAG_C', 'VANG_A', 'VANG_B', 'VANG_C']
+        >>> input_values = [2520, 2520, 2520, 0, -120, 120]
         >>> configuration_filename = 'config.json'
         >>> output_names = ['IA', 'IAngleA', 'IB', 'IAngleB', 'IC', 'IAngleC']
 
-        >>> cymdist(configuration_filename, time, input_voltage_names,
-                input_voltage_values, output_names, input_save_to_file)
+        >>> cymdist(configuration_filename, tim, input_names,
+                input_values, output_names, save_to_file)
     Note:
         config.json file format:
         {times: [0]
@@ -70,10 +70,10 @@ def exchange(configuration_filename, time, input_voltage_names,
         (output unit is directly given by output name)
     """
 
-    def _input_voltages(input_voltage_names, input_voltage_values):
+    def _input_voltages(input_names, input_values):
         """Create a dictionary from the input values and input names for voltages"""
         voltages = {}
-        for name, value in zip(input_voltage_names, input_voltage_values):
+        for name, value in zip(input_names, input_values):
             voltages[name] = value
         return voltages
 
@@ -177,59 +177,77 @@ def exchange(configuration_filename, time, input_voltage_names,
             output.append(float(temp) * 1.0)
         return output
 
-    # Process input and check for validity
-    voltages = _input_voltages(input_voltage_names, input_voltage_values)
-    if input_save_to_file in [1, 1.0, '1']:
-        input_save_to_file = True
+    if memory == None:
+        memory = {'inputsLast':input_values,
+                'tLast':tim, 'outputs':None}
+        if not (input_values is None):
+            memory['inputsLast'] = input_values
+        else:
+            raise ValueError ('There is no input defined. This is invalid')
+        if save_to_file in [1, 1.0, '1']:
+            memory['save_to_file'] = True
+        else:
+            memory['save_to_file']  = False
+        if ( not(output_names) is None ):
+            if (len(input_names)==1):
+                memory['outputs'] = 0.0
+            else:
+                memory['outputs'] =  [0.0] * len(output_names)
+        else:
+            raise ValueError ('There is no output defined. This is invalid')
     else:
-        input_save_to_file = False
+        # Check if inputs values have changed
+        if not (input_values is None):
+            newInputs = sum([abs(m - n) for m, n in zip (input_values,
+            memory['inputsLast'])])
+        # Check if time has changed prior to updating the outputs
+        if(abs(tim - memory['tLast'])>1e-6 or newInputs > 0):
+            # Process input and check for validity
+            voltages = _input_voltages(input_names, input_values)
+            model = _read_configuration_file(configuration_filename, tim)
+            # Open the model
+            cympy.study.Open(model['filename'])
+            print ('model is open at time={}'.format(tim))
+            # Set voltages
+            networks = cympy.study.ListNetworks()
+            _set_voltages(voltages, networks)
 
-    model = _read_configuration_file(configuration_filename, time)
-    # Open the model
-	#raise(model['filename'])
-    cympy.study.Open(model['filename'])
-    print("Could open model")
+            # Set loads
+            if model['set_loads']:
+                _set_loads(model['set_loads'])
 
-    # Set voltages
-    networks = cympy.study.ListNetworks()
-    _set_voltages(voltages, networks)
+            # Add loads
+            if model['new_loads']:
+                _add_loads(model['new_loads'])
 
-    # Set loads
-    if model['set_loads']:
-        _set_loads(model['set_loads'])
+            # Set loads
+            if model['set_pvs']:
+                _set_pvs(model['set_pvs'])
 
-    # Add loads
-    if model['new_loads']:
-        _add_loads(model['new_loads'])
+            # Add PV
+            if model['new_pvs']:
+                _add_pvs(model['new_pvs'])
 
-    # Set loads
-    if model['set_pvs']:
-        _set_pvs(model['set_pvs'])
+            # Run the power flow
+            lf = cympy.sim.LoadFlow()
+            lf.Run()
 
-    # Add PV
-    if model['new_pvs']:
-        _add_pvs(model['new_pvs'])
+            # Write full results?
+            if memory['save_to_file']:
+                _write_results(model['filename'])
 
-    # Run the power flow
-    lf = cympy.sim.LoadFlow()
-    lf.Run()
-
-    # Write full results?
-    if input_save_to_file:
-        _write_results(model['filename'])
-
-    # Return the right values
-    source_node_id = cympy.study.GetValueTopo("Sources[0].SourceNodeID", networks[0])
-    output = _output_values(source_node_id, output_names)
-    return [output, memory]
+            # Return the right values
+            source_node_id = cympy.study.GetValueTopo("Sources[0].SourceNodeID", networks[0])
+            memory['outputs'] = _output_values(source_node_id, output_names)
+    return [memory['outputs'], memory]
     #return [0, 1,2,3,4,5]
 
-# time = 0
-# input_save_to_file = 0
-# input_voltage_names = ['VMAG_A', 'VMAG_B', 'VMAG_C', 'VANG_A', 'VANG_B', 'VANG_C']
-# input_voltage_values = [2520, 2520, 2520, 0, -120, 120]
+# tim = 0
+# save_to_file = 0
+# input_names = ['VMAG_A', 'VMAG_B', 'VMAG_C', 'VANG_A', 'VANG_B', 'VANG_C']
+# input_values = [2520, 2520, 2520, 0, -120, 120]
 # configuration_filename = 'config.json'
 # output_names = ['IA', 'IAngleA', 'IB', 'IAngleB', 'IC', 'IAngleC']
-#
-# print(cymdist(configuration_filename, time, input_voltage_names,
-#                 input_voltage_values, output_names, input_save_to_file))
+# memory = None
+# print(exchange(configuration_filename, tim, input_names,
+#                 input_values, output_names, save_to_file, memory))
