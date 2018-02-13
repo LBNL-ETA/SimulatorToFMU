@@ -63,5 +63,5 @@ def exchange(configuration_file, time, input_names,
     #########################################################################
     return output_values
 
-if __name__ == "__main__":
-    print(exchange("dummy.csv", 0.0, "v", 1.0, "i", 0))
+#if __name__ == "__main__":
+#    print(exchange("dummy.csv", 0.0, "v", 1.0, "i", 0))
