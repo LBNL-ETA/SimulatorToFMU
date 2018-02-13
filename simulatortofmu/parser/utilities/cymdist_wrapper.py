@@ -11,7 +11,7 @@ except:
     pass
 
 
-def cymdist(configuration_filename, time, input_voltage_names,
+def exchange(configuration_filename, time, input_voltage_names,
             input_voltage_values, output_names, input_save_to_file):
 
     """Communicate with the FMU to launch a Cymdist simulation
@@ -221,7 +221,7 @@ def cymdist(configuration_filename, time, input_voltage_names,
     # Return the right values
     source_node_id = cympy.study.GetValueTopo("Sources[0].SourceNodeID", networks[0])
     output = _output_values(source_node_id, output_names)
-    return output
+    return [output, memory]
     #return [0, 1,2,3,4,5]
 
 # time = 0
