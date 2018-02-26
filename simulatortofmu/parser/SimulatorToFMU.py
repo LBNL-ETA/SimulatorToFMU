@@ -300,8 +300,6 @@ def main():
         log.error("CYME is the only supported custom tool.")
         return
     
-  
-    
     # Get the memory flag
     has_memory = args.has_memory
     if(has_memory is None):

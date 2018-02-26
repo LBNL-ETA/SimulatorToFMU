@@ -55,8 +55,7 @@ def exchange(configuration_file, time, input_names,
         # Initialize the Python object
         s = Simulator(configuration_file, time, input_names,
                         input_values, output_names, write_results)
-        memory = {'inputsLast':input_values, 'memory':s,
-                'tLast':time, 'outputs':None}
+        memory = {'memory':s, 'tLast':time, 'outputs':None}
         if not (input_values is None):
             memory['inputsLast'] = input_values
             memory['outputs'] = s.doTimeStep(input_values)
