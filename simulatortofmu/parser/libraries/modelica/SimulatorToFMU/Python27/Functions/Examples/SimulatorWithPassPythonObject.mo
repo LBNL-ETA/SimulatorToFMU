@@ -10,9 +10,12 @@ model SimulatorWithPassPythonObject
   parameter String emptyDblParNam[0](each start="")
     "Empty list of parameters names";
   parameter Real emptyDblParVal[0]=zeros(0) "Empty vector of parameters values";
+  parameter String patPytScri=Modelica.Utilities.Files.loadResource(
+    "modelica://SimulatorToFMU/Resources/Python-Sources/testSimulator.py")
+    "Path to the main Python script";
 
   SimulatorToFMU.Python27.Functions.BaseClasses.PythonObject pytObj=
-    SimulatorToFMU.Python27.Functions.BaseClasses.PythonObject();
+    SimulatorToFMU.Python27.Functions.BaseClasses.PythonObject(patPytScri=patPytScri);
   Real yR1[1] "Real function value";
 
 algorithm

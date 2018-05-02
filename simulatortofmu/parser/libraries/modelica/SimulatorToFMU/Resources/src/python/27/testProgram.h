@@ -9,5 +9,6 @@
 void ModelicaFormatError(const char* string, const char* fmt, const char* val);
 
 int main(int nArgs, char ** args);
+void* initPythonMemory();
 
 #endif /* _TESTPROGRAM_H_ */

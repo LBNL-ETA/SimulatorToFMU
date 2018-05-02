@@ -23,7 +23,9 @@
 /* svn-id=$Id: exchangeValues.c 2877 2011-09-11 00:46:02Z mwetter $*/
 /*////////////////////////////////////////////////////////////////////////////*/
 #include <stddef.h>  /* stddef defines size_t */
-
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #ifdef __APPLE__
 #include <Python/Python.h>
 #else

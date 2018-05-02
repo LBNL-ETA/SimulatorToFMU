@@ -8,11 +8,11 @@ package BaseClasses "Package with functions that call Python"
         ExternalObject;
     function constructor
       "Construct an external object that can be used to store a Python object"
-    output PythonObject pytObj;
-    external "C" pytObj = initPythonMemory()
+      input String patPytScri "Path to the Python main script";
+      output PythonObject pytObj;
+    external "C" pytObj = initPythonMemory(patPytScri)
         annotation (Library={"SimulatorToFMUPython27",  "python27"},
           LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
-
     annotation(Documentation(info="<html>
 <p>
 The function <code>constructor</code> is a C function that is called by a Modelica simulator

@@ -9,9 +9,12 @@ model Simulator "Test model for simulator functions"
   parameter String emptyDblParNam[0](each start="")
     "Empty list of parameters names";
   parameter Real emptyDblParVal[0]=zeros(0) "Empty vector of parameters values";
+  parameter String patPytScri=Modelica.Utilities.Files.loadResource(
+    "modelica://SimulatorToFMU/Resources/Python-Sources/testSimulator.py")
+    "Path to the main Python script";
 
   SimulatorToFMU.Python27.Functions.BaseClasses.PythonObject[5] pytObj={
-      SimulatorToFMU.Python27.Functions.BaseClasses.PythonObject() for i in 1:5};
+      SimulatorToFMU.Python27.Functions.BaseClasses.PythonObject(patPytScri=patPytScri) for i in 1:5};
   Real yR1[1] "Real function value";
   Real yR2[2] "Real function value";
 

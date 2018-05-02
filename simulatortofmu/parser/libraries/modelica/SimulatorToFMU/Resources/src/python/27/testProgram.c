@@ -32,11 +32,10 @@ int main(int nArgs, char ** args){
 	int resWri=1;
 
 	int i;
-        pythonPtr* ptr = malloc(sizeof(pythonPtr));
-        /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
-        ptr->ptr = NULL;
-        ptr->isInitialized = 0;
-	
+    pythonPtr* ptr = malloc(sizeof(pythonPtr));
+    /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
+    ptr->ptr = NULL;
+    ptr->isInitialized = 0;
 	/*_CrtDumpMemoryLeaks(); //DEBUGGING*/
 	for(i=0; i < 10; i++){
 		printf("Calling with i for simulator = %d.\n", i);

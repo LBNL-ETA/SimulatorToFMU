@@ -3,6 +3,7 @@
 /* #include <stdlib.h>*/
 /* #include <crtdbg.h>*/
 #include "pythonInterpreter.h"
+#define MAX_PATHNAME_LEN 2048
 #define STR_FLAG 1
 #define DBL_FLAG 0
 #if PY_MAJOR_VERSION >= 3
@@ -14,15 +15,81 @@
 # define PyInt_Check PyLong_Check
 #endif
 
+/* Replace a character in a string. */
+/* You must free the result if result is non-NULL.*/
+char *str_replace(char *orig, char *rep, char *with) {
+    char *result; /* the return string */
+    char *ins;    /* the next insert point */
+    char *tmp;    /* varies */
+    int len_rep;  /* length of rep (the string to remove) */
+    int len_with; /* length of with (the string to replace rep with) */
+    int len_front; /* distance between rep and end of last rep */
+    int count;    /*number of replacements */
+
+    /* sanity checks and initialization */
+    if (!orig || !rep)
+        return NULL;
+    len_rep = strlen(rep);
+    if (len_rep == 0)
+        return NULL; /* empty rep causes infinite loop during count*/
+    if (!with)
+        with = "";
+    len_with = strlen(with);
+
+    /* count the number of replacements needed*/
+    ins = orig;
+    for (count = 0; tmp = strstr(ins, rep); ++count) {
+        ins = tmp + len_rep;
+    }
+    tmp = result = malloc(strlen(orig) + (len_with - len_rep) * count + 1);
+
+    if (!result)
+        return NULL;
+
+    /* first time through the loop, all the variable are set correctly */
+    /* from here on, */
+    /*    tmp points to the end of the result string */
+    /*    ins points to the next occurrence of rep in orig */
+    /*    orig points to the remainder of orig after "end of rep" */
+    while (count--) {
+        ins = strstr(orig, rep);
+        len_front = ins - orig;
+        tmp = strncpy(tmp, orig, len_front) + len_front;
+        tmp = strcpy(tmp, with) + len_with;
+        orig += len_front + len_rep; /* move to next "end of rep" */
+    }
+    strcpy(tmp, orig);
+    return result;
+}
+
 /* Create the structure and initialize its pointer to NULL. */
-void* initPythonMemory()
+void* initPythonMemory(char* pytScri)
 {
   pythonPtr* ptr = malloc(sizeof(pythonPtr));
+  char pathDir[MAX_PATHNAME_LEN];
+  char base [MAX_PATHNAME_LEN];
+  char ext [40];
+  int retVal;
+
+  /* Split the path to extract the directory name*/ 
+  retVal=_splitpath_s(str_replace(pytScri, "\\", "/"), base, sizeof(base), 
+	  pathDir, sizeof(pathDir), NULL, 0, NULL, 0);
+  if(retVal!=0){
+	  fprintf(stderr, "Python script %s could not be splitted. "
+		  "The error code is %d\n", pytScri, retVal);
+  }
   /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
+
   ptr->ptr = NULL;
   ptr->isInitialized = 0;
   ptr->pModule = NULL;
   ptr->pFunc = NULL;
+  ptr->pathDir = (char *)malloc((strlen(pathDir) + strlen(base) + 50)*sizeof(char));
+  if (!Py_IsInitialized())
+	Py_Initialize();
+  	PyRun_SimpleString("import sys");
+	sprintf(ptr->pathDir, "%s%s%s%s%s%s", "sys.path.append(", "\"", base, pathDir, "\"", ")");
+	PyRun_SimpleString(ptr->pathDir);
   return (void*) ptr;
 }
 
@@ -186,7 +253,6 @@ void pythonExchangeVariables(const char * moduleName,
 	/* See also http://stackoverflow.com/questions/19381441/python-modelica-connection-fails-due-to-import-error*/
 	PySys_SetArgv(0, &arg);
 
-
 	/*//////////////////////////////////////////////////////////////////////////*/
 	/* Load Python module*/
 
@@ -196,7 +262,6 @@ void pythonExchangeVariables(const char * moduleName,
           if (!pName) {
             (*ModelicaFormatError)("Failed to convert moduleName '%s' to Python object.\n", moduleName);
           }
-
 	ptrMemory->pModule = PyImport_Import(pName);
 	/* Decrement the reference counter */
 	/* causes sometimes a segmentation fault Py_DECREF(pName);*/
@@ -558,6 +623,7 @@ void freePythonMemory(void* object)
 {
   if ( object != NULL ){
     pythonPtr* p = (pythonPtr*) object;
+	free(p->pathDir);
     free(p);
   }
 }
