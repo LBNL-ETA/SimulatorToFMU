@@ -15,7 +15,7 @@
 #include <Python.h>
 #endif
 
-typedef struct pythonPtr
+typedef struct cPtr
 {
   void* ptr;
   char* patDir;
@@ -30,7 +30,7 @@ typedef struct pythonPtr
   int isInitialized;
   PyObject* pModule;
   PyObject* pFunc;
-} pythonPtr;
+} cPtr;
 
 
 #endif
