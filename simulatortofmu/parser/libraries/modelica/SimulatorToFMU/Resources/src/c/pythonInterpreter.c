@@ -17,9 +17,9 @@
 /*
  * Replace a string with a character.
  *
- * @param orig Path to a script which is in
- * @param rep Path to a script which is in
- * @param with
+ * @param orig Input string
+ * @param rep string to replace
+ * @param with string to replace rep
  *
  */
 /* Replace a character in a string. */
@@ -119,19 +119,12 @@ void* initPythonMemory(char* resScri)
   pid=(HANDLE)_spawnl(P_NOWAIT,  ptr->batFilPat,  ptr->batFilPat, 
   	  ptr->fulScriPat, NULL); 
   /* Needs to wait that the server is up*/
-  //sprintf(tmp3, "%s%s%s%s", "start ", "C:\\Users\\Public\\start_server.bat", " ", "C:\\Users\\Public\\");
-  //system (tmp3);
+  /* sprintf(tmp3, "%s%s%s%s", "start ", "C:\\Users\\Public\\start_server.bat", " ", "C:\\Users\\Public\\"); */
+  /* system (tmp3); */
   Sleep(1000);
   ptr->ptr = NULL;
   ptr->isInitialized = 0;
-  ptr->pModule = NULL;
-  ptr->pFunc = NULL;
   ptr->patDir = (char *)malloc((strlen(ptr->fulScriPat) + 50)*sizeof(char));
-  if (!Py_IsInitialized())
-	Py_Initialize();
-  	PyRun_SimpleString("import sys");
-	sprintf(ptr->patDir, "%s%s%s%s%s", "sys.path.append(", "\"", ptr->fulScriPat, "\"", ")");
-	PyRun_SimpleString(ptr->patDir);
   return (void*) ptr;
 }
 
@@ -264,11 +257,8 @@ void pythonExchangeVariables(const char * moduleName,
     chunk.size = 0;    /* no data at this point */ 
 
 	if (cMemory->isInitialized==0) {
-		/*  fixme cMemory->inNam to be freed*/
 		cMemory->inNam = (char*)malloc((nDblWri*500)*sizeof(char));
-		/*  fixme cMemory->inNam to be freed*/
 		cMemory->inVal = (char*)malloc((nDblWri*500)*sizeof(char));
-		/*  fixme cMemory->outNam to be freed*/
 		cMemory->outNam = (char*)malloc((nDblRea*500)*sizeof(char));
 		/* Open configuration and read token */
 		fil = fopen(cMemory->conFilPat, "r");
@@ -297,19 +287,17 @@ void pythonExchangeVariables(const char * moduleName,
 		}
 		printf("This is the address retrieved %s and the port=%s\n", cMemory->address, cMemory->port);
 		
-		/* Join the strings and do not forget to free the join_strings, basicall free cMemory->inNam when done*/
+		/* Join the strings */
 		strcpy(cMemory->inNam, join_strings(strWri, nDblWri));
 		cMemory->inNam[strlen(cMemory->inNam)-1]=0;
 		printf ("This is the string to write %s\n", cMemory->inNam);
 
-
-		/* Join the strings and do not forget to free the join_strings, basicall free cMemory->outNam when done*/
+		/* Join the strings */
 		strcpy(cMemory->outNam, join_strings(strRea, nDblRea));
 		cMemory->outNam[strlen(cMemory->outNam)-1]=0;
 		printf ("This is the string to write %s\n", cMemory->outNam);
 	}
 	
-
     /* Convert the doubles values into doubles strings and then convert the string into a single string*/
 	tmpInVal = (char**)malloc(nDblWri*sizeof(char*));
 	for (i=0; i<nDblWri; i++){
@@ -318,7 +306,7 @@ void pythonExchangeVariables(const char * moduleName,
 		printf ("This is the string to write %s\n", tmpInVal[i]);
 	}
 
-	/* Join the strings and do not forget to free the join_strings, basicall free cMemory->inVal when done*/
+	/* Join the strings */
 	strcpy(cMemory->inVal, join_strings(tmpInVal, nDblWri));
 	cMemory->inVal[strlen(cMemory->inVal)-1]=0;
 	printf ("This is the string to write %s\n", cMemory->inVal);
@@ -339,6 +327,7 @@ void pythonExchangeVariables(const char * moduleName,
 		strlen(cMemory->port)+strlen(cMemory->inNam)+
 		strlen(cMemory->inVal)+strlen(cMemory->outNam)+
 		strlen(time_str)+100)*sizeof(char));
+	/* Write the string to be sent */
 	sprintf(url_str, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s", "http://", 
 		cMemory->address, ":", cMemory->port, "/", "dostep", "/", 
 		time_str, "&", cMemory->inNam, "&", cMemory->inVal, "&", 
@@ -358,7 +347,7 @@ void pythonExchangeVariables(const char * moduleName,
 	 * field, so we provide one */ 
 	/* curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "libcurl-agent/1.0"); */
 
-	/* get it! */ 
+	/* get the values from the server */ 
 	res = curl_easy_perform(curl_handle);
 
 	//* check for errors */ 
@@ -383,7 +372,6 @@ void pythonExchangeVariables(const char * moduleName,
 		while (token != NULL)
 		{
 			dblValRea[i]=strtod(token, NULL);
-			printf ("This is the return value %f\n", dblValRea[i]);
 			i++;
 			token = strtok(NULL, ",");
 		}

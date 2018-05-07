@@ -17,10 +17,8 @@
 /* function multiply.*/
 /**/
 /**/
-/* First Implementation: Michael Wetter, LBNL, 1/31/2013*/
-/* Modified: Thierry S. Nouidui, LBNL, 3/26/2013 to suport cross compilation*/
-/* Modified: Thierry S. Nouidui, LBNL, 3/2/2017 for Simulator to FMU*/
-/* svn-id=$Id: exchangeValues.c 2877 2011-09-11 00:46:02Z mwetter $*/
+/* Thierry S. Nouidui, LBNL, 5/7/2013 */
+
 /*////////////////////////////////////////////////////////////////////////////*/
 #include <stddef.h>  /* stddef defines size_t */
 #include <stdlib.h>
@@ -39,14 +37,7 @@ struct MemoryStruct {
   size_t size;
 };
 
-#ifdef __APPLE__
-#include <Python/Python.h>
-#else
-#include <Python.h>
-#endif
-
 #define PATH_SEP "\\"
-
 #include "pythonObjectStructure.h"
 
 #ifdef __cplusplus
