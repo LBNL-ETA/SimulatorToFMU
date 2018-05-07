@@ -1,19 +1,13 @@
 /*
  * A structure to store a pointer that is used
- * to point to a Python object between the function
+ * to point to a C object between the function
  * invocations.
  *
- * Michael Wetter, LBNL                                1/31/2018
+ * Thierry S. Nouidui, LBNL                                5/06/2018
  */
 
 #ifndef BUILDINGS_PYTHONOBJECTSTRUCTURE_H /* Not needed since it is only a typedef; added for safety */
 #define BUILDINGS_PYTHONOBJECTSTRUCTURE_H
-
-#ifdef __APPLE__
-#include <Python/Python.h>
-#else
-#include <Python.h>
-#endif
 
 typedef struct cPtr
 {
