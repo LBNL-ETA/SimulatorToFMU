@@ -18,9 +18,9 @@ int main(int nArgs, char ** args){
 	const char * configFileName="config.csv";
 	double time=0.0;
 
-	size_t nDblWri=2;
-	double dblValWri[]={15.0, 2.0};
-	const char *strWri[]={"input1","input2"};
+	size_t nDblWri=1;
+	double dblValWri[]={15.0};
+	const char *strWri[]={"input1"};
 
 	size_t nDblRea=1;
 	double dblValRea[1];
@@ -32,7 +32,7 @@ int main(int nArgs, char ** args){
 	int resWri=1;
 
 	int i;
-    pythonPtr* ptr = malloc(sizeof(pythonPtr));
+    cPtr* ptr = malloc(sizeof(cPtr));
     /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
     //ptr->ptr = NULL;
     //ptr->isInitialized = 0;

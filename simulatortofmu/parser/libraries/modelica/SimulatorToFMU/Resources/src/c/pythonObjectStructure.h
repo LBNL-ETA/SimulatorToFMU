@@ -28,8 +28,6 @@ typedef struct cPtr
   char* inVal;
   char* outNam;
   int isInitialized;
-  PyObject* pModule;
-  PyObject* pFunc;
 } cPtr;
 
 
