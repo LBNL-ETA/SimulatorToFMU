@@ -8,9 +8,9 @@ package BaseClasses "Package with functions that call Python"
         ExternalObject;
     function constructor
       "Construct an external object that can be used to store a Python object"
-      input String patPytScri "Path to the Python main script";
-      output PythonObject pytObj;
-    external "C" pytObj = initPythonMemory(patPytScri)
+      input String patResScri "Path to the Python main script";
+      output PythonObject obj;
+    external "C" obj = initPythonMemory(patResScri)
         annotation (Library={"SimulatorToFMUPython27",  "python27"},
           LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
     annotation(Documentation(info="<html>
@@ -34,8 +34,8 @@ First implementation.
     end constructor;
 
   function destructor "Release memory"
-    input PythonObject pytObj;
-    external "C" freePythonMemory(pytObj)
+    input PythonObject obj;
+    external "C" freePythonMemory(obj)
       annotation (Library={"SimulatorToFMUPython27",  "python27"},
         LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
   annotation(Documentation(info="<html>

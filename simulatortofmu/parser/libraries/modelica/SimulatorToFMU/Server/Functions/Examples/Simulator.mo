@@ -1,4 +1,4 @@
-within SimulatorToFMU.Python27.Functions.Examples;
+within SimulatorToFMU.Server.Functions.Examples;
 model Simulator "Test model for simulator functions"
   extends Modelica.Icons.Example;
   parameter Boolean passPythonObject=false
@@ -11,12 +11,13 @@ model Simulator "Test model for simulator functions"
   parameter String patPytScri=Modelica.Utilities.Files.loadResource(
     "modelica://SimulatorToFMU/Resources/Python-Sources/testSimulator.py")
     "Path to the main Python script";
-  SimulatorToFMU.Python27.Functions.BaseClasses.PythonObject[5] pytObj={
-      SimulatorToFMU.Python27.Functions.BaseClasses.PythonObject(patPytScri=patPytScri) for i in 1:5};
+  SimulatorToFMU.Server.Functions.BaseClasses.ServerObject[5] pytObj={
+      SimulatorToFMU.Server.Functions.BaseClasses.PythonObject(patPytScri=
+      patPytScri) for i in 1:5};
   Real yR1[1] "Real function value";
   Real yR2[2] "Real function value";
 algorithm
-  yR1 := SimulatorToFMU.Python27.Functions.simulator(
+  yR1 := SimulatorToFMU.Server.Functions.simulator(
     moduleName="testSimulator",
     functionName="r1_r1",
     pytObj=pytObj[1],
@@ -33,7 +34,7 @@ algorithm
     dblParVal=emptyDblParVal,
     resWri=false);
   assert(abs(15 - yR1[1]) < 1e-5, "Error in function r1_r1");
-  yR1 := SimulatorToFMU.Python27.Functions.simulator(
+  yR1 := SimulatorToFMU.Server.Functions.simulator(
     moduleName="testSimulator",
     functionName="r2_r1",
     pytObj=pytObj[2],
@@ -50,7 +51,7 @@ algorithm
     dblParVal=emptyDblParVal,
     resWri=false);
   assert(abs(45 - yR1[1]) < 1e-5, "Error in function r2_r1");
-  yR1 := SimulatorToFMU.Python27.Functions.simulator(
+  yR1 := SimulatorToFMU.Server.Functions.simulator(
     moduleName="testSimulator",
     functionName="par3_r1",
     pytObj=pytObj[3],
@@ -67,7 +68,7 @@ algorithm
     dblParVal={1.0,2.0,3.0},
     resWri=false);
   assert(abs(6 - yR1[1]) < 1e-5, "Error in function par3_r1");
-  yR2 := SimulatorToFMU.Python27.Functions.simulator(
+  yR2 := SimulatorToFMU.Server.Functions.simulator(
     moduleName="testSimulator",
     functionName="r1_r2",
     pytObj=pytObj[4],
@@ -84,7 +85,7 @@ algorithm
     dblParVal=emptyDblParVal,
     resWri=false);
   assert(abs(yR2[1] - 30) + abs(yR2[2] - 60) < 1E-5, "Error in function r1_r2");
-  yR2 := SimulatorToFMU.Python27.Functions.simulator(
+  yR2 := SimulatorToFMU.Server.Functions.simulator(
     moduleName="testSimulator",
     functionName="r2p2_r2",
     pytObj=pytObj[5],

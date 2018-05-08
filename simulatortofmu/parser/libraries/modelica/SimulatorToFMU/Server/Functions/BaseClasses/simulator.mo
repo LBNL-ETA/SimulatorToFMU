@@ -1,9 +1,6 @@
-within SimulatorToFMU.Python34.Functions.BaseClasses;
+within SimulatorToFMU.Server.Functions.BaseClasses;
 function simulator "Function that communicates with the SimulatorToFMU Python API"
-  input String moduleName
-    "Name of the python module that contains the function";
-  input String functionName=moduleName "Name of the python function";
-  input BaseClasses.PythonObject obj "Memory that holds the Python object";
+  input ServerObject obj "Memory that holds the Python object";
   input Boolean passMemoryObject
     "Set to true if the Python function returns and receives an object, see User's Guide";
   input String  conFilNam "Name of the python function";
@@ -18,9 +15,7 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
   input Integer nDblPar(min=0) "Number of double parameters to send to SimulatorToFMU";
   input Boolean resWri  "Flag for enabling results writing. true: write results, false: else";
   output Real    dblOutVal[max(1, nDblOut)] "Double output values read from SimulatorToFMU";
-  external "C" modelicaToSimulator(moduleName,
-                                    functionName,
-                                    conFilNam,
+  external "C" modelicaToSimulator( conFilNam,
                                     modTim,
                                     nDblInp,
                                     dblInpNam,
@@ -34,19 +29,19 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
                                     resWri,
                                     obj,
                                     passMemoryObject)
-    annotation (Library={"SimulatorToFMUPython34", "python34"},
+    annotation (Library={"SimulatorToFMUServer", "curl"},
       LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"},
       IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
-      Include="#include \"pythonWrapper.c\"");
+      Include="#include \"serverWrapper.c\"");
   annotation (Documentation(info="<html>
 <p>
 This function exchanges data with a Simulator through its Python API.
 See 
-<a href=\"modelica://SimulatorToFMU.Python34.UsersGuide\">
-SimulatorToFMU.Python34.UsersGuide</a>
+<a href=\"modelica://SimulatorToFMU.Python27.UsersGuide\">
+SimulatorToFMU.Python27.UsersGuide</a>
 for instructions, and 
-<a href=\"modelica://SimulatorToFMU.Python34.Functions.Examples\">
-SimulatorToFMU.Python34.Functions.Examples</a>
+<a href=\"modelica://SimulatorToFMU.Python27.Functions.Examples\">
+SimulatorToFMU.Python27.Functions.Examples</a>
 for examples.
 </p>
 </html>", revisions="<html>

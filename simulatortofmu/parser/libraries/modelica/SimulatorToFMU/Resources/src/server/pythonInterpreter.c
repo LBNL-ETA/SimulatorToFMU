@@ -215,7 +215,7 @@ char* join_strings(char *strings[], int count)
  * @param memory a Python object               
  * @param have_memory the flag indicating a Python object   
  */
-void pythonExchangeVariables(const char * moduleName,
+void serverExchangeVariables(const char * moduleName,
 	const char * functionName,
 	const char * configFileName,
 	double modTim,

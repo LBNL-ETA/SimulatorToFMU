@@ -1,4 +1,4 @@
-within SimulatorToFMU.Python27.Functions.Examples;
+within SimulatorToFMU.Server.Functions.Examples;
 model SimulatorWithPassPythonObject
   "Test model for simulator functions with memory"
   extends Modelica.Icons.Example;
@@ -12,11 +12,12 @@ model SimulatorWithPassPythonObject
   parameter String patPytScri=Modelica.Utilities.Files.loadResource(
     "modelica://SimulatorToFMU/Resources/Python-Sources/testSimulator.py")
     "Path to the main Python script";
-  SimulatorToFMU.Python27.Functions.BaseClasses.PythonObject pytObj=
-    SimulatorToFMU.Python27.Functions.BaseClasses.PythonObject(patPytScri=patPytScri);
+  SimulatorToFMU.Server.Functions.BaseClasses.ServerObject pytObj=
+      SimulatorToFMU.Server.Functions.BaseClasses.PythonObject(patPytScri=
+      patPytScri);
   Real yR1[1] "Real function value";
 algorithm
-  yR1 := SimulatorToFMU.Python27.Functions.simulator(
+  yR1 := SimulatorToFMU.Server.Functions.simulator(
     moduleName="testSimulator",
     functionName="r1_r1PassPythonObject",
     conFilNam="config.csv",

@@ -80,7 +80,7 @@ to not export all symbols but only the needed ones */
  * @param memory a Python object               
  * @param have_memory the flag indicating a Python object          
  */
-LBNLPYTHONINTERPRETER_EXPORT void pythonExchangeVariables(const char * moduleName,
+LBNLPYTHONINTERPRETER_EXPORT void serverExchangeVariables(const char * moduleName,
 							const char * functionName, 
 							const char * configFileName,
 							double modTim,

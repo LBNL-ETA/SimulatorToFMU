@@ -1,15 +1,14 @@
-within SimulatorToFMU.Python34.Functions.BaseClasses;
-class PythonObject
-"class used to create the external object: PythonObject"
+within SimulatorToFMU.Server.Functions.BaseClasses;
+class ServerObject
+  "class used to create the external object: ServerObject"
   extends ExternalObject;
-  input String patResScri "Path to the Python main script";
   function constructor
-    "Construct an external object that can be used to store a Python object"
-  output PythonObject obj;
+    "Construct an external object that can be used to store an object"
+    input String patResScri "Path to the resource script";
+    output ServerObject obj;
   external "C" obj = initPythonMemory(patResScri)
-      annotation (Library={"SimulatorToFMUPython34",  "python34"},
+      annotation (Library={"SimulatorToFMUServer",  "curl"},
         LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
-
   annotation(Documentation(info="<html>
 <p>
 The function <code>constructor</code> is a C function that is called by a Modelica simulator
@@ -17,8 +16,8 @@ exactly once during the initialization.
 The function returns the object <code>PythonObject</code> that
 will be used to store a Python object and pass it from one invocation to another 
 in the function
-<a href=\"modelica://Buildings.Utilities.IO.Python34.Functions.BaseClasses.exchange\">
-Buildings.Utilities.IO.Python34.Functions.BaseClasses.exchange</a>.
+<a href=\"modelica://Buildings.Utilities.IO.Python27.Functions.BaseClasses.exchange\">
+Buildings.Utilities.IO.Python27.Functions.BaseClasses.exchange</a>.
 </p>
 </html>",
         revisions="<html>
@@ -32,9 +31,9 @@ First implementation.
   end constructor;
 
 function destructor "Release memory"
-  input PythonObject obj;
+  input ServerObject obj;
   external "C" freePythonMemory(obj)
-    annotation (Library={"SimulatorToFMUPython34",  "python34"},
+    annotation (Library={"SimulatorToFMUPython27",  "python27"},
       LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
 annotation(Documentation(info="<html>
 <p>
@@ -69,4 +68,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end PythonObject;
+end ServerObject;
