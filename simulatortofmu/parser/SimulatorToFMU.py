@@ -274,6 +274,9 @@ def main():
     simulator_group.add_argument("-se", "--specific-export",
                                  help='Export specific tool.'
                                  + ' Current valid option is <cyme> and <none>. Default is <none>.')
+    simulator_group.add_argument("-x", "--exec-target",
+                                 help='Eecution target.'
+                                 + ' Current valid option is <server> and <python>. Default is <server>.')
     
 #     simulator_group.add_argument("-n", "--needs-tool",
 #                                  help='Flag to indicate if FMU needs an '
@@ -290,15 +293,16 @@ def main():
     
     # Export CYME using SimulatorToFMU
     tool_export = args.specific_export
-    if(tool_export in ["cyme"]):
-        python_vers = '34'
-        # Check command line options
-        if not(platform.system().lower() in ['windows']):
-            log.info('SimulatorToFMU can only export CYME for Windows.')
-            return
-    else:
-        log.error("CYME is the only supported custom tool.")
-        return
+    if (not (tool_export is None)):
+        if(tool_export in ["cyme"]):
+            python_vers = '34'
+            # Check command line options
+            if not(platform.system().lower() in ['windows']):
+                log.info('SimulatorToFMU can only export CYME for Windows.')
+                return
+            else:
+                log.error("CYME is the only supported custom tool.")
+                return
     
     # Get the memory flag
     has_memory = args.has_memory
@@ -306,6 +310,14 @@ def main():
         has_memory = "true"
     if not (has_memory in ['true', 'false']):
         log.error('The flag -hm must either be true or false.')
+        return
+
+    # Get the execution target
+    exec_target = args.exec_target
+    if(exec_target is None):
+        exec_target = "server"
+    if not (exec_target in ['server', 'python']):
+        log.error('The flag -x must either be server or python.')
         return
 
     # Check command line options
@@ -499,7 +511,8 @@ def main():
                                modelica_path,
                                needs_tool.lower(),
                                has_memory,
-                               tool_export)
+                               tool_export,
+                               exec_target)
 
     start = datetime.now()
     ret_val = Simulator.print_mo()
@@ -718,7 +731,8 @@ class SimulatorToFMU(object):
                  modelica_path,
                  needs_tool,
                  has_memory,
-                 tool_export):
+                 tool_export,
+                 exec_target):
         
         """
         Initialize the class.
@@ -743,6 +757,7 @@ class SimulatorToFMU(object):
         :param needs_tool (str): Indicate if is co-simulation tool coupling.
         :param has_memory (str): The flag to indicate if simulator has memory.
         :param tool_export (str): Indicate if a specific tool should be exported.
+        :param exec_target (str): Indicate the execution taget.
 
         """
 
@@ -763,6 +778,8 @@ class SimulatorToFMU(object):
         self.needs_tool = needs_tool
         self.has_memory = has_memory
         self.tool_export = tool_export
+        self.exec_target = exec_target
+        self.module_name = ""
 
     def xml_validator(self):
         """
@@ -846,21 +863,22 @@ class SimulatorToFMU(object):
         s = ('The new model name is {!s}.').format(self.model_name)
         log.info(s)
         
-        # Specify the module name which shouldn't contain invalid characters
-        self.module_name=self.model_name+'_wrapper'
-        s = ('Declare the Python module name as {!s}.').format(
-            self.module_name)
-        log.info(s)
-        
-        # Check if the script fort the module name is in the list of Python scripts
-        python_scripts_base = [os.path.basename(item)
-                           for item in self.python_scripts_path]
-        if not(self.module_name+'.py' in python_scripts_base):
-            s = (self.module_name+'.py' +' no found in the list of Python scripts={!s}.'\
-                 ' The name of the model is {!s}. Hence the name of the Python wrapper script must be {!s}.').format(
-                self.python_scripts_path, self.module_name, self.module_name+'.py')
-            log.error(s)
-            raise ValueError(s)
+        if(self.exec_target=='python'):
+            # Specify the module name which shouldn't contain invalid characters
+            self.module_name=self.model_name+'_wrapper'
+            s = ('Declare the Python module name as {!s}.').format(
+                self.module_name)
+            log.info(s)
+            
+            # Check if the script fort the module name is in the list of Python scripts
+            python_scripts_base = [os.path.basename(item)
+                               for item in self.python_scripts_path]
+            if not(self.module_name+'.py' in python_scripts_base):
+                s = (self.module_name+'.py' +' no found in the list of Python scripts={!s}.'\
+                     ' The name of the model is {!s}. Hence the name of the Python wrapper script must be {!s}.').format(
+                    self.python_scripts_path, self.module_name, self.module_name+'.py')
+                log.error(s)
+                raise ValueError(s)
         
         # Iterate through the XML file and get the ModelVariables.
         input_variable_names = []
@@ -1068,7 +1086,9 @@ class SimulatorToFMU(object):
             modelica_parameter_variable_names=modelica_parameter_variable_names,
             con_path=self.con_path,
             python_vers=self.python_vers,
-            has_memory=self.has_memory)
+            has_memory=self.has_memory,
+            exec_target=self.exec_target,
+            res_path=self.python_scripts_path[0])
         # Write results in mo file which has the same name as the class name
         output_file = self.model_name + '.mo'
         if os.path.isfile(output_file):
@@ -1287,7 +1307,14 @@ class SimulatorToFMU(object):
             for arch in ['win32', 'win64']:
                 zip_path = os.path.join(dir_name, arch)
                 os.makedirs(zip_path)
-                for libr in ['SimulatorToFMUPython'+self.python_vers+'.dll', 'python'+self.python_vers+'.dll']:
+                
+                if(self.exec_target=='python'):
+                    tmp1='SimulatorToFMUPython'+self.python_vers+'.dll'
+                    tmp2='python'+self.python_vers+'.dll'
+                elif(self.exec_target=='server'):
+                    tmp1='SimulatorToFMUServer.dll'
+                    tmp2='libcurl.dll'
+                for libr in [tmp1, tmp2]:
                     lib_path = os.path.join(fil_path, arch, libr)
                     if (os.path.isfile(lib_path)):
                         s = '{!s} will be copied to the binaries folder {!s}.' \
@@ -1302,7 +1329,14 @@ class SimulatorToFMU(object):
             for arch in ['linux32', 'linux64']:
                 zip_path = os.path.join(dir_name, arch)
                 os.makedirs(zip_path)
-                for libr in ['libSimulatorToFMUPython'+self.python_vers+'.so', 'libpython'+self.python_vers+'.so']:
+                if(self.exec_target=='python'):
+                    tmp1='libSimulatorToFMUPython'+self.python_vers+'.so'
+                    tmp2='libpython'+self.python_vers+'.so'
+                elif(self.exec_target=='server'):
+                    tmp1='libSimulatorToFMUServer.so'
+                    tmp2='libcurl.so'
+                
+                for libr in [tmp1, tmp2]:
                     lib_path = os.path.join(fil_path, arch, libr)
                     if (os.path.isfile(lib_path)):
                         s = '{!s} will be copied to the binaries folder {!s}.' \
