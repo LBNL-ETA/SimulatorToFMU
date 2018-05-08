@@ -61,8 +61,6 @@ to not export all symbols but only the needed ones */
  * This function exchanges variables 
  * with an external simulator. 
  *
- * @param moduleName the module name 
- * @param functionName the function name
  * @param configFileName the configuration file
  * @param modTim the simulation time
  * @param nDblWri the number of double variables to write
@@ -80,8 +78,7 @@ to not export all symbols but only the needed ones */
  * @param memory a Python object               
  * @param have_memory the flag indicating a Python object          
  */
-LBNLPYTHONINTERPRETER_EXPORT void serverExchangeVariables(const char * moduleName,
-							const char * functionName, 
+LBNLPYTHONINTERPRETER_EXPORT void serverExchangeVariables(
 							const char * configFileName,
 							double modTim,
 							const size_t nDblWri, 

@@ -196,8 +196,6 @@ char* join_strings(char *strings[], int count)
  * This function exchanges variables with an 
  * external simulator. 
  *
- * @param moduleName the module name 
- * @param functionName the function name
  * @param configFileName the configuration file
  * @param modTim the simulation time
  * @param nDblWri the number of double variables to write
@@ -215,8 +213,7 @@ char* join_strings(char *strings[], int count)
  * @param memory a Python object               
  * @param have_memory the flag indicating a Python object   
  */
-void serverExchangeVariables(const char * moduleName,
-	const char * functionName,
+void serverExchangeVariables(
 	const char * configFileName,
 	double modTim,
 	const size_t nDblWri, 
