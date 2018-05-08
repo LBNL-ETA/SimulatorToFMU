@@ -1,7 +1,6 @@
 within SimulatorToFMU.Server.Functions;
 function simulator "Function that communicates with the SimulatorToFMU Python API"
   extends Modelica.Icons.Function;
-  input String functionName=moduleName "Name of the python function";
   input BaseClasses.ServerObject obj "Memory that holds the Python object";
   input Boolean passMemoryObject
     "Set to true if the Server function returns and receives an object, see User's Guide";
