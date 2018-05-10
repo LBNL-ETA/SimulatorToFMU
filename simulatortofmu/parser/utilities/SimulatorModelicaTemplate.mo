@@ -17,7 +17,7 @@ model {{model_name}}
   {% endfor %}
   // Configuration specific parameters coming from 
   // the inputs of the Python export tool (SimulatorToFMU.py) 
-  parameter String _patResScri = Modelica.Utilities.Files.loadResource("{{res_path}}")
+  parameter String patResScri = Modelica.Utilities.Files.loadResource("{{res_path}}")
     "Path to the script in resource folder";
   // used to generate the FMU
   {%- if con_path=="" %}
@@ -33,7 +33,7 @@ protected
 
   {%- if exec_target=="python" %}
   SimulatorToFMU.Python{{python_vers}}.Functions.BaseClasses.PythonObject obj=
-  SimulatorToFMU.Python{{python_vers}}.Functions.BaseClasses.PythonObject(_patResScri);
+  SimulatorToFMU.Python{{python_vers}}.Functions.BaseClasses.PythonObject(patResScri=patResScri);
   {%- if has_memory=="false" %}
   parameter Boolean passMemoryObject = false
     "Set to true if the Python function returns and receives an object, see User's Guide";
@@ -42,8 +42,10 @@ protected
     "Set to true if the Python function returns and receives an object, see User's Guide";
   {%- endif %}
   {%- elif exec_target=="server" %}
+   parameter String runServer = Modelica.Utilities.Files.loadResource("{{run_ser}}")
+    "Path to the script to run the server";
   SimulatorToFMU.Server.Functions.BaseClasses.ServerObject obj=
-  SimulatorToFMU.Server.Functions.BaseClasses.ServerObject(_patResScri);
+  SimulatorToFMU.Server.Functions.BaseClasses.ServerObject(patResScri=patResScri);
   parameter Boolean passMemoryObject = true
     "Set to true if the server returns and receives an object, see User's Guide";
   {%- endif %}
