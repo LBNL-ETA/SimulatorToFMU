@@ -68,92 +68,30 @@
 		return result;
 	}
 
-
-/*
- * Start the server FMU.
- *
- * @param resScri Path to a script which is in
- * the resource folder of the FMU.
- */
-void* initPythonMemory(char* resScri)
-{
-#ifdef _MSC_VER
-	HANDLE  pid;
-#else
-	pid_t  pid;
-#endif
-  cPtr* ptr = malloc(sizeof(cPtr));
-  char patDir[MAX_PATHNAME_LEN];
-  char base [MAX_PATHNAME_LEN];
-  char ext [40];
-  int retVal;
-  char* conFil="server_config.txt";
-  char* batFil="start_server.bat";
-  char tmp3[1000];
-
-  /* Split the path to extract the directory name*/ 
-  /* retVal=_splitpath_s(str_replace(resScri, "\\", "/"), base, sizeof(base), 
-	  patDir, sizeof(patDir), NULL, 0, NULL, 0); */
-  retVal=_splitpath_s(resScri, base, sizeof(base), 
-	  patDir, sizeof(patDir), NULL, 0, NULL, 0);
-  if(retVal!=0){
-	  fprintf(stderr, "Python script %s could not be splitted. "
-		  "The error code is %d\n", resScri, retVal);
-  }
-
-  /* Construct the path to the configuration file */
-
-  /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
-  ptr->fulScriPat=(char*)malloc((strlen(patDir)+strlen(base) + 10)*sizeof(char));
-  sprintf(ptr->fulScriPat, "%s%s", base, patDir);
-
-
-  ptr->conFilPat=(char*)malloc((strlen(ptr->fulScriPat)+strlen(conFil)+1)*sizeof(char));
-  ptr->batFilPat=(char*)malloc((strlen(ptr->fulScriPat)+strlen(batFil)+10)*sizeof(char));
-  sprintf(ptr->conFilPat, "%s%s", ptr->fulScriPat, conFil);
-  printf("This is the path to the configuration file %s\n", ptr->conFilPat);
-  sprintf(ptr->batFilPat, "%s%s", ptr->fulScriPat, batFil);
-  printf("This is the path to the batch file file %s\n", ptr->batFilPat);
-  
-  /* Start the server in  a non-blocking mode */
-  pid=(HANDLE)_spawnl(P_NOWAIT,  ptr->batFilPat,  ptr->batFilPat, 
-  	  ptr->fulScriPat, NULL); 
-  /* Needs to wait that the server is up*/
-  /* sprintf(tmp3, "%s%s%s%s", "start ", "C:\\Users\\Public\\start_server.bat", " ", "C:\\Users\\Public\\"); */
-  /* system (tmp3); */
-  Sleep(1000);
-  ptr->ptr = NULL;
-  ptr->isInitialized = 0;
-  ptr->patDir = (char *)malloc((strlen(ptr->fulScriPat) + 50)*sizeof(char));
-  return (void*) ptr;
-}
-
 static size_t
 WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
   size_t realsize = size * nmemb;
   struct MemoryStruct *mem = (struct MemoryStruct *)userp;
- 
+
   mem->memory = realloc(mem->memory, mem->size + realsize + 1);
   if(mem->memory == NULL) {
-    /* out of memory! */ 
+    /* out of memory! */
     printf("not enough memory (realloc returned NULL)\n");
     return 0;
   }
- 
+
   memcpy(&(mem->memory[mem->size]), contents, realsize);
   mem->size += realsize;
   mem->memory[mem->size] = 0;
   return realsize;
 }
 
-
-
 /*
- * Function to join an array of strings                            
- * this function allocates memory that must be freed by the caller 
+ * Function to join an array of strings
+ * this function allocates memory that must be freed by the caller
  *
- * @param strings the string array to join 
+ * @param strings the string array to join
  * @param count the number of elements
 
  */
@@ -193,8 +131,8 @@ char* join_strings(char *strings[], int count)
 }
 
 /*
- * This function exchanges variables with an 
- * external simulator. 
+ * This function exchanges variables with an
+ * external simulator.
  *
  * @param configFileName the configuration file
  * @param modTim the simulation time
@@ -210,34 +148,31 @@ char* join_strings(char *strings[], int count)
  * @param resWri the result flag
  * @param ModelicaFormatError the pointer
  * to the ModelicaFormatError
- * @param memory a Python object               
- * @param have_memory the flag indicating a Python object   
+ * @param memory a Python object
+ * @param have_memory the flag indicating a Python object
  */
 void serverExchangeVariables(
 	const char * configFileName,
 	double modTim,
-	const size_t nDblWri, 
-	const char ** strWri, 
-	double * dblValWri, 
-	size_t nDblRea, 
+	const size_t nDblWri,
+	const char ** strWri,
+	double * dblValWri,
+	size_t nDblRea,
 	const char ** strRea,
-	double * dblValRea, 
-	size_t nDblParWri, 
-	const char ** strParWri, 
-	double * dblValParWri, 
+	double * dblValRea,
+	size_t nDblParWri,
+	const char ** strParWri,
+	double * dblValParWri,
 	int resWri,
 	void (*ModelicaFormatError)(const char *string,...),
 	void* memory, int passPythonObject){
 
 	CURL *curl_handle;
-    CURLcode res;
- 
-    struct MemoryStruct chunk;
+  CURLcode res;
+
+  struct MemoryStruct chunk;
 	int nRea;
 
-	char* arg="";
-	char buf[1024];
-	FILE *fil;
 	char* address;
 	char* port;
 	char* token;
@@ -246,76 +181,39 @@ void serverExchangeVariables(
 	char time_str[100];
 	char* url_str;
 
-  	cPtr* cMemory = (cPtr*)memory;
-
+  cPtr* cMemory = (cPtr*)memory;
 	const char *confFilNam [] = {configFileName};
-	 
-    chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */ 
-    chunk.size = 0;    /* no data at this point */ 
 
-	if (cMemory->isInitialized==0) {
-		cMemory->inNam = (char*)malloc((nDblWri*500)*sizeof(char));
-		cMemory->inVal = (char*)malloc((nDblWri*500)*sizeof(char));
-		cMemory->outNam = (char*)malloc((nDblRea*500)*sizeof(char));
-		/* Open configuration and read token */
-		fil = fopen(cMemory->conFilPat, "r");
-		if (fil) {
-			while ((nRea = fread(buf, 1, sizeof buf, fil)) > 0)
-				continue;
-			if (ferror(fil)) {
-				(*ModelicaFormatError)("Failed to read configuration file '%s'.\n", 
-					cMemory->conFilPat);
-			}
-			fclose(fil);
-		}
-		
-		/* Extract the port and the address */
-		token = strtok(buf, ":");
-		while(token!=NULL){
-			if (strstr(token, "address")){
-				token = strtok(NULL, ":");
-				cMemory->address=token;
-			}
-			if (strstr(token,"port")){
-				token = strtok(NULL, ":");
-				cMemory->port=token;
-			}
-			token = strtok(NULL, ":");
-		}
-		printf("This is the address retrieved %s and the port=%s\n", cMemory->address, cMemory->port);
-		
-		/* Join the strings */
-		strcpy(cMemory->inNam, join_strings(strWri, nDblWri));
-		cMemory->inNam[strlen(cMemory->inNam)-1]=0;
-		printf ("This is the string to write %s\n", cMemory->inNam);
-
-		/* Join the strings */
-		strcpy(cMemory->outNam, join_strings(strRea, nDblRea));
-		cMemory->outNam[strlen(cMemory->outNam)-1]=0;
-		printf ("This is the string to write %s\n", cMemory->outNam);
-	}
-	
-    /* Convert the doubles values into doubles strings and then convert the string into a single string*/
-	tmpInVal = (char**)malloc(nDblWri*sizeof(char*));
-	for (i=0; i<nDblWri; i++){
-		tmpInVal[i] = (char*)malloc(100*sizeof(char));
-		sprintf(tmpInVal[i], "%.8f", dblValWri[i]);
-		printf ("This is the string to write %s\n", tmpInVal[i]);
-	}
+  chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
+  chunk.size = 0;    /* no data at this point */
+	cMemory->inVal = (char*)malloc((nDblWri*500)*sizeof(char));
+	cMemory->inNam = (char*)malloc((nDblWri*500)*sizeof(char));
+	cMemory->outNam = (char*)malloc((nDblRea*500)*sizeof(char));
 
 	/* Join the strings */
-	strcpy(cMemory->inVal, join_strings(tmpInVal, nDblWri));
-	cMemory->inVal[strlen(cMemory->inVal)-1]=0;
-	printf ("This is the string to write %s\n", cMemory->inVal);
+	sprintf(cMemory->inNam, "%s", join_strings(strWri, nDblWri));
+	cMemory->inNam[strlen(cMemory->inNam)-1]=0;
+
+	/* Join the strings */
+	sprintf(cMemory->outNam, "%s", join_strings(strRea, nDblRea));
+	cMemory->outNam[strlen(cMemory->outNam)-1]=0;
 
 	/* Ready to send data to the server */
 	curl_global_init(CURL_GLOBAL_ALL);
 
-	/* init the curl session */ 
+	/* init the curl session */
 	curl_handle = curl_easy_init();
 
-	/* init the curl session */ 
-	curl_handle = curl_easy_init();
+  /* Convert the doubles values into doubles strings and then convert the string into a single string*/
+	tmpInVal = (char**)malloc(nDblWri*sizeof(char*));
+	for (i=0; i<nDblWri; i++){
+		tmpInVal[i] = (char*)malloc(100*sizeof(char));
+		sprintf(tmpInVal[i], "%.8f", dblValWri[i]);
+	}
+
+	/* Join the strings */
+	sprintf(cMemory->inVal, "%s", join_strings(tmpInVal, nDblWri));
+	cMemory->inVal[strlen(cMemory->inVal)-1]=0;
 
 	/* Convert time in string*/
 	sprintf(time_str, "%.5f", time);
@@ -324,30 +222,30 @@ void serverExchangeVariables(
 		strlen(cMemory->port)+strlen(cMemory->inNam)+
 		strlen(cMemory->inVal)+strlen(cMemory->outNam)+
 		strlen(time_str)+100)*sizeof(char));
-	/* Write the string to be sent */
-	sprintf(url_str, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s", "http://", 
-		cMemory->address, ":", cMemory->port, "/", "dostep", "/", 
-		time_str, "&", cMemory->inNam, "&", cMemory->inVal, "&", 
-		cMemory->outNam);
-	printf("This is the character to send %s\n", url_str);
 
-	/* specify URL to get */ 
+	/* Write the string to be sent */
+	sprintf(url_str, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s", "http://",
+		cMemory->address, ":", cMemory->port, "/", "dostep", "/",
+		time_str, "&", cMemory->inNam, "&", cMemory->inVal, "&",
+		cMemory->outNam);
+
+	/* specify URL to get */
 	curl_easy_setopt(curl_handle, CURLOPT_URL, url_str);
 
-	/* send all data to this function  */ 
+	/* send all data to this function  */
 	curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
 
-	/* we pass our 'chunk' struct to the callback function */ 
+	/* we pass our 'chunk' struct to the callback function */
 	curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, (void *)&chunk);
 
 	/* some servers don't like requests that are made without a user-agent
-	 * field, so we provide one */ 
+	 * field, so we provide one */
 	/* curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "libcurl-agent/1.0"); */
 
-	/* get the values from the server */ 
+	/* get the values from the server */
 	res = curl_easy_perform(curl_handle);
 
-	//* check for errors */ 
+	/* check for errors */
 	if(res != CURLE_OK) {
 		fprintf(stderr, "curl_easy_perform() failed: %s\n",
 			curl_easy_strerror(res));
@@ -358,10 +256,10 @@ void serverExchangeVariables(
 		/*
 		* Now, our chunk.memory points to a memory block that is chunk.size
 		* bytes big and contains the remote file.
-		*/ 
+		*/
 		/* Error handling done by checking first character of the message. */
 		if(chunk.memory[0]=='E' || chunk.memory[0]=='e'){
-			(*ModelicaFormatError)("Failed to get the data at time %f. %s\n", time,  
+			(*ModelicaFormatError)("Failed to get the data at time %f. %s\n", time,
 				chunk.memory);
 		}
 		token = strtok(chunk.memory, ",");
@@ -373,19 +271,23 @@ void serverExchangeVariables(
 			token = strtok(NULL, ",");
 		}
 	}
- 
-	/* cleanup curl stuff */ 
-	curl_easy_cleanup(curl_handle);
-	free(chunk.memory);
 
-	/* we're done with libcurl, so clean it up */ 
+	/* cleanup curl stuff */
+	curl_easy_cleanup(curl_handle);
+
+	/* we're done with libcurl, so clean it up */
 	curl_global_cleanup();
-	
-	/* Free memory */
-	for (i=0; i<nDblWri; i++){
-		free(tmpInVal[i]);
-	}
-	free(tmpInVal);	
+
+for (i=0; i<nDblWri; i++){
+	free(tmpInVal[i]);
+}
+	free(tmpInVal);
+	free(cMemory->inVal);
+	free(cMemory->outNam);
+	free(cMemory->inNam);
+	free(url_str);
+	free(chunk.memory);
+	cMemory->isInitialized=1;
 	return;
 }
 
@@ -409,14 +311,3 @@ str, strLen);
 return;
 }
 */
-void freePythonMemory(void* object)
-{
-  if ( object != NULL ){
-    cPtr* p = (cPtr*) object;
-	free(p->patDir);
-	free(p->inNam);
-	free(p->outNam);
-	free(p->inVal);
-    free(p);
-  }
-}

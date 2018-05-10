@@ -6,8 +6,8 @@ REM # Batch to compile Python interface
 REM # Thierry S. Nouidui (TSNouidui@lbl.gov) March 16, 2016
 
 REM ############## NOTES ###########################################
-REM # To compile the libraries, we need to have visual studio 
-REM # compilers installed. The script will try to detect whether 
+REM # To compile the libraries, we need to have visual studio
+REM # compilers installed. The script will try to detect whether
 REM # the target operating system and set the environment variables.
 REM # Adapt the path to PYTHONInc and PYTHONLibs for your operating system
 REM # This script has been tested with Microsoft Visual Studio 10.0 Professional
@@ -16,8 +16,8 @@ REM ############################################################################
 SET SRCS=pythonInterpreter.c
 SET LIBS=pythonInterpreter.lib
 
-SET MOD_DLL=SimulatorToFMUC.dll
-SET MOD_LIB=SimulatorToFMUC.lib
+SET MOD_DLL=SimulatorToFMUServer.dll
+SET MOD_LIB=SimulatorToFMUServer.lib
 
 :: Check if we are on a 32 or 64 bit machine
 ::IF "%DevEnvDir%"=="" (
@@ -27,18 +27,18 @@ Find /i "x86" < CheckOS.txt > StringCheck.txt
 IF %ERRORLEVEL% == 0 (
   REM Set path to the directory on 32 bit machine
   SET CURLInc="Z:\thierry\proj\curl-7.59.0\include"
-  SET CURLLibs="Z:\thierry\proj\curl-7.59.0\build\Win32\VC14\DLL Release - DLL Windows SSPI"\libcurl.lib
+  SET CURLLibs="Z:\thierry\proj\curl-7.59.0\build\Win32\VC14\DLL Debug"\libcurld.lib
   CALL "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"  >nul 2>&1
     IF ERRORLEVEL 1 (
       ECHO Problem configuring the Visual Studio tools for command-line use
       GOTO done
     )
   ECHO Windows 32 bit compilation activated.
-  SET BINDIR=..\..\Library\win32 
+  SET BINDIR=..\..\Library\win32
 )ELSE (
     REM Set path to the directory on 64 bit machine
 	SET CURLInc="Z:\thierry\proj\curl-7.59.0\include"
-	SET CURLLibs="Z:\thierry\proj\curl-7.59.0\build\Win64\VC14\DLL Release - DLL Windows SSPI"\libcurl.lib
+	SET CURLLibs="Z:\thierry\proj\curl-7.59.0\build\Win64\VC14\DLL Debug"\libcurld.lib
     CALL "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64\vcvars64.bat"  >nul 2>&1
       IF ERRORLEVEL 1 (
         ECHO Problem configuring the Visual Studio tools for command-line use
@@ -47,19 +47,19 @@ IF %ERRORLEVEL% == 0 (
     ECHO Windows 64 bit compilation activated.
     SET BINDIR=..\..\Library\win64
 )
- 
-:: Compiling the Python interpreter libraries 
+
+:: Compiling the Python interpreter libraries
 CL /LD /MT /I%CURLInc% %SRCS% %CURLLibs% /link /out:%MOD_DLL%
 
 :: Creating the import library
 :: lib /def:%MOD_DEF%
 
 :: Compiling the test Program
-CL /I%CURLInc% testProgram.c %SRCS% %CURLLibs%
+::CL /I%CURLInc% testProgram.c %SRCS% %CURLLibs%
 
 :: Running the testProgram
-ECHO Run the testProgram.exe
- start /WAIT testProgram.exe
+::ECHO Run the testProgram.exe
+ ::start /WAIT testProgram.exe
 
 ECHO Rename library file
 ren %LIBS% %MOD_LIB%
@@ -84,4 +84,4 @@ del CheckOS.txt
 del StringCheck.txt
 
 :: Delete exe files
-del testProgram.exe
+:: del testProgram.exe

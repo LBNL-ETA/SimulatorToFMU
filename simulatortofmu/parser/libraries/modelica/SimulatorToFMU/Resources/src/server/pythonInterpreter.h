@@ -24,21 +24,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "pythonObjectStructure.h"
+#include <curl/curl.h>
 
 #ifdef _MSC_VER
 #include <process.h>
 #include <windows.h>
 #endif
 
-#include <curl/curl.h>
- 
+
 struct MemoryStruct {
   char *memory;
   size_t size;
 };
 
 #define PATH_SEP "\\"
-#include "pythonObjectStructure.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,8 +59,8 @@ to not export all symbols but only the needed ones */
 #endif
 
 /*
- * This function exchanges variables 
- * with an external simulator. 
+ * This function exchanges variables
+ * with an external simulator.
  *
  * @param configFileName the configuration file
  * @param modTim the simulation time
@@ -75,26 +76,27 @@ to not export all symbols but only the needed ones */
  * @param resWri the result flag
  * @param ModelicaFormatError the pointer
  * to the inModelicaFormatError
- * @param memory a Python object               
- * @param have_memory the flag indicating a Python object          
+ * @param memory a Python object
+ * @param have_memory the flag indicating a Python object
  */
 LBNLPYTHONINTERPRETER_EXPORT void serverExchangeVariables(
 							const char * configFileName,
 							double modTim,
-							const size_t nDblWri, 
+							const size_t nDblWri,
 							const char ** strWri,
-							double * dblValWri, 
-							size_t nDblRea, 
+							double * dblValWri,
+							size_t nDblRea,
 							const char ** strRea,
-							double * dblValRea, size_t nDblParWri,
-							const char ** strParWri, 
-							double * dblValParWri, 
+							double * dblValRea,
+              size_t nDblParWri,
+							const char ** strParWri,
+							double * dblValParWri,
 							int resWri,
 							void(*inModelicaFormatError)(const char *string, ...),
-                          				void* object,
-                          				int have_memory);
+              void* object,
+              int have_memory);
 
-LBNLPYTHONINTERPRETER_EXPORT void* initPythonMemory();
+LBNLPYTHONINTERPRETER_EXPORT void* initPythonMemory(char* resScri);
 
 LBNLPYTHONINTERPRETER_EXPORT void freePythonMemory(void* object);
 
@@ -104,4 +106,3 @@ LBNLPYTHONINTERPRETER_EXPORT void freePythonMemory(void* object);
 
 
 #endif /* _PYTHONINTERPRETER_H_ */
-

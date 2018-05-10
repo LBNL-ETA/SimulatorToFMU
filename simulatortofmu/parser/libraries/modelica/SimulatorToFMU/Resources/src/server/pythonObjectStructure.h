@@ -21,6 +21,7 @@ typedef struct cPtr
   char* inNam;
   char* inVal;
   char* outNam;
+  char** tmpInVal;
   int isInitialized;
 } cPtr;
 
