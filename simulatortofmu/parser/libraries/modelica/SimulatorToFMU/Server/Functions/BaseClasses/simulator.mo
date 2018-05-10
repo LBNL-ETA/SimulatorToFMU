@@ -29,7 +29,7 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
                                     resWri,
                                     obj,
                                     passMemoryObject)
-    annotation (Library={"SimulatorToFMUServer", "libcurld"},
+    annotation (Library={"SimulatorToFMUServer", "curld"},
       LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"},
       IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
       Include="#include \"serverWrapper.c\"");

@@ -27,7 +27,7 @@ Find /i "x86" < CheckOS.txt > StringCheck.txt
 IF %ERRORLEVEL% == 0 (
   REM Set path to the directory on 32 bit machine
   SET CURLInc="Z:\thierry\proj\curl-7.59.0\include"
-  SET CURLLibs="Z:\thierry\proj\curl-7.59.0\build\Win32\VC14\DLL Debug"\libcurld.lib
+  SET CURLLibs="Z:\thierry\proj\curl-7.59.0\build\Win32\VC14\DLL Debug"\curld.lib
   CALL "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"  >nul 2>&1
     IF ERRORLEVEL 1 (
       ECHO Problem configuring the Visual Studio tools for command-line use
@@ -38,7 +38,7 @@ IF %ERRORLEVEL% == 0 (
 )ELSE (
     REM Set path to the directory on 64 bit machine
 	SET CURLInc="Z:\thierry\proj\curl-7.59.0\include"
-	SET CURLLibs="Z:\thierry\proj\curl-7.59.0\build\Win64\VC14\DLL Debug"\libcurld.lib
+	SET CURLLibs="Z:\thierry\proj\curl-7.59.0\build\Win64\VC14\DLL Debug"\curld.lib
     CALL "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64\vcvars64.bat"  >nul 2>&1
       IF ERRORLEVEL 1 (
         ECHO Problem configuring the Visual Studio tools for command-line use

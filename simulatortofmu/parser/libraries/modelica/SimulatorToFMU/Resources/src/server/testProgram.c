@@ -13,8 +13,6 @@ void ModelicaFormatError(const char* string, const char* fmt, const char* val){
 int main(int nArgs, char ** args){
 
 	/* Parameters for testing simulator interface*/
-	const char * moduleName="testSimulator";
-	const char * functionName="r1_r1PassPythonObject";
 	const char * configFileName="config.csv";
 	double time=0.0;
 
@@ -37,23 +35,22 @@ int main(int nArgs, char ** args){
     //ptr->ptr = NULL;
     //ptr->isInitialized = 0;
 
-	ptr=initPythonMemory("C:/Users/Public/Test.py");
+	ptr=initPythonMemory("C:/Users/Public/start_server.bat");
 	/*_CrtDumpMemoryLeaks(); //DEBUGGING*/
 	for(i=0; i < 10; i++){
 		printf("Calling with i for simulator = %d.\n", i);
-		pythonExchangeVariables(moduleName,
-			functionName, 
-			configFileName, 
+		serverExchangeVariables(
+			configFileName,
 			time,
-			nDblWri, 
-			strWri, 
-			dblValWri, 
-			nDblRea, 
+			nDblWri,
+			strWri,
+			dblValWri,
+			nDblRea,
 			strRea,
-			dblValRea, 
-			nDblParWri, 
-			strParWri, 
-			dblValParWri, 
+			dblValRea,
+			nDblParWri,
+			strParWri,
+			dblValParWri,
 			resWri,
 			ModelicaFormatError,
 			ptr,
@@ -63,4 +60,3 @@ int main(int nArgs, char ** args){
 
 	return 0;
 }
-
