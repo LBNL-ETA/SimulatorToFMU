@@ -14,7 +14,7 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
   input Integer nDblOut(min=0) "Number of double outputs to read from SimulatorToFMU";
   input Integer nDblPar(min=0) "Number of double parameters to send to SimulatorToFMU";
   input Boolean resWri  "Flag for enabling results writing. true: write results, false: else";
-  output Real    dblOutVal[max(1, nDblOut)] "Double output values read from SimulatorToFMU";
+  output Real   dblOutVal[max(1, nDblOut)] "Double output values read from SimulatorToFMU";
   external "C" modelicaToSimulator( conFilNam,
                                     modTim,
                                     nDblInp,
@@ -29,7 +29,7 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
                                     resWri,
                                     obj,
                                     passMemoryObject)
-    annotation (Library={"SimulatorToFMUServer", "curl"},
+    annotation (Library={"SimulatorToFMUServer", "libcurld"},
       LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"},
       IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
       Include="#include \"serverWrapper.c\"");

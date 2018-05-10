@@ -6,9 +6,11 @@ class ServerObject
     "Construct an external object that can be used to store an object"
     input String patResScri "Path to the resource script";
     output ServerObject obj;
-  external "C" obj = initPythonMemory(patResScri)
-      annotation (Library={"SimulatorToFMUServer",  "curl"},
-        LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
+    external "C" obj = initPythonMemory(patResScri)
+    annotation(IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
+        Include="#include \"initPythonMemory.c\"");
+      //annotation (Library={"SimulatorToFMUServer",  "curl"},
+      //  LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
   annotation(Documentation(info="<html>
 <p>
 The function <code>constructor</code> is a C function that is called by a Modelica simulator
@@ -33,8 +35,8 @@ First implementation.
 function destructor "Release memory"
   input ServerObject obj;
   external "C" freePythonMemory(obj)
-    annotation (Library={"SimulatorToFMUPython27",  "python27"},
-      LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
+  annotation(IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
+      Include="#include \"freePythonMemory.c\"");
 annotation(Documentation(info="<html>
 <p>
 Destructor that frees the memory of the object
