@@ -414,9 +414,8 @@ def main():
     # Make sure we have correct path delimiters
     python_scripts_path = [os.path.abspath(item)
                            for item in python_scripts_path]
-    if(platform.system().lower() == 'windows'):
-        python_scripts_path = [item.replace('\\', '\\\\')
-                               for item in python_scripts_path]
+    python_scripts_path = [fix_path_delimiters(item)
+                            for item in python_scripts_path]
 
 #     python_scripts_base = [os.path.basename(item)
 #                            for item in python_scripts_path]
@@ -1074,6 +1073,9 @@ class SimulatorToFMU(object):
         template = env.get_template('')
 
         # Call template with parameters
+        run_serv_pat=fix_path_delimiters(os.path.normpath(
+            os.path.join(os.path.dirname(self.python_scripts_path[0]),
+                         'run_server.py')))
         output_res = template.render(
             model_name=self.model_name,
             module_name=self.module_name,
@@ -1090,7 +1092,7 @@ class SimulatorToFMU(object):
             has_memory=self.has_memory,
             exec_target=self.exec_target,
             res_path=self.python_scripts_path[0],
-            run_ser=os.path.join(os.path.dirname(self.python_scripts_path[0]),'run_server.py'))
+            run_ser=run_serv_pat)
         # Write results in mo file which has the same name as the class name
         output_file = self.model_name + '.mo'
         if os.path.isfile(output_file):
@@ -1172,7 +1174,7 @@ class SimulatorToFMU(object):
         # Create command for Dymola
         if (self.export_tool == 'dymola'):
             if (not (self.export_tool_path is None)):
-                command = os.path.join(self.export_tool_path, 'dymola')
+                command = os.path.normpath(os.path.join(self.export_tool_path, 'dymola'))
             else:
                 command = 'dymola'
 
@@ -1180,19 +1182,19 @@ class SimulatorToFMU(object):
         if(self.export_tool == 'jmodelica'):
             if(platform.system().lower()=='linux'):
                 if (not (self.export_tool_path is None)):
-                    command = os.path.join(self.export_tool_path, 'jm_python.sh')
+                    command = os.path(os.path.join(self.export_tool_path, 'jm_python.sh'))
                 else:
-                    command = os.path.join('jm_python.sh')
+                    command = os.path.normpath(os.path.join('jm_python.sh'))
             elif(platform.system().lower()=='windows'):
                 if (not (self.export_tool_path is None)):
 
-                    command = os.path.join(self.export_tool_path, 'setenv.bat')
+                    command = os.path.normpath(os.path.join(self.export_tool_path, 'setenv.bat'))
                 else:
                     command = 'setenv.bat'
         # Create command for OpenModelica
         if (self.export_tool == 'openmodelica'):
             if (not (self.export_tool_path is None)):
-                command = os.path.join(self.export_tool_path, 'openmodelica')
+                command = os.path.normpath(os.path.join(self.export_tool_path, 'openmodelica'))
             else:
                 command = 'omc'
 
@@ -1264,7 +1266,7 @@ class SimulatorToFMU(object):
         os.makedirs(dir_name)
         for python_script_path in self.python_scripts_path:
             shutil.copy2(python_script_path, dir_name)
-        fnam = os.path.join(dir_name, "README.txt")
+        fnam = os.path.normpath(os.path.join(dir_name, "README.txt"))
         fh = open(fnam, "w")
         readme = 'IMPORTANT:\n\n' + \
                  'The files contains in this folder must be added to the PYTHONPATH.\n' + \
@@ -1299,25 +1301,25 @@ class SimulatorToFMU(object):
         log.info('Create the folder Simulator.binaries with binaries to be added to the system PATH.')
 
         # Path to the libraries
-        fil_path = os.path.join(
+        fil_path = os.path.normpath(os.path.join(
                         self.simulatortofmu_path,
                         'SimulatorToFMU',
                         'Resources',
-                        'Library')
+                        'Library'))
 
         if(platform.system().lower() == 'windows'):
             for arch in ['win32', 'win64']:
-                zip_path = os.path.join(dir_name, arch)
+                zip_path = os.path.normpath(os.path.join(dir_name, arch))
                 os.makedirs(zip_path)
 
                 if(self.exec_target=='python'):
                     tmp1='SimulatorToFMUPython'+self.python_vers+'.dll'
                     tmp2='python'+self.python_vers+'.dll'
                 elif(self.exec_target=='server'):
-                    tmp1='SimulatorToFMUServer.dll'
-                    tmp2='libcurl.dll'
+                    tmp1='simulatortofmuserver.dll'
+                    tmp2='curl.dll'
                 for libr in [tmp1, tmp2]:
-                    lib_path = os.path.join(fil_path, arch, libr)
+                    lib_path = os.path.normpath(os.path.join(fil_path, arch, libr))
                     if (os.path.isfile(lib_path)):
                         s = '{!s} will be copied to the binaries folder {!s}.' \
                         .format(lib_path, zip_path)
@@ -1329,17 +1331,17 @@ class SimulatorToFMU(object):
 
         if(platform.system().lower() == 'linux'):
             for arch in ['linux32', 'linux64']:
-                zip_path = os.path.join(dir_name, arch)
+                zip_path = os.path.normpath(os.path.join(dir_name, arch))
                 os.makedirs(zip_path)
                 if(self.exec_target=='python'):
                     tmp1='libSimulatorToFMUPython'+self.python_vers+'.so'
                     tmp2='libpython'+self.python_vers+'.so'
                 elif(self.exec_target=='server'):
-                    tmp1='libSimulatorToFMUServer.so'
+                    tmp1='libsimulatortofmuserver.so'
                     tmp2='libcurl.so'
 
                 for libr in [tmp1, tmp2]:
-                    lib_path = os.path.join(fil_path, arch, libr)
+                    lib_path = os.path.normpath(os.path.join(fil_path, arch, libr))
                     if (os.path.isfile(lib_path)):
                         s = '{!s} will be copied to the binaries folder {!s}.' \
                         .format(lib_path, zip_path)
@@ -1349,7 +1351,7 @@ class SimulatorToFMU(object):
                         s = '{!s} does not exist and will need to be compiled.'.format(fil_path)
                         raise ValueError(s)
 
-        fnam = os.path.join(dir_name, "README.txt")
+        fnam = os.path.normpath(os.path.join(dir_name, "README.txt"))
         fh = open(fnam, "w")
         readme = 'IMPORTANT:\n\n' + \
                  'The files contains in this folder must be added to the system PATH.\n' + \
@@ -1436,7 +1438,7 @@ class SimulatorToFMU(object):
             os.chdir(fmutmp)
 
             # Path to the temporary directory
-            fmutmp_path = os.path.join(cwd, fmutmp)
+            fmutmp_path = os.path.normpath(os.path.join(cwd, fmutmp))
 
             # Unzip folder which contains he FMU
             zip_ref = zipfile.ZipFile(fmu_name, 'r')

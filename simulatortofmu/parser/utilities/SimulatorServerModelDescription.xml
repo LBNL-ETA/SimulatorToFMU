@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SimulatorModelDescription
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  fmiVersion="2.0"
+  modelName="simulator"
+  description="Input data for a Simulator FMU"
+  generationTool="SimulatorToFMU">
+  <ModelVariables>
+    <ScalarVariable
+      name="input1"
+      description="input"
+      causality="input">
+      <Real
+        unit="V"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="y"
+      description="output"
+      causality="output">
+      <Real
+        unit="A"/>
+    </ScalarVariable>
+  </ModelVariables>
+</SimulatorModelDescription>

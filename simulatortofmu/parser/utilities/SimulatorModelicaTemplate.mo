@@ -46,8 +46,6 @@ protected
     "Path to the script to run the server";
   SimulatorToFMU.Server.Functions.BaseClasses.ServerObject obj=
   SimulatorToFMU.Server.Functions.BaseClasses.ServerObject(patResScri=patResScri);
-  parameter Boolean passMemoryObject = true
-    "Set to true if the server returns and receives an object, see User's Guide";
   {%- endif %}
   
    parameter Integer nDblPar={{parameter_variable_names|length}} 
@@ -166,6 +164,5 @@ protected
 	  dblParNam=dblParNam,
 	  dblParVal=dblParVal,
 	  resWri=_saveToFile,
-	  obj=obj,
-	  passMemoryObject=passMemoryObject); 
+	  obj=obj); 
 end {{model_name}};

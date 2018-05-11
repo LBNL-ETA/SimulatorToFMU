@@ -11,7 +11,7 @@ translateModelFMU(
   includeSource=false);
 Advanced.FMI.xmlIgnoreProtected=false;
 Advanced.AllowStringParametersForFMU=false;
-//exit();
+exit();
 
 
 
