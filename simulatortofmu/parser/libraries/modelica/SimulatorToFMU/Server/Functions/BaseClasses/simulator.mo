@@ -1,8 +1,6 @@
 within SimulatorToFMU.Server.Functions.BaseClasses;
 function simulator "Function that communicates with the SimulatorToFMU Python API"
   input ServerObject obj "Memory that holds the Python object";
-  input Boolean passMemoryObject
-    "Set to true if the Python function returns and receives an object, see User's Guide";
   input String  conFilNam "Name of the python function";
   input Real    modTim "Model time";
   input Real    dblParVal[nDblPar] "Parameter variables values to send to SimulatorToFMU";
@@ -27,9 +25,8 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
                                     dblParNam,
                                     dblParVal,
                                     resWri,
-                                    obj,
-                                    passMemoryObject)
-    annotation (Library={"SimulatorToFMUServer", "curld"},
+                                    obj)
+    annotation (Library={"curl", "simulatortofmuserver"},
       LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"},
       IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
       Include="#include \"serverWrapper.c\"");

@@ -5,8 +5,6 @@ package Examples "Collection of models that illustrate model use and test models
   model SimulatorWithpassMemoryObject
     "Test model for simulator functions with memory"
     extends Modelica.Icons.Example;
-    parameter Boolean passMemoryObject = true
-      "Set to true if the Python function returns and receives an object, see User's Guide";
     // Parameters names can be empty.
     // Inputs and outputs cannot be empty.
     parameter String emptyDblParNam[0](each start="")
@@ -32,8 +30,7 @@ package Examples "Collection of models that illustrate model use and test models
       dblParNam=emptyDblParNam,
       dblParVal=emptyDblParVal,
       resWri=false,
-      obj=obj,
-      passMemoryObject=passMemoryObject);
+      obj=obj);
       //assert(abs(28 - yR1[1]) < 1e-5, "Error in function r1_r1passMemoryObject");
     annotation (
       experiment(StopTime=1.0),

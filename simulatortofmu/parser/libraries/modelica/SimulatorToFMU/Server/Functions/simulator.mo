@@ -2,8 +2,6 @@ within SimulatorToFMU.Server.Functions;
 function simulator "Function that communicates with the SimulatorToFMU Python API"
   extends Modelica.Icons.Function;
   input BaseClasses.ServerObject obj "Memory that holds the Python object";
-  input Boolean passMemoryObject
-    "Set to true if the Server function returns and receives an object, see User's Guide";
   input String  conFilNam "Name of the python function";
   input Real    modTim "Model time";
   input Real    dblParVal[nDblPar] "Parameter variables values to send to SimulatorToFMU";
@@ -30,8 +28,7 @@ dblOutVal := BaseClasses.simulator(
       dblParNam=dblParNam,
       dblParVal=dblParVal,
       resWri=resWri,
-      obj=obj,
-      passMemoryObject=passMemoryObject);
+      obj=obj);
 annotation (Documentation(info="<html>
 <p>
 This function is a wrapper for 
