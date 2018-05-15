@@ -6,9 +6,11 @@ model Simulator "Test model for simulator functions"
   parameter String emptyDblParNam[0](each start="")
     "Empty list of parameters names";
   parameter Real emptyDblParVal[0]=zeros(0) "Empty vector of parameters values";
-  parameter String startServer=Modelica.Utilities.Files.loadResource("C:\\Users\\Public\\start_server.bat")
+  parameter String startServer=
+    Modelica.Utilities.Files.loadResource("C:\\Users\\Public\\start_server.bat")
     "Path to the main Python script";
-  parameter String runServer=Modelica.Utilities.Files.loadResource("C:\\Users\\Public\\run_server.py")
+  parameter String runServer=
+    Modelica.Utilities.Files.loadResource("C:\\Users\\Public\\run_server.py")
     "Path to the start server script";
   SimulatorToFMU.Server.Functions.BaseClasses.ServerObject obj=
   SimulatorToFMU.Server.Functions.BaseClasses.ServerObject(patResScri=startServer);
