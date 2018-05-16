@@ -343,13 +343,13 @@ void serverExchangeVariables(
 		url_str=(char*)malloc((strlen(cMemory->address)+
 			strlen(cMemory->port)+strlen(cMemory->inNam)+
 			strlen(cMemory->inVal)+strlen(cMemory->outNam)+
-			strlen(time_str)+100)*sizeof(char));
+			strlen(time_str)+ strlen(configFileName)+100)*sizeof(char));
 
 		/* Write the string to be sent */
-		sprintf(url_str, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s", "http://",
+		sprintf(url_str, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s", "http://",
 			cMemory->address, ":", cMemory->port, "/", "dostep", "/",
-			time_str, "&", cMemory->inNam, "&", cMemory->inVal, "&",
-			cMemory->outNam);
+			time_str, "&", configFileName, "&", cMemory->inNam, "&", 
+			cMemory->inVal, "&", cMemory->outNam);
 
 		/* specify URL to get */
 		curl_easy_setopt(cMemory->curl_handle, CURLOPT_URL, url_str);
@@ -411,13 +411,55 @@ void serverExchangeVariables(
 void freeServerMemory(void* object)
 {
 	if ( object != NULL ){
-		cPtr* p = (cPtr*) object;
+		char* url_str;
+		CURLcode res;
+		cPtr* p;
+
+		struct MemoryStruct chunk;
+				
+		chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
+		chunk.size = 0;    /* no data at this point */
+
+		p = (cPtr*) object;
+
+		url_str=(char*)malloc((strlen(p->address)+
+		strlen(p->port)+100)*sizeof(char));
+
+		/* Write the string to shutdown the server */
+		sprintf(url_str, "%s%s%s%s%s%s", "http://",
+		p->address, ":", p->port, "/", "shutdown");
+
+		/* specify URL to get */
+		curl_easy_setopt(p->curl_handle, CURLOPT_URL, url_str);
+
+		/* send all data to this function  */
+		curl_easy_setopt(p->curl_handle, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
+
+		/* we pass our 'chunk' struct to the callback function */
+		curl_easy_setopt(p->curl_handle, CURLOPT_WRITEDATA, (void *)&chunk);
+
+		/* get the values from the server */
+		res = curl_easy_perform(p->curl_handle);
+
+		/* check for errors */
+		if(res != CURLE_OK) {
+			fprintf(stderr, "curl_easy_perform() failed to shutdown the server: %s\n",
+				curl_easy_strerror(res));
+			printf("curl_easy_perform() failed: %s\n",
+				curl_easy_strerror(res));
+			exit(1);
+		}
+		printf("The address and the port shut down are %s and %s\n", p->address, p->port);
+		printf("Final response from the server is %s\n", chunk.memory);
+		
 		free(p->inVal);
 		free(p->outNam);
 		free(p->inNam);
 		curl_easy_cleanup(p->curl_handle);
 		curl_global_cleanup();
 		free(p);
+		free(url_str);
+		free(chunk.memory);
 	}
 }
 
