@@ -216,7 +216,7 @@ void* initServerMemory(char* resScri)
 	pid=(HANDLE)_spawnl(P_NOWAIT,  ptr->batFilPat,  ptr->batFilPat,
 		ptr->fulScriPat, NULL);
 #ifdef _MSC_VER
-	Sleep(5000);
+	Sleep(1000);
 #endif
 
 	/* Open configuration and read token */
@@ -300,6 +300,8 @@ void serverExchangeVariables(
 		char** tmpInVal;
 		char time_str[100];
 		char* url_str;
+		char* locInVal;
+		char* locInNam;
 
 		cPtr* cMemory = (cPtr*)memory;
 		const char *confFilNam [] = {configFileName};
@@ -307,13 +309,16 @@ void serverExchangeVariables(
 		chunk.size = 0;    /* no data at this point */
 
 		if (cMemory->ptr==NULL){
-			cMemory->inVal = (char*)malloc((nDblWri*500)*sizeof(char));
-			cMemory->inNam = (char*)malloc((nDblWri*500)*sizeof(char));
+			cMemory->locInNam = (char*)malloc((nDblWri*500)*sizeof(char));
+			cMemory->locInVal = (char*)malloc((nDblWri*500)*sizeof(char));
+			cMemory->inVal = (char*)malloc((nDblWri*500 + 1000)*sizeof(char));
+			cMemory->inNam = (char*)malloc((nDblWri*500 + 50)*sizeof(char));
 			cMemory->outNam = (char*)malloc((nDblRea*500)*sizeof(char));
 
 			/* Join the strings */
-			sprintf(cMemory->inNam, "%s", join_strings(strWri, nDblWri));
-			cMemory->inNam[strlen(cMemory->inNam)-1]=0;
+			sprintf(cMemory->locInNam, "%s", join_strings(strWri, nDblWri));
+			cMemory->locInNam[strlen(cMemory->locInNam)-1]=0;
+			sprintf(cMemory->inNam, "%s%s", "config_fil_path,", cMemory->locInNam);
 
 			/* Join the strings */
 			sprintf(cMemory->outNam, "%s", join_strings(strRea, nDblRea));
@@ -334,8 +339,9 @@ void serverExchangeVariables(
 		}
 
 		/* Join the strings */
-		sprintf(cMemory->inVal, "%s", join_strings(tmpInVal, nDblWri));
-		cMemory->inVal[strlen(cMemory->inVal)-1]=0;
+		sprintf(cMemory->locInVal, "%s", join_strings(tmpInVal, nDblWri));
+		cMemory->locInVal[strlen(cMemory->locInVal)-1]=0;
+		sprintf(cMemory->inVal, "%s%s%s", configFileName, ",", cMemory->locInVal);
 
 		/* Convert time in string*/
 		sprintf(time_str, "%.5f", time);
@@ -346,9 +352,9 @@ void serverExchangeVariables(
 			strlen(time_str)+ strlen(configFileName)+100)*sizeof(char));
 
 		/* Write the string to be sent */
-		sprintf(url_str, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s", "http://",
+		sprintf(url_str, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s", "http://",
 			cMemory->address, ":", cMemory->port, "/", "dostep", "/",
-			time_str, "&", configFileName, "&", cMemory->inNam, "&", 
+			time_str, "&", cMemory->inNam, "&", 
 			cMemory->inVal, "&", cMemory->outNam);
 
 		/* specify URL to get */
@@ -452,6 +458,8 @@ void freeServerMemory(void* object)
 		printf("The address and the port shut down are %s and %s\n", p->address, p->port);
 		printf("Final response from the server is %s\n", chunk.memory);
 		
+		free(p->locInVal);
+		free(p->locInNam);
 		free(p->inVal);
 		free(p->outNam);
 		free(p->inNam);

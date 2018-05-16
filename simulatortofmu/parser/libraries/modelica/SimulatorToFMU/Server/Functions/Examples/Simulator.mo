@@ -17,7 +17,7 @@ model Simulator "Test model for simulator functions"
   Real yR1[1] "Real function value";
 algorithm
   yR1 := SimulatorToFMU.Server.Functions.simulator(
-    conFilNam="config.csv",
+    conFilNam=runServer,
     modTim=time,
     nDblInp=1,
     dblInpNam={"u"},

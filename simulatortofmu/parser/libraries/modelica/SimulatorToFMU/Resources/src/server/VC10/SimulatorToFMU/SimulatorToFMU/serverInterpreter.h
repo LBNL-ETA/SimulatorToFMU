@@ -41,6 +41,8 @@ typedef struct cPtr
   char* fulScriPat;
   char* address;
   char* port;
+  char* locInVal;
+  char* locInNam;
   char* inNam;
   char* inVal;
   char* outNam;
