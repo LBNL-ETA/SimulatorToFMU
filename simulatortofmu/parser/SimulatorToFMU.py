@@ -84,9 +84,12 @@ Following requirements must be met when using SimulatorToFMU
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -pt                                                | Path to the Modelica executable compiler.                                |
 +----------------------------------------------------+--------------------------------------------------------------------------+
-| -hm                                                | Flag to indicate if simulator has memory. Default is ``true``.           |
+| -hm                                                | Flag to indicate if simulator has memory (only for Python FMU).          |
+|                                                    | Default is ``true``.                                                     |
 +----------------------------------------------------+--------------------------------------------------------------------------+
-
+| -x                                                 | Flag to indicate if the FMU is a ``Python`` or a ``server`` FMU.         |
+|                                                    | Default is ``server``.                                                   |
++----------------------------------------------------+--------------------------------------------------------------------------+
 The main functions of SimulatorToFMU are
 
  - reading, validating, and parsing the Simulator XML input file.
@@ -397,8 +400,6 @@ def main():
         mos_template_path = MOS_TEMPLATE_PATH_OPENMODELICA
         modelica_path = 'OPENMODELICALIBRARY'
 
-
-
     # Check if user is trying to export a 1.0 co-simulation FMU with
     # OpenModelica
     if (export_tool == 'openmodelica' and fmi_version ==
@@ -416,16 +417,6 @@ def main():
                            for item in resource_scripts_path]
     resource_scripts_path = [fix_path_delimiters(item)
                             for item in resource_scripts_path]
-
-#     resource_scripts_base = [os.path.basename(item)
-#                            for item in resource_scripts_path]
-#     # Check if simulator_wrapper.py is in the list of functions
-#     # Moved this check later one to use the model name as name of the scipt
-#     if not('simulator_wrapper.py' in resource_scripts_base):
-#         s = ('simulator_wrapper.py no found in the list of Python scripts={!s}').format(
-#             resource_scripts_path)
-#         log.error(s)
-#         raise ValueError(s)
 
     # Check if the path exists
     for resource_script_path in resource_scripts_path:
@@ -856,8 +847,8 @@ class SimulatorToFMU(object):
                     self.resource_scripts_path, self.module_name, self.module_name+'.py')
                 log.error(s)
                 raise ValueError(s)
-            
-        
+
+
         if(self.exec_target=='server'):
             # Specify the module name which shouldn't contain invalid characters
             if(platform.system().lower()=='windows'):
@@ -1076,7 +1067,7 @@ class SimulatorToFMU(object):
                 ' run_server.py must be located in the folder={!s}'.format(base_dir_name)
                 log.error(s)
                 raise ValueError(s)
-                  
+
         output_res = template.render(
             model_name=self.model_name,
             module_name=self.module_name,
