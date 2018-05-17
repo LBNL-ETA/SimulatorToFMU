@@ -241,9 +241,9 @@ def main():
 
     simulator_group.add_argument(
         '-s',
-        '--python-scripts-path',
+        '--resource-scripts-path',
         required=True,
-        help='Path to the Python scripts ' +
+        help='Path to the resource scripts ' +
         ' used to interface with simulator',
         type=(
             lambda s: [
@@ -410,46 +410,46 @@ def main():
         return
 
     # Get the Python script path
-    python_scripts_path = args.python_scripts_path
+    resource_scripts_path = args.resource_scripts_path
     # Make sure we have correct path delimiters
-    python_scripts_path = [os.path.abspath(item)
-                           for item in python_scripts_path]
-    python_scripts_path = [fix_path_delimiters(item)
-                            for item in python_scripts_path]
+    resource_scripts_path = [os.path.abspath(item)
+                           for item in resource_scripts_path]
+    resource_scripts_path = [fix_path_delimiters(item)
+                            for item in resource_scripts_path]
 
-#     python_scripts_base = [os.path.basename(item)
-#                            for item in python_scripts_path]
+#     resource_scripts_base = [os.path.basename(item)
+#                            for item in resource_scripts_path]
 #     # Check if simulator_wrapper.py is in the list of functions
 #     # Moved this check later one to use the model name as name of the scipt
-#     if not('simulator_wrapper.py' in python_scripts_base):
+#     if not('simulator_wrapper.py' in resource_scripts_base):
 #         s = ('simulator_wrapper.py no found in the list of Python scripts={!s}').format(
-#             python_scripts_path)
+#             resource_scripts_path)
 #         log.error(s)
 #         raise ValueError(s)
 
     # Check if the path exists
-    for python_script_path in python_scripts_path:
-        if(not os.path.exists(python_script_path)):
+    for resource_script_path in resource_scripts_path:
+        if(not os.path.exists(resource_script_path)):
             if (exec_target=='python'):
                 s = ('The Path to the Python script={!s} provided does not exist.').format(
-                python_script_path)
+                resource_script_path)
             elif(exec_target=='server'):
                 s = ('The Path to the resource script={!s} provided does not exist.').format(
-                python_script_path)
+                resource_script_path)
             log.error(s)
             raise ValueError(s)
 
     # Check if it is a Python file
     if (exec_target=='python'):
-        for python_script_path in python_scripts_path:
-            ext = os.path.splitext(python_script_path)[-1].lower()
+        for resource_script_path in resource_scripts_path:
+            ext = os.path.splitext(resource_script_path)[-1].lower()
             if (ext != '.py'):
                 s = ('The Python script={!s} provided does not have a valid extension.').format(
-                    python_script_path)
+                    resource_script_path)
                 log.error(s)
                 raise ValueError(s)
 
-        print('============Exporting scripts={!s} as Functional Mock-up Unit. API={!s}, Version={!s}, Export Tool={!s}'.format(python_scripts_path,
+        print('============Exporting scripts={!s} as Functional Mock-up Unit. API={!s}, Version={!s}, Export Tool={!s}'.format(resource_scripts_path,
                                         fmi_api, fmi_version, export_tool))
 
     # Get the xml files
@@ -507,7 +507,7 @@ def main():
                                mos_template_path,
                                XSD_FILE_PATH,
                                python_vers,
-                               python_scripts_path,
+                               resource_scripts_path,
                                fmi_version,
                                fmi_api,
                                export_tool,
@@ -700,7 +700,7 @@ class SimulatorToFMU(object):
                  mosT_path,
                  xsd_path,
                  python_vers,
-                 python_scripts_path,
+                 resource_scripts_path,
                  fmi_version,
                  fmi_api,
                  export_tool,
@@ -723,7 +723,7 @@ class SimulatorToFMU(object):
         :param mosT_path (str): Modelica script template.
         :param xsd_path (str): The path to the XML schema.
         :param python_vers (str): The python version.
-        :param python_scripts_path (str): The path to the Python
+        :param resource_scripts_path (str): The path to the Python
             scripts needed to interface the simulator.
         :param fmi_version (str): The FMI version.
         :param fmi_api (str): The FMI API.
@@ -746,7 +746,7 @@ class SimulatorToFMU(object):
         self.mosT_path = mosT_path
         self.xsd_path = xsd_path
         self.python_vers = python_vers
-        self.python_scripts_path = python_scripts_path
+        self.resource_scripts_path = resource_scripts_path
         self.fmi_version = fmi_version
         self.fmi_api = fmi_api
         self.export_tool = export_tool
@@ -848,12 +848,12 @@ class SimulatorToFMU(object):
             log.info(s)
 
             # Check if the script fort the module name is in the list of Python scripts
-            python_scripts_base = [os.path.basename(item)
-                               for item in self.python_scripts_path]
-            if not(self.module_name+'.py' in python_scripts_base):
+            resource_scripts_base = [os.path.basename(item)
+                               for item in self.resource_scripts_path]
+            if not(self.module_name+'.py' in resource_scripts_base):
                 s = (self.module_name+'.py' +' no found in the list of Python scripts={!s}.'\
                      ' The name of the model is {!s}. Hence the name of the Python wrapper script must be {!s}.').format(
-                    self.python_scripts_path, self.module_name, self.module_name+'.py')
+                    self.resource_scripts_path, self.module_name, self.module_name+'.py')
                 log.error(s)
                 raise ValueError(s)
             
@@ -869,9 +869,9 @@ class SimulatorToFMU(object):
             log.info(s)
 
             # Check if the script fort the module name is in the list of Python scripts
-            python_scripts_base = [os.path.basename(item)
-                               for item in self.python_scripts_path]
-            if not(start_server_name in python_scripts_base):
+            resource_scripts_base = [os.path.basename(item)
+                               for item in self.resource_scripts_path]
+            if not(start_server_name in resource_scripts_base):
                 s = (start_server_name +' no found in the list of Resources files={!s}.')
                 log.error(s)
                 raise ValueError(s)
@@ -1068,7 +1068,7 @@ class SimulatorToFMU(object):
 
         # Call template with parameters
         if(self.exec_target=='server'):
-            base_dir_name=os.path.dirname(self.python_scripts_path[0])
+            base_dir_name=os.path.dirname(self.resource_scripts_path[0])
             run_serv_pat=fix_path_delimiters(os.path.normpath(
                 os.path.join(base_dir_name, 'run_server.py')))
             if (not(os.path.isfile(run_serv_pat))):
@@ -1092,7 +1092,7 @@ class SimulatorToFMU(object):
             python_vers=self.python_vers,
             has_memory=self.has_memory,
             exec_target=self.exec_target,
-            res_path=self.python_scripts_path[0],
+            res_path=self.resource_scripts_path[0],
             run_ser=run_serv_pat)
         # Write results in mo file which has the same name as the class name
         output_file = self.model_name + '.mo'
@@ -1261,8 +1261,8 @@ class SimulatorToFMU(object):
             shutil.rmtree(dir_name)
         log.info('Create the folder Simulator.scripts with scripts to be added to the PYTHONPATH.')
         os.makedirs(dir_name)
-        for python_script_path in self.python_scripts_path:
-            shutil.copy2(python_script_path, dir_name)
+        for resource_script_path in self.resource_scripts_path:
+            shutil.copy2(resource_script_path, dir_name)
         fnam = os.path.normpath(os.path.join(dir_name, "README.txt"))
         fh = open(fnam, "w")
         readme = 'IMPORTANT:\n\n' + \

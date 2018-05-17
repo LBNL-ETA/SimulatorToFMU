@@ -224,7 +224,7 @@ void* initServerMemory(char* resScri, char* patConFil)
 		ptr->fulScriPat, NULL);
 
 #ifdef _MSC_VER
-	Sleep(2500);
+	Sleep(3000);
 #endif
 
 	/* Open configuration and read token */
