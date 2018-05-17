@@ -80,7 +80,6 @@ extern "C" {
 	* This function exchanges variables
 	* with an external simulator.
 	*
-	* @param configFileName the configuration file
 	* @param modTim the simulation time
 	* @param nDblWri the number of double variables to write
 	* @param strWri the string variables to write
@@ -97,7 +96,6 @@ extern "C" {
 	* @param memory a Server object
 	*/
 	LBNLSERVERINTERPRETER_EXPORT void serverExchangeVariables(
-		const char * configFileName,
 		double modTim,
 		const size_t nDblWri,
 		const char ** strWri,

@@ -5,7 +5,6 @@
 * used to exchange variables with an
 * external simulator.
 *
-* @param configFileName the configuration file
 * @param modTim the simulation time
 * @param nDblWri the number of double variables to write
 * @param strWri the string variables to write
@@ -21,7 +20,7 @@
 */
 #include <ModelicaUtilities.h>
 
-void modelicaToSimulator(const char * configFileName,
+void modelicaToSimulator(
 	double time,
 	const size_t nDblWri,
 	const char ** strWri,
@@ -36,7 +35,6 @@ void modelicaToSimulator(const char * configFileName,
 	void* object)
 {
 	serverExchangeVariables(
-		configFileName,
 		time,
 		nDblWri,
 		strWri,

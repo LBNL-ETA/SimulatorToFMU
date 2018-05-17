@@ -133,8 +133,10 @@ char* join_strings(char *strings[], int count)
 *
 * @param resScri Path to a script which is in
 * the resource folder of the FMU.
+* @param patConFil Path to configuration file
+*
 */
-void* initServerMemory(char* resScri)
+void* initServerMemory(char* resScri, char* patConFil)
 {
 #ifdef _MSC_VER
 	HANDLE  pid;
@@ -148,7 +150,6 @@ void* initServerMemory(char* resScri)
 	int retVal;
 	char* conFil="server_config.txt";
 	char* batFil="start_server.bat";
-	/* char tmp3[1000]; */
 	char* tmpScri;
 	char* token;
 	FILE* fil;
@@ -157,6 +158,12 @@ void* initServerMemory(char* resScri)
 	int nCoun=0;
 	int i;
 	struct stat sb;
+	char* url_str;
+	CURLcode res;
+	struct MemoryStruct chunk;
+	chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
+	chunk.size = 0;    /* no data at this point */
+	
 
 	/* Split the path to extract the directory name*/
 #ifdef _MSC_VER
@@ -215,8 +222,9 @@ void* initServerMemory(char* resScri)
 	/* Start the server in  a non-blocking mode */
 	pid=(HANDLE)_spawnl(P_NOWAIT,  ptr->batFilPat,  ptr->batFilPat,
 		ptr->fulScriPat, NULL);
+
 #ifdef _MSC_VER
-	Sleep(2000);
+	Sleep(2500);
 #endif
 
 	/* Open configuration and read token */
@@ -249,6 +257,43 @@ void* initServerMemory(char* resScri)
 		token = strtok(NULL, ":");
 	}
 
+	url_str=(char*)malloc((strlen(ptr->address)+
+		strlen(ptr->port)+strlen(patConFil)+100)*sizeof(char));
+
+	/* Write the string to initialize server */
+	sprintf(url_str, "%s%s%s%s%s%s%s%s%s%s", "http://",
+	ptr->address, ":", ptr->port, "/", "initialize", "/", 
+	"_configurationFileName", "&", patConFil);
+	
+	/* Initialize global session */
+	curl_global_init(CURL_GLOBAL_ALL);
+
+	/* init the curl session */
+	ptr->curl_handle = curl_easy_init();
+
+	/* specify URL to get */
+	curl_easy_setopt(ptr->curl_handle, CURLOPT_URL, url_str);
+
+	/* send all data to this function  */
+	curl_easy_setopt(ptr->curl_handle, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
+
+	/* we pass our 'chunk' struct to the callback function */
+	curl_easy_setopt(ptr->curl_handle, CURLOPT_WRITEDATA, (void *)&chunk);
+
+	/* send the values from the server */
+	res = curl_easy_perform(ptr->curl_handle);
+
+	/* check for errors */
+	if(res != CURLE_OK) {
+		fprintf(stderr, "curl_easy_perform() failed to initialize the server: %s\n",
+			curl_easy_strerror(res));
+		printf("curl_easy_perform() failed: %s\n",
+			curl_easy_strerror(res));
+		exit(1);
+	}
+
+	free(url_str);
+	free(chunk.memory);
 	ptr->ptr = NULL;
 	ptr->isInitialized = 0;
 	free(ptr->conFilPat);
@@ -278,7 +323,6 @@ void* initServerMemory(char* resScri)
 * @param memory a Server object
 */
 void serverExchangeVariables(
-	const char * configFileName,
 	double modTim,
 	const size_t nDblWri,
 	const char ** strWri,
@@ -300,38 +344,27 @@ void serverExchangeVariables(
 		char** tmpInVal;
 		char time_str[100];
 		char* url_str;
-		char* locInVal;
-		char* locInNam;
 
 		cPtr* cMemory = (cPtr*)memory;
-		const char *confFilNam [] = {configFileName};
 		chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
 		chunk.size = 0;    /* no data at this point */
 
 		if (cMemory->ptr==NULL){
-			cMemory->locInNam = (char*)malloc((nDblWri*500)*sizeof(char));
-			cMemory->locInVal = (char*)malloc((nDblWri*500)*sizeof(char));
-			cMemory->inVal = (char*)malloc((nDblWri*500 + 1000)*sizeof(char));
-			cMemory->inNam = (char*)malloc((nDblWri*500 + 50)*sizeof(char));
+			cMemory->inVal = (char*)malloc((nDblWri*500)*sizeof(char));
+			cMemory->inNam = (char*)malloc((nDblWri*500)*sizeof(char));
 			cMemory->outNam = (char*)malloc((nDblRea*500)*sizeof(char));
 
 			/* Join the strings */
-			sprintf(cMemory->locInNam, "%s", join_strings(strWri, nDblWri));
-			cMemory->locInNam[strlen(cMemory->locInNam)-1]=0;
-			sprintf(cMemory->inNam, "%s%s", "config_fil_path,", cMemory->locInNam);
+			sprintf(cMemory->inNam, "%s", join_strings(strWri, nDblWri));
+			cMemory->inNam[strlen(cMemory->inNam)-1]=0;
 
 			/* Join the strings */
 			sprintf(cMemory->outNam, "%s", join_strings(strRea, nDblRea));
 			cMemory->outNam[strlen(cMemory->outNam)-1]=0;
-
-			/* Initialize global session */
-			curl_global_init(CURL_GLOBAL_ALL);
-
-			/* init the curl session */
-			cMemory->curl_handle = curl_easy_init();
 		}
 
-		/* Convert the doubles values into doubles strings and then convert the string into a single string*/
+		/* Convert the doubles values into doubles strings and 
+		   then convert the string into a single string */
 		tmpInVal = (char**)malloc(nDblWri*sizeof(char*));
 		for (i=0; i<nDblWri; i++){
 			tmpInVal[i] = (char*)malloc(100*sizeof(char));
@@ -339,9 +372,8 @@ void serverExchangeVariables(
 		}
 
 		/* Join the strings */
-		sprintf(cMemory->locInVal, "%s", join_strings(tmpInVal, nDblWri));
-		cMemory->locInVal[strlen(cMemory->locInVal)-1]=0;
-		sprintf(cMemory->inVal, "%s%s%s", configFileName, ",", cMemory->locInVal);
+		sprintf(cMemory->inVal, "%s", join_strings(tmpInVal, nDblWri));
+		cMemory->inVal[strlen(cMemory->inVal)-1]=0;
 
 		/* Convert time in string*/
 		sprintf(time_str, "%.5f", time);
@@ -349,7 +381,7 @@ void serverExchangeVariables(
 		url_str=(char*)malloc((strlen(cMemory->address)+
 			strlen(cMemory->port)+strlen(cMemory->inNam)+
 			strlen(cMemory->inVal)+strlen(cMemory->outNam)+
-			strlen(time_str)+ strlen(configFileName)+100)*sizeof(char));
+			strlen(time_str)+100)*sizeof(char));
 
 		/* Write the string to be sent */
 		sprintf(url_str, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s", "http://",
@@ -367,7 +399,7 @@ void serverExchangeVariables(
 		curl_easy_setopt(cMemory->curl_handle, CURLOPT_WRITEDATA, (void *)&chunk);
 
 		/* some servers don't like requests that are made without a user-agent
-		* field, so we provide one */
+		 * field, so we provide one */
 		/* curl_easy_setopt(cMemory->curl_handle, CURLOPT_USERAGENT, "libcurl-agent/1.0"); */
 
 		/* get the values from the server */
@@ -458,8 +490,6 @@ void freeServerMemory(void* object)
 		printf("The address and the port shut down are %s and %s.\n", p->address, p->port);
 		printf("Final response from the server is %s\n", chunk.memory);
 		
-		free(p->locInVal);
-		free(p->locInNam);
 		free(p->inVal);
 		free(p->outNam);
 		free(p->inNam);

@@ -5,8 +5,9 @@ class ServerObject
   function constructor
     "Construct an external object that can be used to store an object"
     input String patResScri "Path to the resource script";
+    input String patConFil "Path to the configuration file";
     output ServerObject obj;
-    external "C" obj = initServerMemory(patResScri)
+    external "C" obj = initServerMemory(patResScri, patConFil)
       annotation(Library={"curl", "simulatortofmuserver"},
         LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
     //annotation (IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",

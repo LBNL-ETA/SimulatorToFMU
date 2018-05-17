@@ -430,7 +430,11 @@ def main():
     # Check if the path exists
     for python_script_path in python_scripts_path:
         if(not os.path.exists(python_script_path)):
-            s = ('The Path to the Python script={!s} provided does not exist.').format(
+            if (exec_target=='python'):
+                s = ('The Path to the Python script={!s} provided does not exist.').format(
+                python_script_path)
+            elif(exec_target=='server'):
+                s = ('The Path to the resource script={!s} provided does not exist.').format(
                 python_script_path)
             log.error(s)
             raise ValueError(s)
@@ -445,8 +449,8 @@ def main():
                 log.error(s)
                 raise ValueError(s)
 
-    print('============Exporting scripts={!s} as Functional Mock-up Unit. API={!s}, Version={!s}, Export Tool={!s}'.format(python_scripts_path,
-                                    fmi_api, fmi_version, export_tool))
+        print('============Exporting scripts={!s} as Functional Mock-up Unit. API={!s}, Version={!s}, Export Tool={!s}'.format(python_scripts_path,
+                                        fmi_api, fmi_version, export_tool))
 
     # Get the xml files
     io_file_path = args.io_file_path
@@ -515,53 +519,26 @@ def main():
                                exec_target)
 
     start = datetime.now()
-    ret_val = Simulator.print_mo()
-    if(ret_val != 0):
-        s = 'Could not print the Simulator Modelica model. Error in print_mo().'
-        parser.print_help()
-        log.error(s)
-        raise ValueError(s)
+    log.info('Print Modelica model')
+    Simulator.print_mo()
 
-    ret_val = -1
-    ret_val = Simulator.generate_fmu()
-    if(ret_val != 0):
-        s = 'Could not generate the Simulator FMU. Error in generate_fmu().'
-        parser.print_help()
-        log.error(s)
-        raise ValueError(s)
+    log.info('Generate FMU')
+    Simulator.generate_fmu()
 
-    ret_val = -1
-    ret_val = Simulator.create_scripts_folder()
-    if(ret_val != 0):
-        s = 'Could not create the Python scripts folder. Error in create_scripts_folder().'
-        parser.print_help()
-        log.error(s)
-        raise ValueError(s)
 
-    ret_val = -1
-    ret_val = Simulator.create_binaries_folder()
-    if(ret_val != 0):
-        s = 'Could not create the binaries folder. Error in create_binaries_folder().'
-        parser.print_help()
-        log.error(s)
-        raise ValueError(s)
+    log.info('Create scripts folder')
+    Simulator.create_scripts_folder()
 
-    ret_val = -1
-    ret_val = Simulator.clean_temporary()
-    if(ret_val != 0):
-        s = 'Could not clean temporary files. Error in clean_temporary().'
-        parser.print_help()
-        log.error(s)
-        raise ValueError(s)
+    log.info('Create binaries folder')
+    Simulator.create_binaries_folder()
+
+    log.info('Clean temporary files')
+    Simulator.clean_temporary()
 
     # Rewrite FMUs for FMUs with version higher than 1.0
-    ret_val = -1
-    ret_val = Simulator.rewrite_fmu()
-    if(ret_val != 0):
-        s = 'Could not rewrite Simulator FMU. Error in rewrite_fmu().'
-        parser.print_help()
-        log.error(s)
-        raise ValueError(s)
+    log.info('Rewrite FMU')
+    Simulator.rewrite_fmu()
+
     end = datetime.now()
 
     log.info('Export Simulator as an FMU in {!s} seconds.'.format(
@@ -879,6 +856,25 @@ class SimulatorToFMU(object):
                     self.python_scripts_path, self.module_name, self.module_name+'.py')
                 log.error(s)
                 raise ValueError(s)
+            
+        
+        if(self.exec_target=='server'):
+            # Specify the module name which shouldn't contain invalid characters
+            if(platform.system().lower()=='windows'):
+                start_server_name='start_server.bat'
+            elif(platform.system().lower()=='linux'):
+                raise ValueError("To be implemented")
+            s = ('Declare the server module name as {!s}.').format(
+                start_server_name)
+            log.info(s)
+
+            # Check if the script fort the module name is in the list of Python scripts
+            python_scripts_base = [os.path.basename(item)
+                               for item in self.python_scripts_path]
+            if not(start_server_name in python_scripts_base):
+                s = (start_server_name +' no found in the list of Resources files={!s}.')
+                log.error(s)
+                raise ValueError(s)
 
         # Iterate through the XML file and get the ModelVariables.
         input_variable_names = []
@@ -1054,8 +1050,6 @@ class SimulatorToFMU(object):
         model description file. This is used to avoid
         name conflicts when generating multiple Simulator models.
 
-        :return: 0 if success.
-
         """
 
         self.xml_validator()
@@ -1073,9 +1067,16 @@ class SimulatorToFMU(object):
         template = env.get_template('')
 
         # Call template with parameters
-        run_serv_pat=fix_path_delimiters(os.path.normpath(
-            os.path.join(os.path.dirname(self.python_scripts_path[0]),
-                         'run_server.py')))
+        if(self.exec_target=='server'):
+            base_dir_name=os.path.dirname(self.python_scripts_path[0])
+            run_serv_pat=fix_path_delimiters(os.path.normpath(
+                os.path.join(base_dir_name, 'run_server.py')))
+            if (not(os.path.isfile(run_serv_pat))):
+                s = 'run_server.py is not located in the same folder as start_server.bat. '
+                ' run_server.py must be located in the folder={!s}'.format(base_dir_name)
+                log.error(s)
+                raise ValueError(s)
+                  
         output_res = template.render(
             model_name=self.model_name,
             module_name=self.module_name,
@@ -1110,7 +1111,6 @@ class SimulatorToFMU(object):
         s = ('The Modelica model {!s} of {!s} is in {!s}.').format(
             output_file, self.model_name, os.getcwd())
         log.info(s)
-        return 0
 
     def generate_fmu(self):
         """
@@ -1124,7 +1124,6 @@ class SimulatorToFMU(object):
         as Dymola does not support the export of FMUs which
         has the needsExecutionTool set to true.
 
-        :return: 0 if success.
 
         """
 
@@ -1245,7 +1244,6 @@ class SimulatorToFMU(object):
         s = 'The FMU {!s} is in {!s}.'.format(fmu_name, os.getcwd())
         log.info(s)
 
-        return 0
 
     def create_scripts_folder(self):
 
@@ -1254,7 +1252,6 @@ class SimulatorToFMU(object):
         added to the PYTHONPATH of the target machine where
         the FMU will be run.
 
-        :return: 0 if success.
 
         """
 
@@ -1280,8 +1277,6 @@ class SimulatorToFMU(object):
         # Delete the folder created
         shutil.rmtree(dir_name)
 
-        return 0
-
 
     def create_binaries_folder(self):
 
@@ -1290,7 +1285,6 @@ class SimulatorToFMU(object):
         added to the system PATH of the target machine where
         the FMU will be run.
 
-        :return: 0 if success.
 
         """
 
@@ -1366,13 +1360,10 @@ class SimulatorToFMU(object):
         # Delete the folder created
         shutil.rmtree(dir_name)
 
-        return 0
 
     def clean_temporary(self):
         """
         Clean temporary generated files.
-
-        :return: 0 if success.
 
         """
         temporary = ['buildlog.txt', 'dsin.txt', 'dslog.txt', 'dymosim',
@@ -1396,7 +1387,6 @@ class SimulatorToFMU(object):
             filelist = glob.glob(ext)
             for f in filelist:
                 os.remove(f)
-        return 0
 
     def rewrite_fmu(self):
         """
@@ -1408,8 +1398,6 @@ class SimulatorToFMU(object):
         and Dymola on Linux machines so the FMU can run on the deloyed paltforms.
         The function completes the process by re-zipping the FMU.
         The new FMU contains the modified XML file as well as the binaries.
-
-        :return: 0 if success.
 
 
         """
@@ -1481,9 +1469,6 @@ class SimulatorToFMU(object):
             log.info(s)
             s = 'The FMU {!s} is in {!s}.'.format(fmu_name, os.getcwd())
             log.info(s)
-
-            return 0
-        return 0
 
 
 if __name__ == '__main__':

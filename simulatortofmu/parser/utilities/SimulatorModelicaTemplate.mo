@@ -45,7 +45,8 @@ protected
    parameter String runServer = Modelica.Utilities.Files.loadResource("{{run_ser}}")
     "Path to the script to run the server";
   SimulatorToFMU.Server.Functions.BaseClasses.ServerObject obj=
-  SimulatorToFMU.Server.Functions.BaseClasses.ServerObject(patResScri=patResScri);
+  SimulatorToFMU.Server.Functions.BaseClasses.ServerObject(patResScri=patResScri,
+    patConFil=_configurationFileName);
   {%- endif %}
   
    parameter Integer nDblPar={{parameter_variable_names|length}} 
@@ -150,10 +151,10 @@ protected
 	yR = SimulatorToFMU.Python{{python_vers}}.Functions.simulator(
 	  moduleName=moduleName,
 	  functionName=functionName,
+	  conFilNam=_configurationFileName,
 	{%- elif exec_target=="server" %}
 	yR = SimulatorToFMU.Server.Functions.simulator(
 	{%- endif %}
-	  conFilNam=_configurationFileName,
 	  modTim=time,
 	  nDblInp=nDblInp,
 	  dblInpNam=dblInpNam,

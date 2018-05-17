@@ -1,7 +1,6 @@
 within SimulatorToFMU.Server.Functions.BaseClasses;
 function simulator "Function that communicates with the SimulatorToFMU Python API"
   input ServerObject obj "Memory that holds the Python object";
-  input String  conFilNam "Name of the python function";
   input Real    modTim "Model time";
   input Real    dblParVal[nDblPar] "Parameter variables values to send to SimulatorToFMU";
   input Real    dblInpVal[max(1, nDblInp)] "Input variables values to be sent to SimulatorToFMU";
@@ -13,8 +12,7 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
   input Integer nDblPar(min=0) "Number of double parameters to send to SimulatorToFMU";
   input Boolean resWri  "Flag for enabling results writing. true: write results, false: else";
   output Real   dblOutVal[max(1, nDblOut)] "Double output values read from SimulatorToFMU";
-  external "C" modelicaToSimulator( conFilNam,
-                                    modTim,
+  external "C" modelicaToSimulator( modTim,
                                     nDblInp,
                                     dblInpNam,
                                     dblInpVal,
