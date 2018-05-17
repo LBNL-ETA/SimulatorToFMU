@@ -216,7 +216,7 @@ void* initServerMemory(char* resScri)
 	pid=(HANDLE)_spawnl(P_NOWAIT,  ptr->batFilPat,  ptr->batFilPat,
 		ptr->fulScriPat, NULL);
 #ifdef _MSC_VER
-	Sleep(1000);
+	Sleep(2000);
 #endif
 
 	/* Open configuration and read token */
@@ -455,7 +455,7 @@ void freeServerMemory(void* object)
 				curl_easy_strerror(res));
 			exit(1);
 		}
-		printf("The address and the port shut down are %s and %s\n", p->address, p->port);
+		printf("The address and the port shut down are %s and %s.\n", p->address, p->port);
 		printf("Final response from the server is %s\n", chunk.memory);
 		
 		free(p->locInVal);
