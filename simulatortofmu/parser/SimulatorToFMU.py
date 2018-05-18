@@ -868,14 +868,16 @@ class SimulatorToFMU(object):
                 raise ValueError(s)
 
         # Iterate through the XML file and get the ModelVariables.
-        input_variable_names = []
-        modelica_input_variable_names = []
+        real_input_variable_names = []
+        modelica_real_input_variable_names = []
         # modelicaInputVariableNames = []
-        output_variable_names = []
-        modelica_output_variable_names = []
+        real_output_variable_names = []
+        modelica_real_output_variable_names = []
         parameter_variable_values = []
-        parameter_variable_names = []
-        modelica_parameter_variable_names = []
+        real_parameter_variable_names = []
+        modelica_real_parameter_variable_names = []
+        string_parameter_variable_names = []
+        modelica_string_parameter_variable_names = []
         # Parameters used to write annotations.
         inpY1 = 88
         inpY2 = 110
@@ -888,22 +890,62 @@ class SimulatorToFMU(object):
         for child in root.iter('ModelVariables'):
             for element in child:
                 scalar_variable = {}
+                
                 # Iterate through ScalarVariables and get attributes
-                (name, description, causality) = element.attrib.get('name'), \
+                (name, description, causality, vartype, unit, start) = \
+                    element.attrib.get('name'), \
                     element.attrib.get('description'), \
-                    element.attrib.get('causality').lower()
+                    element.attrib.get('causality'),\
+                    element.attrib.get('type'),\
+                    element.attrib.get('unit'),\
+                    element.attrib.get('start')
+                
+                if vartype is None:
+                    s='Variable type of variable={!s} is None. This is not allowed. Variable '
+                    'type must be of type Real or String'.format(name)
+                    raise ValueError(s)
+                
+                if causality is None:
+                    s='Causality of variable={!s} is None. This is not allowed. Variable '
+                    'causality must be of input, output, or parameter'.format(name)
+                    raise ValueError(s)
+                
+                if (not(vartype in ['Real', 'String'])):
+                    s = 'Variable type of variable={!s} must be of type Real or String '
+                    'The variable type is currently set to {!s}'.format(name, vartype)
+                    raise ValueError(s)
+                
+                if (not(causality in ['input', 'output', 'parameter'])):
+                    s = 'Causality of variable={!s} must be of type input, output, or parameter '
+                    'The causality is currently set to {!s}'.format(name, causality)
+                    raise ValueError(s)
+                
+                # Set a default unit for variables other than String 
+                if unit is None:
+                    unit="1" 
+
                 # Iterate through children of ScalarVariables and get
                 # attributes
-                if (causality == 'input'):
-                    input_variable_names.append(name)
-                    log.info('Invalid characters will be removed from the '
-                             'input variable name {!s}.'.format(name))
-                    new_name = sanitize_name(name)
-                    log.info(
-                        'The new input variable name is {!s}.'.format(new_name))
-                    modelica_input_variable_names.append(new_name)
-                    scalar_variable['name'] = new_name
-
+                log.info('Invalid characters will be removed from the '
+                        'variable name {!s}.'.format(name))
+                new_name = sanitize_name(name)
+                log.info('The new variable name is {!s}.'.format(new_name))
+                scalar_variable['name'] = new_name
+                scalar_variable['vartype'] = vartype
+                scalar_variable['causality'] = causality
+                scalar_variable['unit'] = unit  
+                if not (description is None):
+                    scalar_variable['description'] = description
+                
+                if not (start is None):
+                    scalar_variable['start'] = start   
+                
+                if (causality == 'input' and vartype=='Real'):
+                    if start is None:
+                        start = 0.0
+                    scalar_variable['start'] = start 
+                    real_input_variable_names.append(name)
+                    modelica_real_input_variable_names.append(new_name)
                     inpY1 = inpY1 - indel
                     inpY2 = inpY2 - indel
                     scalar_variable['annotation'] = (' annotation'
@@ -914,16 +956,9 @@ class SimulatorToFMU(object):
                                                      '{-100,' + str(inpY2)
                                                      + '}})))')
 
-                if (causality == 'output'):
-                    output_variable_names.append(name)
-                    log.info('Invalid characters will be removed from the '
-                             'output variable name {!s}.'.format(name))
-                    new_name = sanitize_name(name)
-                    log.info(
-                        'The new output variable name is {!s}.'.format(new_name))
-                    modelica_output_variable_names.append(new_name)
-                    scalar_variable['name'] = new_name
-
+                if (causality == 'output' and vartype=='Real'):
+                    real_output_variable_names.append(name)
+                    modelica_real_output_variable_names.append(new_name)
                     outY1 = outY1 - outdel
                     outY2 = outY2 - outdel
                     scalar_variable['annotation'] = (' annotation'
@@ -934,75 +969,35 @@ class SimulatorToFMU(object):
                                                      '{120,' + str(outY2)
                                                      + '}})))')
 
-                if (causality == 'parameter'):
-                    parameter_variable_names.append(name)
-                    s = ('Invalid characters will be removed from the '
-                         'parameter variable name={!s}.').format(name)
-                    log.info(s)
-                    new_name = sanitize_name(name)
-                    s = ('The new parameter variable name is {!s}.').format(
-                        new_name)
-                    log.info(s)
-                    modelica_parameter_variable_names.append(new_name)
-                    scalar_variable['name'] = new_name
-
-                for subelement in element:
-                    vartype = subelement.tag
-                    vartype_low = vartype.lower()
-                    # Modelica types are case sensitive.
-                    # This code makes sure that we get correct
-                    # Modelica types if the user mistypes them.
-                    if (vartype_low == 'real'):
-                        # Make sure that we have
-                        # a valid Modelica type.
-                        vartype = 'Real'
-                        unit = subelement.attrib.get('unit')
-                        start = subelement.attrib.get('start')
-
-                    if ((start is None) and ((causality == 'input')
-                                             or causality == 'parameter')):
-                        # Set the start value of input and parameter to zero.
-                        s = (
-                            'Start value of variable {!s} with causality {!s} is not defined.' +
-                            'The start value will be set to 0.0 by default.').format(
-                            name,
-                            causality)
-                        log.warning(s)
+                if (causality == 'parameter' and vartype=='Real'):
+                    if start is None:
                         start = 0.0
-                    elif not(start is None):
-                        start = float(start)
-                    # Create a dictionary
-                    # scalar_variable['name'] = name
-                    if not (description is None):
-                        scalar_variable['description'] = description
-                    # If there is no description set this to
-                    # be an empty string.
-                    else:
-                        scalar_variable['description'] = ''
-                    scalar_variable['causality'] = causality
+                    scalar_variable['start'] = start 
+                    real_parameter_variable_names.append(name)
+                    modelica_real_parameter_variable_names.append(new_name)
+                    
+                if (causality == 'parameter' and vartype=='String'):
+                    if start is None:
+                        start="dummy.txt"
+                    scalar_variable['start'] = start 
+                    string_parameter_variable_names.append(name)
+                    modelica_string_parameter_variable_names.append(new_name)
 
-                scalar_variable['vartype'] = vartype
-                # Check if unit is defined
-                if(unit is None):
-                    unit = "1"
-                scalar_variable['unit'] = unit
-                # Check if start is defined
-                if not (start is None):
-                    scalar_variable['start'] = start
                 scalar_variables.append(scalar_variable)
             # perform some checks on variables to avoid name clash
             # before returning the variables to Modelica
             log.info(
                 'Check for duplicates in input, output and parameter variable names.')
-            for i in [modelica_input_variable_names,
-                      modelica_output_variable_names,
-                      modelica_parameter_variable_names]:
+            for i in [modelica_real_input_variable_names,
+                      modelica_real_output_variable_names,
+                      modelica_real_parameter_variable_names,
+                      modelica_string_parameter_variable_names]:
                 check_duplicates(i)
 
             for elm in ['_configurationFileName', '_saveToFile', 'time']:
-                for nam in [modelica_input_variable_names,
-                      modelica_output_variable_names,
-                      modelica_parameter_variable_names]:
+                for nam in [modelica_real_input_variable_names,
+                      modelica_real_output_variable_names,
+                      modelica_real_parameter_variable_names]:
                     if elm in nam:
                         s = 'Reserved name={!s} is in the list '\
                             'of input/output/parameters variables={!s}. '\
@@ -1010,13 +1005,13 @@ class SimulatorToFMU(object):
                         log.error(s)
                         raise ValueError(s)
 
-            if(len(modelica_input_variable_names) < 1):
+            if(len(modelica_real_input_variable_names) < 1):
                 s = 'The XML input file={!s} does not contain any input variable. '\
                 'At least, one input variable needs to be defined'.format(self.xml_path)
                 log.error(s)
                 raise ValueError(s)
 
-            if(len(modelica_output_variable_names) < 1):
+            if(len(modelica_real_output_variable_names) < 1):
                 s = 'The XML input file={!s} does not contain any output variable. '\
                 'At least, one output variable needs to be defined'.format(self.xml_path)
                 log.error(s)
@@ -1024,11 +1019,14 @@ class SimulatorToFMU(object):
 
             s = 'Parsing of {!s} was successfull.'.format(self.xml_path)
             log.info(s)
-            return scalar_variables, input_variable_names, \
-                output_variable_names, parameter_variable_names, \
-                parameter_variable_values, modelica_input_variable_names, \
-                modelica_output_variable_names, \
-                modelica_parameter_variable_names
+            print("ScalarVariables={!s}".format(scalar_variables))
+            return scalar_variables, real_input_variable_names, \
+                real_output_variable_names, real_parameter_variable_names, \
+                string_parameter_variable_names,\
+                modelica_real_input_variable_names, \
+                modelica_real_output_variable_names, \
+                modelica_real_parameter_variable_names,\
+                modelica_string_parameter_variable_names
 
     def print_mo(self):
         """
@@ -1043,14 +1041,15 @@ class SimulatorToFMU(object):
 
         """
 
-        self.xml_validator()
-        scalar_variables, input_variable_names, \
-            output_variable_names, \
-            parameter_variable_names, \
-            parameter_variable_values, \
-            modelica_input_variable_names, \
-            modelica_output_variable_names, \
-            modelica_parameter_variable_names \
+        #self.xml_validator()
+        scalar_variables, real_input_variable_names, \
+            real_output_variable_names, \
+            real_parameter_variable_names, \
+            string_parameter_variable_names, \
+            modelica_real_input_variable_names, \
+            modelica_real_output_variable_names, \
+            modelica_real_parameter_variable_names, \
+            modelica_string_parameter_variable_names\
             = self.xml_parser()
 
         loader = jja2.FileSystemLoader(self.moT_path)
@@ -1068,17 +1067,19 @@ class SimulatorToFMU(object):
                 log.error(s)
                 raise ValueError(s)
 
+        print ("String parameter={!s}".format(string_parameter_variable_names))
         output_res = template.render(
             model_name=self.model_name,
             module_name=self.module_name,
             scalar_variables=scalar_variables,
-            input_variable_names=input_variable_names,
-            output_variable_names=output_variable_names,
-            parameter_variable_names=parameter_variable_names,
-            parameter_variable_values=parameter_variable_values,
-            modelica_input_variable_names=modelica_input_variable_names,
-            modelica_output_variable_names=modelica_output_variable_names,
-            modelica_parameter_variable_names=modelica_parameter_variable_names,
+            real_input_variable_names=real_input_variable_names,
+            real_output_variable_names=real_output_variable_names,
+            real_parameter_variable_names=real_parameter_variable_names,
+            string_parameter_variable_names = string_parameter_variable_names,
+            modelica_real_input_variable_names=modelica_real_input_variable_names,
+            modelica_real_output_variable_names=modelica_real_output_variable_names,
+            modelica_real_parameter_variable_names=modelica_real_parameter_variable_names,
+            modelica_string_parameter_variable_names=modelica_string_parameter_variable_names,
             con_path=self.con_path,
             python_vers=self.python_vers,
             has_memory=self.has_memory,
