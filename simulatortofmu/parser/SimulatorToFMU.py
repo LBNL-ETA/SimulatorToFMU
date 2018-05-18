@@ -331,15 +331,16 @@ def main():
     # Check export tool
     export_tool = args.export_tool
     if (platform.system().lower() == 'linux' and export_tool == 'openmodelica'):
-        log.info(
-            'SimulatorToFMU is only supported on Windows when using OpenModelica as the Modelica compiler.')
+        log.info('SimulatorToFMU is only supported on Windows when'\
+        ' using OpenModelica as the Modelica compiler.')
         return
 
     # Get export tool Path
     export_tool_path = args.export_tool_path
     if export_tool_path is None:
         s = 'Path to the installation folder of tool={!s} was not specified.'\
-        ' Make sure that the tool is on the system path otherwise compilation will fail.'.format(export_tool)
+        ' Make sure that the tool is on the system path otherwise'\
+        ' compilation will fail.'.format(export_tool)
         log.warning(s)
     else:
         export_tool_path = fix_path_delimiters(export_tool_path)
@@ -368,7 +369,8 @@ def main():
 
     # Check if the fmi api is valid
     if not (fmi_api.lower() in ['me', 'cs']):
-        s = 'This version only supports FMI model exchange(me) or co-simulation (cs) API.'
+        s = 'This version only supports FMI model exchange(me)'\
+            ' or co-simulation (cs) API.'
         log.error(s)
         raise ValueError(s)
 
@@ -378,7 +380,8 @@ def main():
 
     # Check if export tool is valid
     if not (export_tool.lower() in ['dymola', 'jmodelica', 'openmodelica']):
-        s = 'Supported export tools are Dymola (dymola), Jmodelica (jmodelica) and OpenModelica(openmodelica).'
+        s = 'Supported export tools are Dymola (dymola), Jmodelica (jmodelica)'\
+            ' and OpenModelica(openmodelica).'
         log.error(s)
         raise ValueError(s)
 
@@ -422,10 +425,12 @@ def main():
     for resource_script_path in resource_scripts_path:
         if(not os.path.exists(resource_script_path)):
             if (exec_target=='python'):
-                s = ('The Path to the Python script={!s} provided does not exist.').format(
+                s = ('The Path to the Python script={!s} provided'\
+                    ' does not exist.').format(
                 resource_script_path)
             elif(exec_target=='server'):
-                s = ('The Path to the resource script={!s} provided does not exist.').format(
+                s = ('The Path to the resource script={!s} provided'\
+                    ' does not exist.').format(
                 resource_script_path)
             log.error(s)
             raise ValueError(s)
@@ -435,18 +440,21 @@ def main():
         for resource_script_path in resource_scripts_path:
             ext = os.path.splitext(resource_script_path)[-1].lower()
             if (ext != '.py'):
-                s = ('The Python script={!s} provided does not have a valid extension.').format(
+                s = ('The Python script={!s} provided does not have '\
+                    ' a valid extension.').format(
                     resource_script_path)
                 log.error(s)
                 raise ValueError(s)
 
-        print('============Exporting scripts={!s} as Functional Mock-up Unit. API={!s}, Version={!s}, Export Tool={!s}'.format(resource_scripts_path,
-                                        fmi_api, fmi_version, export_tool))
+        print('============Exporting scripts={!s} as Functional Mock-up Unit. API={!s},'\
+            ' Version={!s}, Export Tool={!s}'.format(resource_scripts_path,
+            fmi_api, fmi_version, export_tool))
 
     # Get the xml files
     io_file_path = args.io_file_path
     if io_file_path is None:
-        s = ('No XML input file was provided. The default XML file which is at {!s} will be used.').format(
+        s = ('No XML input file was provided. The default XML file'\
+            ' which is at {!s} will be used.').format(
             XML_INPUT_FILE)
         log.info(s)
         io_file_path = XML_INPUT_FILE
@@ -482,12 +490,14 @@ def main():
     # Check if fmi api is none
     if(needs_tool is None):
         log.info(
-            'Flag to specify whether an execution is needed is not specified. Default (false) will be used.')
+            'Flag to specify whether an execution is needed is not'\
+            ' specified. Default (false) will be used.')
         needs_tool = 'true'
 
     if not (needs_tool.lower() in ['true', 'false']):
         log.info(
-            'Flag to specify whether an execution is needed is not specified. Default (false) will be used.')
+            'Flag to specify whether an execution is needed is not'\
+            ' specified. Default (false) will be used.')
         needs_tool = 'true'
 
     # Export the tool as an FMU
@@ -843,7 +853,8 @@ class SimulatorToFMU(object):
                                for item in self.resource_scripts_path]
             if not(self.module_name+'.py' in resource_scripts_base):
                 s = (self.module_name+'.py' +' no found in the list of Python scripts={!s}.'\
-                     ' The name of the model is {!s}. Hence the name of the Python wrapper script must be {!s}.').format(
+                     ' The name of the model is {!s}.'\
+                     ' Hence the name of the Python wrapper script must be {!s}.').format(
                     self.resource_scripts_path, self.module_name, self.module_name+'.py')
                 log.error(s)
                 raise ValueError(s)
@@ -888,7 +899,7 @@ class SimulatorToFMU(object):
         for child in root.iter('ModelVariables'):
             for element in child:
                 scalar_variable = {}
-                
+
                 # Iterate through ScalarVariables and get attributes
                 (name, description, causality, vartype, unit, start) = \
                     element.attrib.get('name'), \
@@ -897,30 +908,34 @@ class SimulatorToFMU(object):
                     element.attrib.get('type'),\
                     element.attrib.get('unit'),\
                     element.attrib.get('start')
-                
+
                 if vartype is None:
-                    s='Variable type of variable={!s} is None. This is not allowed. Variable '
-                    'type must be of type Real or String'.format(name)
+                    s='Variable type of variable={!s} is None.'\
+                    ' This is not allowed. Variable type'\
+                    ' must be of type Real or String'.format(name)
                     raise ValueError(s)
-                
+
                 if causality is None:
-                    s='Causality of variable={!s} is None. This is not allowed. Variable '
-                    'causality must be of input, output, or parameter'.format(name)
+                    s='Causality of variable={!s} is None.'\
+                    ' This is not allowed. Variable causality'
+                    ' must be of input, output, or parameter'.format(name)
                     raise ValueError(s)
-                
+
                 if (not(vartype in ['Real', 'String'])):
-                    s = 'Variable type of variable={!s} must be of type Real or String '
-                    'The variable type is currently set to {!s}'.format(name, vartype)
+                    s = 'Variable type of variable={!s} must be of'\
+                    ' type Real or String. The variable type'
+                    ' is currently set to {!s}'.format(name, vartype)
                     raise ValueError(s)
-                
+
                 if (not(causality in ['input', 'output', 'parameter'])):
-                    s = 'Causality of variable={!s} must be of type input, output, or parameter '
-                    'The causality is currently set to {!s}'.format(name, causality)
+                    s = 'Causality of variable={!s} must be of type'\
+                    ' input, output, or parameter. The causality is '
+                    ' currently set to {!s}'.format(name, causality)
                     raise ValueError(s)
-                
-                # Set a default unit for variables other than String 
+
+                # Set a default unit for variables other than String
                 if unit is None:
-                    unit="1" 
+                    unit="1"
 
                 # Iterate through children of ScalarVariables and get
                 # attributes
@@ -931,17 +946,17 @@ class SimulatorToFMU(object):
                 scalar_variable['name'] = new_name
                 scalar_variable['vartype'] = vartype
                 scalar_variable['causality'] = causality
-                scalar_variable['unit'] = unit  
+                scalar_variable['unit'] = unit
                 if not (description is None):
                     scalar_variable['description'] = description
-                
+
                 if not (start is None):
-                    scalar_variable['start'] = start   
-                
+                    scalar_variable['start'] = start
+
                 if (causality == 'input' and vartype=='Real'):
                     if start is None:
                         start = 0.0
-                    scalar_variable['start'] = start 
+                    scalar_variable['start'] = start
                     real_input_variable_names.append(name)
                     modelica_real_input_variable_names.append(new_name)
                     inpY1 = inpY1 - indel
@@ -970,14 +985,14 @@ class SimulatorToFMU(object):
                 if (causality == 'parameter' and vartype=='Real'):
                     if start is None:
                         start = 0.0
-                    scalar_variable['start'] = start 
+                    scalar_variable['start'] = start
                     real_parameter_variable_names.append(name)
                     modelica_real_parameter_variable_names.append(new_name)
-                    
+
                 if (causality == 'parameter' and vartype=='String'):
                     if start is None:
                         start="dummy.txt"
-                    scalar_variable['start'] = start 
+                    scalar_variable['start'] = start
                     string_parameter_variable_names.append(name)
                     modelica_string_parameter_variable_names.append(new_name)
 
@@ -997,9 +1012,10 @@ class SimulatorToFMU(object):
                       modelica_real_output_variable_names,
                       modelica_real_parameter_variable_names]:
                     if elm in nam:
-                        s = 'Reserved name={!s} is in the list '\
-                            'of input/output/parameters variables={!s}. '\
-                            'Check the XML input file={!s} and correct the variable name.'.format(elm, nam, self.xml_path)
+                        s = 'Reserved name={!s} is in the list'\
+                            ' of input/output/parameters variables={!s}.'\
+                            ' Check the XML input file={!s} and correct'\
+                            ' the variable name.'.format(elm, nam, self.xml_path)
                         log.error(s)
                         raise ValueError(s)
 
@@ -1061,8 +1077,9 @@ class SimulatorToFMU(object):
             run_serv_pat=fix_path_delimiters(os.path.normpath(
                 os.path.join(base_dir_name, 'run_server.py')))
             if (not(os.path.isfile(run_serv_pat))):
-                s = 'run_server.py is not located in the same folder as start_server.bat. '
-                ' run_server.py must be located in the folder={!s}'.format(base_dir_name)
+                s = 'run_server.py is not located in the same folder'\
+                ' as start_server.bat. run_server.py must be located'
+                ' in the folder={!s}'.format(base_dir_name)
                 log.error(s)
                 raise ValueError(s)
 
@@ -1163,7 +1180,8 @@ class SimulatorToFMU(object):
         # Create command for Dymola
         if (self.export_tool == 'dymola'):
             if (not (self.export_tool_path is None)):
-                command = os.path.normpath(os.path.join(self.export_tool_path, 'dymola'))
+                command = os.path.normpath(os.path.join(
+                self.export_tool_path, 'dymola'))
             else:
                 command = 'dymola'
 
@@ -1171,19 +1189,22 @@ class SimulatorToFMU(object):
         if(self.export_tool == 'jmodelica'):
             if(platform.system().lower()=='linux'):
                 if (not (self.export_tool_path is None)):
-                    command = os.path(os.path.join(self.export_tool_path, 'jm_python.sh'))
+                    command = os.path(os.path.join(self.export_tool_path,
+                    'jm_python.sh'))
                 else:
                     command = os.path.normpath(os.path.join('jm_python.sh'))
             elif(platform.system().lower()=='windows'):
                 if (not (self.export_tool_path is None)):
 
-                    command = os.path.normpath(os.path.join(self.export_tool_path, 'setenv.bat'))
+                    command = os.path.normpath(os.path.join(
+                    self.export_tool_path, 'setenv.bat'))
                 else:
                     command = 'setenv.bat'
         # Create command for OpenModelica
         if (self.export_tool == 'openmodelica'):
             if (not (self.export_tool_path is None)):
-                command = os.path.normpath(os.path.join(self.export_tool_path, 'openmodelica'))
+                command = os.path.normpath(os.path.join(
+                self.export_tool_path, 'openmodelica'))
             else:
                 command = 'omc'
 
@@ -1212,9 +1233,9 @@ class SimulatorToFMU(object):
             if sys.version_info.major > 2:
                 retStr = str(retStr, 'utf-8')
             if(retStr.find('error')>=0):
-                s='{!s} failed to export {!s} as an FMU with error={!s}'.format(self.export_tool,
-                                                                        self.model_name,
-                                                                        retStr)
+                s='{!s} failed to export {!s} as an FMU'\
+                ' with error={!s}'.format(self.export_tool,
+                self.model_name, retStr)
                 raise ValueError(s)
         # Reset the library path to the default
         if not(self.export_tool == 'jmodelica'):
@@ -1249,15 +1270,18 @@ class SimulatorToFMU(object):
         dir_name = self.model_name +'.scripts'
         if os.path.exists(dir_name):
             shutil.rmtree(dir_name)
-        log.info('Create the folder Simulator.scripts with scripts to be added to the PYTHONPATH.')
+        log.info('Create the folder Simulator.scripts with scripts'\
+        ' to be added to the PYTHONPATH.')
         os.makedirs(dir_name)
         for resource_script_path in self.resource_scripts_path:
             shutil.copy2(resource_script_path, dir_name)
         fnam = os.path.normpath(os.path.join(dir_name, "README.txt"))
         fh = open(fnam, "w")
         readme = 'IMPORTANT:\n\n' + \
-                 'The files contains in this folder must be added to the PYTHONPATH.\n' + \
-                 'This can be done by adding the unzipped folder ' + dir_name + ' to the PYTHONPATH.\n\n'
+                 'The files contains in this folder must be added'\
+                 ' to the PYTHONPATH.\n' + \
+                 'This can be done by adding the unzipped folder '\
+                 + dir_name + ' to the PYTHONPATH.\n\n'
         fh.write(readme)
         fh.close()
         dir_name_zip = dir_name + '.zip'
@@ -1282,7 +1306,8 @@ class SimulatorToFMU(object):
         dir_name = self.model_name +'.binaries'
         if os.path.exists(dir_name):
             shutil.rmtree(dir_name)
-        log.info('Create the folder Simulator.binaries with binaries to be added to the system PATH.')
+        log.info('Create the folder Simulator.binaries with binaries'\
+        ' to be added to the system PATH.')
 
         # Path to the libraries
         fil_path = os.path.normpath(os.path.join(
@@ -1310,7 +1335,8 @@ class SimulatorToFMU(object):
                         log.info(s)
                         shutil.copy2(lib_path, zip_path)
                     else:
-                        s = '{!s} does not exist and will need to be compiled.'.format(fil_path)
+                        s = '{!s} does not exist and will need to'\
+                        ' be compiled.'.format(fil_path)
                         raise ValueError(s)
 
         if(platform.system().lower() == 'linux'):
@@ -1332,7 +1358,8 @@ class SimulatorToFMU(object):
                         log.info(s)
                         shutil.copy2(lib_path, zip_path)
                     else:
-                        s = '{!s} does not exist and will need to be compiled.'.format(fil_path)
+                        s = '{!s} does not exist and will need'\
+                        ' to be compiled.'.format(fil_path)
                         raise ValueError(s)
 
         fnam = os.path.normpath(os.path.join(dir_name, "README.txt"))
