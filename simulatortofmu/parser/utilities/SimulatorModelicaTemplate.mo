@@ -189,7 +189,7 @@ protected
 	  moduleName=moduleName,
 	  functionName=functionName,
 	  conFilNam=_configurationFileName,
-      modTim=modTim,
+      modTim=time,
       nDblInp=nDblInp,
       dblInpNam=dblInpNam,
       dblInpVal=dblInpVal,
@@ -198,7 +198,7 @@ protected
       nDblPar=nDblPar,
       dblParNam=dblParNam,
       dblParVal=dblParVal,
-      resWri=resWri,
+      resWri=_saveToFile,
       obj=obj,
       passMemoryObject=passMemoryObject);
 	{%- elif exec_target=="server" %}

@@ -870,10 +870,8 @@ class SimulatorToFMU(object):
         # Iterate through the XML file and get the ModelVariables.
         real_input_variable_names = []
         modelica_real_input_variable_names = []
-        # modelicaInputVariableNames = []
         real_output_variable_names = []
         modelica_real_output_variable_names = []
-        parameter_variable_values = []
         real_parameter_variable_names = []
         modelica_real_parameter_variable_names = []
         string_parameter_variable_names = []
@@ -1041,7 +1039,7 @@ class SimulatorToFMU(object):
 
         """
 
-        #self.xml_validator()
+        self.xml_validator()
         scalar_variables, real_input_variable_names, \
             real_output_variable_names, \
             real_parameter_variable_names, \
@@ -1057,6 +1055,7 @@ class SimulatorToFMU(object):
         template = env.get_template('')
 
         # Call template with parameters
+        run_serv_pat=None
         if(self.exec_target=='server'):
             base_dir_name=os.path.dirname(self.resource_scripts_path[0])
             run_serv_pat=fix_path_delimiters(os.path.normpath(
@@ -1067,7 +1066,6 @@ class SimulatorToFMU(object):
                 log.error(s)
                 raise ValueError(s)
 
-        print ("String parameter={!s}".format(string_parameter_variable_names))
         output_res = template.render(
             model_name=self.model_name,
             module_name=self.module_name,
@@ -1075,7 +1073,7 @@ class SimulatorToFMU(object):
             real_input_variable_names=real_input_variable_names,
             real_output_variable_names=real_output_variable_names,
             real_parameter_variable_names=real_parameter_variable_names,
-            string_parameter_variable_names = string_parameter_variable_names,
+            string_parameter_variable_names=string_parameter_variable_names,
             modelica_real_input_variable_names=modelica_real_input_variable_names,
             modelica_real_output_variable_names=modelica_real_output_variable_names,
             modelica_real_parameter_variable_names=modelica_real_parameter_variable_names,

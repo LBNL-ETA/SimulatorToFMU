@@ -6,8 +6,7 @@
   description="Input data for a Simulator FMU"
   generationTool="SimulatorToFMU">
   <ModelVariables>
-
-      <ScalarVariable
+    <ScalarVariable
       name="test1"
       description="parameter"
       causality="parameter"

@@ -9,17 +9,17 @@
     <ScalarVariable
       name="v"
       description="Voltage"
-      causality="input">
-      <Real
-        unit="V"
-        start="0.0"/>
+      causality="input"
+	  type="Real"
+	  unit="V"
+	  start="0.0">
     </ScalarVariable>
     <ScalarVariable
       name="i"
       description="Current"
-      causality="output">
-      <Real
-        unit="A"/>
+      causality="output"
+	  type="Real"
+	  unit="A">
     </ScalarVariable>
   </ModelVariables>
 </SimulatorModelDescription>
