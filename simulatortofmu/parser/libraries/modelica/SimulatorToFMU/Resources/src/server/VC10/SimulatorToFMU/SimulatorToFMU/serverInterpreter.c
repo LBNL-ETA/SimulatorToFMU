@@ -136,7 +136,8 @@ char* join_strings(char *strings[], int count)
 * @param patConFil Path to configuration file
 *
 */
-void* initServerMemory(char* resScri, char* patConFil)
+void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** strParNam, 
+	char** strParVal, char** dblParNam, double* dblParVal)
 {
 #ifdef _MSC_VER
 	HANDLE  pid;
@@ -160,6 +161,7 @@ void* initServerMemory(char* resScri, char* patConFil)
 	struct stat sb;
 	char* url_str;
 	CURLcode res;
+	char** tmpDblParVal;
 	struct MemoryStruct chunk;
 	chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
 	chunk.size = 0;    /* no data at this point */
@@ -257,13 +259,44 @@ void* initServerMemory(char* resScri, char* patConFil)
 		token = strtok(NULL, ":");
 	}
 
-	url_str=(char*)malloc((strlen(ptr->address)+
-		strlen(ptr->port)+strlen(patConFil)+100)*sizeof(char));
+	ptr->strParNam = (char*)malloc((nStrPar*500)*sizeof(char));
+	ptr->strParVal = (char*)malloc((nStrPar*500)*sizeof(char));
+	ptr->dblParNam = (char*)malloc((nDblPar*500)*sizeof(char));
+	ptr->dblParVal = (char*)malloc((nDblPar*500)*sizeof(char));
 
+	/* Join the strings */
+	sprintf(ptr->strParNam, "%s", join_strings(strParNam, nStrPar));
+	ptr->strParNam[strlen(ptr->strParNam)-1]=0;
+
+	/* Join the strings */
+	sprintf(ptr->strParVal, "%s", join_strings(strParVal, nStrPar));
+	ptr->strParVal[strlen(ptr->strParVal)-1]=0;
+
+	/* Join the strings */
+	sprintf(ptr->dblParNam, "%s", join_strings(dblParNam, nDblPar));
+	ptr->dblParNam[strlen(ptr->dblParNam)-1]=0;
+
+	/* Convert the doubles values into doubles strings and 
+	then convert the string into a single string */
+	tmpDblParVal = (char**)malloc(nDblPar*sizeof(char*));
+	for (i=0; i<nDblPar; i++){
+		tmpDblParVal[i] = (char*)malloc(100*sizeof(char));
+		sprintf(tmpDblParVal[i], "%.8f", dblParVal[i]);
+	}
+
+	/* Join the strings */
+	sprintf(ptr->dblParVal, "%s", join_strings(tmpDblParVal, nDblPar));
+	ptr->dblParVal[strlen(ptr->dblParVal)-1]=0;
+
+	url_str=(char*)malloc((strlen(ptr->address)+
+		strlen(ptr->port)+strlen(ptr->strParNam)+strlen(ptr->dblParNam)
+		+strlen(ptr->strParVal)+strlen(ptr->dblParVal)+100)*sizeof(char));
+	
 	/* Write the string to initialize server */
-	sprintf(url_str, "%s%s%s%s%s%s%s%s%s%s", "http://",
+	sprintf(url_str, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s", "http://",
 	ptr->address, ":", ptr->port, "/", "initialize", "/", 
-	"_configurationFileName", "&", patConFil);
+	ptr->strParNam, ",", ptr->dblParNam, "&", 
+	ptr->strParVal, ",", ptr->dblParVal);
 	
 	/* Initialize global session */
 	curl_global_init(CURL_GLOBAL_ALL);
@@ -292,6 +325,11 @@ void* initServerMemory(char* resScri, char* patConFil)
 		exit(1);
 	}
 
+
+	for (i=0; i<nDblPar; i++){
+		free(tmpDblParVal[i]);
+	}
+	free(tmpDblParVal);
 	free(url_str);
 	free(chunk.memory);
 	ptr->ptr = NULL;
@@ -299,6 +337,12 @@ void* initServerMemory(char* resScri, char* patConFil)
 	free(ptr->conFilPat);
 	free(ptr->batFilPat);
 	free( ptr->fulScriPat);
+
+	free(ptr->strParNam);
+	free(ptr->strParVal);
+	free(ptr->dblParNam);
+	free(ptr->dblParVal);
+
 	return (void*) ptr;
 }
 
@@ -314,9 +358,6 @@ void* initServerMemory(char* resScri, char* patConFil)
 * @param nDblRea the number of variables to read
 * @param strRea the string variables to read
 * @param dblValRea the double values to read
-* @param nDblParWri the number of parameters to write
-* @param strParWri the string parameters to write
-* @param dblValParWri the double parameters to write
 * @param resWri the result flag
 * @param ModelicaFormatError the pointer
 * to the ModelicaFormatError
@@ -330,9 +371,6 @@ void serverExchangeVariables(
 	size_t nDblRea,
 	const char ** strRea,
 	double * dblValRea,
-	size_t nDblParWri,
-	const char ** strParWri,
-	double * dblValParWri,
 	int resWri,
 	void (*ModelicaFormatError)(const char *string,...),
 	void* memory){

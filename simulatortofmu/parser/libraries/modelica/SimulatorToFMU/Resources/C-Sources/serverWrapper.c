@@ -12,9 +12,6 @@
 * @param nDblRea the number of variables to read
 * @param strRea the string variables to read
 * @param dblValRea the double values to read
-* @param nDblParWri the number of parameters to write
-* @param strParWri the string parameters to write
-* @param dblValParWri the double parameters to write
 * @param resWri the result flag
 * @param memory a Server object
 */
@@ -28,9 +25,6 @@ void modelicaToSimulator(
 	size_t nDblRea,
 	const char ** strRea,
 	double * dblValRea,
-	size_t nDblParWri,
-	const char ** strParWri,
-	double * dblValParWri,
 	int resWri,
 	void* object)
 {
@@ -42,9 +36,6 @@ void modelicaToSimulator(
 		nDblRea,
 		strRea,
 		dblValRea,
-		nDblParWri,
-		strParWri,
-		dblValParWri,
 		resWri,
 		ModelicaFormatError,
 		object);

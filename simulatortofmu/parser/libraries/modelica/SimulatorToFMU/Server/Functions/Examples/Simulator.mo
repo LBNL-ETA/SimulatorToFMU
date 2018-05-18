@@ -17,7 +17,12 @@ model Simulator "Test model for simulator functions"
     "Path to the configuration file";
   SimulatorToFMU.Server.Functions.BaseClasses.ServerObject obj=
   SimulatorToFMU.Server.Functions.BaseClasses.ServerObject(patResScri=startServer,
-    patConFil=_configurationFileName);
+    nStrPar=1,
+    nDblPar=1,
+    strParNam={"_configurationFileName"},
+    strParVal={_configurationFileName},
+    dblParNam={"test"},
+    dblParVal={0.0});
   Real yR1[1] "Real function value";
 algorithm
   yR1 := SimulatorToFMU.Server.Functions.simulator(
@@ -27,9 +32,6 @@ algorithm
     dblInpVal={15.0},
     nDblOut=1,
     dblOutNam={"y"},
-    nDblPar=0,
-    dblParNam=emptyDblParNam,
-    dblParVal=emptyDblParVal,
     resWri=false,
     obj=obj);
   annotation (

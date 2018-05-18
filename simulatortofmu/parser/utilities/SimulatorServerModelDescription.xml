@@ -6,20 +6,25 @@
   description="Input data for a Simulator FMU"
   generationTool="SimulatorToFMU">
   <ModelVariables>
+
+      <ScalarVariable
+      name="test1"
+      description="parameter"
+      causality="parameter"
+	  type="String">
+    </ScalarVariable>
     <ScalarVariable
       name="input1"
       description="input"
-      causality="input">
-      <Real
-        unit="V"
-        start="0.0"/>
+      causality="input"
+	  type="Real"
+	  unit="A">
     </ScalarVariable>
     <ScalarVariable
       name="y"
       description="output"
-      causality="output">
-      <Real
-        unit="A"/>
+      causality="output"
+	  type="Real">
     </ScalarVariable>
   </ModelVariables>
 </SimulatorModelDescription>
