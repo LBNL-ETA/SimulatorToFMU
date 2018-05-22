@@ -37,6 +37,7 @@ typedef struct cPtr
 {
   void* ptr;
   char* conFilPat;
+  char* cheSerPat;
   char* batFilPat;
   char* fulScriPat;
   char* address;

@@ -151,6 +151,7 @@ void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** str
 	int retVal;
 	char* conFil="server_config.txt";
 	char* batFil="start_server.bat";
+	char* cheSer="check_server.py";
 	char* tmpScri;
 	char* token;
 	FILE* fil;
@@ -161,6 +162,8 @@ void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** str
 	struct stat sb;
 	char* url_str;
 	CURLcode res;
+	float inc=0;
+	char str[MAX_PATHNAME_LEN];
 	char** tmpDblParVal;
 	struct MemoryStruct chunk;
 	chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
@@ -216,19 +219,32 @@ void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** str
 
 	ptr->conFilPat=(char*)malloc((strlen(ptr->fulScriPat)+strlen(conFil)+1)*sizeof(char));
 	ptr->batFilPat=(char*)malloc((strlen(ptr->fulScriPat)+strlen(batFil)+10)*sizeof(char));
+	ptr->cheSerPat=(char*)malloc((strlen(ptr->fulScriPat)+strlen(cheSer)+10)*sizeof(char));
 	sprintf(ptr->conFilPat, "%s%s", ptr->fulScriPat, conFil);
 	printf("The path to the configuration file is %s\n.", ptr->conFilPat);
 	sprintf(ptr->batFilPat, "%s%s", ptr->fulScriPat, batFil);
 	printf("The path to the batch file is %s\n.", ptr->batFilPat);
+	sprintf(ptr->cheSerPat, "%s%s", ptr->fulScriPat, cheSer);
+	printf("The path to the check server is %s\n.", ptr->cheSerPat);
 
 	/* Start the server in  a non-blocking mode */
 	pid=(HANDLE)_spawnl(P_NOWAIT,  ptr->batFilPat,  ptr->batFilPat,
 		ptr->fulScriPat, NULL);
 
-#ifdef _MSC_VER
-	Sleep(3000);
-#endif
+	/* Create string for checking is up */
+	sprintf(str, "%s%s", "python ", ptr->cheSerPat);
+	retVal=system(str);
 
+    /* Check if the server is up */
+	while(retVal!=0){
+	  retVal=system(str);
+	  inc=inc+10;
+#ifdef _MSC_VER
+	  Sleep(10);
+#endif
+	}
+
+	printf("The server is up after %f milli-seconds\n", inc);
 	/* Open configuration and read token */
 	fil = fopen(ptr->conFilPat, "r");
 	if (fil) {
