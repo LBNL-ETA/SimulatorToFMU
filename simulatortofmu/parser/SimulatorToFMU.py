@@ -1159,7 +1159,6 @@ class SimulatorToFMU(object):
                                      sim_lib_path = sim_lib_path_jm)
 
         # Write results in mo file which has the same name as the class name
-
         rand_name = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for _ in range(6))
 
