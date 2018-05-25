@@ -23,6 +23,7 @@ model {{model_name}}
   parameter String patResScri = Modelica.Utilities.Files.loadResource("{{res_path}}")
     "Path to the script in resource folder";
   // used to generate the FMU
+  {%- if exec_target=="python" %}
   {%- if con_path=="" %}
    parameter String _configurationFileName = "dummy.csv"
     "Path to the configuration or input file";
@@ -30,6 +31,7 @@ model {{model_name}}
   parameter String _configurationFileName = Modelica.Utilities.Files.loadResource("{{con_path}}")
     "Path to the configuration or input file";
   {%- endif %}
+   {%- endif %}
   parameter Boolean _saveToFile (fixed=true) = false "Flag for writing results"; 
   
 protected   

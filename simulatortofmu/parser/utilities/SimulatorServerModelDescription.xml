@@ -7,9 +7,10 @@
   generationTool="SimulatorToFMU">
   <ModelVariables>
     <ScalarVariable
-      name="test1"
+      name="_configurationFileName"
       description="parameter"
       causality="parameter"
+	  start="C:\\Users\\Public\\server_config.txt"
 	  type="String">
     </ScalarVariable>
     <ScalarVariable

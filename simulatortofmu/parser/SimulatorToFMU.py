@@ -1007,7 +1007,12 @@ class SimulatorToFMU(object):
                       modelica_string_parameter_variable_names]:
                 check_duplicates(i)
 
-            for elm in ['_configurationFileName', '_saveToFile', 'time']:
+
+            if(self.exec_target=='python'):
+                res_key_words = ['_configurationFileName', '_saveToFile', 'time']
+            elif(self.exec_target=='server'):
+                res_key_words = ['_saveToFile', 'time']
+            for elm in res_key_words:
                 for nam in [modelica_real_input_variable_names,
                       modelica_real_output_variable_names,
                       modelica_real_parameter_variable_names]:
