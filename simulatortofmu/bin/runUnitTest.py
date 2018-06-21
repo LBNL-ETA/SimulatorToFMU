@@ -48,6 +48,9 @@ if(platform.system().lower() == 'windows'):
     python_scripts_path = [item.replace('\\', '\\\\') for item in [
         PYTHON_SCRIPT_PATH]]
 
+# Append the path to the script which is used in unit tests.
+sys.path.append(utilities_path)
+
 Simulator_T = simulator.SimulatorToFMU('',
                                        XML_INPUT_FILE,
                                        SimulatorToFMU_LIB_PATH,
@@ -74,36 +77,36 @@ class Tester(unittest.TestCase):
     Class that runs all regression tests.
 
     '''
-    
+
     def find_executable(self, tool):
-        
+
         '''
         Function for checking if Dymola, JModelica, or OpenModelica is installed.
 
         '''
-        
+
         if tool == 'jmodelica' and platform.system().lower() == "windows":
             tool = 'pylab'
         if tool == 'jmodelica' and platform.system().lower() == "linux":
             tool = 'jm_python.sh'
-            
+
         if tool == 'openmodelica' and platform.system().lower() == "windows":
             tool = 'omc'
-            
+
         cmd = "where" if platform.system() == "Windows" else "which"
-        try: 
+        try:
             return subprocess.call([cmd, tool])
-        except: 
+        except:
             print ("No executable for tool={!s}".format(tool))
             return 1
 
     def run_simulator (self, tool):
-        
+
         '''
         Function for running FMUs exported from Dymola, JModelica, and OpenModelica with PyFMI.
 
         '''
-        
+
         try:
             from pyfmi import load_fmu
         except BaseException:
@@ -112,7 +115,7 @@ class Tester(unittest.TestCase):
         if (tool=='openmodelica' and platform.system().lower() == 'linux'):
                 print ('tool={!s} is not supported on Linux'.format(tool))
                 return
-            
+
         else:
         # Export FMUs which are needed to run the cases.
             if tool == 'openmodelica':
@@ -169,13 +172,13 @@ class Tester(unittest.TestCase):
                         print(
                             'Export the simulator as an FMU in {!s} seconds.'.format(
                                 (end - start).total_seconds()))
-                        
+
                         fmu_path = os.path.join(
                         script_path, '..', 'fmus', tool, platform.system().lower())
                         print(
                             'Copy simulator.fmu to {!s}.'.format(fmu_path))
                         shutil.copy2('simulator.fmu', fmu_path)
-    
+
         fmu_path = os.path.join(
                 script_path, '..', 'fmus', tool, platform.system().lower(), 'simulator.fmu')
         # Parameters which will be arguments of the function
@@ -220,20 +223,20 @@ class Tester(unittest.TestCase):
         sim_mod.enter_continuous_time_mode()
 
         sim_mod.set_real(simulator_input_valref, simulator_input_values)
-        
+
         end = datetime.now()
 
         print(
             'Ran a single Simulator simulation with {!s} FMU={!s} in {!s} seconds.'.format(
                 tool, fmu_path, (end - start).total_seconds()))
         if not (tool=='openmodelica'):
-            # PyFMI fails to get the output of an OpenModelica FMU 
+            # PyFMI fails to get the output of an OpenModelica FMU
             self.assertEqual(
                 sim_mod.get_real(
                     sim_mod.get_variable_valueref('i')),
                 1.0,
                 'Values are not matching.')
-            
+
         # Terminate FMUs
         sim_mod.terminate()
 
@@ -296,7 +299,7 @@ class Tester(unittest.TestCase):
 
         '''
 
-        for tool in  ['dymola', 'jmodelica', 'openmodelica']:       
+        for tool in  ['dymola', 'jmodelica', 'openmodelica']:
             retVal=self.find_executable(tool)
             if ((retVal is not None) and retVal!=1):
                 print("======tool={!s} was found. Unit Test will be run".format(tool))
@@ -359,20 +362,20 @@ class Tester(unittest.TestCase):
                         print(
                             'Export Simulator as an FMU in {!s} seconds.'.format(
                                 (end - start).total_seconds()))
-                              
+
     def test_updates_fmu(self):
         '''
         Test the export and updates of FMUs.
 
         '''
 
-        for tool in  ['dymola', 'jmodelica', 'openmodelica']:       
+        for tool in  ['dymola', 'jmodelica', 'openmodelica']:
             retVal=self.find_executable(tool)
             if ((retVal is not None) and retVal!=1):
                 print("======tool={!s} was found. Unit Test will be run".format(tool))
             else:
                 continue
-            
+
             if (platform.system().lower() == 'linux' and tool == 'openmodelica'):
                 print ('tool={!s} is not supported on Linux.'.format(tool))
                 continue
@@ -434,7 +437,7 @@ class Tester(unittest.TestCase):
                         print(
                             'Copy simulator.fmu to {!s}.'.format(fmu_path))
                         shutil.copy2('simulator.fmu', fmu_path)
-                        
+
     def test_run_simulator_all(self):
         '''
         Test the execution of one Simulator FMU.
@@ -442,7 +445,7 @@ class Tester(unittest.TestCase):
         '''
 
         # Export FMUs which are needed to run the cases.
-        for tool in  ['dymola', 'jmodelica', 'openmodelica']:       
+        for tool in  ['dymola', 'jmodelica', 'openmodelica']:
             retVal=self.find_executable(tool)
             if ((retVal is not None) and retVal!=1):
                 print("======tool={!s} was found. Unit Test will be run.".format(tool))
@@ -456,7 +459,7 @@ class Tester(unittest.TestCase):
         Test the execution of one Simulator FMU.
 
         '''
-        
+
         retVal=self.find_executable('dymola')
         if ((retVal is not None) and retVal!=1):
             print("======tool=dymola was found. Unit Test will be run.")
@@ -466,13 +469,13 @@ class Tester(unittest.TestCase):
             self.run_simulator ('dymola')
         else:
             return
-    
+
     def test_run_simulator_jmodelica(self):
         '''
         Test the execution of one Simulator FMU.
 
         '''
-        
+
         retVal=self.find_executable('jmodelica')
         if ((retVal is not None) and retVal!=1):
             print("======tool=jmodelica was found. Unit Test will be run.")
@@ -482,13 +485,13 @@ class Tester(unittest.TestCase):
             self.run_simulator ('jmodelica')
         else:
             return
-        
+
     def test_run_simulator_openmodelica(self):
         '''
         Test the execution of one Simulator FMU.
 
         '''
-        
+
         retVal=self.find_executable('openmodelica')
         if ((retVal is not None) and retVal!=1):
             print("======tool=openmodelica was found. Unit Test will be run.")
@@ -498,7 +501,7 @@ class Tester(unittest.TestCase):
             self.run_simulator ('openmodelica')
         else:
             return
-                                    
+
 if __name__ == "__main__":
         # Check command line options
     if (platform.system().lower() in ['windows', 'linux']):
