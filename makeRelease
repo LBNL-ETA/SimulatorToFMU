@@ -1,0 +1,17 @@
+1. Changed the release name in
+
+- setup.py
+- conf.py
+
+2. Recompile the documentation with
+
+   make dist
+
+3. delete the build files and commit all the files to the server
+
+4. Post the release on PyPi with
+
+python register sdist upload from the /SimulatorToFMU folder
+
+Upload the documentation by zipping the content of www folder
+and upload on PyPi repo.
