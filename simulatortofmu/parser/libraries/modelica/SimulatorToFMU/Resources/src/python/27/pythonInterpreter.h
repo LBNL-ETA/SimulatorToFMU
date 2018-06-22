@@ -26,6 +26,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#ifdef __unix__
+#include<libgen.h>
+#endif
 #ifdef __APPLE__
 #include <Python/Python.h>
 #else
