@@ -63,7 +63,8 @@ Simulator_T = simulator.SimulatorToFMU('',
                                        None,
                                        'true',
                                        'true',
-                                       None)
+                                       None,
+                                       'python')
 
 
 
@@ -155,7 +156,8 @@ class Tester(unittest.TestCase):
                             modPat,
                             cs_xml,
                             'true',
-                            None)
+                            None,
+                            'python')
 
                         print (
                             'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(
@@ -345,7 +347,8 @@ class Tester(unittest.TestCase):
                             modPat,
                             cs_xml,
                             'true',
-                            None)
+                            None, 
+                            'python')
 
                         print (
                             'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(
@@ -359,6 +362,8 @@ class Tester(unittest.TestCase):
                         print(
                             'Export Simulator as an FMU in {!s} seconds.'.format(
                                 (end - start).total_seconds()))
+          
+
                               
     def test_updates_fmu(self):
         '''
@@ -415,7 +420,8 @@ class Tester(unittest.TestCase):
                             modPat,
                             cs_xml,
                             'true',
-                            None)
+                            None,
+                            'python')
 
                         print (
                             'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(
