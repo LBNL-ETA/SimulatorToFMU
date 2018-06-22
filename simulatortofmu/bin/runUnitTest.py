@@ -362,8 +362,6 @@ class Tester(unittest.TestCase):
                         print(
                             'Export Simulator as an FMU in {!s} seconds.'.format(
                                 (end - start).total_seconds()))
-          
-
                               
     def test_updates_fmu(self):
         '''

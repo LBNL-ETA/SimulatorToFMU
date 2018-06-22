@@ -40,18 +40,18 @@ int main(int nArgs, char ** args){
 	for(i=0; i < 10; i++){
 		printf("Calling with i for simulator = %d.\n", i);
 		pythonExchangeVariables(moduleName,
-			functionName, 
-			configFileName, 
+			functionName,
+			configFileName,
 			time,
-			nDblWri, 
-			strWri, 
-			dblValWri, 
-			nDblRea, 
+			nDblWri,
+			strWri,
+			dblValWri,
+			nDblRea,
 			strRea,
-			dblValRea, 
-			nDblParWri, 
-			strParWri, 
-			dblValParWri, 
+			dblValRea,
+			nDblParWri,
+			strParWri,
+			dblValParWri,
 			resWri,
 			ModelicaFormatError,
 			ptr,
@@ -60,4 +60,3 @@ int main(int nArgs, char ** args){
 
 	return 0;
 }
-

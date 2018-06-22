@@ -66,29 +66,50 @@ char *str_replace(char *orig, char *rep, char *with) {
 void* initPythonMemory(char* pytScri)
 {
   pythonPtr* ptr = malloc(sizeof(pythonPtr));
+#ifdef _MSC_VER
   char pathDir[MAX_PATHNAME_LEN];
   char base [MAX_PATHNAME_LEN];
-  char ext [40];
   int retVal;
+  char ext [40];
+#elif __unix__
+  char* basec;
+  char* pathDir;
+#endif
 
-  /* Split the path to extract the directory name*/ 
-  retVal=_splitpath_s(str_replace(pytScri, "\\", "/"), base, sizeof(base), 
-	  pathDir, sizeof(pathDir), NULL, 0, NULL, 0);
+
+  /* Split the path to extract the directory name*/
+#ifdef _MSC_VER
+  retVal=_splitpath_s(str_replace(pytScri, "\\", "/"), base, sizeof(base),
+  pathDir, sizeof(pathDir), NULL, 0, NULL, 0);
   if(retVal!=0){
 	  fprintf(stderr, "Python script %s could not be splitted. "
 		  "The error code is %d\n", pytScri, retVal);
   }
-  /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
+#elif __unix__
+  basec=strdup(pytScri);
+  pathDir=dirname(basec);
+#endif
 
+  /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
   ptr->ptr = NULL;
   ptr->isInitialized = 0;
   ptr->pModule = NULL;
   ptr->pFunc = NULL;
+#ifdef _MSC_VER
   ptr->pathDir = (char *)malloc((strlen(pathDir) + strlen(base) + 50)*sizeof(char));
+#elif __unix__
+  ptr->pathDir = (char *)malloc((strlen(pathDir) + 50)*sizeof(char));
+#endif
   if (!Py_IsInitialized())
 	Py_Initialize();
   	PyRun_SimpleString("import sys");
-	sprintf(ptr->pathDir, "%s%s%s%s%s%s", "sys.path.append(", "\"", base, pathDir, "\"", ")");
+  /* Append the path to the Python script to the Python search path*/
+#ifdef _MSC_VER
+	sprintf(ptr->pathDir, "%s%s%s%s%s%s", "sys.path.append(", "\"", pathDir, base, "\"", ")");
+#elif __unix__
+        sprintf(ptr->pathDir, "%s%s%s%s%s", "sys.path.append(", "\"", pathDir, "\"", ")");
+#endif
+	printf ("The path to the Python script directory is %s\n", ptr->pathDir);
 	PyRun_SimpleString(ptr->pathDir);
   return (void*) ptr;
 }
@@ -96,10 +117,10 @@ void* initPythonMemory(char* pytScri)
 static Py_ssize_t iArg = 0;
 
 /*
- * This function creates list of  
+ * This function creates list of
  * arguments for the Python function.
  *
- * @param typ the type of variable 
+ * @param typ the type of variable
  * (1 for strings, 0 for doubles)
  * @param nStrs the number of string variables
  * @param nDbls the number of double variables
@@ -111,18 +132,18 @@ static Py_ssize_t iArg = 0;
  * @param ModelicaFormatError the pointer
  * to the ModelicaFormatError
  */
-void createPythonArgumentLists(int typ, 
-	const size_t nStrs, 
-	const size_t nDbls, 
-	const char ** strs, 
+void createPythonArgumentLists(int typ,
+	const size_t nStrs,
+	const size_t nDbls,
+	const char ** strs,
 	double * dbls,
-	PyObject *pModule, 
+	PyObject *pModule,
 	PyObject *pFunc,
 	PyObject *pArgs,
 	void (*ModelicaFormatError)
 	(const char *string,...)){
 		Py_ssize_t i;
-		PyObject *pArgsDbl; 
+		PyObject *pArgsDbl;
 		PyObject *pArgsStr;
 		PyObject *pValue;
 
@@ -180,10 +201,10 @@ void createPythonArgumentLists(int typ,
 }
 
 /*
- * This function exchanges variables with an 
- * external simulator. 
+ * This function exchanges variables with an
+ * external simulator.
  *
- * @param moduleName the module name 
+ * @param moduleName the module name
  * @param functionName the function name
  * @param configFileName the configuration file
  * @param modTim the simulation time
@@ -199,22 +220,22 @@ void createPythonArgumentLists(int typ,
  * @param resWri the result flag
  * @param ModelicaFormatError the pointer
  * to the ModelicaFormatError
- * @param memory a Python object               
- * @param have_memory the flag indicating a Python object   
+ * @param memory a Python object
+ * @param have_memory the flag indicating a Python object
  */
 void pythonExchangeVariables(const char * moduleName,
 	const char * functionName,
 	const char * configFileName,
 	double modTim,
-	const size_t nDblWri, 
-	const char ** strWri, 
-	double * dblValWri, 
-	size_t nDblRea, 
+	const size_t nDblWri,
+	const char ** strWri,
+	double * dblValWri,
+	size_t nDblRea,
 	const char ** strRea,
-	double * dblValRea, 
-	size_t nDblParWri, 
-	const char ** strParWri, 
-	double * dblValParWri, 
+	double * dblValRea,
+	size_t nDblParWri,
+	const char ** strParWri,
+	double * dblValParWri,
 	int resWri,
 	void (*ModelicaFormatError)(const char *string,...),
 	void* memory, int passPythonObject){
@@ -341,15 +362,15 @@ void pythonExchangeVariables(const char * moduleName,
 
 	/* Convert the arguments*/
 	/* a) Convert the configuration file name*/
-	createPythonArgumentLists(STR_FLAG, 1, 
-		0, confFilNam, NULL, ptrMemory->pModule, 
+	createPythonArgumentLists(STR_FLAG, 1,
+		0, confFilNam, NULL, ptrMemory->pModule,
 		ptrMemory->pFunc, pArgs, *ModelicaFormatError
 		);
 
 	/* b) Convert double[]*/
         /*
-	createPythonArgumentLists(DBL_FLAG, 0, 1, 
-		NULL, modTim, ptrMemory->pModule, ptrMemory->pFunc, 
+	createPythonArgumentLists(DBL_FLAG, 0, 1,
+		NULL, modTim, ptrMemory->pModule, ptrMemory->pFunc,
 		pArgs, *ModelicaFormatError
 		);
          */
@@ -368,51 +389,51 @@ void pythonExchangeVariables(const char * moduleName,
 
 	/* c) Convert char **, an array of character arrays*/
 	if ( nStrWri > 0 ){
-		createPythonArgumentLists(STR_FLAG, nStrWri, 
-			0, strWri, NULL, ptrMemory->pModule, 
+		createPythonArgumentLists(STR_FLAG, nStrWri,
+			0, strWri, NULL, ptrMemory->pModule,
 			ptrMemory->pFunc, pArgs, *ModelicaFormatError
 			);
 	}
 
 	/* d) Convert double[]*/
 	if ( nDblWri > 0 ){
-		createPythonArgumentLists(DBL_FLAG, 0, 
-			nDblWri, NULL, dblValWri, ptrMemory->pModule, 
+		createPythonArgumentLists(DBL_FLAG, 0,
+			nDblWri, NULL, dblValWri, ptrMemory->pModule,
 			ptrMemory->pFunc, pArgs, *ModelicaFormatError
 			);
 	}
 
 	/* e) Convert char **, an array of character arrays*/
 	if ( nStrRea > 0 ){
-		createPythonArgumentLists(STR_FLAG, 
-			nStrRea, 0, strRea, NULL, ptrMemory->pModule, 
+		createPythonArgumentLists(STR_FLAG,
+			nStrRea, 0, strRea, NULL, ptrMemory->pModule,
 			ptrMemory->pFunc, pArgs, *ModelicaFormatError
 			);
 	}
 
 	/* f) Convert char **, an array of character arrays*/
 	if (nStrParWri > 0){
-		createPythonArgumentLists(STR_FLAG, 
-			nStrParWri, 0, strParWri, NULL, 
-			ptrMemory->pModule, ptrMemory->pFunc, pArgs, 
+		createPythonArgumentLists(STR_FLAG,
+			nStrParWri, 0, strParWri, NULL,
+			ptrMemory->pModule, ptrMemory->pFunc, pArgs,
 			*ModelicaFormatError
 			);
 	}
-	
+
 	/* Convert the arguments*/
 	/* g) Convert double[]*/
 	if (nDblParWri > 0){
-		createPythonArgumentLists(DBL_FLAG, 0, 
-			nDblParWri, NULL, dblValParWri, 
-			ptrMemory->pModule, ptrMemory->pFunc, pArgs, 
+		createPythonArgumentLists(DBL_FLAG, 0,
+			nDblParWri, NULL, dblValParWri,
+			ptrMemory->pModule, ptrMemory->pFunc, pArgs,
 			*ModelicaFormatError
 			);
 	}
 
 	/* Convert the arguments*/
 	/* h) Convert double[]*/
-	/*createPythonArgumentLists(DBL_FLAG, 0, 
-		1, NULL, resWri, ptrMemory->pModule, ptrMemory->pFunc, 
+	/*createPythonArgumentLists(DBL_FLAG, 0,
+		1, NULL, resWri, ptrMemory->pModule, ptrMemory->pFunc,
 		pArgs, *ModelicaFormatError
 		);
          */
