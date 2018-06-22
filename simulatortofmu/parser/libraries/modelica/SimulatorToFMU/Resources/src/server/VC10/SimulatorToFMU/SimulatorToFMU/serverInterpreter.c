@@ -363,7 +363,7 @@ void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** str
 }
 
 /*
-* This function exchanges variables with an
+* This function.simulators variables with an
 * external simulator.
 *
 * @param configFileName the configuration file
@@ -379,7 +379,7 @@ void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** str
 * to the ModelicaFormatError
 * @param memory a Server object
 */
-void serverExchangeVariables(
+void serverSimulatorVariables(
 	double modTim,
 	const size_t nDblWri,
 	const char ** strWri,

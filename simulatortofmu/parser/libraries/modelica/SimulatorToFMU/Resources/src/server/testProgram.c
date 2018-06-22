@@ -31,7 +31,7 @@ int main(int nArgs, char ** args){
 
 	int i;
     cPtr* ptr = malloc(sizeof(cPtr));
-    /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
+    /* Set ptr to null as pythonSimulatorValuesNoModelica is checking for this */
     //ptr->ptr = NULL;
     //ptr->isInitialized = 0;
 
@@ -39,7 +39,7 @@ int main(int nArgs, char ** args){
 	/*_CrtDumpMemoryLeaks(); //DEBUGGING*/
 	for(i=0; i < 10; i++){
 		printf("Calling with i for simulator = %d.\n", i);
-		serverExchangeVariables(
+		serverSimulatorVariables(
 			configFileName,
 			time,
 			nDblWri,

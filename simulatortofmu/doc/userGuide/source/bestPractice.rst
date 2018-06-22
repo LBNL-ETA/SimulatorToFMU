@@ -57,7 +57,7 @@ To export a Simulator as an FMU, the user needs to write the Python wrapper whic
 The wrapper will be embedded in the FMU when the Simulator is exported and used at runtime on the target machine.
 
 The user needs to extend the Python wrapper provided in ``parser/utilities/simulator_wrapper.py`` 
-and implements the function ``exchange``.
+and implements the function `.simulator``.
 
 The following snippet shows the Simulator function.
 
@@ -90,7 +90,7 @@ The arguments of the functions are in the next table
 |                                                    | variables which have memory.                                      |
 +----------------------------------------------------+-------------------------------------------------------------------+
 
-If the simulator does not have memory, then the function ``exchange`` will be defined as 
+If the simulator does not have memory, then the function `.simulator`` will be defined as 
 
 .. literalinclude:: ../../../parser/utilities/simulator_wrapper_no_memory.py
    :language: python
@@ -98,9 +98,9 @@ If the simulator does not have memory, then the function ``exchange`` will be de
 
 .. note:: 
 
-   - The function ``exchange`` must return a list of output values which matches the order of the output names. 
-   - If the simulator has memory, then the function ``exchange`` must also return the memory.
-   - The function ``exchange`` can be used to invoke external programs/scripts which do not ship with the FMU. 
+   - The function `.simulator`` must return a list of output values which matches the order of the output names. 
+   - If the simulator has memory, then the function `.simulator`` must also return the memory.
+   - The function `.simulator`` can be used to invoke external programs/scripts which do not ship with the FMU. 
      The external programs/scripts will have to be installed on the target machine where the 
      FMU is run. See :doc:`build` for details on command line options. 
    - Once ``simulator_wrapper.py`` is implemented, it must be saved under a name of the form ``"modelname"`` + ``"_wrapper.py"``,  

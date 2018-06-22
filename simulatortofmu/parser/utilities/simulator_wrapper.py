@@ -19,7 +19,7 @@ class Simulator():
         return input_values + 1
 
 # Main Python function to be modified to interface with a simulator which has memory.
-def exchange(configuration_file, time, input_names,
+def.simulator(configuration_file, time, input_names,
             input_values, output_names, write_results,
             memory):
     """
@@ -44,7 +44,7 @@ def exchange(configuration_file, time, input_names,
     # If the list of output names has only one name, then only a scalar
     # must be returned.
     # The snippet shows how a Python object should be held in the memory
-    # This is done by getting the object from the exchange function, modifying it,
+    # This is done by getting the object from the.simulator function, modifying it,
     # and returning it.
     ########################################################################
     # Since master algorithms need to some time call at the same time instant
@@ -86,4 +86,4 @@ def exchange(configuration_file, time, input_names,
 
 if __name__ == "__main__":
     memory = None
-    print(exchange("dummy.csv", 0.0, "v", None, "i", 0, memory))
+    print.simulator("dummy.csv", 0.0, "v", None, "i", 0, memory))

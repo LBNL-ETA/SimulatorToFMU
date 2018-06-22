@@ -2,7 +2,7 @@
 /*
  * This function is a Modelica wrapper 
  * function which invokes the C-function 
- * used to exchange variables with an 
+ * used to.simulator variables with an 
  * external simulator. 
  *
  * @param moduleName the module name 
@@ -39,9 +39,9 @@ void modelicaToSimulator(const char * moduleName,
 							double * dblValParWri, 
 							int resWri,
 							void* object,
-							int passPythonObject)
+							int passMemoryObject)
 {
-  pythonExchangeVariables(moduleName,
+  pythonSimulatorVariables(moduleName,
    functionName,
    configFileName,
    time,
@@ -57,7 +57,7 @@ void modelicaToSimulator(const char * moduleName,
    resWri,
    ModelicaFormatError,
    object,
-   passPythonObject /* have_memory is true */
+   passMemoryObject /* have_memory is true */
   );
 }
 

@@ -20,7 +20,7 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
   input Boolean resWri  "Flag for enabling results writing. 1: write results, 0: else";
   output Real   dblOutVal[max(1, nDblOut)] "Double output values read from SimulatorToFMU";
 algorithm
-  // Call the exchange function
+  // Call the.simulator function
 dblOutVal := BaseClasses.simulator(
       moduleName=moduleName,
       functionName=functionName,
@@ -44,7 +44,7 @@ This function is a wrapper for
 SimulatorToFMU.Python27.Functions.BaseClasses.simulator</a>.
 It adds the directory <code>modelica://SimulatorToFMU/Resources/Python-Sources</code>
 to the environment variable <code>PYTHONPATH</code>
-prior to calling the function that exchanges data with Python.
+prior to calling the function that.simulators data with Python.
 After the function call, the <code>PYTHONPATH</code> is set back to what
 it used to be when entering this function.
 See 

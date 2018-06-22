@@ -90,7 +90,7 @@ void* initPythonMemory(char* pytScri)
   pathDir=dirname(basec);
 #endif
 
-  /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
+  /* Set ptr to null as pythonSimulatorValuesNoModelica is checking for this */
   ptr->ptr = NULL;
   ptr->isInitialized = 0;
   ptr->pModule = NULL;
@@ -201,7 +201,7 @@ void createPythonArgumentLists(int typ,
 }
 
 /*
- * This function exchanges variables with an
+ * This function.simulators variables with an
  * external simulator.
  *
  * @param moduleName the module name
@@ -223,7 +223,7 @@ void createPythonArgumentLists(int typ,
  * @param memory a Python object
  * @param have_memory the flag indicating a Python object
  */
-void pythonExchangeVariables(const char * moduleName,
+void pythonSimulatorVariables(const char * moduleName,
 	const char * functionName,
 	const char * configFileName,
 	double modTim,
@@ -238,7 +238,7 @@ void pythonExchangeVariables(const char * moduleName,
 	double * dblValParWri,
 	int resWri,
 	void (*ModelicaFormatError)(const char *string,...),
-	void* memory, int passPythonObject){
+	void* memory, int passMemoryObject){
 
 	PyObject *pName;
 	PyObject *pValue;
@@ -353,7 +353,7 @@ void pythonExchangeVariables(const char * moduleName,
 		nStrParWri = nDblParWri;
 		nArg = nArg + 2;
 	}
-        if (passPythonObject > 0)
+        if (passMemoryObject > 0)
                 nArg++;
 	if (nArg > 0)
 		pArgs = PyTuple_New(nArg);
@@ -451,7 +451,7 @@ void pythonExchangeVariables(const char * moduleName,
 	 iArg++;
 
 	 /* i) Convert object*/
-	 if ( passPythonObject > 0 ){
+	 if ( passMemoryObject > 0 ){
 	   /* Put the memory into the argument list.*/
 	   /* In the first call, put Py_None int obj, but in subsequent calls, use ptr. */
 		obj = (ptrMemory->ptr == NULL) ? Py_None : ptrMemory->ptr;
@@ -500,7 +500,7 @@ void pythonExchangeVariables(const char * moduleName,
 	/* Set up the variables that indicate the return data types of the function*/
 	if ( nDblRea > 0)
 		nRet++;
-	if (passPythonObject)
+	if (passMemoryObject)
 	    	nRet++;
 	/* Check whether the function must returns some values*/
 	if (nRet > 0){
@@ -596,7 +596,7 @@ void pythonExchangeVariables(const char * moduleName,
 		}
     		/*//////////////////////////////////////////////////////////////////////////*/
     		/* Parse the memory to the Python object*/
-    		if (passPythonObject > 0){
+    		if (passMemoryObject > 0){
       			ptrMemory->ptr = (void*)PyList_GetItem(pValue, iRet);
      			 iRet++;
     }
@@ -611,7 +611,7 @@ void pythonExchangeVariables(const char * moduleName,
 	/* Undo all initializations*/
 	/* We uncommented Py_Finalize() because it caused a segmentation fault on Ubuntu 12.04 32 bit.*/
 	/* The segmentation fault was randomly produced by the statement, and often observed when running*/
-	/* simulateModel("the SimulatorToFMU.Utilities.IO.Python27.Functions.Examples.TestPythonInterface");*/
+	/* simulateModel("the SimulatorToFMU.Python27.Functions.Examples.TestPythonInterface");*/
 	/**/
 	/* See also the discussion at*/
 	/* http://stackoverflow.com/questions/7676314/py-initialize-py-finalize-not-working-twice-with-numpy*/

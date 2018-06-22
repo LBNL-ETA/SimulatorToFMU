@@ -20,7 +20,7 @@
 /* First Implementation: Michael Wetter, LBNL, 1/31/2013*/
 /* Modified: Thierry S. Nouidui, LBNL, 3/26/2013 to suport cross compilation*/
 /* Modified: Thierry S. Nouidui, LBNL, 3/2/2017 for Simulator to FMU*/
-/* svn-id=$Id: exchangeValues.c 2877 2011-09-11 00:46:02Z mwetter $*/
+/* svn-id=$Id:.simulatorValues.c 2877 2011-09-11 00:46:02Z mwetter $*/
 /*////////////////////////////////////////////////////////////////////////////*/
 #include <stddef.h>  /* stddef defines size_t */
 #include <stdlib.h>
@@ -55,7 +55,7 @@ to not export all symbols but only the needed ones */
 #endif
 
 /*
- * This function exchanges variables 
+ * This function.simulators variables 
  * with an external simulator. 
  *
  * @param moduleName the module name 
@@ -77,7 +77,7 @@ to not export all symbols but only the needed ones */
  * @param memory a Python object               
  * @param have_memory the flag indicating a Python object          
  */
-LBNLPYTHONINTERPRETER_EXPORT void pythonExchangeVariables(const char * moduleName,
+LBNLPYTHONINTERPRETER_EXPORT void pythonSimulatorVariables(const char * moduleName,
 							const char * functionName, 
 							const char * configFileName,
 							double modTim,

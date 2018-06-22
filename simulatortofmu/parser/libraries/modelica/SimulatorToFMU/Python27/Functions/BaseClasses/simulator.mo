@@ -40,7 +40,7 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
       Include="#include \"pythonWrapper.c\"");
   annotation (Documentation(info="<html>
 <p>
-This function exchanges data with a Simulator through its Python API.
+This function.simulators data with a Simulator through its Python API.
 See 
 <a href=\"modelica://SimulatorToFMU.Python27.UsersGuide\">
 SimulatorToFMU.Python27.UsersGuide</a>

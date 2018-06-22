@@ -14,7 +14,7 @@ int main(int nArgs, char ** args){
 
 	/* Parameters for testing simulator interface*/
 	const char * moduleName="testSimulator";
-	const char * functionName="r1_r1PassPythonObject";
+	const char * functionName="r1_r1PassMemoryObject";
 	const char * configFileName="config.csv";
 	double time=0.0;
 
@@ -33,13 +33,13 @@ int main(int nArgs, char ** args){
 
 	int i;
     pythonPtr* ptr = malloc(sizeof(pythonPtr));
-    /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
+    /* Set ptr to null as pythonSimulatorValuesNoModelica is checking for this */
     ptr->ptr = NULL;
     ptr->isInitialized = 0;
 	/*_CrtDumpMemoryLeaks(); //DEBUGGING*/
 	for(i=0; i < 10; i++){
 		printf("Calling with i for simulator = %d.\n", i);
-		pythonExchangeVariables(moduleName,
+		pythonSimulatorVariables(moduleName,
 			functionName,
 			configFileName,
 			time,

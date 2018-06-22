@@ -82,7 +82,7 @@ extern "C" {
 #endif
 
 	/*
-	* This function exchanges variables
+	* This function.simulators variables
 	* with an external simulator.
 	*
 	* @param modTim the simulation time
@@ -97,7 +97,7 @@ extern "C" {
 	* to the inModelicaFormatError
 	* @param memory a Server object
 	*/
-	LBNLSERVERINTERPRETER_EXPORT void serverExchangeVariables(
+	LBNLSERVERINTERPRETER_EXPORT void serverSimulatorVariables(
 		double modTim,
 		const size_t nDblWri,
 		const char ** strWri,

@@ -2,7 +2,7 @@
 /*
 * This function is a Modelica wrapper
 * function which invokes the C-function
-* used to exchange variables with an
+* used to.simulator variables with an
 * external simulator.
 *
 * @param modTim the simulation time
@@ -28,7 +28,7 @@ void modelicaToSimulator(
 	int resWri,
 	void* object)
 {
-	serverExchangeVariables(
+	serverSimulatorVariables(
 		time,
 		nDblWri,
 		strWri,
