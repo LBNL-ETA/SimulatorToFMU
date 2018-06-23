@@ -91,8 +91,8 @@ LBNLPYTHONINTERPRETER_EXPORT void pythonSimulatorVariables(const char * moduleNa
 							double * dblValParWri, 
 							int resWri,
 							void(*inModelicaFormatError)(const char *string, ...),
-                          				void* object,
-                          				int have_memory);
+                          	void* object,
+                          	int have_memory);
 
 LBNLPYTHONINTERPRETER_EXPORT void* initPythonMemory();
 

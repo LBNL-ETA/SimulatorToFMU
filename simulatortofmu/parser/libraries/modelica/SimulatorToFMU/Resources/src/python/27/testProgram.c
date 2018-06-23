@@ -36,6 +36,7 @@ int main(int nArgs, char ** args){
     /* Set ptr to null as pythonSimulatorValuesNoModelica is checking for this */
     ptr->ptr = NULL;
     ptr->isInitialized = 0;
+	initPythonMemory("C:\\Test\\testSimulator.y");
 	/*_CrtDumpMemoryLeaks(); //DEBUGGING*/
 	for(i=0; i < 10; i++){
 		printf("Calling with i for simulator = %d.\n", i);

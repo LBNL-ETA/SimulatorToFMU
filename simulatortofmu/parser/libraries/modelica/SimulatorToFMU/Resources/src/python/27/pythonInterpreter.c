@@ -66,6 +66,11 @@ char *str_replace(char *orig, char *rep, char *with) {
 void* initPythonMemory(char* pytScri)
 {
   pythonPtr* ptr = malloc(sizeof(pythonPtr));
+  char* cmd;
+  int nCoun=0;
+  int i;
+  struct stat sb;
+  char* tmpScri;
 #ifdef _MSC_VER
   char pathDir[MAX_PATHNAME_LEN];
   char base [MAX_PATHNAME_LEN];
@@ -79,15 +84,51 @@ void* initPythonMemory(char* pytScri)
 
   /* Split the path to extract the directory name*/
 #ifdef _MSC_VER
-  retVal=_splitpath_s(str_replace(pytScri, "\\", "/"), base, sizeof(base),
-  pathDir, sizeof(pathDir), NULL, 0, NULL, 0);
-  if(retVal!=0){
-	  fprintf(stderr, "Python script %s could not be splitted. "
-		  "The error code is %d\n", pytScri, retVal);
-  }
+	if(strncmp(pytScri, "\\", 1)==0){
+		printf("The path to the resource script %s is UNC\n.", pytScri);
+		for (i=0; i<strlen(pytScri); i++){
+			if(pytScri[i]!=':'){
+				nCoun++;
+				continue;
+			}
+			else{
+				nCoun--;
+				break;
+			}
+		}
+
+		tmpScri=(char*)malloc((strlen(pytScri+nCoun)+1)*sizeof(char));
+		strncpy(tmpScri, pytScri+nCoun, strlen(pytScri+nCoun));
+
+		retVal=_splitpath_s(tmpScri, base, sizeof(base),
+			pathDir, sizeof(pathDir), NULL, 0, NULL, 0);
+	}
+	else{
+		retVal=_splitpath_s(pytScri, base, sizeof(base),
+			pathDir, sizeof(pathDir), NULL, 0, NULL, 0);
+	}
+
+
+	if(retVal!=0){
+		fprintf(stderr, "The path to the resource script %s could not be splitted. "
+			"The error code is %d\n.", pytScri, retVal);
+		exit(1);
+	}
+	/* Construct the path to the configuration file */
+	ptr->pathDir=(char*)malloc((strlen(pathDir)+strlen(base) + 10)*sizeof(char));
+	sprintf(ptr->pathDir, "%s%s", base, pathDir);
+	printf("This is the script path %s\n", ptr->pathDir);
+	/* Changed separator to check validity of path */
+	str_replace(ptr->pathDir, "\\", "\\\\");
+
+	if (!stat(ptr->pathDir, &sb)){
+		fprintf(stderr, "The path to resource folder %s doesn't exist.", ptr->pathDir);
+		exit(1);
+	}
+	
 #elif __unix__
   basec=strdup(pytScri);
-  pathDir=dirname(basec);
+  ptr->pathDir=dirname(basec);
 #endif
 
   /* Set ptr to null as pythonSimulatorValuesNoModelica is checking for this */
@@ -95,22 +136,18 @@ void* initPythonMemory(char* pytScri)
   ptr->isInitialized = 0;
   ptr->pModule = NULL;
   ptr->pFunc = NULL;
-#ifdef _MSC_VER
-  ptr->pathDir = (char *)malloc((strlen(pathDir) + strlen(base) + 50)*sizeof(char));
-#elif __unix__
-  ptr->pathDir = (char *)malloc((strlen(pathDir) + 50)*sizeof(char));
-#endif
+  ptr->cmd = (char *)malloc((strlen(ptr->pathDir) + 50)*sizeof(char));
   if (!Py_IsInitialized())
 	Py_Initialize();
   	PyRun_SimpleString("import sys");
   /* Append the path to the Python script to the Python search path*/
 #ifdef _MSC_VER
-	sprintf(ptr->pathDir, "%s%s%s%s%s%s", "sys.path.append(", "\"", pathDir, base, "\"", ")");
+	sprintf(ptr->cmd, "%s%s%s%s%s", "sys.path.append(", "\"", str_replace(ptr->pathDir, "\\", "/"), "\"", ")");
 #elif __unix__
-        sprintf(ptr->pathDir, "%s%s%s%s%s", "sys.path.append(", "\"", pathDir, "\"", ")");
+        sprintf(ptr->cmd, "%s%s%s%s%s", "sys.path.append(", "\"", ptr->pathDir, "\"", ")");
 #endif
-	printf ("The path to the Python script directory is %s\n", ptr->pathDir);
-	PyRun_SimpleString(ptr->pathDir);
+	printf ("Command to add the Python script directory is %s\n", ptr->cmd);
+	PyRun_SimpleString(ptr->cmd);
   return (void*) ptr;
 }
 
@@ -645,6 +682,7 @@ void freePythonMemory(void* object)
   if ( object != NULL ){
     pythonPtr* p = (pythonPtr*) object;
 	free(p->pathDir);
+	free(p->cmd);
     free(p);
   }
 }

@@ -175,7 +175,7 @@ protected
   {%- if exec_target=="python" %}
     parameter String moduleName="{{module_name}}"
       "Name of the Python module that contains the function";
-    parameter String functionName=.simulator" 
+    parameter String functionName="simulator" 
       "Name of the Python function";
    {%- endif %}
 
