@@ -19,6 +19,7 @@ typedef struct pythonPtr
 {
   void* ptr;
   char* pathDir;
+  char* cmd;
   int isInitialized;
   PyObject* pModule;
   PyObject* pFunc;
