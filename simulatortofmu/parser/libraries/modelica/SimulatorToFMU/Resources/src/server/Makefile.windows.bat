@@ -16,8 +16,8 @@ REM ############################################################################
 SET SRCS=pythonInterpreter.c
 SET LIBS=pythonInterpreter.lib
 
-SET MOD_DLL=SimulatorToFMUServer.dll
-SET MOD_LIB=SimulatorToFMUServer.lib
+SET MOD_DLL=simulatortofmuserver.dll
+SET MOD_LIB=simulatortofmuserver.lib
 
 :: Check if we are on a 32 or 64 bit machine
 ::IF "%DevEnvDir%"=="" (

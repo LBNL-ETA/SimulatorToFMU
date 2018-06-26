@@ -84,4 +84,4 @@ del CheckOS.txt
 del StringCheck.txt
 
 :: Delete exe files
-del testProgram.exe
+::del testProgram.exe
