@@ -8,7 +8,7 @@
         <xs:attribute type="xs:string" name="causality"/>
         <xs:attribute type="xs:string" name="type"/>
         <xs:attribute type="xs:string" name="unit" use="optional"/>
-        <xs:attribute type="xs:float" name="start" use="optional"/>
+        <xs:attribute name="start" use="optional"/>
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
