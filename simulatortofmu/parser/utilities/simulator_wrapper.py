@@ -19,7 +19,7 @@ class Simulator():
         return input_values + 1
 
 # Main Python function to be modified to interface with a simulator which has memory.
-def.simulator(configuration_file, time, input_names,
+def simulator(configuration_file, time, input_names,
             input_values, output_names, write_results,
             memory):
     """
@@ -51,6 +51,7 @@ def.simulator(configuration_file, time, input_names,
     # an FMU multiple times for event iteration. It is for efficient reasons
     # good to catch the simulator input and outputs results, along with the current
     #  and past simulation times to determine when the Simulator needs to be reinvoked.
+    newInputs=0
     if memory == None:
         # Initialize the Python object
         s = Simulator(configuration_file, time, input_names,
@@ -65,7 +66,7 @@ def.simulator(configuration_file, time, input_names,
         memory['s'] = s
     else:
         # Check if inputs values have changed
-        if not (input_values is None):
+        if (not (input_values is None) and isinstance(input_values, list)):
             newInputs = sum([abs(m - n) for m, n in zip (input_values,
             memory['inputsLast'])])
         # Check if time has changed prior to updating the outputs
@@ -86,4 +87,4 @@ def.simulator(configuration_file, time, input_names,
 
 if __name__ == "__main__":
     memory = None
-    print.simulator("dummy.csv", 0.0, "v", None, "i", 0, memory))
+    print(simulator("dummy.csv", 0.0, "v", None, "i", 0, memory))
