@@ -13,6 +13,14 @@
 	  start="C:\\Users\\Public\\server_config.txt"
 	  type="String">
     </ScalarVariable>
+	
+    <ScalarVariable
+      name="test"
+      description="parameter"
+      causality="parameter"
+	  start="0.0"
+	  type="Real">
+    </ScalarVariable>
     <ScalarVariable
       name="input1"
       description="input"

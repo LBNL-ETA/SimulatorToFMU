@@ -19,7 +19,7 @@ class Simulator():
         return input_values + 1
 
 # Main Python function to be modified to interface with a simulator which has memory.
-def simulator(configuration_file, time, input_names,
+def exchange(configuration_file, time, input_names,
             input_values, output_names, write_results,
             memory):
     """
@@ -87,4 +87,4 @@ def simulator(configuration_file, time, input_names,
 
 if __name__ == "__main__":
     memory = None
-    print(simulator("dummy.csv", 0.0, "v", None, "i", 0, memory))
+    print(exchange("dummy.csv", 0.0, "v", None, "i", 0, memory))

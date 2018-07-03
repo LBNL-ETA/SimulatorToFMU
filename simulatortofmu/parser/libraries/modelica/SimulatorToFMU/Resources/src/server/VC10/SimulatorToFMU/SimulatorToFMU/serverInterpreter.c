@@ -166,7 +166,7 @@ void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** str
 	char str[MAX_PATHNAME_LEN];
 	char** tmpDblParVal;
 	struct MemoryStruct chunk;
-	chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
+	chunk.memory = (char*)malloc(sizeof(char)*10000);  /* will be grown as needed by the realloc above */
 	chunk.size = 0;    /* no data at this point */
 	
 
@@ -345,25 +345,18 @@ void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** str
 	for (i=0; i<nDblPar; i++){
 		free(tmpDblParVal[i]);
 	}
+	
 	free(tmpDblParVal);
+	free(tmpScri);
 	free(url_str);
 	free(chunk.memory);
 	ptr->ptr = NULL;
 	ptr->isInitialized = 0;
-	free(ptr->conFilPat);
-	free(ptr->batFilPat);
-	free( ptr->fulScriPat);
-
-	free(ptr->strParNam);
-	free(ptr->strParVal);
-	free(ptr->dblParNam);
-	free(ptr->dblParVal);
-
 	return (void*) ptr;
 }
 
 /*
-* This function.simulators variables with an
+* This function exchanges variables with an
 * external simulator.
 *
 * @param configFileName the configuration file
@@ -400,10 +393,10 @@ void serverSimulatorVariables(
 		char* url_str;
 
 		cPtr* cMemory = (cPtr*)memory;
-		chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
+		chunk.memory = (char*)malloc(sizeof(char)*10000);  /* will be grown as needed by the realloc above */
 		chunk.size = 0;    /* no data at this point */
 
-		if (cMemory->ptr==NULL){
+		//if (cMemory->ptr==NULL){
 			cMemory->inVal = (char*)malloc((nDblWri*500)*sizeof(char));
 			cMemory->inNam = (char*)malloc((nDblWri*500)*sizeof(char));
 			cMemory->outNam = (char*)malloc((nDblRea*500)*sizeof(char));
@@ -415,7 +408,7 @@ void serverSimulatorVariables(
 			/* Join the strings */
 			sprintf(cMemory->outNam, "%s", join_strings(strRea, nDblRea));
 			cMemory->outNam[strlen(cMemory->outNam)-1]=0;
-		}
+		//}
 
 		/* Convert the doubles values into doubles strings and 
 		   then convert the string into a single string */
@@ -494,6 +487,9 @@ void serverSimulatorVariables(
 
 		free(url_str);
 		free(chunk.memory);
+		free(cMemory->inVal);
+		free(cMemory->inNam);
+		free(cMemory->outNam);
 		cMemory->isInitialized=1;
 		memory = cMemory;
 		cMemory->ptr=memory;
@@ -509,7 +505,7 @@ void freeServerMemory(void* object)
 
 		struct MemoryStruct chunk;
 				
-		chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
+		chunk.memory = (char*)malloc(sizeof(char)*10000);  /* will be grown as needed by the realloc above */
 		chunk.size = 0;    /* no data at this point */
 
 		p = (cPtr*) object;
@@ -543,15 +539,19 @@ void freeServerMemory(void* object)
 		}
 		printf("The address and the port shut down are %s and %s.\n", p->address, p->port);
 		printf("Final response from the server is %s\n", chunk.memory);
-		
-		free(p->inVal);
-		free(p->outNam);
-		free(p->inNam);
-		curl_easy_cleanup(p->curl_handle);
-		curl_global_cleanup();
-		free(p);
 		free(url_str);
 		free(chunk.memory);
+		curl_easy_cleanup(p->curl_handle);
+		curl_global_cleanup();
+		free(p->conFilPat);
+		free(p->batFilPat);
+		free( p->fulScriPat);
+
+		free(p->strParNam);
+		free(p->strParVal);
+		free(p->dblParNam);
+		free(p->dblParVal);
+		free(p);
 	}
 }
 

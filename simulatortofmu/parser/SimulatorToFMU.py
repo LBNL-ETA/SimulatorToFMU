@@ -852,7 +852,7 @@ class SimulatorToFMU(object):
             resource_scripts_base = [os.path.basename(item)
                                for item in self.resource_scripts_path]
             if not(self.module_name+'.py' in resource_scripts_base):
-                s = (self.module_name+'.py' +' no found in the list of Python scripts={!s}.'\
+                s = (self.module_name+'.py' +' not found in the list of Python scripts={!s}.'\
                      ' The name of the model is {!s}.'\
                      ' Hence the name of the Python wrapper script must be {!s}.').format(
                     self.resource_scripts_path, self.module_name, self.module_name+'.py')
@@ -874,7 +874,7 @@ class SimulatorToFMU(object):
             resource_scripts_base = [os.path.basename(item)
                                for item in self.resource_scripts_path]
             if not(start_server_name in resource_scripts_base):
-                s = (start_server_name +' no found in the list of Resources files={!s}.')
+                s = (start_server_name +' not found in the list of Resources files={!s}.')
                 log.error(s)
                 raise ValueError(s)
 
@@ -1007,11 +1007,21 @@ class SimulatorToFMU(object):
                       modelica_string_parameter_variable_names]:
                 check_duplicates(i)
 
-
             if(self.exec_target=='python'):
-                res_key_words = ['_configurationFileName', '_saveToFile', 'time']
-            elif(self.exec_target=='server'):
-                res_key_words = ['_saveToFile', 'time']
+                len_strVar=len(string_parameter_variable_names)
+                if len(string_parameter_variable_names)>1:
+                    s = 'The Python architecture supports a maximum of 1 string parameter.'\
+                        ' The model description file={!s} lists {!s} variables={!s}. Please correct'\
+                        ' the input file prior to compiling the FMU.'.format(self.xml_path,
+                        len_strVar, string_parameter_variable_names)
+                    log.error(s)
+                    raise ValueError(s)
+
+            #if(self.exec_target=='python'):
+                #res_key_words = ['_configurationFileName', '_saveToFile', 'time']
+            #    res_key_words = ['_saveToFile', 'time']
+            #elif(self.exec_target=='server'):
+            res_key_words = ['_saveToFile', 'time']
             for elm in res_key_words:
                 for nam in [modelica_real_input_variable_names,
                       modelica_real_output_variable_names,
