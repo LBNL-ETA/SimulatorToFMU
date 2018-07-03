@@ -4,8 +4,8 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
   input String moduleName
   "Name of the python module that contains the function";
   input String functionName=moduleName "Name of the python function";
-  input BaseClasses.PythonObject pytObj "Memory that holds the Python object";
-  input Boolean passPythonObject
+  input BaseClasses.PythonObject obj "Memory that holds the Python object";
+  input Boolean passMemoryObject
     "Set to true if the Python function returns and receives an object, see User's Guide";
   input String  conFilNam "Name of the python function";
   input Real    modTim "Model time";
@@ -18,9 +18,9 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
   input Integer nDblOut(min=0) "Number of double outputs to read from SimulatorToFMU";
   input Integer nDblPar(min=0) "Number of double parameters to send to SimulatorToFMU";
   input Boolean resWri  "Flag for enabling results writing. 1: write results, 0: else";
-  output Real dblOutVal[max(1, nDblOut)] "Double output values read from SimulatorToFMU";
+  output Real   dblOutVal[max(1, nDblOut)] "Double output values read from SimulatorToFMU";
 algorithm
-  // Call the exchange function
+  // Call the.simulator function
 dblOutVal := BaseClasses.simulator(
       moduleName=moduleName,
       functionName=functionName,
@@ -35,8 +35,8 @@ dblOutVal := BaseClasses.simulator(
       dblParNam=dblParNam,
       dblParVal=dblParVal,
       resWri=resWri,
-      pytObj=pytObj,
-      passPythonObject=passPythonObject);
+      obj=obj,
+      passMemoryObject=passMemoryObject);
 annotation (Documentation(info="<html>
 <p>
 This function is a wrapper for 
@@ -44,7 +44,7 @@ This function is a wrapper for
 SimulatorToFMU.Python27.Functions.BaseClasses.simulator</a>.
 It adds the directory <code>modelica://SimulatorToFMU/Resources/Python-Sources</code>
 to the environment variable <code>PYTHONPATH</code>
-prior to calling the function that exchanges data with Python.
+prior to calling the function that.simulators data with Python.
 After the function call, the <code>PYTHONPATH</code> is set back to what
 it used to be when entering this function.
 See 

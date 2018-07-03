@@ -2,16 +2,18 @@ within SimulatorToFMU.Python34.Functions.Examples;
 model Simulator "Test model for simulator functions"
   extends Modelica.Icons.Example;
 
-  parameter Boolean passPythonObject=false
+  parameter Boolean passMemoryObject=false
     "Set to true if the Python function returns and receives an object, see User's Guide";
   // Parameters names can be empty.
   // Inputs and outputs cannot be empty.
   parameter String emptyDblParNam[0](each start="")
     "Empty list of parameters names";
   parameter Real emptyDblParVal[0]=zeros(0) "Empty vector of parameters values";
-
-  SimulatorToFMU.Python34.Functions.BaseClasses.PythonObject[5] pytObj={
-      SimulatorToFMU.Python34.Functions.BaseClasses.PythonObject() for i in 1:5};
+  parameter String patResScri=Modelica.Utilities.Files.loadResource(
+  "modelica://SimulatorToFMU/Resources/Python-Sources/testSimulator.py")
+  "Path to the main Python script";
+  SimulatorToFMU.Python34.Functions.BaseClasses.PythonObject[5] obj={
+      SimulatorToFMU.Python34.Functions.BaseClasses.PythonObject(patResScri=patResScri) for i in 1:5};
   Real yR1[1] "Real function value";
   Real yR2[2] "Real function value";
 
@@ -19,8 +21,8 @@ algorithm
   yR1 := SimulatorToFMU.Python34.Functions.simulator(
     moduleName="testSimulator",
     functionName="r1_r1",
-    pytObj=pytObj[1],
-    passPythonObject=passPythonObject,
+    obj=obj[1],
+    passMemoryObject=passMemoryObject,
     conFilNam="config.csv",
     modTim=time,
     nDblInp=1,
@@ -37,8 +39,8 @@ algorithm
   yR1 := SimulatorToFMU.Python34.Functions.simulator(
     moduleName="testSimulator",
     functionName="r2_r1",
-    pytObj=pytObj[2],
-    passPythonObject=passPythonObject,
+    obj=obj[2],
+    passMemoryObject=passMemoryObject,
     conFilNam="config.csv",
     modTim=time,
     nDblInp=2,
@@ -55,8 +57,8 @@ algorithm
   yR1 := SimulatorToFMU.Python34.Functions.simulator(
     moduleName="testSimulator",
     functionName="par3_r1",
-    pytObj=pytObj[3],
-    passPythonObject=passPythonObject,
+    obj=obj[3],
+    passMemoryObject=passMemoryObject,
     conFilNam="config.csv",
     modTim=time,
     nDblInp=0,
@@ -73,8 +75,8 @@ algorithm
   yR2 := SimulatorToFMU.Python34.Functions.simulator(
     moduleName="testSimulator",
     functionName="r1_r2",
-    pytObj=pytObj[4],
-    passPythonObject=passPythonObject,
+    obj=obj[4],
+    passMemoryObject=passMemoryObject,
     conFilNam="config.csv",
     modTim=time,
     nDblInp=1,
@@ -91,8 +93,8 @@ algorithm
   yR2 := SimulatorToFMU.Python34.Functions.simulator(
     moduleName="testSimulator",
     functionName="r2p2_r2",
-    pytObj=pytObj[5],
-    passPythonObject=passPythonObject,
+    obj=obj[5],
+    passMemoryObject=passMemoryObject,
     conFilNam="config.csv",
     modTim=time,
     nDblInp=2,

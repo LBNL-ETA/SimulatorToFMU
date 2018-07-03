@@ -135,59 +135,14 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
 <li>If any file path contains spaces, then it must be surrounded with double quotes.</li>
 </ul>
 <p><code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code> supports the following command-line switches:</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="41%" />
-<col width="59%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Options</th>
-<th class="head">Purpose</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>-s</td>
-<td>Paths to python scripts required to run the Simulator.
-The main Python script must be an extension of the
-<code class="docutils literal"><span class="pre">simulator_wrapper.py</span></code> script which is provided in
-<code class="docutils literal"><span class="pre">parser/utilities/simulator_wrapper.py</span></code>. The name of the main
-Python script must be of the form <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;_wrapper.py&quot;</span></code>.</td>
-</tr>
-<tr class="row-odd"><td>-cf</td>
-<td>Path to the Simulator model or configuration file.</td>
-</tr>
-<tr class="row-even"><td>-i</td>
-<td>Path to the XML input file with the inputs/outputs of the FMU.
-Default is <code class="docutils literal"><span class="pre">parser/utilities/SimulatorModelDescription.xml</span></code></td>
-</tr>
-<tr class="row-odd"><td>-v</td>
-<td>FMI version. Options are <code class="docutils literal"><span class="pre">1.0</span></code> and <code class="docutils literal"><span class="pre">2.0</span></code>. Default is <code class="docutils literal"><span class="pre">2.0</span></code></td>
-</tr>
-<tr class="row-even"><td>-a</td>
-<td>FMI API version. Options are <code class="docutils literal"><span class="pre">cs</span></code> (co-simulation) and <code class="docutils literal"><span class="pre">me</span></code>
-(model exchange). Default is <code class="docutils literal"><span class="pre">me</span></code>.</td>
-</tr>
-<tr class="row-odd"><td>-t</td>
-<td>Modelica compiler. Options are <code class="docutils literal"><span class="pre">dymola</span></code> (Dymola), <code class="docutils literal"><span class="pre">jmodelica</span></code>
-(JModelica), and <code class="docutils literal"><span class="pre">openmodelica</span></code> (OpenModelica).
-Default is <code class="docutils literal"><span class="pre">dymola</span></code>.</td>
-</tr>
-<tr class="row-even"><td>-pt</td>
-<td>Path to the Modelica executable compiler.</td>
-</tr>
-<tr class="row-odd"><td>-hm</td>
-<td>Flag to indicate if simulator has memory. Default is <code class="docutils literal"><span class="pre">true</span></code>.</td>
-</tr>
-</tbody>
-</table>
 <p>The main functions of SimulatorToFMU are</p>
 <blockquote>
 <div><ul class="simple">
 <li>reading, validating, and parsing the Simulator XML input file.
 This includes removing and replacing invalid characters in variable names such as <code class="docutils literal"><span class="pre">*+-</span></code> with <code class="docutils literal"><span class="pre">_</span></code>,</li>
 <li>writing Modelica code with valid inputs and outputs names,</li>
-<li>invoking a Modelica compiler to compile the <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> code as an FMU 
-for model exchange or co-simulation <code class="docutils literal"><span class="pre">1.0</span></code> or <code class="docutils literal"><span class="pre">2.0</span></code>.</li>
+<li>invoking a Modelica compiler to compile the <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> code as an FMU
+for model.simulator or co-simulation <code class="docutils literal"><span class="pre">1.0</span></code> or <code class="docutils literal"><span class="pre">2.0</span></code>.</li>
 </ul>
 </div></blockquote>
 <p>The next section discusses requirements of some of the arguments of SimulatorToFMU.</p>
@@ -197,15 +152,15 @@ for model exchange or co-simulation <code class="docutils literal"><span class="
 There are two ways of providing the configuration file to the FMU:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>The path to the configuration file is passed as the command line argument <code class="docutils literal"><span class="pre">&quot;-c&quot;</span></code> 
-of SimulatorToFMU.py. In this situation, the configuration file is copied 
+<li>The path to the configuration file is passed as the command line argument <code class="docutils literal"><span class="pre">&quot;-c&quot;</span></code>
+of SimulatorToFMU.py. In this situation, the configuration file is copied
 in the resources folder of the FMU.</li>
 <li>The path to the configuration is set by the master algorithm before initializing the FMU.</li>
 </ol>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The name of the configuration variable is <code class="docutils literal"><span class="pre">_configurationFileName</span></code>. 
+<p class="last">The name of the configuration variable is <code class="docutils literal"><span class="pre">_configurationFileName</span></code>.
 This name is reserved and should not be used for FMU input and output names.</p>
 </div>
 <p>Depending on the tool used to export the FMU, following requirements/restrictions apply:</p>
@@ -215,7 +170,7 @@ This name is reserved and should not be used for FMU input and output names.</p>
 <li>If the path to the configuration file is provided,  then
 Dymola copies the file to its resources folder and uses the configuration file at runtime.
 In this case, the path to the configuration file can&#8217;t be set and changed by the master algorithm.</li>
-<li>If the configuration file is not provided, then the path to the configuration file must 
+<li>If the configuration file is not provided, then the path to the configuration file must
 be set by the master algorithm prior to initializing the FMU.</li>
 </ul>
 </div>
@@ -223,11 +178,11 @@ be set by the master algorithm prior to initializing the FMU.</li>
 <h4>4.1.1.2. JModelica<a class="headerlink" href="#jmodelica" title="Permalink to this headline">¶</a></h4>
 <ul>
 <li><p class="first">If the path to the configuration file is provided,  then
-JModelica will not copy it to the resources folder of the FMU. 
-Instead, the path to the configuration is hard-coded in the FMU. 
+JModelica will not copy it to the resources folder of the FMU.
+Instead, the path to the configuration is hard-coded in the FMU.
 As a further restriction, the path to the configuration file can&#8217;t be set and changed by the master algorithm.</p>
 <p>These are known limitations in JModelica 2.0.
-The workaround is to make sure that the path of the configuration file is 
+The workaround is to make sure that the path of the configuration file is
 the same on the machine where the FMU will be run.</p>
 </li>
 <li><p class="first">If the configuration file is not provided, then SimulatorToFMU will issue a warning.</p>
@@ -238,15 +193,15 @@ the same on the machine where the FMU will be run.</p>
 <h4>4.1.1.3. OpenModelica<a class="headerlink" href="#openmodelica" title="Permalink to this headline">¶</a></h4>
 <ul>
 <li><p class="first">If the path to a configuration file is provided,  then
-OpenModelica will not copy it to the resources folder of the FMU. 
-Instead, the path to the configuration is hard-coded in the FMU. 
+OpenModelica will not copy it to the resources folder of the FMU.
+Instead, the path to the configuration is hard-coded in the FMU.
 However, the path to the configuration file can be set and changed by the master algorithm.</p>
 <p>This is a known limitation in OpenModelica 1.11.0.
-The workaround is to either make sure that the path of the configuration file is 
+The workaround is to either make sure that the path of the configuration file is
 the same on the machine where the FMU will be run, or set the path of the configuration file
 when running the FMU.</p>
 </li>
-<li><p class="first">If the configuration file is not provided, then the path to the configuration file must 
+<li><p class="first">If the configuration file is not provided, then the path to the configuration file must
 be set by master algorithm prior to initializing the FMU.</p>
 </li>
 </ul>

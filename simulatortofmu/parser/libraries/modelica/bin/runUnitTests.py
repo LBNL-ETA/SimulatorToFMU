@@ -80,7 +80,7 @@ def _runUnitTests(batch, package, path, n_pro, show_gui):
     # These are currently not exposed as command line arguments.
 #    ut.setNumberOfThreads(1)
 #    ut.deleteTemporaryDirectories(False)
-#    ut.useExistingResults(['/tmp/tmp-Buildings-0-fagmeZ'])
+#    ut.useExistingResults(['/tmp/tmp-SimulatorToFMU.0-fagmeZ'])
 
     ut.writeOpenModelicaResultDictionary()
     # Run the regression tests
@@ -148,7 +148,7 @@ if __name__ == '__main__':
 
     # The path to buildingspy must be added to sys.path to work on Linux.
     # If only added to os.environ, the Python interpreter won't find buildingspy
-    sys.path.append(os.path.join(os.path.abspath('.'), "..", "..", "BuildingsPy"))
+    sys.path.append(os.path.join(os.path.abspath('.'), "..", "..", "SimulatorToFMU.y"))
 
 
     # Parse the arguments

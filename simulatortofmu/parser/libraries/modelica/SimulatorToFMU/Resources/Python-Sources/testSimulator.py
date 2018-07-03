@@ -44,7 +44,7 @@ def r2p2_r2(cS, iS, uS, uR, yS, parS, parR, iwR):
     return [uR[0] *parR[0],  uR[1]*parR[1]]
 
 # Functions with memory
-def r1_r1PassPythonObject(cS, iS, uS, uR, yS, iwR, obj):
+def r1_r1PassMemoryObject(cS, iS, uS, uR, yS, iwR, obj):
     if obj == None:
         # Initialize the Python object
         obj = {'a': uR}

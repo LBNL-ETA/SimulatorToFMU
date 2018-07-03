@@ -44,12 +44,10 @@ SimulatorToFMU_LIB_PATH = os.path.join(
     script_path, '..', 'parser', 'libraries', 'modelica')
 python_scripts_path = [PYTHON_SCRIPT_PATH]
 
+
 if(platform.system().lower() == 'windows'):
     python_scripts_path = [item.replace('\\', '\\\\') for item in [
         PYTHON_SCRIPT_PATH]]
-
-# Append the path to the script which is used in unit tests.
-sys.path.append(utilities_path)
 
 Simulator_T = simulator.SimulatorToFMU('',
                                        XML_INPUT_FILE,
@@ -66,7 +64,8 @@ Simulator_T = simulator.SimulatorToFMU('',
                                        None,
                                        'true',
                                        'true',
-                                       None)
+                                       None,
+                                       'python')
 
 
 
@@ -158,7 +157,8 @@ class Tester(unittest.TestCase):
                             modPat,
                             cs_xml,
                             'true',
-                            None)
+                            None,
+                            'python')
 
                         print (
                             'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(
@@ -348,7 +348,8 @@ class Tester(unittest.TestCase):
                             modPat,
                             cs_xml,
                             'true',
-                            None)
+                            None,
+                            'python')
 
                         print (
                             'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(
@@ -418,7 +419,8 @@ class Tester(unittest.TestCase):
                             modPat,
                             cs_xml,
                             'true',
-                            None)
+                            None,
+                            'python')
 
                         print (
                             'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(

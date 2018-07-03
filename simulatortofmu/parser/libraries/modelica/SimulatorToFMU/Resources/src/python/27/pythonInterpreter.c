@@ -3,6 +3,7 @@
 /* #include <stdlib.h>*/
 /* #include <crtdbg.h>*/
 #include "pythonInterpreter.h"
+#define MAX_PATHNAME_LEN 2048
 #define STR_FLAG 1
 #define DBL_FLAG 0
 #if PY_MAJOR_VERSION >= 3
@@ -14,25 +15,149 @@
 # define PyInt_Check PyLong_Check
 #endif
 
+/* Replace a character in a string. */
+/* You must free the result if result is non-NULL.*/
+char *str_replace(char *orig, char *rep, char *with) {
+    char *result; /* the return string */
+    char *ins;    /* the next insert point */
+    char *tmp;    /* varies */
+    int len_rep;  /* length of rep (the string to remove) */
+    int len_with; /* length of with (the string to replace rep with) */
+    int len_front; /* distance between rep and end of last rep */
+    int count;    /*number of replacements */
+
+    /* sanity checks and initialization */
+    if (!orig || !rep)
+        return NULL;
+    len_rep = strlen(rep);
+    if (len_rep == 0)
+        return NULL; /* empty rep causes infinite loop during count*/
+    if (!with)
+        with = "";
+    len_with = strlen(with);
+
+    /* count the number of replacements needed*/
+    ins = orig;
+    for (count = 0; tmp = strstr(ins, rep); ++count) {
+        ins = tmp + len_rep;
+    }
+    tmp = result = malloc(strlen(orig) + (len_with - len_rep) * count + 1);
+
+    if (!result)
+        return NULL;
+
+    /* first time through the loop, all the variable are set correctly */
+    /* from here on, */
+    /*    tmp points to the end of the result string */
+    /*    ins points to the next occurrence of rep in orig */
+    /*    orig points to the remainder of orig after "end of rep" */
+    while (count--) {
+        ins = strstr(orig, rep);
+        len_front = ins - orig;
+        tmp = strncpy(tmp, orig, len_front) + len_front;
+        tmp = strcpy(tmp, with) + len_with;
+        orig += len_front + len_rep; /* move to next "end of rep" */
+    }
+    strcpy(tmp, orig);
+    return result;
+}
+
 /* Create the structure and initialize its pointer to NULL. */
-void* initPythonMemory()
+void* initPythonMemory(char* pytScri)
 {
   pythonPtr* ptr = malloc(sizeof(pythonPtr));
-  /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
+  char* cmd;
+  int nCoun=0;
+  int i;
+  struct stat sb;
+  char* tmpScri;
+#ifdef _MSC_VER
+  char pathDir[MAX_PATHNAME_LEN];
+  char base [MAX_PATHNAME_LEN];
+  int retVal;
+  char ext [40];
+#elif __unix__
+  char* basec;
+  char* pathDir;
+#endif
+
+
+  /* Split the path to extract the directory name*/
+#ifdef _MSC_VER
+	if(strncmp(pytScri, "\\", 1)==0){
+		printf("The path to the resource script %s is UNC\n.", pytScri);
+		for (i=0; i<strlen(pytScri); i++){
+			if(pytScri[i]!=':'){
+				nCoun++;
+				continue;
+			}
+			else{
+				nCoun--;
+				break;
+			}
+		}
+
+		tmpScri=(char*)malloc((strlen(pytScri+nCoun)+1)*sizeof(char));
+		strncpy(tmpScri, pytScri+nCoun, strlen(pytScri+nCoun));
+
+		retVal=_splitpath_s(tmpScri, base, sizeof(base),
+			pathDir, sizeof(pathDir), NULL, 0, NULL, 0);
+	}
+	else{
+		retVal=_splitpath_s(pytScri, base, sizeof(base),
+			pathDir, sizeof(pathDir), NULL, 0, NULL, 0);
+	}
+
+
+	if(retVal!=0){
+		fprintf(stderr, "The path to the resource script %s could not be splitted. "
+			"The error code is %d\n.", pytScri, retVal);
+		exit(1);
+	}
+	/* Construct the path to the configuration file */
+	ptr->pathDir=(char*)malloc((strlen(pathDir)+strlen(base) + 10)*sizeof(char));
+	sprintf(ptr->pathDir, "%s%s", base, pathDir);
+	printf("This is the script path %s\n", ptr->pathDir);
+	/* Changed separator to check validity of path */
+	str_replace(ptr->pathDir, "\\", "\\\\");
+
+	if (!stat(ptr->pathDir, &sb)){
+		fprintf(stderr, "The path to resource folder %s doesn't exist.", ptr->pathDir);
+		exit(1);
+	}
+	
+#elif __unix__
+  basec=strdup(pytScri);
+  ptr->pathDir=dirname(basec);
+#endif
+
+  /* Set ptr to null as pythonSimulatorValuesNoModelica is checking for this */
   ptr->ptr = NULL;
   ptr->isInitialized = 0;
   ptr->pModule = NULL;
   ptr->pFunc = NULL;
+  ptr->cmd = (char *)malloc((strlen(ptr->pathDir) + 50)*sizeof(char));
+  if (!Py_IsInitialized())
+	Py_Initialize();
+  	PyRun_SimpleString("import sys");
+  /* Append the path to the Python script to the Python search path*/
+#ifdef _MSC_VER
+	sprintf(ptr->cmd, "%s%s%s%s%s", "sys.path.append(", "\"", str_replace(ptr->pathDir, "\\", "/"), "\"", ")");
+#elif __unix__
+        sprintf(ptr->cmd, "%s%s%s%s%s", "sys.path.append(", "\"", ptr->pathDir, "\"", ")");
+#endif
+	printf ("Command to add the Python script directory is %s\n", ptr->cmd);
+	PyRun_SimpleString(ptr->cmd);
   return (void*) ptr;
 }
 
 static Py_ssize_t iArg = 0;
 
 /*
- * This function creates list of  
+ * This function creates list of
  * arguments for the Python function.
  *
- * @param typ the type of variable 
+ * @param typ the type of variable
  * (1 for strings, 0 for doubles)
  * @param nStrs the number of string variables
  * @param nDbls the number of double variables
@@ -44,18 +169,18 @@ static Py_ssize_t iArg = 0;
  * @param ModelicaFormatError the pointer
  * to the ModelicaFormatError
  */
-void createPythonArgumentLists(int typ, 
-	const size_t nStrs, 
-	const size_t nDbls, 
-	const char ** strs, 
+void createPythonArgumentLists(int typ,
+	const size_t nStrs,
+	const size_t nDbls,
+	const char ** strs,
 	double * dbls,
-	PyObject *pModule, 
+	PyObject *pModule,
 	PyObject *pFunc,
 	PyObject *pArgs,
 	void (*ModelicaFormatError)
 	(const char *string,...)){
 		Py_ssize_t i;
-		PyObject *pArgsDbl; 
+		PyObject *pArgsDbl;
 		PyObject *pArgsStr;
 		PyObject *pValue;
 
@@ -113,10 +238,10 @@ void createPythonArgumentLists(int typ,
 }
 
 /*
- * This function exchanges variables with an 
- * external simulator. 
+ * This function.simulators variables with an
+ * external simulator.
  *
- * @param moduleName the module name 
+ * @param moduleName the module name
  * @param functionName the function name
  * @param configFileName the configuration file
  * @param modTim the simulation time
@@ -132,25 +257,25 @@ void createPythonArgumentLists(int typ,
  * @param resWri the result flag
  * @param ModelicaFormatError the pointer
  * to the ModelicaFormatError
- * @param memory a Python object               
- * @param have_memory the flag indicating a Python object   
+ * @param memory a Python object
+ * @param have_memory the flag indicating a Python object
  */
-void pythonExchangeVariables(const char * moduleName,
+void pythonSimulatorVariables(const char * moduleName,
 	const char * functionName,
 	const char * configFileName,
 	double modTim,
-	const size_t nDblWri, 
-	const char ** strWri, 
-	double * dblValWri, 
-	size_t nDblRea, 
+	const size_t nDblWri,
+	const char ** strWri,
+	double * dblValWri,
+	size_t nDblRea,
 	const char ** strRea,
-	double * dblValRea, 
-	size_t nDblParWri, 
-	const char ** strParWri, 
-	double * dblValParWri, 
+	double * dblValRea,
+	size_t nDblParWri,
+	const char ** strParWri,
+	double * dblValParWri,
 	int resWri,
 	void (*ModelicaFormatError)(const char *string,...),
-	void* memory, int passPythonObject){
+	void* memory, int passMemoryObject){
 
 	PyObject *pName;
 	PyObject *pValue;
@@ -186,7 +311,6 @@ void pythonExchangeVariables(const char * moduleName,
 	/* See also http://stackoverflow.com/questions/19381441/python-modelica-connection-fails-due-to-import-error*/
 	PySys_SetArgv(0, &arg);
 
-
 	/*//////////////////////////////////////////////////////////////////////////*/
 	/* Load Python module*/
 
@@ -196,7 +320,6 @@ void pythonExchangeVariables(const char * moduleName,
           if (!pName) {
             (*ModelicaFormatError)("Failed to convert moduleName '%s' to Python object.\n", moduleName);
           }
-
 	ptrMemory->pModule = PyImport_Import(pName);
 	/* Decrement the reference counter */
 	/* causes sometimes a segmentation fault Py_DECREF(pName);*/
@@ -267,7 +390,7 @@ void pythonExchangeVariables(const char * moduleName,
 		nStrParWri = nDblParWri;
 		nArg = nArg + 2;
 	}
-        if (passPythonObject > 0)
+        if (passMemoryObject > 0)
                 nArg++;
 	if (nArg > 0)
 		pArgs = PyTuple_New(nArg);
@@ -276,15 +399,15 @@ void pythonExchangeVariables(const char * moduleName,
 
 	/* Convert the arguments*/
 	/* a) Convert the configuration file name*/
-	createPythonArgumentLists(STR_FLAG, 1, 
-		0, confFilNam, NULL, ptrMemory->pModule, 
+	createPythonArgumentLists(STR_FLAG, 1,
+		0, confFilNam, NULL, ptrMemory->pModule,
 		ptrMemory->pFunc, pArgs, *ModelicaFormatError
 		);
 
 	/* b) Convert double[]*/
         /*
-	createPythonArgumentLists(DBL_FLAG, 0, 1, 
-		NULL, modTim, ptrMemory->pModule, ptrMemory->pFunc, 
+	createPythonArgumentLists(DBL_FLAG, 0, 1,
+		NULL, modTim, ptrMemory->pModule, ptrMemory->pFunc,
 		pArgs, *ModelicaFormatError
 		);
          */
@@ -303,51 +426,51 @@ void pythonExchangeVariables(const char * moduleName,
 
 	/* c) Convert char **, an array of character arrays*/
 	if ( nStrWri > 0 ){
-		createPythonArgumentLists(STR_FLAG, nStrWri, 
-			0, strWri, NULL, ptrMemory->pModule, 
+		createPythonArgumentLists(STR_FLAG, nStrWri,
+			0, strWri, NULL, ptrMemory->pModule,
 			ptrMemory->pFunc, pArgs, *ModelicaFormatError
 			);
 	}
 
 	/* d) Convert double[]*/
 	if ( nDblWri > 0 ){
-		createPythonArgumentLists(DBL_FLAG, 0, 
-			nDblWri, NULL, dblValWri, ptrMemory->pModule, 
+		createPythonArgumentLists(DBL_FLAG, 0,
+			nDblWri, NULL, dblValWri, ptrMemory->pModule,
 			ptrMemory->pFunc, pArgs, *ModelicaFormatError
 			);
 	}
 
 	/* e) Convert char **, an array of character arrays*/
 	if ( nStrRea > 0 ){
-		createPythonArgumentLists(STR_FLAG, 
-			nStrRea, 0, strRea, NULL, ptrMemory->pModule, 
+		createPythonArgumentLists(STR_FLAG,
+			nStrRea, 0, strRea, NULL, ptrMemory->pModule,
 			ptrMemory->pFunc, pArgs, *ModelicaFormatError
 			);
 	}
 
 	/* f) Convert char **, an array of character arrays*/
 	if (nStrParWri > 0){
-		createPythonArgumentLists(STR_FLAG, 
-			nStrParWri, 0, strParWri, NULL, 
-			ptrMemory->pModule, ptrMemory->pFunc, pArgs, 
+		createPythonArgumentLists(STR_FLAG,
+			nStrParWri, 0, strParWri, NULL,
+			ptrMemory->pModule, ptrMemory->pFunc, pArgs,
 			*ModelicaFormatError
 			);
 	}
-	
+
 	/* Convert the arguments*/
 	/* g) Convert double[]*/
 	if (nDblParWri > 0){
-		createPythonArgumentLists(DBL_FLAG, 0, 
-			nDblParWri, NULL, dblValParWri, 
-			ptrMemory->pModule, ptrMemory->pFunc, pArgs, 
+		createPythonArgumentLists(DBL_FLAG, 0,
+			nDblParWri, NULL, dblValParWri,
+			ptrMemory->pModule, ptrMemory->pFunc, pArgs,
 			*ModelicaFormatError
 			);
 	}
 
 	/* Convert the arguments*/
 	/* h) Convert double[]*/
-	/*createPythonArgumentLists(DBL_FLAG, 0, 
-		1, NULL, resWri, ptrMemory->pModule, ptrMemory->pFunc, 
+	/*createPythonArgumentLists(DBL_FLAG, 0,
+		1, NULL, resWri, ptrMemory->pModule, ptrMemory->pFunc,
 		pArgs, *ModelicaFormatError
 		);
          */
@@ -365,7 +488,7 @@ void pythonExchangeVariables(const char * moduleName,
 	 iArg++;
 
 	 /* i) Convert object*/
-	 if ( passPythonObject > 0 ){
+	 if ( passMemoryObject > 0 ){
 	   /* Put the memory into the argument list.*/
 	   /* In the first call, put Py_None int obj, but in subsequent calls, use ptr. */
 		obj = (ptrMemory->ptr == NULL) ? Py_None : ptrMemory->ptr;
@@ -414,7 +537,7 @@ void pythonExchangeVariables(const char * moduleName,
 	/* Set up the variables that indicate the return data types of the function*/
 	if ( nDblRea > 0)
 		nRet++;
-	if (passPythonObject)
+	if (passMemoryObject)
 	    	nRet++;
 	/* Check whether the function must returns some values*/
 	if (nRet > 0){
@@ -510,7 +633,7 @@ void pythonExchangeVariables(const char * moduleName,
 		}
     		/*//////////////////////////////////////////////////////////////////////////*/
     		/* Parse the memory to the Python object*/
-    		if (passPythonObject > 0){
+    		if (passMemoryObject > 0){
       			ptrMemory->ptr = (void*)PyList_GetItem(pValue, iRet);
      			 iRet++;
     }
@@ -525,7 +648,7 @@ void pythonExchangeVariables(const char * moduleName,
 	/* Undo all initializations*/
 	/* We uncommented Py_Finalize() because it caused a segmentation fault on Ubuntu 12.04 32 bit.*/
 	/* The segmentation fault was randomly produced by the statement, and often observed when running*/
-	/* simulateModel("the SimulatorToFMU.Utilities.IO.Python27.Functions.Examples.TestPythonInterface");*/
+	/* simulateModel("the SimulatorToFMU.Python27.Functions.Examples.TestPythonInterface");*/
 	/**/
 	/* See also the discussion at*/
 	/* http://stackoverflow.com/questions/7676314/py-initialize-py-finalize-not-working-twice-with-numpy*/
@@ -558,6 +681,8 @@ void freePythonMemory(void* object)
 {
   if ( object != NULL ){
     pythonPtr* p = (pythonPtr*) object;
+	free(p->pathDir);
+	free(p->cmd);
     free(p);
   }
 }

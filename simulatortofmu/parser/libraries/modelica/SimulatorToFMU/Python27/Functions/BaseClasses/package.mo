@@ -8,11 +8,11 @@ package BaseClasses "Package with functions that call Python"
         ExternalObject;
     function constructor
       "Construct an external object that can be used to store a Python object"
-    output PythonObject pytObj;
-    external "C" pytObj = initPythonMemory()
+      input String patResScri "Path to the Python main script";
+      output PythonObject obj;
+    external "C" obj = initPythonMemory(patResScri)
         annotation (Library={"SimulatorToFMUPython27",  "python27"},
           LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
-
     annotation(Documentation(info="<html>
 <p>
 The function <code>constructor</code> is a C function that is called by a Modelica simulator
@@ -20,8 +20,8 @@ exactly once during the initialization.
 The function returns the object <code>PythonObject</code> that
 will be used to store a Python object and pass it from one invocation to another 
 in the function
-<a href=\"modelica://Buildings.Utilities.IO.Python27.Functions.BaseClasses.exchange\">
-Buildings.Utilities.IO.Python27.Functions.BaseClasses.exchange</a>.
+<a href=\"modelica://SimulatorToFMU.Python27.Functions.BaseClasses.simulator\">
+SimulatorToFMU.Python27.Functions.BaseClasses.simulator</a>.
 </p>
 </html>", revisions="<html>
 <ul>
@@ -34,8 +34,8 @@ First implementation.
     end constructor;
 
   function destructor "Release memory"
-    input PythonObject pytObj;
-    external "C" freePythonMemory(pytObj)
+    input PythonObject obj;
+    external "C" freePythonMemory(obj)
       annotation (Library={"SimulatorToFMUPython27",  "python27"},
         LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
   annotation(Documentation(info="<html>

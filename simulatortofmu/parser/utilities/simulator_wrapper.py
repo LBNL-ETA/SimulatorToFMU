@@ -44,13 +44,14 @@ def exchange(configuration_file, time, input_names,
     # If the list of output names has only one name, then only a scalar
     # must be returned.
     # The snippet shows how a Python object should be held in the memory
-    # This is done by getting the object from the exchange function, modifying it,
+    # This is done by getting the object from the.simulator function, modifying it,
     # and returning it.
     ########################################################################
     # Since master algorithms need to some time call at the same time instant
     # an FMU multiple times for event iteration. It is for efficient reasons
     # good to catch the simulator input and outputs results, along with the current
     #  and past simulation times to determine when the Simulator needs to be reinvoked.
+    newInputs=0
     if memory == None:
         # Initialize the Python object
         s = Simulator(configuration_file, time, input_names,
@@ -65,7 +66,7 @@ def exchange(configuration_file, time, input_names,
         memory['s'] = s
     else:
         # Check if inputs values have changed
-        if not (input_values is None):
+        if (not (input_values is None) and isinstance(input_values, list)):
             newInputs = sum([abs(m - n) for m, n in zip (input_values,
             memory['inputsLast'])])
         # Check if time has changed prior to updating the outputs

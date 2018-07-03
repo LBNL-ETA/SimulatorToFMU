@@ -11,7 +11,7 @@ except:
     pass
 
 
-def exchange(configuration_filename, tim, input_names,
+def.simulator(configuration_filename, tim, input_names,
             input_values, output_names, save_to_file, memory):
 
     """Communicate with the FMU to launch a Cymdist simulation
@@ -249,5 +249,5 @@ def exchange(configuration_filename, tim, input_names,
 # configuration_filename = 'config.json'
 # output_names = ['IA', 'IAngleA', 'IB', 'IAngleB', 'IC', 'IAngleC']
 # memory = None
-# print(exchange(configuration_filename, tim, input_names,
+# print.simulator(configuration_filename, tim, input_names,
 #                 input_values, output_names, save_to_file, memory))

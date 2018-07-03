@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SimulatorModelDescription
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  fmiVersion="2.0"
+  modelName="simulator"
+  description="Input data for a Simulator FMU"
+  generationTool="SimulatorToFMU">
+  <ModelVariables>
+    <ScalarVariable
+      name="_configurationFileName"
+      description="parameter"
+      causality="parameter"
+	  start="C:\\Users\\Public\\server_config.txt"
+	  type="String">
+    </ScalarVariable>
+	
+    <ScalarVariable
+      name="test"
+      description="parameter"
+      causality="parameter"
+	  start="0.0"
+	  type="Real">
+    </ScalarVariable>
+    <ScalarVariable
+      name="input1"
+      description="input"
+      causality="input"
+	  type="Real"
+	  unit="A">
+    </ScalarVariable>
+    <ScalarVariable
+      name="y"
+      description="output"
+      causality="output"
+	  type="Real">
+    </ScalarVariable>
+  </ModelVariables>
+</SimulatorModelDescription>

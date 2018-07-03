@@ -14,7 +14,7 @@ int main(int nArgs, char ** args){
 
 	/* Parameters for testing simulator interface*/
 	const char * moduleName="testSimulator";
-	const char * functionName="r1_r1PassPythonObject";
+	const char * functionName="r1_r1PassMemoryObject";
 	const char * configFileName="config.csv";
 	double time=0.0;
 
@@ -32,27 +32,27 @@ int main(int nArgs, char ** args){
 	int resWri=1;
 
 	int i;
-        pythonPtr* ptr = malloc(sizeof(pythonPtr));
-        /* Set ptr to null as pythonExchangeValuesNoModelica is checking for this */
-        ptr->ptr = NULL;
-        ptr->isInitialized = 0;
-	
+    pythonPtr* ptr = malloc(sizeof(pythonPtr));
+    /* Set ptr to null as pythonSimulatorValuesNoModelica is checking for this */
+    ptr->ptr = NULL;
+    ptr->isInitialized = 0;
+	initPythonMemory("C:\\Test\\testSimulator.y");
 	/*_CrtDumpMemoryLeaks(); //DEBUGGING*/
 	for(i=0; i < 10; i++){
 		printf("Calling with i for simulator = %d.\n", i);
-		pythonExchangeVariables(moduleName,
-			functionName, 
-			configFileName, 
+		pythonSimulatorVariables(moduleName,
+			functionName,
+			configFileName,
 			time,
-			nDblWri, 
-			strWri, 
-			dblValWri, 
-			nDblRea, 
+			nDblWri,
+			strWri,
+			dblValWri,
+			nDblRea,
 			strRea,
-			dblValRea, 
-			nDblParWri, 
-			strParWri, 
-			dblValParWri, 
+			dblValRea,
+			nDblParWri,
+			strParWri,
+			dblValParWri,
 			resWri,
 			ModelicaFormatError,
 			ptr,
@@ -61,4 +61,3 @@ int main(int nArgs, char ** args){
 
 	return 0;
 }
-
