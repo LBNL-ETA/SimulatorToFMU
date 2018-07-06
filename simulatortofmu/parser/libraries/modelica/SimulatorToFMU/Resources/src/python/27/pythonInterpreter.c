@@ -148,6 +148,10 @@ void* initPythonMemory(char* pytScri)
 #endif
 	printf ("Command to add the Python script directory is %s\n", ptr->cmd);
 	PyRun_SimpleString(ptr->cmd);
+
+	if (tmpScri!=NULL){
+		free(tmpScri);
+	}
   return (void*) ptr;
 }
 
