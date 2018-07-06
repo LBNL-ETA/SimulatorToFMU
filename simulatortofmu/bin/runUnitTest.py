@@ -31,6 +31,7 @@ XML_MODELDESCRIPTION = 'SimulatorModelDescription.xml'
 script_path = os.path.dirname(os.path.realpath(__file__))
 utilities_path = os.path.join(script_path, '..', 'parser', 'utilities')
 PYTHON_SCRIPT_PATH = os.path.join(utilities_path, 'simulator_wrapper.py')
+SERVER_SCRIPT_PATH = os.path.join(utilities_path, 'start_server.bat')
 MO_TEMPLATE_PATH = os.path.join(utilities_path, SimulatorModelicaTemplate_MO)
 MOS_TEMPLATE_PATH_DYMOLA = os.path.join(
     utilities_path, SimulatorModelicaTemplate_Dymola_MOS)
@@ -42,12 +43,16 @@ XSD_FILE_PATH = os.path.join(utilities_path, XSD_SCHEMA)
 XML_INPUT_FILE = os.path.join(utilities_path, XML_MODELDESCRIPTION)
 SimulatorToFMU_LIB_PATH = os.path.join(
     script_path, '..', 'parser', 'libraries', 'modelica')
+# For Python arhitecture
 python_scripts_path = [PYTHON_SCRIPT_PATH]
-
+# For server architecture
+server_scripts_path = [SERVER_SCRIPT_PATH]
 
 if(platform.system().lower() == 'windows'):
     python_scripts_path = [item.replace('\\', '\\\\') for item in [
         PYTHON_SCRIPT_PATH]]
+    server_scripts_path = [item.replace('\\', '\\\\') for item in [
+        SERVER_SCRIPT_PATH]]
 
 Simulator_T = simulator.SimulatorToFMU('',
                                        XML_INPUT_FILE,
@@ -99,6 +104,16 @@ class Tester(unittest.TestCase):
             print ("No executable for tool={!s}".format(tool))
             return 1
 
+    def helper_export(self, obj):
+        '''
+        Function used to export the Modelica models
+        '''
+        obj.print_mo()
+        obj.generate_fmu()
+        obj.clean_temporary()
+        obj.rewrite_fmu()
+
+
     def run_simulator (self, tool):
 
         '''
@@ -120,6 +135,14 @@ class Tester(unittest.TestCase):
             if tool == 'openmodelica':
                 modPat = 'OPENMODELICALIBRARY'
                 mosT = MOS_TEMPLATE_PATH_OPENMODELICA
+                # Add the library folder to the system pah so unit test can be run
+                # with OpenModelica
+                for arch in ['win32']:
+                    lib_path_arch=os.path.join(
+                        script_path, '..', 'parser', 'libraries', 'modelica',
+                        'SimulatorToFMU', 'Resources','Library', arch)
+                orig_path=os.environ.get('PATH')
+                os.environ['PATH']=lib_path_arch + os.pathsep + orig_path
             elif tool == 'dymola':
                 modPat = 'MODELICAPATH'
                 mosT = MOS_TEMPLATE_PATH_DYMOLA
@@ -141,104 +164,123 @@ class Tester(unittest.TestCase):
                     for cs_xml in ['true']:
                         if (version == '1'):
                             continue
-                        Simulator_Test = simulator.SimulatorToFMU(
-                            '',
-                            XML_INPUT_FILE,
-                            SimulatorToFMU_LIB_PATH,
-                            MO_TEMPLATE_PATH,
-                            mosT,
-                            XSD_FILE_PATH,
-                            '27',
-                            python_scripts_path,
-                            version,
-                            api,
-                            tool,
-                            None,
-                            modPat,
-                            cs_xml,
-                            'true',
-                            None,
-                            'python')
+                        # Setting parameters for running Python or server architecture
+                        if (platform.system().lower()=='linux'):
+                            exc_arr=['python']
+                            print('Server architecture is only supported on Windows')
+                        elif (platform.system().lower()=='windows' and (tool=='jmodelica')):
+                            exc_arr=['server', 'python']
+                        elif (platform.system().lower()=='windows' and (tool in ['dymola', 'openmodelica'])):
+                            exc_arr=['python']
+                            # Dymola's FMUs cannot be instantiated twice in the same process
+                            # This is the reason why we don't call it twice for the different
+                            # architecture. Setting exc_arr='server' will allow testing the Python architecture
+                            print('Only running the Python architecture for Dymola')
+                        for exc in exc_arr:
+                            if exc=='python':
+                                scripts_path=python_scripts_path
+                            elif exc=='server':
+                                scripts_path=server_scripts_path
+                            Simulator_Test = simulator.SimulatorToFMU(
+                                '',
+                                XML_INPUT_FILE,
+                                SimulatorToFMU_LIB_PATH,
+                                MO_TEMPLATE_PATH,
+                                mosT,
+                                XSD_FILE_PATH,
+                                '27',
+                                scripts_path,
+                                version,
+                                api,
+                                tool,
+                                None,
+                                modPat,
+                                cs_xml,
+                                'true',
+                                None,
+                                exc)
 
-                        print (
-                            'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(
-                                tool, version, api))
-                        start = datetime.now()
-                        Simulator_Test.print_mo()
-                        Simulator_Test.generate_fmu()
-                        Simulator_Test.clean_temporary()
-                        Simulator_Test.rewrite_fmu()
-                        end = datetime.now()
-                        print(
-                            'Export the simulator as an FMU in {!s} seconds.'.format(
-                                (end - start).total_seconds()))
+                            print (
+                                'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}, exc={!s}'.format(
+                                    tool, version, api, exc))
 
-                        fmu_path = os.path.join(
-                        script_path, '..', 'fmus', tool, platform.system().lower())
-                        print(
-                            'Copy simulator.fmu to {!s}.'.format(fmu_path))
-                        shutil.copy2('simulator.fmu', fmu_path)
+                            start = datetime.now()
+                            self.helper_export(Simulator_Test)
+                            end = datetime.now()
+                            print(
+                                'Export the simulator as an FMU in {!s} seconds.'.format(
+                                    (end - start).total_seconds()))
 
-        fmu_path = os.path.join(
-                script_path, '..', 'fmus', tool, platform.system().lower(), 'simulator.fmu')
-        # Parameters which will be arguments of the function
-        start_time = 0.0
-        stop_time = 5.0
+                            fmu_path = os.path.join(
+                            script_path, '..', 'fmus', tool, platform.system().lower())
+                            print(
+                                'Copy simulator.fmu to {!s}.'.format(fmu_path))
+                            shutil.copy2('simulator.fmu', fmu_path)
 
-        print ('Starting the simulation with {!s}'.format(tool))
-        start = datetime.now()
 
-        simulator_input_valref = []
-        simulator_output_valref = []
+                            fmu_path = os.path.join(
+                                    script_path, '..', 'fmus', tool, platform.system().lower(), 'simulator.fmu')
+                            # Parameters which will be arguments of the function
+                            start_time = 0.0
+                            stop_time = 5.0
 
-        sim_mod = load_fmu(fmu_path, log_level=7)
-        sim_mod.setup_experiment(
-            start_time=start_time, stop_time=stop_time)
+                            print ('Starting the simulation with {!s}'.format(tool))
+                            start = datetime.now()
 
-        # Define the inputs
-        simulator_input_names = ['v']
-        simulator_input_values = [220.0]
-        simulator_output_names = ['i']
+                            simulator_input_valref = []
+                            simulator_output_valref = []
 
-        # Get the value references of simulator inputs
-        for elem in simulator_input_names:
-            simulator_input_valref.append(
-                sim_mod.get_variable_valueref(elem))
+                            sim_mod = load_fmu(fmu_path, log_level=7)
+                            sim_mod.setup_experiment(
+                                start_time=start_time, stop_time=stop_time)
 
-        # Get the value references of simulator outputs
-        for elem in simulator_output_names:
-            simulator_output_valref.append(
-                sim_mod.get_variable_valueref(elem))
+                            # Define the inputs
+                            simulator_input_names = ['v']
+                            simulator_input_values = [220.0]
+                            simulator_output_names = ['i']
 
-        # Set the flag to save the results
-        sim_mod.set('_saveToFile', 'false')
+                            # Get the value references of simulator inputs
+                            for elem in simulator_input_names:
+                                simulator_input_valref.append(
+                                    sim_mod.get_variable_valueref(elem))
 
-        # Initialize the FMUs
-        sim_mod.initialize()
+                            # Get the value references of simulator outputs
+                            for elem in simulator_output_names:
+                                simulator_output_valref.append(
+                                    sim_mod.get_variable_valueref(elem))
 
-        # Call event update prior to entering continuous mode.
-        sim_mod.event_update()
+                            # Set the flag to save the results
+                            sim_mod.set('_saveToFile', 'false')
 
-        # Enter continuous time mode
-        sim_mod.enter_continuous_time_mode()
+                            # Initialize the FMUs
+                            sim_mod.initialize()
 
-        sim_mod.set_real(simulator_input_valref, simulator_input_values)
+                            # Call event update prior to entering continuous mode.
+                            sim_mod.event_update()
 
-        end = datetime.now()
+                            # Enter continuous time mode
+                            sim_mod.enter_continuous_time_mode()
 
-        print(
-            'Ran a single Simulator simulation with {!s} FMU={!s} in {!s} seconds.'.format(
-                tool, fmu_path, (end - start).total_seconds()))
-        if not (tool=='openmodelica'):
-            # PyFMI fails to get the output of an OpenModelica FMU
-            self.assertEqual(
-                sim_mod.get_real(
-                    sim_mod.get_variable_valueref('i')),
-                1.0,
-                'Values are not matching.')
+                            sim_mod.set_real(simulator_input_valref, simulator_input_values)
 
-        # Terminate FMUs
-        sim_mod.terminate()
+                            end = datetime.now()
+
+                            print(
+                                'Ran a single Simulator simulation with {!s} FMU={!s} in {!s} seconds.'.format(
+                                    tool, fmu_path, (end - start).total_seconds()))
+                            if not (tool=='openmodelica'):
+                                # PyFMI fails to get the output of an OpenModelica FMU
+                                self.assertEqual(
+                                    sim_mod.get_real(
+                                        sim_mod.get_variable_valueref('i')),
+                                    1.0,
+                                    'Values are not matching.')
+                            sim_mod.terminate()
+            if(tool=='openmodelica'):
+                del os.environ['PATH']
+                # Reset environment variable
+                os.environ['PATH']=orig_path
+
 
     def test_check_duplicates(self):
         '''
@@ -332,37 +374,67 @@ class Tester(unittest.TestCase):
                     for cs_xml in ['true']:
                         if (version == '1'):
                             continue
-                        Simulator_Test = simulator.SimulatorToFMU(
-                            '',
-                            XML_INPUT_FILE,
-                            SimulatorToFMU_LIB_PATH,
-                            MO_TEMPLATE_PATH,
-                            mosT,
-                            XSD_FILE_PATH,
-                            '27',
-                            python_scripts_path,
-                            version,
-                            api,
-                            tool,
-                            None,
-                            modPat,
-                            cs_xml,
-                            'true',
-                            None,
-                            'python')
 
-                        print (
-                            'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(
-                                tool, version, api))
-                        start = datetime.now()
-                        Simulator_Test.print_mo()
-                        Simulator_Test.generate_fmu()
-                        Simulator_Test.clean_temporary()
-                        Simulator_Test.rewrite_fmu()
-                        end = datetime.now()
-                        print(
-                            'Export Simulator as an FMU in {!s} seconds.'.format(
-                                (end - start).total_seconds()))
+                        for exc in ['python', 'server']:
+                            if exc=='python':
+                                scripts_path=python_scripts_path
+                                for py_vers in ['27', '34']:
+                                    Simulator_Test = simulator.SimulatorToFMU(
+                                        '',
+                                        XML_INPUT_FILE,
+                                        SimulatorToFMU_LIB_PATH,
+                                        MO_TEMPLATE_PATH,
+                                        mosT,
+                                        XSD_FILE_PATH,
+                                        py_vers,
+                                        scripts_path,
+                                        version,
+                                        api,
+                                        tool,
+                                        None,
+                                        modPat,
+                                        cs_xml,
+                                        'true',
+                                        None,
+                                        exc)
+                                    print ('Export the simulator with tool={!s},'\
+                                        ' FMI version={!s}, FMI API={!s}, exc={!s}, py_vers={!s}'.format(
+                                        tool, version, api, exc, py_vers))
+                                    start = datetime.now()
+                                    self.helper_export(Simulator_Test)
+                                    end = datetime.now()
+                                    print(
+                                        'Export Simulator as an FMU in {!s} seconds.'.format(
+                                            (end - start).total_seconds()))
+                            elif exc=='server':
+                                scripts_path=server_scripts_path
+                                Simulator_Test = simulator.SimulatorToFMU(
+                                    '',
+                                    XML_INPUT_FILE,
+                                    SimulatorToFMU_LIB_PATH,
+                                    MO_TEMPLATE_PATH,
+                                    mosT,
+                                    XSD_FILE_PATH,
+                                    '27',
+                                    scripts_path,
+                                    version,
+                                    api,
+                                    tool,
+                                    None,
+                                    modPat,
+                                    cs_xml,
+                                    'true',
+                                    None,
+                                    exc)
+                                print ('Export the simulator with tool={!s},'\
+                                    ' FMI version={!s}, FMI API={!s}, exc={!s}'.format(
+                                    tool, version, api, exc))
+                                start = datetime.now()
+                                self.helper_export(Simulator_Test)
+                                end = datetime.now()
+                                print(
+                                    'Export Simulator as an FMU in {!s} seconds.'.format(
+                                        (end - start).total_seconds()))
 
     def test_updates_fmu(self):
         '''
@@ -403,42 +475,43 @@ class Tester(unittest.TestCase):
                     for cs_xml in ['true']:
                         if (version == '1'):
                             continue
-                        Simulator_Test = simulator.SimulatorToFMU(
-                            '',
-                            XML_INPUT_FILE,
-                            SimulatorToFMU_LIB_PATH,
-                            MO_TEMPLATE_PATH,
-                            mosT,
-                            XSD_FILE_PATH,
-                            '27',
-                            python_scripts_path,
-                            version,
-                            api,
-                            tool,
-                            None,
-                            modPat,
-                            cs_xml,
-                            'true',
-                            None,
-                            'python')
-
-                        print (
-                            'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}'.format(
-                                tool, version, api))
-                        start = datetime.now()
-                        Simulator_Test.print_mo()
-                        Simulator_Test.generate_fmu()
-                        Simulator_Test.clean_temporary()
-                        Simulator_Test.rewrite_fmu()
-                        end = datetime.now()
-                        print(
-                            'Export the simulator as an FMU in {!s} seconds.'.format(
-                                (end - start).total_seconds()))
-                        fmu_path = os.path.join(
-                        script_path, '..', 'fmus', tool, platform.system().lower())
-                        print(
-                            'Copy simulator.fmu to {!s}.'.format(fmu_path))
-                        shutil.copy2('simulator.fmu', fmu_path)
+                        for exc in ['python', 'server']:
+                            if exc=='python':
+                                scripts_path=python_scripts_path
+                            elif exc=='server':
+                                scripts_path=server_scripts_path
+                            Simulator_Test = simulator.SimulatorToFMU(
+                                '',
+                                XML_INPUT_FILE,
+                                SimulatorToFMU_LIB_PATH,
+                                MO_TEMPLATE_PATH,
+                                mosT,
+                                XSD_FILE_PATH,
+                                '27',
+                                scripts_path,
+                                version,
+                                api,
+                                tool,
+                                None,
+                                modPat,
+                                cs_xml,
+                                'true',
+                                None,
+                                exc)
+                            print (
+                                'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}, exc={!s}'.format(
+                                    tool, version, api, exc))
+                            start = datetime.now()
+                            self.helper_export(Simulator_Test)
+                            end = datetime.now()
+                            print(
+                                'Export the simulator as an FMU in {!s} seconds.'.format(
+                                    (end - start).total_seconds()))
+                            fmu_path = os.path.join(
+                            script_path, '..', 'fmus', tool, platform.system().lower())
+                            print(
+                                'Copy simulator.fmu to {!s}.'.format(fmu_path))
+                            shutil.copy2('simulator.fmu', fmu_path)
 
     def test_run_simulator_all(self):
         '''

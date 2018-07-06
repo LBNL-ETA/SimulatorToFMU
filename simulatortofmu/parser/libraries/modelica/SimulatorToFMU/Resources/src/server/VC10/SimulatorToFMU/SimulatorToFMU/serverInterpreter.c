@@ -347,7 +347,9 @@ void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** str
 	}
 	
 	free(tmpDblParVal);
-	free(tmpScri);
+	if (tmpScri!=NULL){
+		free(tmpScri);
+	}
 	free(url_str);
 	free(chunk.memory);
 	ptr->ptr = NULL;
@@ -396,8 +398,8 @@ void serverSimulatorVariables(
 		chunk.memory = (char*)malloc(sizeof(char)*10000);  /* will be grown as needed by the realloc above */
 		chunk.size = 0;    /* no data at this point */
 
-		//if (cMemory->ptr==NULL){
-			cMemory->inVal = (char*)malloc((nDblWri*500)*sizeof(char));
+		cMemory->inVal = (char*)malloc((nDblWri*500)*sizeof(char));
+		if (cMemory->ptr==NULL){
 			cMemory->inNam = (char*)malloc((nDblWri*500)*sizeof(char));
 			cMemory->outNam = (char*)malloc((nDblRea*500)*sizeof(char));
 
@@ -408,7 +410,7 @@ void serverSimulatorVariables(
 			/* Join the strings */
 			sprintf(cMemory->outNam, "%s", join_strings(strRea, nDblRea));
 			cMemory->outNam[strlen(cMemory->outNam)-1]=0;
-		//}
+		}
 
 		/* Convert the doubles values into doubles strings and 
 		   then convert the string into a single string */
@@ -488,8 +490,6 @@ void serverSimulatorVariables(
 		free(url_str);
 		free(chunk.memory);
 		free(cMemory->inVal);
-		free(cMemory->inNam);
-		free(cMemory->outNam);
 		cMemory->isInitialized=1;
 		memory = cMemory;
 		cMemory->ptr=memory;
@@ -546,7 +546,8 @@ void freeServerMemory(void* object)
 		free(p->conFilPat);
 		free(p->batFilPat);
 		free( p->fulScriPat);
-
+		free(p->inNam);
+		free(p->outNam);
 		free(p->strParNam);
 		free(p->strParVal);
 		free(p->dblParNam);

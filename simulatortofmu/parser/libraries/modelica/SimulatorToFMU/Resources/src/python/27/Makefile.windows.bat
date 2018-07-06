@@ -24,7 +24,7 @@ SET MOD_LIB=SimulatorToFMUPython27.lib
 Set RegQry=HKLM\Hardware\Description\System\CentralProcessor\0
 REG.exe Query %RegQry% > checkOS.txt
 Find /i "x86" < CheckOS.txt > StringCheck.txt
-IF %ERRORLEVEL% == 1 (
+IF %ERRORLEVEL% == 0 (
   REM Set path to the directory on 32 bit machine
   SET PYTHONInc="C:\Python27\include"
   SET PYTHONLibs="C:\Python27\libs\python27.lib"
