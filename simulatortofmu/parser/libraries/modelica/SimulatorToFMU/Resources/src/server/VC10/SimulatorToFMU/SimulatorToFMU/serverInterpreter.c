@@ -210,10 +210,13 @@ void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** str
 	/* Changed separator to check validity of path */
 	str_replace(ptr->fulScriPat, "\\", "\\\\");
 #endif
-	if (!stat(ptr->fulScriPat, &sb)){
+	printf("The full script path is %s\n", ptr->fulScriPat);
+	/*fixme: This is not checking the path correctly*/
+	/*if (!stat(ptr->fulScriPat, &sb)){
 		fprintf(stderr, "The path to resource folder %s doesn't exist.", ptr->fulScriPat);
 		exit(1);
 	}
+	*/
 	ptr->address=(char*)malloc(100*sizeof(char));
 	ptr->port=(char*)malloc(100*sizeof(char));
 
@@ -341,8 +344,9 @@ void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** str
 		exit(1);
 	}
 
-
-	for (i=0; i<nDblPar; i++){
+	/* This might be ignored to avoid seg fault */
+	/* This somehow causes the simulation to run*/
+	/*for (i=0; i<nDblPar; i++){
 		free(tmpDblParVal[i]);
 	}
 	
@@ -350,6 +354,7 @@ void* initServerMemory(char* resScri, size_t nStrPar, size_t nDblPar, char** str
 	if (tmpScri!=NULL){
 		free(tmpScri);
 	}
+	*/
 	free(url_str);
 	free(chunk.memory);
 	ptr->ptr = NULL;
@@ -482,10 +487,12 @@ void serverSimulatorVariables(
 		}
 
 		/* Free variables which will be reconstructed */
+		/*
 		for (i=0; i<nDblWri; i++){
 			free(tmpInVal[i]);
 		}
 		free(tmpInVal);
+		*/
 
 		free(url_str);
 		free(chunk.memory);
@@ -543,6 +550,7 @@ void freeServerMemory(void* object)
 		free(chunk.memory);
 		curl_easy_cleanup(p->curl_handle);
 		curl_global_cleanup();
+		/*
 		free(p->conFilPat);
 		free(p->batFilPat);
 		free( p->fulScriPat);
@@ -553,6 +561,7 @@ void freeServerMemory(void* object)
 		free(p->dblParNam);
 		free(p->dblParVal);
 		free(p);
+		*/
 	}
 }
 
