@@ -15,7 +15,7 @@ class ServerObject
     external "C" obj = initServerMemory(patResScri, nStrPar,  nDblPar,
       strParNam, strParVal, dblParNam, dblParVal)
       annotation(Library={"curl", "simulatortofmuserver"},
-        LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
+        LibraryDirectory="modelica://SimulatorToFMU/Resources/Library");
     //annotation (IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
     //    Include="#include \"initServerMemory.c\"");
         //Library={"curld", "SimulatorToFMUServer"},
@@ -26,7 +26,7 @@ class ServerObject
 The function <code>constructor</code> is a C function that is called by a Modelica simulator
 exactly once during the initialization.
 The function returns the object <code>PythonObject</code> that
-will be used to store a Python object and pass it from one invocation to another 
+will be used to store a Python object and pass it from one invocation to another
 in the function
 <a href=\"modelica://SimulatorToFMU.Python27.Functions.BaseClasses.simulator\">
 SimulatorToFMU.Python27.Functions.BaseClasses.simulator</a>.
@@ -46,7 +46,7 @@ function destructor "Release memory"
   input ServerObject obj;
   external "C" freeServerMemory(obj)
   annotation(Library={"curl", "simulatortofmuserver"},
-      LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
+      LibraryDirectory="modelica://SimulatorToFMU/Resources/Library");
   //annotation(IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
   //    Include="#include \"freeServerMemory.c\"");
 annotation(Documentation(info="<html>

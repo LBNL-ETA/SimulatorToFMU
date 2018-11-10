@@ -19,16 +19,16 @@ function simulator "Function that communicates with the SimulatorToFMU Python AP
                                     resWri,
                                     obj)
     annotation (Library={"curl", "simulatortofmuserver"},
-      LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"},
+      LibraryDirectory="modelica://SimulatorToFMU/Resources/Library",
       IncludeDirectory="modelica://SimulatorToFMU/Resources/C-Sources",
       Include="#include \"serverWrapper.c\"");
   annotation (Documentation(info="<html>
 <p>
 This function.simulators data with a Simulator through its Python API.
-See 
+See
 <a href=\"modelica://SimulatorToFMU.Python27.UsersGuide\">
 SimulatorToFMU.Python27.UsersGuide</a>
-for instructions, and 
+for instructions, and
 <a href=\"modelica://SimulatorToFMU.Python27.Functions.Examples\">
 SimulatorToFMU.Python27.Functions.Examples</a>
 for examples.
