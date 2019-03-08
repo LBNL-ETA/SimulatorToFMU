@@ -12,13 +12,13 @@ package BaseClasses "Package with functions that call Python"
       output PythonObject obj;
     external "C" obj = initPythonMemory(patResScri)
         annotation (Library={"SimulatorToFMUPython27",  "python27"},
-          LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
+          LibraryDirectory="modelica://SimulatorToFMU/Resources/Library");
     annotation(Documentation(info="<html>
 <p>
 The function <code>constructor</code> is a C function that is called by a Modelica simulator
 exactly once during the initialization.
 The function returns the object <code>PythonObject</code> that
-will be used to store a Python object and pass it from one invocation to another 
+will be used to store a Python object and pass it from one invocation to another
 in the function
 <a href=\"modelica://SimulatorToFMU.Python27.Functions.BaseClasses.simulator\">
 SimulatorToFMU.Python27.Functions.BaseClasses.simulator</a>.
@@ -37,7 +37,7 @@ First implementation.
     input PythonObject obj;
     external "C" freePythonMemory(obj)
       annotation (Library={"SimulatorToFMUPython27",  "python27"},
-        LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
+        LibraryDirectory="modelica://SimulatorToFMU/Resources/Library");
   annotation(Documentation(info="<html>
 <p>
 Destructor that frees the memory of the object
