@@ -24,10 +24,10 @@ that support the import of Functional Mock-up Units.
 
 .. note::
 
-  SimulatorToFMU generates FMUs that use the Python 2.7/ C API for executing Python-driven simulation programs/scripts.
+  SimulatorToFMU generates FMUs that either use the Python 2.7 or the Python 3.4/ C API for executing Python-driven simulation programs/scripts.
 
 __author__ = "Thierry S. Nouidui"
-__email__ = "TSNouidui@lbl.gov"
+__email__ = "nouidui.consulting@gmail.com"
 __license__ = "BSD"
 __maintainer__ = "Thierry S Nouidui"
 ___int_doc::
