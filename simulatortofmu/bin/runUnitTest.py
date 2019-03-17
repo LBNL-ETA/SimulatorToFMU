@@ -90,7 +90,8 @@ class Tester(unittest.TestCase):
         '''
 
         if tool == 'jmodelica' and platform.system().lower() == "windows":
-            tool = 'pylab'
+            tool = 'setenv.bat'
+
         if tool == 'jmodelica' and platform.system().lower() == "linux":
             tool = 'jm_python.sh'
 
@@ -443,6 +444,7 @@ class Tester(unittest.TestCase):
         '''
 
         for tool in  ['dymola', 'jmodelica', 'openmodelica']:
+            print("Search executable for tool={!s}".format(tool))
             retVal=self.find_executable(tool)
             if ((retVal is not None) and retVal!=1):
                 print("======tool={!s} was found. Unit Test will be run".format(tool))
