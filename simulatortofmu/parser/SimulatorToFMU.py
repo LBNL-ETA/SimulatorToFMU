@@ -60,7 +60,7 @@ Following requirements must be met when using SimulatorToFMU
 ``SimulatorToFMU.py`` supports the following command-line switches:
 
 +----------------------------------------------------+--------------------------------------------------------------------------+
-| Options                                            | Purpose                                                                  |
+| Supported options                                  | Purpose                                                                  |
 +====================================================+==========================================================================+
 | -s                                                 | Paths to python scripts required to run the Simulator.                   |
 |                                                    | The main Python script must be an extension of the                       |
@@ -76,7 +76,7 @@ Following requirements must be met when using SimulatorToFMU
 | -v                                                 | FMI version. Options are ``1.0`` and ``2.0``. Default is ``2.0``         |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -a                                                 | FMI API version. Options are ``cs`` (co-simulation) and ``me``           |
-|                                                    | (model.simulator). Default is ``me``.                                     |
+|                                                    | (model.simulator). Default is ``me``.                                    |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -t                                                 | Modelica compiler. Options are ``dymola`` (Dymola), ``jmodelica``        |
 |                                                    | (JModelica), and ``openmodelica`` (OpenModelica).                        |
@@ -87,8 +87,10 @@ Following requirements must be met when using SimulatorToFMU
 | -hm                                                | Flag to indicate if simulator has memory (only for Python FMU).          |
 |                                                    | Default is ``true``.                                                     |
 +----------------------------------------------------+--------------------------------------------------------------------------+
-| -x                                                 | Flag to indicate if the FMU is a ``Python`` or a ``server`` FMU.         |
-|                                                    | Default is ``server``.                                                   |
+| -x                                                 | Flag to indicate if the FMU is a ``python`` or a ``server`` FMU.         |
+|                                                    | Default is ``python``.                                                   |
++----------------------------------------------------+--------------------------------------------------------------------------+
+| -h                                                 | Flag to list all the options supported by SimulatorToFMU.                |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 The main functions of SimulatorToFMU are
 
@@ -318,7 +320,7 @@ def main():
     # Get the execution target
     exec_target = args.exec_target
     if(exec_target is None):
-        exec_target = "server"
+        exec_target = "python"
     if not (exec_target in ['server', 'python']):
         log.error('The flag -x must either be server or python.')
         return
