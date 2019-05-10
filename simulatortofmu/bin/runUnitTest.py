@@ -170,7 +170,7 @@ class Tester(unittest.TestCase):
                             exc_arr=['python']
                             print('Server architecture is only supported on Windows')
                         elif (platform.system().lower()=='windows' and (tool=='jmodelica')):
-                            exc_arr=['server', 'python']
+                            exc_arr=['python'] # Exclude ServerFMU from the Unittests
                         elif (platform.system().lower()=='windows' and (tool in ['dymola', 'openmodelica'])):
                             exc_arr=['python']
                             # Dymola's FMUs cannot be instantiated twice in the same process

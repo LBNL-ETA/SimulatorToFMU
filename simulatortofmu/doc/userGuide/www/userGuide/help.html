@@ -1,36 +1,24 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>6. Help &#8212; FMU Export of a Python-driven Simulation Program User Guide</title>
-    
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.0.0rc15',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="7. Notation" href="notation.html" />
     <link rel="prev" title="5. Development" href="development.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
 <div class="headerStyle">
 <img src="_static/lbl-logo.png" alt="LBL logo" />
 </div>
@@ -59,12 +47,12 @@
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">6. Help</a><ul>
 <li><a class="reference internal" href="#compilation-failed-with-dymola">6.1. Compilation failed with Dymola</a></li>
 <li><a class="reference internal" href="#compilation-failed-with-openmodelica">6.2. Compilation failed with OpenModelica</a></li>
-<li><a class="reference internal" href="#simulation-failed-when-running-simulator-fmu">6.3. Simulation failed when running <code class="docutils literal"><span class="pre">Simulator.fmu</span></code></a></li>
+<li><a class="reference internal" href="#simulation-failed-when-running-simulator-fmu">6.3. Simulation failed when running <code class="docutils literal notranslate"><span class="pre">Simulator.fmu</span></code></a></li>
 <li><a class="reference internal" href="#simulation-failed-with-dymola-fmus">6.4. Simulation failed with Dymola FMUs</a></li>
 </ul>
 </li>
@@ -85,12 +73,14 @@
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -106,24 +96,24 @@
 <p>This chapter lists potential issues encountered when using SimulatorToFMU.</p>
 <div class="section" id="compilation-failed-with-dymola">
 <h2>6.1. Compilation failed with Dymola<a class="headerlink" href="#compilation-failed-with-dymola" title="Permalink to this headline">¶</a></h2>
-<p>If the export of the Simulator failed when compiling the model with Dymola, comment out <code class="docutils literal"><span class="pre">&quot;exit()&quot;</span></code> in
-<code class="docutils literal"><span class="pre">parser/utilities/SimulatorModelica_Template_Dymola.mos</span></code> with <code class="docutils literal"><span class="pre">&quot;//exit()&quot;</span></code>, and re-run <code class="docutils literal"><span class="pre">SimulatorToFMU.py</span></code>
+<p>If the export of the Simulator failed when compiling the model with Dymola, comment out <code class="docutils literal notranslate"><span class="pre">&quot;exit()&quot;</span></code> in
+<code class="docutils literal notranslate"><span class="pre">parser/utilities/SimulatorModelica_Template_Dymola.mos</span></code> with <code class="docutils literal notranslate"><span class="pre">&quot;//exit()&quot;</span></code>, and re-run <code class="docutils literal notranslate"><span class="pre">SimulatorToFMU.py</span></code>
 to see why the complation has failed.</p>
 </div>
 <div class="section" id="compilation-failed-with-openmodelica">
 <h2>6.2. Compilation failed with OpenModelica<a class="headerlink" href="#compilation-failed-with-openmodelica" title="Permalink to this headline">¶</a></h2>
 <p>If the export of the Simulator failed when compiling the model with OpenModelica,
-check if the variable <code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is defined in the Windows <code class="docutils literal"><span class="pre">Environment</span> <span class="pre">Variables</span></code>.</p>
+check if the variable <code class="docutils literal notranslate"><span class="pre">OPENMODELICALIBRARY</span></code> is defined in the Windows <code class="docutils literal notranslate"><span class="pre">Environment</span> <span class="pre">Variables</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal"><span class="pre">OPENMODELICALIBRARY</span></code> is the path to the libraries which are required by OpenModelica to compile Modelica models.</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">OPENMODELICALIBRARY</span></code> is the path to the libraries which are required by OpenModelica to compile Modelica models.</p>
 </div>
 </div>
 <div class="section" id="simulation-failed-when-running-simulator-fmu">
-<h2>6.3. Simulation failed when running <code class="docutils literal"><span class="pre">Simulator.fmu</span></code><a class="headerlink" href="#simulation-failed-when-running-simulator-fmu" title="Permalink to this headline">¶</a></h2>
+<h2>6.3. Simulation failed when running <code class="docutils literal notranslate"><span class="pre">Simulator.fmu</span></code><a class="headerlink" href="#simulation-failed-when-running-simulator-fmu" title="Permalink to this headline">¶</a></h2>
 <p>If the simulation failed with the exported FMU, check if
-the unzipped <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.scripts.zip&quot;</span></code>, and  the subdirectories of <code class="docutils literal"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal"><span class="pre">&quot;.binaries.zip&quot;</span></code>
-were added to the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>, and the system <code class="docutils literal"><span class="pre">PATH</span></code> (Windows) /<code class="docutils literal"><span class="pre">LD_LIBRARY_PATH</span></code> (Linux) respectively as described in <a class="reference internal" href="build.html#build-output"><span class="std std-ref">Outputs of SimulatorToFMU</span></a>.</p>
+the unzipped <code class="docutils literal notranslate"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal notranslate"><span class="pre">&quot;.scripts.zip&quot;</span></code>, and  the subdirectories of <code class="docutils literal notranslate"><span class="pre">&quot;modelname&quot;</span></code> + <code class="docutils literal notranslate"><span class="pre">&quot;.binaries.zip&quot;</span></code>
+were added to the <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code>, and the system <code class="docutils literal notranslate"><span class="pre">PATH</span></code> (Windows) /<code class="docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH</span></code> (Linux) respectively as described in <a class="reference internal" href="build.html#build-output"><span class="std std-ref">Outputs of SimulatorToFMU</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Any software or Python 2.7 module which is required to run the exported FMU will need to
@@ -132,8 +122,8 @@ be installed on the target machine where the FMU is run.</p>
 </div>
 <div class="section" id="simulation-failed-with-dymola-fmus">
 <h2>6.4. Simulation failed with Dymola FMUs<a class="headerlink" href="#simulation-failed-with-dymola-fmus" title="Permalink to this headline">¶</a></h2>
-<p>If an FMU exported using Dymola fails to run, check if the version of Dymola which exported the FMU had the <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license.
-The <code class="docutils literal"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license is required to export FMUs which can be run without requiring a Dymola runtime license.
+<p>If an FMU exported using Dymola fails to run, check if the version of Dymola which exported the FMU had the <code class="docutils literal notranslate"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license.
+The <code class="docutils literal notranslate"><span class="pre">Binary</span> <span class="pre">Model</span> <span class="pre">Export</span></code> license is required to export FMUs which can be run without requiring a Dymola runtime license.
 You can also inspect the model description of the FMU to see if a Dymola runtime license is required to run the FMU.</p>
 </div>
 </div>
@@ -167,8 +157,8 @@ You can also inspect the model description of the FMU to see if a Dymola runtime
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+        &#169; Copyright 2019, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.
     </div>
   </body>
 </html>
