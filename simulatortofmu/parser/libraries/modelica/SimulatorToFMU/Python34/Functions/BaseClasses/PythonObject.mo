@@ -8,7 +8,7 @@ class PythonObject
     output PythonObject obj;
   external "C" obj = initPythonMemory(patResScri)
       annotation (Library={"SimulatorToFMUPython34",  "python34"},
-        LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
+        LibraryDirectory="modelica://SimulatorToFMU/Resources/Library");
 
   annotation(Documentation(info="<html>
 <p>
@@ -35,7 +35,7 @@ function destructor "Release memory"
   input PythonObject obj;
   external "C" freePythonMemory(obj)
     annotation (Library={"SimulatorToFMUPython34",  "python34"},
-      LibraryDirectory={"modelica://SimulatorToFMU/Resources/Library"});
+      LibraryDirectory="modelica://SimulatorToFMU/Resources/Library");
 annotation(Documentation(info="<html>
 <p>
 Destructor that frees the memory of the object

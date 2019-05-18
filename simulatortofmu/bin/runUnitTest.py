@@ -112,6 +112,8 @@ class Tester(unittest.TestCase):
         obj.print_mo()
         obj.generate_fmu()
         obj.clean_temporary()
+        obj.create_scripts_folder()
+        obj.clean_temporary()
         obj.rewrite_fmu()
 
 
@@ -121,7 +123,6 @@ class Tester(unittest.TestCase):
         Function for running FMUs exported from Dymola, JModelica, and OpenModelica with PyFMI.
 
         '''
-
         try:
             from pyfmi import load_fmu
         except BaseException:
@@ -217,7 +218,6 @@ class Tester(unittest.TestCase):
                             print(
                                 'Copy simulator.fmu to {!s}.'.format(fmu_path))
                             shutil.copy2('simulator.fmu', fmu_path)
-
 
                             fmu_path = os.path.join(
                                     script_path, '..', 'fmus', tool, platform.system().lower(), 'simulator.fmu')

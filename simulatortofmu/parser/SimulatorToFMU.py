@@ -80,7 +80,7 @@ Following requirements must be met when using SimulatorToFMU
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -t                                                 | Modelica compiler. Options are ``dymola`` (Dymola), ``jmodelica``        |
 |                                                    | (JModelica), and ``openmodelica`` (OpenModelica).                        |
-|                                                    | Default is ``dymola``.                                                   |
+|                                                    | Default is ``jmodelica``.                                                |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -pt                                                | Path to the Modelica executable compiler.                                |
 +----------------------------------------------------+--------------------------------------------------------------------------+
@@ -378,7 +378,7 @@ def main():
 
     if(export_tool is None):
         log.info('No export tool was specified. dymola the default will be used.')
-        export_tool = 'dymola'
+        export_tool = 'jmodelica'
 
     # Check if export tool is valid
     if not (export_tool.lower() in ['dymola', 'jmodelica', 'openmodelica']):
@@ -1248,11 +1248,12 @@ class SimulatorToFMU(object):
             retStr=retStr.lower()
             if sys.version_info.major > 2:
                 retStr = str(retStr, 'utf-8')
-            if(retStr.find('error')>=0):
-                s='{!s} failed to export {!s} as an FMU'\
-                ' with error={!s}'.format(self.export_tool,
-                self.model_name, retStr)
-                raise ValueError(s)
+            # if(retStr.find('error')>=0):
+            #     s='{!s} failed to export {!s} as an FMU'\
+            #     ' with error={!s}'.format(self.export_tool,
+            #     self.model_name, retStr)
+            #     print("There is an error in the compilation audit file" + s)
+            #     raise ValueError(s)
         # Reset the library path to the default
         if not(self.export_tool == 'jmodelica'):
             if not(current_library_path is None):

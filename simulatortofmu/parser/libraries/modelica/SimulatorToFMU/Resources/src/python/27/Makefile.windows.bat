@@ -6,8 +6,8 @@ REM # Batch to compile Python interface
 REM # Thierry S. Nouidui (TSNouidui@lbl.gov) March 16, 2016
 
 REM ############## NOTES ###########################################
-REM # To compile the libraries, we need to have visual studio 
-REM # compilers installed. The script will try to detect whether 
+REM # To compile the libraries, we need to have visual studio
+REM # compilers installed. The script will try to detect whether
 REM # the target operating system and set the environment variables.
 REM # Adapt the path to PYTHONInc and PYTHONLibs for your operating system
 REM # This script has been tested with Microsoft Visual Studio 10.0 Professional
@@ -26,20 +26,20 @@ REG.exe Query %RegQry% > checkOS.txt
 Find /i "x86" < CheckOS.txt > StringCheck.txt
 IF %ERRORLEVEL% == 0 (
   REM Set path to the directory on 32 bit machine
-  SET PYTHONInc="C:\Python27\include"
-  SET PYTHONLibs="C:\Python27\libs\python27.lib"
-  CALL "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"  >nul 2>&1
+  SET PYTHONInc="D:\JModelica.org-2.4\Python27\Python_32\include"
+  SET PYTHONLibs="D:\JModelica.org-2.4\Python27\Python_32\libs\python27.lib"
+  CALL "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"  >nul 2>&1
     IF ERRORLEVEL 1 (
       ECHO Problem configuring the Visual Studio tools for command-line use
       GOTO done
     )
   ECHO Windows 32 bit compilation activated.
-  SET BINDIR=..\..\..\Library\win32 
+  SET BINDIR=..\..\..\Library\win32
 )ELSE (
     REM Set path to the directory on 64 bit machine
-    SET PYTHONInc="C:\Python27_x64\include"
-    SET PYTHONLibs="C:\Python27_x64\libs\python27.lib"
-    CALL "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64\vcvars64.bat"  >nul 2>&1
+    SET PYTHONInc="D:\JModelica.org-2.4\Python27\Python_64\include"
+    SET PYTHONLibs="D:\JModelica.org-2.4\Python27\Python_64\libs\python27.lib"
+    CALL "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\vcvarsx86_amd64.bat"  >nul 2>&1
       IF ERRORLEVEL 1 (
         ECHO Problem configuring the Visual Studio tools for command-line use
         GOTO done
@@ -47,8 +47,8 @@ IF %ERRORLEVEL% == 0 (
     ECHO Windows 64 bit compilation activated.
     SET BINDIR=..\..\..\Library\win64
 )
- 
-:: Compiling the Python interpreter libraries 
+
+:: Compiling the Python interpreter libraries
 CL /LD /MT /I%PYTHONInc% %SRCS% %PYTHONLibs% /link /out:%MOD_DLL%
 
 :: Creating the import library
