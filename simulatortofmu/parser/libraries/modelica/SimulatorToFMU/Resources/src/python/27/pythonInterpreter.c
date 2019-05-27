@@ -66,19 +66,19 @@ char *str_replace(char *orig, char *rep, char *with) {
 void* initPythonMemory(char* pytScri)
 {
   pythonPtr* ptr = malloc(sizeof(pythonPtr));
-  char* cmd;
+  /* char* cmd; */
   int nCoun=0;
   int i;
   struct stat sb;
   char* tmpScri;
 #ifdef _MSC_VER
-  char pathDir[MAX_PATHNAME_LEN];
+  /* char pathDir[MAX_PATHNAME_LEN]; */
   char base [MAX_PATHNAME_LEN];
   int retVal;
   char ext [40];
 #elif __unix__
   char* basec;
-  char* pathDir;
+  /* char* pathDir; */
 #endif
 
   
@@ -143,7 +143,7 @@ void* initPythonMemory(char* pytScri)
   /*ptr->cmd = (char *)malloc((strlen(ptr->pathDir) + 50)*sizeof(char));*/
   if (!Py_IsInitialized())
 	Py_Initialize();
-  	PyRun_SimpleString("import sys");
+  /* PyRun_SimpleString("import sys");*/
   /* Append the path to the Python script to the Python search path*/
 /*
 #ifdef _MSC_VER
@@ -691,8 +691,8 @@ void freePythonMemory(void* object)
 {
   if ( object != NULL ){
     pythonPtr* p = (pythonPtr*) object;
-	free(p->pathDir);
-	free(p->cmd);
+	/* free(p->pathDir);*/
+	/* free(p->cmd); */
     free(p);
   }
 }
