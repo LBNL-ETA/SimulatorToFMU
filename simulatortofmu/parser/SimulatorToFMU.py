@@ -1284,7 +1284,7 @@ class SimulatorToFMU(object):
         """
 
         # Copy all resources file in a directory
-        dir_name = self.model_name +'.scripts'
+        dir_name = self.model_name +'.scripts'+'.tmp'
         if os.path.exists(dir_name):
             shutil.rmtree(dir_name)
         log.info('Create the folder Simulator.scripts with scripts'\
@@ -1301,10 +1301,10 @@ class SimulatorToFMU(object):
                  + dir_name + ' to the PYTHONPATH.\n\n'
         fh.write(readme)
         fh.close()
-        dir_name_zip = dir_name + '.zip'
+        dir_name_zip = self.model_name + '.scripts' +'.zip'
         if os.path.exists(dir_name_zip):
             os.remove(dir_name_zip)
-        zip_fmu(dir_name, includeDirInZip=False)
+        zip_fmu(dir_name, dir_name_zip, includeDirInZip=False)
         # Delete the folder created
         shutil.rmtree(dir_name)
 
@@ -1320,7 +1320,7 @@ class SimulatorToFMU(object):
         """
 
         # Copy all resources file in a directory
-        dir_name = self.model_name +'.binaries'
+        dir_name = self.model_name +'.binaries'+'.tmp'
         if os.path.exists(dir_name):
             shutil.rmtree(dir_name)
         log.info('Create the folder Simulator.binaries with binaries'\
@@ -1387,10 +1387,10 @@ class SimulatorToFMU(object):
                  dir_name + ' to the system PATH.\n\n'
         fh.write(readme)
         fh.close()
-        dir_name_zip = dir_name + '.zip'
+        dir_name_zip = self.model_name +'.binaries'+'.zip'
         if os.path.exists(dir_name_zip):
             os.remove(dir_name_zip)
-        zip_fmu(dir_name, includeDirInZip=False)
+        zip_fmu(dir_name, dir_name_zip, includeDirInZip=False)
         # Delete the folder created
         shutil.rmtree(dir_name)
 
