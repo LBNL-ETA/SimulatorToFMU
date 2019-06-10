@@ -1136,6 +1136,48 @@ class SimulatorToFMU(object):
             output_file, self.model_name, os.getcwd())
         log.info(s)
 
+    def rename_lib(self, str1):
+        """
+        Rename the library.
+
+        This function temporary renames the SimulatorToFMUPython27.lib,
+        and simulatortofmuserver.lib so JModelica 2.4 can be used to
+        compile the FMUs. This behavior was not seen in earlier versions
+        of JModelica
+
+        :param str1 (str): Activate the correct renaming branch
+        options.
+
+        """
+
+        # Path to the libraries
+        fil_path = os.path.normpath(os.path.join(
+                        self.simulatortofmu_path,
+                        'SimulatorToFMU',
+                        'Resources',
+                        'Library'))
+        if(platform.system().lower() == 'windows'):
+            for arch in ['win32', 'win64']:
+                if(self.exec_target=='python'):
+                    tmp1_base='SimulatorToFMUPython'+self.python_vers
+                    tmp1=tmp1_base+'.lib'
+
+                elif(self.exec_target=='server'):
+                    tmp1_base='simulatortofmuserver'
+                    tmp1=tmp1=tmp1_base+'.lib'
+                if str1 is None:
+                    lib_path_in = os.path.normpath(os.path.join(fil_path, arch, tmp1))
+                    lib_path_out = os.path.normpath(os.path.join(fil_path, arch, tmp1+'tmp'))
+                else:
+                    lib_path_in = os.path.normpath(os.path.join(fil_path, arch, tmp1+'tmp'))
+                    lib_path_out = os.path.normpath(os.path.join(fil_path, arch, tmp1))
+
+                if (os.path.isfile(lib_path_in)):
+                    s = '{!s} will be renamed to {!s}.' \
+                    .format(lib_path_in, lib_path_out)
+                    log.info(s)
+                    shutil.move(lib_path_in, lib_path_out)
+
     def generate_fmu(self):
         """
         Generate the Simulator FMU.
@@ -1230,14 +1272,21 @@ class SimulatorToFMU(object):
 
         # Compile the FMU using JModelica
         if (self.export_tool == 'jmodelica'):
+            # rename some libraries so the code can compile
+            # with JModelica 2.4
+            self.rename_lib(None)
+
             if(platform.system().lower()=='linux'):
                 retStr = sp.check_output([command, output_file])
             else:
-                #
                 output_cmd = 'python ' + str(output_file)
                 print ("command is {!s}".format(command + "&&" + output_cmd))
                 # Run multiple commands in the same shell
                 retStr = sp.check_output(command + "&&" + output_cmd, shell=True)
+
+            # rename some libraries so the code can compile
+            # with JModelica 2.4
+            self.rename_lib("revert")
 
         # Compile the FMU using OpenModelica
         if (self.export_tool == 'openmodelica'):
@@ -1248,12 +1297,12 @@ class SimulatorToFMU(object):
             retStr=retStr.lower()
             if sys.version_info.major > 2:
                 retStr = str(retStr, 'utf-8')
-            # if(retStr.find('error')>=0):
-            #     s='{!s} failed to export {!s} as an FMU'\
-            #     ' with error={!s}'.format(self.export_tool,
-            #     self.model_name, retStr)
-            #     print("There is an error in the compilation audit file" + s)
-            #     raise ValueError(s)
+            if(retStr.find('error')>=0 and self.export_tool!='jmodelica'):
+                 s='{!s} failed to export {!s} as an FMU'\
+                 ' with error={!s}'.format(self.export_tool,
+                 self.model_name, retStr)
+                 print("There is an error in the compilation audit file" + s)
+                 raise ValueError(s)
         # Reset the library path to the default
         if not(self.export_tool == 'jmodelica'):
             if not(current_library_path is None):
@@ -1264,7 +1313,6 @@ class SimulatorToFMU(object):
 
         # Renamed the FMU to indicate target Python simulator
         fmu_name = self.model_name + '.fmu'
-        # os.rename(self.model_name+'.fmu', fmu_name)
 
         # Write scuccess.
         s = 'The FMU {!s} is successfully created.'.format(fmu_name)
