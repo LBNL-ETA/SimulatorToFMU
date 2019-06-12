@@ -10,6 +10,7 @@ import platform
 import subprocess
 import shutil
 from datetime import datetime
+import struct
 
 # Appending parser_path to the system path os required to be able
 # to find the SimulatorToFMU model from this directory
@@ -576,8 +577,12 @@ class Tester(unittest.TestCase):
             return
 
 if __name__ == "__main__":
-        # Check command line options
-    if (platform.system().lower() in ['windows', 'linux']):
+    # Check the system architecture
+    nbits=8 * struct.calcsize("P")
+    if((platform.system().lower() == 'linux') and nbits==32):
+        log.info('SimulatorToFMU is no longer supported on Linux 32-bit.')
+    # Check the operating system
+    elif (platform.system().lower() in ['windows', 'linux']):
         unittest.main()
     else:
-        print('=========SimulatorToFMU is only supported on Linux and Windows.')
+        log.info('=========SimulatorToFMU is only supported on Linux and Windows.')
