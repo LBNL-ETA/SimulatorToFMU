@@ -22,7 +22,7 @@ python_version_patch := $(word 3,${python_version_full})
 ## Compilation flags
 CC = gcc
 
-CC_FLAGS_32 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I /mnt/hgfs/WINDOWS_DATA/lbnl/python-srcs/37/Python-3.7.3/Include -I /usr/local/include/python3.7m -lpython37 -lm -m32 
+CC_FLAGS_32 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I /usr/local/include/python3.7m -lpython37 -lm -m32 
 CC_FLAGS_64 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I /usr/local/include/python3.7m -lpython37 -lm -m64
 
 
