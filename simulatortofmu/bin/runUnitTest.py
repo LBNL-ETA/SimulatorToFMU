@@ -1,7 +1,7 @@
 #######################################################
 # Script with unit tests for SimulatorToFMU
 #
-# TSNouidui@lbl.gov                          2016-09-06
+# nouidui.consulting@gmail.com               2019-09-06
 #######################################################
 import unittest
 import os
@@ -377,7 +377,7 @@ class Tester(unittest.TestCase):
                         for exc in ['python', 'server']:
                             if exc=='python':
                                 scripts_path=python_scripts_path
-                                for py_vers in ['27', '34']:
+                                for py_vers in ['27', '34', '37']:
                                     Simulator_Test = simulator.SimulatorToFMU(
                                         '',
                                         XML_INPUT_FILE,

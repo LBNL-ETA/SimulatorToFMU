@@ -44,7 +44,7 @@ def exchange(configuration_file, time, input_names,
     # If the list of output names has only one name, then only a scalar
     # must be returned.
     # The snippet shows how a Python object should be held in the memory
-    # This is done by getting the object from the.simulator function, modifying it,
+    # This is done by getting the object from the exchange function, modifying it,
     # and returning it.
     ########################################################################
     # Since master algorithms need to some time call at the same time instant

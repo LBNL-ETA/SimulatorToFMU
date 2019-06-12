@@ -6,7 +6,7 @@ ___int_doc:
 SimulatorToFMU is a software package written in Python which allows
 users to export a Python-driven simulation program or script
 as a :term:`Functional Mock-up Unit` (FMU) for
-model.simulator or co-simulation using the :term:`Functional Mock-up Interface` (FMI)
+model-exchange or co-simulation using the :term:`Functional Mock-up Interface` (FMI)
 standard `version 1.0 or 2.0 <https://www.fmi-standard.org>`_.
 This FMU can then be imported into a variety of simulation programs
 that support the import of Functional Mock-up Units.
@@ -76,7 +76,7 @@ Following requirements must be met when using SimulatorToFMU
 | -v                                                 | FMI version. Options are ``1.0`` and ``2.0``. Default is ``2.0``         |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -a                                                 | FMI API version. Options are ``cs`` (co-simulation) and ``me``           |
-|                                                    | (model.simulator). Default is ``me``.                                    |
+|                                                    | (model-exchange). Default is ``me``.                                     |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -t                                                 | Modelica compiler. Options are ``dymola`` (Dymola), ``jmodelica``        |
 |                                                    | (JModelica), and ``openmodelica`` (OpenModelica).                        |
@@ -103,7 +103,7 @@ The main functions of SimulatorToFMU are
    This includes removing and replacing invalid characters in variable names such as ``*+-`` with ``_``,
  - writing Modelica code with valid inputs and outputs names,
  - invoking a Modelica compiler to compile the :term:`Modelica` code as an FMU
-   for model.simulator or co-simulation ``1.0`` or ``2.0``.
+   for model-exchange or co-simulation ``1.0`` or ``2.0``.
 
 The next section discusses requirements of some of the arguments of SimulatorToFMU.
 
@@ -269,7 +269,7 @@ def main():
     simulator_group.add_argument('-a', "--fmi-api",
                                  help='FMI API version. Valid options'
                                  + ' are <cs> for co-simulation'
-                                 + ' and <me> for model.simulator.'
+                                 + ' and <me> for model-exchange.'
                                  + ' Default is <me>')
     simulator_group.add_argument("-t", "--export-tool",
                                  help='Modelica compiler. Valid options are '
@@ -377,12 +377,12 @@ def main():
 
     # Check if fmi api is none
     if(fmi_api is None):
-        log.info('FMI API not specified. Model.simulator (me) API will be used.')
+        log.info('FMI API not specified. Model Exchange (me) API will be used.')
         fmi_api = 'me'
 
     # Check if the fmi api is valid
     if not (fmi_api.lower() in ['me', 'cs']):
-        s = 'This version only supports FMI model.simulator(me)'\
+        s = 'This version only supports FMI model exchange(me)'\
             ' or co-simulation (cs) API.'
         log.error(s)
         raise ValueError(s)
@@ -422,8 +422,8 @@ def main():
             '1.0' and fmi_api.lower() == 'cs'):
         log.info(
             'Export of FMU type cs for version 1 is not supported for openmodelica.' +
-            ' Supported combinations are me (model.simulator) for versions 1.0 & 2.0,' +
-            ' cs (co-simulation) & me_cs (model.simulator & co-simulation) for version 2.0.')
+            ' Supported combinations are me (model-exchange) for versions 1.0 & 2.0,' +
+            ' cs (co-simulation) & me_cs (model-exchange & co-simulation) for version 2.0.')
         return
 
     # Get the Python script path
@@ -701,7 +701,7 @@ class SimulatorToFMU(object):
     a pre-defined XML schema, extracting the
     variables attributes, writing a Modelica
     model of a Simulator model and exporting
-    the model as an FMU for model.simulator or
+    the model as an FMU for model-exchange or
     co-simulation.
 
     """

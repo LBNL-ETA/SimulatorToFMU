@@ -155,7 +155,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">parser/u
 </tr>
 <tr class="row-even"><td>-a</td>
 <td>FMI API version. Options are <code class="docutils literal notranslate"><span class="pre">cs</span></code> (co-simulation) and <code class="docutils literal notranslate"><span class="pre">me</span></code>
-(model.simulator). Default is <code class="docutils literal notranslate"><span class="pre">me</span></code>.</td>
+(model-exchange). Default is <code class="docutils literal notranslate"><span class="pre">me</span></code>.</td>
 </tr>
 <tr class="row-odd"><td>-t</td>
 <td>Modelica compiler. Options are <code class="docutils literal notranslate"><span class="pre">dymola</span></code> (Dymola), <code class="docutils literal notranslate"><span class="pre">jmodelica</span></code>
@@ -173,7 +173,13 @@ Default is <code class="docutils literal notranslate"><span class="pre">true</sp
 <td>Flag to indicate if the FMU is a <code class="docutils literal notranslate"><span class="pre">python</span></code> or a <code class="docutils literal notranslate"><span class="pre">server</span></code> FMU.
 Default is <code class="docutils literal notranslate"><span class="pre">python</span></code>.</td>
 </tr>
-<tr class="row-odd"><td>-h</td>
+<tr class="row-odd"><td>-pv</td>
+<td><blockquote class="first">
+<div>Flag to specify the Python target version. Options are <code class="docutils literal notranslate"><span class="pre">27</span></code>, <code class="docutils literal notranslate"><span class="pre">34</span></code>,</div></blockquote>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">37</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">27</span></code>.</p>
+</td>
+</tr>
+<tr class="row-even"><td>-h</td>
 <td>Flag to list all the options supported by SimulatorToFMU.</td>
 </tr>
 </tbody>
@@ -185,7 +191,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">python</
 This includes removing and replacing invalid characters in variable names such as <code class="docutils literal notranslate"><span class="pre">*+-</span></code> with <code class="docutils literal notranslate"><span class="pre">_</span></code>,</li>
 <li>writing Modelica code with valid inputs and outputs names,</li>
 <li>invoking a Modelica compiler to compile the <a class="reference internal" href="glossary.html#term-modelica"><span class="xref std std-term">Modelica</span></a> code as an FMU
-for model.simulator or co-simulation <code class="docutils literal notranslate"><span class="pre">1.0</span></code> or <code class="docutils literal notranslate"><span class="pre">2.0</span></code>.</li>
+for model-exchange or co-simulation <code class="docutils literal notranslate"><span class="pre">1.0</span></code> or <code class="docutils literal notranslate"><span class="pre">2.0</span></code>.</li>
 </ul>
 </div></blockquote>
 <p>The next section discusses requirements of some of the arguments of SimulatorToFMU.</p>
