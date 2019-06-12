@@ -197,6 +197,7 @@ import zipfile
 import re
 import platform
 import random, string
+import struct
 
 log.basicConfig(filename='simulator.log', filemode='w',
                 level=log.DEBUG, format='%(asctime)s %(message)s',
@@ -336,9 +337,15 @@ def main():
             log.error('The flag -pv must either be 27, 34, or 37.')
             return
 
-    # Check command line options
+    # Check operating systems
     if not(platform.system().lower() in ['windows', 'linux']):
         log.info('SimulatorToFMU is only supported on Linux and Windows.')
+        return
+
+    # Check the system architecture
+    nbits=8 * struct.calcsize("P")
+    if((platform.system().lower() == 'linux') and nbits==32):
+        log.info('SimulatorToFMU is no longer supported on Linux 32-bit.')
         return
 
     # Check export tool
