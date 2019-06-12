@@ -22,8 +22,8 @@ python_version_patch := $(word 3,${python_version_full})
 ## Compilation flags
 CC = gcc
 
-CC_FLAGS_32 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I ~/opt/Python-3.4.4/Include -lpython34 -lm -m32 
-CC_FLAGS_64 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I ~/opt/Python-3.4.4/Include -lpython34 -lm -m64
+CC_FLAGS_32 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I /usr/local/include/python3.4m -lpython34 -lm -m32 
+CC_FLAGS_64 = -Wall -std=c89 -pedantic -msse2 -mfpmath=sse -I /usr/local/include/python3.4m -lpython34 -lm -m64
 
 
 
