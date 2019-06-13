@@ -25,11 +25,11 @@ Requirements
 
 Installation
 ^^^^^^^^^^^^
-To install run
+To install clone the master branch of the development repository locally or run
 
 .. code:: text
 
-   pip install --user simulatortofmu
+   pip install --user git+https://github.com/LBNL-ETA/SimulatorToFMU.git
 
 For more information visit the development page at `https://github.com/LBNL-ETA/SimulatorToFMU <https://github.com/LBNL-ETA/SimulatorToFMU>`_
 
