@@ -24,7 +24,7 @@ that support the import of Functional Mock-up Units.
 
 .. note::
 
-  SimulatorToFMU generates FMUs that either use the Python 2.7 or the Python 3.4/ C API for executing Python-driven simulation programs/scripts.
+  SimulatorToFMU generates FMUs that either use the Python/C API for executing Python-driven simulation programs/scripts.
 
 __author__ = "Thierry S. Nouidui"
 __email__ = "nouidui.consulting@gmail.com"
@@ -90,7 +90,7 @@ Following requirements must be met when using SimulatorToFMU
 | -x                                                 | Flag to indicate if the FMU is a ``python`` or a ``server`` FMU.         |
 |                                                    | Default is ``python``.                                                   |
 +----------------------------------------------------+--------------------------------------------------------------------------+
-| -pv                                                | Flag to specify the Python target version. Options are ``27``, ``34``,   |
+| -pv                                                |Flag to specify the Python target version. Options are ``27``, ``34``,    |
 |                                                    |``37``. Default is ``27``.                                                |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -h                                                 | Flag to list all the options supported by SimulatorToFMU.                |
