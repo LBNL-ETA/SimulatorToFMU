@@ -1,11 +1,6 @@
 ############################################################
 # Makefile for the regression tests that are run on travis
 ############################################################
-ROOT = .
-
-
-test-dymola:
-	(cd $(ROOT)/Buildings && python ../bin/runUnitTests.py --batch --single-package $(PACKAGE) --tool dymola)
 
 test-jmodelica:
-	(cd simulatortofmu/bin && python runUnitTests.py
+	(cd simulatortofmu/bin && python runUnitTest.py)
