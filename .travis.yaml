@@ -13,8 +13,8 @@ notifications:
 git:
   depth: 10
 
-services:
-  - docker
+#services:
+#  - docker
 
 env:
   - TEST_ARG="make test-jmodelica"
@@ -31,8 +31,8 @@ env:
 # the html output may have small formatting differences which causes
 # the test to fail
 install:
-  - pip install --upgrade pip setuptools wheel
-  - pip install lxml, Jinja2
+  - pip install --upgrade
+  - pip install lxml Jinja2
   # - pip install sphinx==1.5.1 sphinx-bootstrap-theme==0.4.13 \
   #     sphinxcontrib-bibtex==0.3.4 sphinxcontrib-plantuml==0.8.1 \
   #     alabaster==0.7.10 MarkupSafe==0.23 html5lib==0.999 \
@@ -42,4 +42,4 @@ install:
 
 # Execute tests
 script:
-  - (travis_wait 90 $TEST_ARG)
+  - $TEST_ARG
