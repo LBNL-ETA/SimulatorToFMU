@@ -19,12 +19,12 @@ services:
 env:
   - TEST_ARG="make test-jmodelica"
 
-before_install:
-  - if [[ "$TEST_ARG" == *test-jmodelica* ]]; then
-       docker pull "$DOCKER_USERNAME"/ubuntu-1804_jmodelica_trunk;
-       chmod +x jm_ipython.sh;
-       cp jm_ipython.sh $HOME/bin/;
-    fi;
+# before_install:
+#   - if [[ "$TEST_ARG" == *test-jmodelica* ]]; then
+#        docker pull "$DOCKER_USERNAME"/ubuntu-1804_jmodelica_trunk;
+#        chmod +x jm_ipython.sh;
+#        cp jm_ipython.sh $HOME/bin/;
+#     fi;
 
 # Install dependencies
 # For sphinx, we need to install specific package versions, otherwise
