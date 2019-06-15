@@ -1,7 +1,7 @@
 ############################################################
 # Makefile for the regression tests that are run on travis
 ############################################################
-ROOT = ..
+ROOT = .
 
 test-documentation:
 	(cd $(ROOT)/simulatortofmu/doc/userGuide && make dist)
