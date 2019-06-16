@@ -1,6 +1,9 @@
 SimulatorToFMU
 --------------
 
+.. image:: https://travis-ci.org/LBNL-ETA/SimulatorToFMU.svg?branch=master
+    :target: https://travis-ci.org/LBNL-ETA/SimulatorToFMU
+
 Overview
 ^^^^^^^^
 
