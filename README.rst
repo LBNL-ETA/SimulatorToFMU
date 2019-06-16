@@ -14,7 +14,7 @@ that support the import of Functional Mock-up Units.
 
 .. note::
 
-  SimulatorToFMU generates FMUs that use the Python/ C API for interfacing 
+  SimulatorToFMU generates FMUs that use the Python/C API for interfacing 
   with Python-driven simulation programs and Python scripts.
 
 Requirements
