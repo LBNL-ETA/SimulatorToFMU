@@ -28,7 +28,7 @@ Requirements
 
 Installation
 ^^^^^^^^^^^^
-To install clone the master branch of the development repository locally or run
+To install SimulatorToFMU, clone the master branch of the development repository locally or run
 
 .. code:: text
 
