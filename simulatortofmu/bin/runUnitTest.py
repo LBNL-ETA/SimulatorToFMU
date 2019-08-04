@@ -475,7 +475,7 @@ class Tester(unittest.TestCase):
                     for cs_xml in ['true']:
                         if (version == '1'):
                             continue
-                        for exc in ['python', 'server']:
+                        for exc in ['python']:
                             if exc=='python':
                                 scripts_path=python_scripts_path
                             elif exc=='server':
