@@ -375,7 +375,7 @@ class Tester(unittest.TestCase):
                         if (version == '1'):
                             continue
 
-                        for exc in ['python', 'server']:
+                        for exc in ['python']:
                             if exc=='python':
                                 scripts_path=python_scripts_path
                                 for py_vers in ['27', '34', '37']:
