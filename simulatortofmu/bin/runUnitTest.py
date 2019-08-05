@@ -378,7 +378,11 @@ class Tester(unittest.TestCase):
                         for exc in ['python']:
                             if exc=='python':
                                 scripts_path=python_scripts_path
-                                for py_vers in ['27', '34', '37']:
+                                if (platform.system().lower() == 'linux'):
+                                    py_arr=['27']
+                                else:
+                                    py_arr=['27', '34', '37']
+                                for py_vers in py_arr:
                                     Simulator_Test = simulator.SimulatorToFMU(
                                         '',
                                         XML_INPUT_FILE,
