@@ -25,6 +25,6 @@ RUN mkdir git && cd git && \
 
 ENV PYTHONPATH $PYTHONPATH:$HOME/git/simulatortofmu/SimulatorToFMU/simulatortofmu/parser/utilities
 
-ENV PATH $PATH:"/usr/local/JModelica/bin/"
+ENV PATH $PATH:"/usr/local/JModelica/bin"
 
 #WORKDIR $ROOT_DIR

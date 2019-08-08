@@ -123,11 +123,11 @@ class Tester(unittest.TestCase):
         Function for running FMUs exported from Dymola, JModelica, and OpenModelica with PyFMI.
 
         '''
-        #try:
-        from pyfmi import load_fmu
-        #except BaseException:
-        #    print ('PyFMI not installed. Test will not be be run.')
-        #    return
+        try:
+            from pyfmi import load_fmu
+        except BaseException:
+            print ('PyFMI not installed. Test will not be be run.')
+            return
         if (tool=='openmodelica' and platform.system().lower() == 'linux'):
                 print ('tool={!s} is not supported on Linux'.format(tool))
                 return
