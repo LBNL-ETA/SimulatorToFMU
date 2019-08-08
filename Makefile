@@ -31,4 +31,4 @@ test-documentation:
 	(cd $(ROOT)/simulatortofmu/doc/userGuide && make dist)
 
 test-jmodelica:
-	(cd $(ROOT)/make build run remove-image)
+	(cd $(ROOT)/ make build run remove-image)
