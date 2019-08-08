@@ -23,8 +23,6 @@ env:
 before_install:
    - if [[ "$TEST_ARG" == *test-jmodelica* ]]; then
         docker pull michaelwetter/ubuntu-1804_jmodelica_trunk;
-        #chmod +x jm_ipython.sh;
-        #cp jm_ipython.sh $HOME/bin/;
      fi;
 
 # Install dependencies
