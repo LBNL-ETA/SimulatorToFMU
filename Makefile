@@ -25,7 +25,7 @@ remove-image:
 
 run:
 	$(COMMAND_RUN) \
-            "cd ~/git/simulatortofmu/SimulatorToFMU/simulatortofmu/bin && bash jm_python.sh runUnitTest.py"
+            "cd ~/git/simulatortofmu/SimulatorToFMU/simulatortofmu/bin && jm_python.sh runUnitTest.py"
 
 test-documentation:
 	(cd $(ROOT)/simulatortofmu/doc/userGuide && make dist)
