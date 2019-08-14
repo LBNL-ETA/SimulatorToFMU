@@ -1,4 +1,4 @@
 '''
-:mod:`simulatortofmu` Modules for exporting a Simulator as a Functional Mock-up Unit
-====================================================================================
+:mod:`simulatortofmu` Module for exporting a simulator as an FMU
+================================================================
 '''

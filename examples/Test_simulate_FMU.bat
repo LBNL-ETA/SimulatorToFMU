@@ -1,0 +1,1 @@
+C:\JModelica.org-2.4\setenv.bat && python simulate_pythonFMU.py && PAUSE
