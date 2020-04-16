@@ -350,10 +350,10 @@ def main():
 
     # Check export tool
     export_tool = args.export_tool
-    if (platform.system().lower() == 'linux' and export_tool == 'openmodelica'):
-        log.info('SimulatorToFMU is only supported on Windows when'\
-        ' using OpenModelica as the Modelica compiler.')
-        return
+    # if (platform.system().lower() == 'linux' and export_tool == 'openmodelica'):
+    #     log.info('SimulatorToFMU is only supported on Windows when'\
+    #     ' using OpenModelica as the Modelica compiler.')
+    #     return
 
     # Get export tool Path
     export_tool_path = args.export_tool_path
