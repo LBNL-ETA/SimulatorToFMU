@@ -233,6 +233,10 @@ MOS_TEMPLATE_PATH_OPENMODELICA = os.path.join(
 XSD_FILE_PATH = os.path.join(utilities_path, XSD_SCHEMA)
 XML_INPUT_FILE = os.path.join(utilities_path, XML_MODELDESCRIPTION)
 SimulatorToFMU_LIB_PATH = os.path.join(script_path, 'libraries', 'modelica')
+MODELICA_UTILITIES_H_IN = os.path.join(utilities_path, 'ModelicaUtilities.h')
+MODELICA_UTILITIES_H_DIR = os.path.join(script_path, 'libraries', 'modelica',
+'SimulatorToFMU', 'Resources', 'C-Sources')
+MODELICA_UTILITIES_H_OUT = os.path.join(MODELICA_UTILITIES_H_DIR, 'ModelicaUtilities.h')
 
 
 def main():
@@ -276,7 +280,7 @@ def main():
                                  help='Modelica compiler. Valid options are '
                                  + '<dymola> for Dymola, <jmodelica> '
                                  + 'for JModelica, and <openmodelica> for OpenModelica'
-                                 + ' Default is <dymola>')
+                                 + ' Default is <jmodelica>')
     simulator_group.add_argument("-pt", "--export-tool-path",
                                  help='Path to the Modelica executable compiler.')
     simulator_group.add_argument("-hm", "--has-memory",
@@ -287,7 +291,7 @@ def main():
                                  + ' Valid options are <27>, <34>, and <37>. Default is <27>.')
     simulator_group.add_argument("-x", "--exec-target",
                                  help='Execution target.'
-                                 + ' Current valid option is <server> and <python>. Default is <server>.')
+                                 + ' Current valid option is <python> and <server>. Default is <python>.')
 
 #     simulator_group.add_argument("-n", "--needs-tool",
 #                                  help='Flag to indicate if FMU needs an '
@@ -395,7 +399,7 @@ def main():
         raise ValueError(s)
 
     if(export_tool is None):
-        log.info('No export tool was specified. dymola the default will be used.')
+        log.info('No export tool was specified. jmodelica the default will be used.')
         export_tool = 'jmodelica'
 
     # Check if export tool is valid
@@ -508,18 +512,17 @@ def main():
     # main script will cause the module to fail
     needs_tool = 'true'
     # Check if fmi api is none
-    if(needs_tool is None):
-        log.info(
-            'Flag to specify whether an execution is needed is not'\
-            ' specified. Default (false) will be used.')
-        needs_tool = 'true'
-
-    if not (needs_tool.lower() in ['true', 'false']):
-        log.info(
-            'Flag to specify whether an execution is needed is not'\
-            ' specified. Default (false) will be used.')
-        needs_tool = 'true'
-
+    # if(needs_tool is None):
+    #     log.info(
+    #         'Flag to specify whether an execution is needed is not'\
+    #         ' specified. Default (true) will be used.')
+    #     needs_tool = 'true'
+    #
+    # if not (needs_tool.lower() in ['true', 'false']):
+    #     log.info(
+    #         'Flag to specify whether an execution is needed is not'\
+    #         ' specified. Default (true) will be used.')
+    #     needs_tool = 'true'
     # Export the tool as an FMU
     Simulator = SimulatorToFMU(con_path,
                                io_file_path,
@@ -1174,12 +1177,9 @@ class SimulatorToFMU(object):
         if(platform.system().lower() == 'windows'):
             for arch in ['win32', 'win64']:
                 if(self.exec_target=='python'):
-                    tmp1_base='SimulatorToFMUPython'+self.python_vers
-                    tmp1=tmp1_base+'.lib'
-
+                    tmp1='SimulatorToFMUPython'+self.python_vers+'.lib'
                 elif(self.exec_target=='server'):
-                    tmp1_base='simulatortofmuserver'
-                    tmp1=tmp1=tmp1_base+'.lib'
+                    tmp1='simulatortofmuserver'+'.lib'
                 if str1 is None:
                     lib_path_in = os.path.normpath(os.path.join(fil_path, arch, tmp1))
                     lib_path_out = os.path.normpath(os.path.join(fil_path, arch, tmp1+'tmp'))
@@ -1283,7 +1283,7 @@ class SimulatorToFMU(object):
 
         # Compile the FMU using Dymola
         if (self.export_tool == 'dymola'):
-            retStr=sp.check_output([command, output_file])
+            retStr = sp.check_output([command, output_file])
 
         # Compile the FMU using JModelica
         if (self.export_tool == 'jmodelica'):
@@ -1305,15 +1305,23 @@ class SimulatorToFMU(object):
 
         # Compile the FMU using OpenModelica
         if (self.export_tool == 'openmodelica'):
+            # Copy ModelicaUtilities.h to Resources folder for compilation
+            if os.path.isfile(MODELICA_UTILITIES_H_IN):
+                shutil.copy2(MODELICA_UTILITIES_H_IN, MODELICA_UTILITIES_H_DIR)
+            else:
+                 s ='ModelicaUtilities.h is not available in {!s} \
+                 This is required to compile OpenModelica FMUs.'.format(MODELICA_UTILITIES_H_IN)
+                 raise ValueError(s)
             retStr = sp.check_output([command, output_file, 'SimulatorToFMU'])
-
+            if os.path.isfile(MODELICA_UTILITIES_H_OUT):
+               os.remove(MODELICA_UTILITIES_H_OUT)
         # Check if there is any error message in the output
         if not (retStr is None):
             retStr=retStr.lower()
             if sys.version_info.major > 2:
                 retStr = str(retStr, 'utf-8')
             if(retStr.find('error')>=0 and self.export_tool!='jmodelica'):
-                 s='{!s} failed to export {!s} as an FMU'\
+                 s ='{!s} failed to export {!s} as an FMU'\
                  ' with error={!s}'.format(self.export_tool,
                  self.model_name, retStr)
                  print("There is an error in the compilation audit file" + s)
@@ -1400,7 +1408,6 @@ class SimulatorToFMU(object):
             for arch in ['win32', 'win64']:
                 zip_path = os.path.normpath(os.path.join(dir_name, arch))
                 os.makedirs(zip_path)
-
                 if(self.exec_target=='python'):
                     tmp1='SimulatorToFMUPython'+self.python_vers+'.dll'
                     tmp2='python'+self.python_vers+'.dll'
@@ -1530,6 +1537,51 @@ class SimulatorToFMU(object):
             zip_ref.extractall('.')
             zip_ref.close()
 
+            # Path to the libraries
+            fil_path = os.path.normpath(os.path.join(
+                            self.simulatortofmu_path,
+                            'SimulatorToFMU',
+                            'Resources',
+                            'Library'))
+
+            if(platform.system().lower() == 'windows'):
+                for arch in ['win32', 'win64']:
+                    fmu_lib_pat=os.path.join(fmutmp_path, 'binaries', arch)
+                    if(self.exec_target=='python'):
+                        tmp1='SimulatorToFMUPython'+self.python_vers+'.dll'
+                        tmp2='python'+self.python_vers+'.dll'
+                    elif(self.exec_target=='server'):
+                        tmp1='simulatortofmuserver'+'.dll'
+                        tmp2='curl'+'.dll'
+                    mod_lib_pat1 = os.path.normpath(os.path.join(fil_path, arch, tmp1))
+                    mod_lib_pat2 = os.path.normpath(os.path.join(fil_path, arch, tmp2))
+
+                    for mod_lib_pat in [mod_lib_pat1, mod_lib_pat2]:
+                        if os.path.exists(fmu_lib_pat) and os.path.exists(mod_lib_pat):
+                            s = '{!s} will be copied to the binaries folder {!s}.' \
+                            .format(mod_lib_pat, fmu_lib_pat)
+                            log.info(s)
+                            shutil.copy2(mod_lib_pat, fmu_lib_pat)
+
+            if(platform.system().lower() == 'linux'):
+                for arch in ['linux32', 'linux64']:
+                    fmu_lib_pat=os.path.join(fmutmp_path, 'binaries', arch)
+                    if(self.exec_target=='python'):
+                        tmp1='libSimulatorToFMUPython'+self.python_vers+'.so'
+                        tmp2='libpython'+self.python_vers+'.so'
+                    elif(self.exec_target=='server'):
+                        tmp1='libsimulatortofmuserver.so'
+                        tmp2='libcurl'+'.so'
+
+                    mod_lib_pat1 = os.path.normpath(os.path.join(fil_path, arch, tmp1))
+                    mod_lib_pat2 = os.path.normpath(os.path.join(fil_path, arch, tmp2))
+
+                    for mod_lib_pat in [mod_lib_pat1, mod_lib_pat2]:
+                        if os.path.exists(fmu_lib_pat) and os.path.exists(mod_lib_pat):
+                            s = '{!s} will be copied to the binaries folder {!s}.' \
+                            .format(mod_lib_pat, fmu_lib_pat)
+                            log.info(s)
+                            shutil.copy2(mod_lib_pat, fmu_lib_pat)
             # Delete the FMU which is no longer used
             if os.path.isfile(fmu_name):
                 os.remove(fmu_name)
