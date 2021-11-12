@@ -2,6 +2,9 @@
 /* #define _CRTDBG_MAP_ALLOC*/
 /* #include <stdlib.h>*/
 /* #include <crtdbg.h>*/
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
 #include "pythonInterpreter.h"
 #define MAX_PATHNAME_LEN 2048
 #define STR_FLAG 1
@@ -68,14 +71,8 @@ void* initPythonMemory(char* pytScri)
   pythonPtr* ptr = malloc(sizeof(pythonPtr));
   /* char* cmd; */
   int nCoun=0;
-  int i;
-  struct stat sb;
-  char* tmpScri;
 #ifdef _MSC_VER
   /* char pathDir[MAX_PATHNAME_LEN]; */
-  char base [MAX_PATHNAME_LEN];
-  int retVal;
-  char ext [40];
 #elif __unix__
   char* basec;
   /* char* pathDir; */
