@@ -9,6 +9,7 @@
 import subprocess as sp
 import jinja2 as jja2
 import os
+import fnmatch
 import struct
 import shutil
 import glob
@@ -139,21 +140,38 @@ if(os.path.isdir(tmpFolderPath)):
     log.warning(s)
 # Copy the template folder to the specific Python folder
 shutil.copytree(MODELICA_FOLDER_TEMPLATE, tmpFolderPath)
+
 # Get the working directory
 workDir=os.getcwd()
 # Switch to the folder which will be used to create the librariers
 os.chdir(tmpFolderPath)
 
 # Rename all the mo files which contain XYZ by the specific Python version
-for filepath in glob.iglob('./**/*.mo'):
-    with open(filepath) as file:
+# Open the top level file.
+# This code works for Python 2 and Python 3
+matches = []
+for root, dirnames, filenames in os.walk(tmpFolderPath):
+    for filename in fnmatch.filter(filenames, '*.mo'):
+        matches.append(os.path.join(root, filename))
+for path in matches:
+    #print(path.name)
+    with open(path) as file:
         s = file.read()
     s = s.replace('XYZ', PY_VERS)
-    with open(filepath, "w") as file:
+    with open(path, "w") as file:
         file.write(s)
-
-# Move one folder up to rewrite the package.order
+# This code works for Python higher than 3.5
+# from pathlib import Path
+# for path in Path(tmpFolderPath).rglob('*.mo'):
+#     #print(path.name)
+#     with open(path) as file:
+#         s = file.read()
+#     s = s.replace('XYZ', PY_VERS)
+#     with open(path, "w") as file:
+#         file.write(s)
+# Go one directory up to overwite package order
 os.chdir('..')
+
 # Check if the python package was already updated
 with open("package.order") as file:
     contents = file.read()

@@ -341,9 +341,15 @@ def main():
         if (python_vers is None):
             # Default Python version
             python_vers = '27'
-        if not (python_vers in ['27', '34', '37', '38']):
-            log.error('The flag -pv must either be 27, 34, or 37.')
-            return
+        if (float(python_vers))<27:
+            s='The flag -pv must either be 27, 34, 37 or higher.'
+            log.error(s)
+            raise ValueError(s)
+        #elif python_vers in ['27', '34', '37']:
+        #    return
+        elif (float(python_vers))>37:
+            log.warning('The Python version is higher than 37. Make sure that the crealib.py' \
+            'script (in makeLib folder) has been run prior to exporting the FMU.')
 
     # Check operating systems
     if not(platform.system().lower() in ['windows', 'linux']):
@@ -1410,7 +1416,6 @@ class SimulatorToFMU(object):
 
         if(platform.system().lower() == 'windows'):
             if(float(self.python_vers)<=37):
-                print('This is win_arch' + self.python_vers)
                 win_arch=['win32','win64']
             else:
                 win_arch=['win64']
