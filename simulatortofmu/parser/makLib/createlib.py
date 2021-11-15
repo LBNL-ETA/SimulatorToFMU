@@ -177,6 +177,10 @@ os.chdir(workDir)
 nbits=8 * struct.calcsize("P")
 if(nbits==64):
     plf="x64"
+    PYTHON_DLL_SIM = os.path.join(PYTHON_DLL_DIR, 'win64')
+    if( not os.path.isdir(PYTHON_DLL_SIM)):
+        s='The folder {!s} does not exist.'.format(PYTHON_DLL_SIM)
+        raise ValueError(s)
 else:
     s='This is currently only working for 64 bits architecture'
     log.error(s)
@@ -185,6 +189,37 @@ else:
 # Execute the command to create the DLL
 cmd = "\""+CMD_TOOL_PATH +"\"" + ' ' + output_file + " /p:configuration=release " + "/p:platform="+plf
 os.system(cmd)
+
+# Check that all the required files have been created.
+DLL_Simulator=os.path.join(file_path, 'x64','release',DLL_ROOT_NAME+'.dll')
+if (not os.path.isfile(DLL_Simulator)):
+    s = 'The SimulatorToFMU DLL {!s} does not exists'.format(DLL_Simulator)
+    log.error(s)
+    raise ValueError(s)
+LIB_Simulator=os.path.join(file_path, 'x64','release',DLL_ROOT_NAME+'.lib')
+if (not os.path.isfile(LIB_Simulator)):
+    s = 'The SimulatorToFMU LIB {!s} does not exists'.format(LIB_Simulator)
+    log.error(s)
+    raise ValueError(s)
+DLL_Py=os.path.join(PYTHON_EXE_DIR_PATH, 'python'+PY_VERS+'.dll')
+if (not os.path.isfile(DLL_Py)):
+    s = 'The Python DLL {!s} does not exists'.format(DLL_Py)
+    log.error(s)
+    raise ValueError(s)
+
+# Copy all the required files in the winxx folders
+files = [DLL_Simulator, LIB_Simulator, DLL_Py]
+for i in files:
+    log.info('Copying {!s} in {!s}'.format(i, PYTHON_DLL_SIM))
+    shutil.copy(i, PYTHON_DLL_SIM)
+# Remove all temporary folders.
+tmp = ['x64', DLL_ROOT_NAME+'.vcxproj']
+for i in tmp:
+    log.info('Deleting {!s}'.format(i))
+    if(os.path.isdir(i)):
+        shutil.rmtree(i)
+    if(os.path.isfile(i)):
+        os.remove(i)
 
 # Manually copy the SimulatorToFMUPythonXYZ.dll, SimulatorToFMUPythonXYZ.lib
 # as well the pythonXYZ dll to the libraries folder win64.
