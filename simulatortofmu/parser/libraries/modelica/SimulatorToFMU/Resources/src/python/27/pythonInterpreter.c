@@ -78,9 +78,9 @@ void* initPythonMemory(char* pytScri)
   /* char* pathDir; */
 #endif
 
-  
+
   /* Split the path to extract the directory name*/
-  /* This has been excluded because of JModelica version 2.4 
+  /* This has been excluded because of JModelica version 2.4
   which adds a folder with the number 0 in its resource folder.
   This breaks the approach to determine the path.
 #ifdef _MSC_VER
@@ -114,24 +114,24 @@ void* initPythonMemory(char* pytScri)
 			"The error code is %d\n.", pytScri, retVal);
 		exit(1);
 	}
-	// Construct the path to the configuration file 
+	// Construct the path to the configuration file
 	ptr->pathDir=(char*)malloc((strlen(pathDir)+strlen(base) + 10)*sizeof(char));
 	sprintf(ptr->pathDir, "%s%s", base, pathDir);
 	printf("This is the script path %s\n", ptr->pathDir);
-	// Changed separator to check validity of path 
+	// Changed separator to check validity of path
 	str_replace(ptr->pathDir, "\\", "\\\\");
 
 	if (!stat(ptr->pathDir, &sb)){
 		fprintf(stderr, "The path to resource folder %s doesn't exist.", ptr->pathDir);
 		exit(1);
 	}
-	
+
 #elif __unix__
   basec=strdup(pytScri);
   ptr->pathDir=dirname(basec);
 #endif
 */
-  
+
   /* Set ptr to null as pythonSimulatorValuesNoModelica is checking for this */
   ptr->ptr = NULL;
   ptr->isInitialized = 0;
@@ -292,7 +292,7 @@ void pythonSimulatorVariables(const char * moduleName,
 	PyObject *pItemDbl;
   	PyObject* obj;
 
-	char* arg="";
+	wchar_t* arg;
 	Py_ssize_t nStrWri = 0;
 	Py_ssize_t nStrRea = 0;
 	Py_ssize_t nStrParWri = 0;
