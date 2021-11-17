@@ -50,11 +50,15 @@ def main():
         required=True,
         help='The Python target version is required ' +
         ' to create the appropriate shared libraries.' +
-        ' Valid options are <27>, <34>, <37> or higher.')
+        ' Valid option is <38> or higher.')
 
     # Parse the arguments
     args = parser.parse_args()
     PY_VERS = args.python_version
+
+    if(float(PY_VERS)<38):
+        s='The Python version={!s} is less than 3.8. This is not supported. '.format(PY_VERS)
+        raise ValueError(s)
 
     if platform.system().lower()=='windows':
         tree = et.ElementTree(file='systemVariables-windows.properties')
