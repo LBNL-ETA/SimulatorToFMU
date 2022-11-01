@@ -23,9 +23,9 @@ files. These files are located under ``parser/makLib`` folder.
 
 First, The user is required to provide the path to the following folders:
 
-- ``PYTHON_EXE_DIR``. This is the path to the Python executable directory (e.g. D:\\programs\\Anaconda3)
+- ``PYTHON_EXE_DIR``. This is the path to the Python executable directory (e.g. ``D:\programs\Anaconda3``)
 
-- ``CMD_TOOL``. This is the path to the build tools needed to compile the Python/C interface (e.g. C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\msbuild.exe)
+- ``CMD_TOOL``. This is the path to the build tools needed to compile the Python/C interface (e.g. ``C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\msbuild.exe``)
 
 Next, the user is required to run the ``createlib.py`` that is located in ``parser/makLib`` folder by
 running the following command:

@@ -25,10 +25,10 @@ To export a Simulator as an FMU, SimulatorToFMU needs:
 SimulatorToFMU has been tested with:
 
 - Python 2.7, Python 3.4, Python 3.7, and Python 3.8
-- Three Modelica parsers (All parsers are not needed for the export)
+- Three Modelica parsers (Only one parser is needed for the export)
 
   - Dymola 2018 on Windows and Linux
-  - JModelica 2.0 on Windows, and JModelica trunk version 9899 on Linux
+  - JModelica 2.0, JModelica 2.4 on Windows, and JModelica trunk version 9899 on Linux
   - OpenModelica 1.19.2 on Windows
 
 - C-Compiler: Microsoft Visual Studio 10 Professional, Microsoft Visual Studio 14.0, and
@@ -79,7 +79,7 @@ To install SimulatorToFMU, proceed as follows:
 
   - Naming the new system variable OPENMODELICALIBRARY
 
-  - Setting the variable value to point to the location of the OpenModelica Modelica libary (e.g. D:\programs\OpenModelica1.19.2-64bit\lib\omlibrary)
+  - Setting the variable value to point to the location of the OpenModelica Modelica libary (e.g. ``D:\programs\OpenModelica1.19.2-64bit\lib\omlibrary``)
 
   - Click OK. Close all remaining windows by clicking OK.
 
