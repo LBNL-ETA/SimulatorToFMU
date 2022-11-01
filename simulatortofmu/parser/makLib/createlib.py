@@ -150,6 +150,14 @@ def main():
             log.error(s)
             raise ValueError(s)
 
+    # Check the system architecture
+    nbits=8 * struct.calcsize("P")
+    if(nbits==64):
+        plf="x64"
+    else:
+        s='This is currently only working for 64 bits architecture'
+        log.error(s)
+        raise ValueError(s)
     if platform.system().lower()=='windows':
         loader = jja2.FileSystemLoader(MAKEFILE_TEMPLATE_WINDOWS_PATH)
         env = jja2.Environment(loader=loader)
@@ -172,6 +180,16 @@ def main():
         with open(output_file, 'w') as fh:
             fh.write(output_res)
         fh.close()
+
+    	#$(CC) $(CC_FLAGS_$(ARCH)) -fPIC -c $(SRCS)
+        # Create the DLL
+        # The current configuration is release only
+        Platform = "/p:Platform="+plf
+        Configuration = "-p:Configuration=Release"
+        # Compile the Code
+        cmd = "\""+CMD_TOOL_PATH +"\"" + " " + Configuration + " " + Platform
+        log.info ("This is the command that is executed to generate the binaries" + cmd)
+        os.system(cmd)
 
     elif platform.system().lower()=='linux':
         # save the working Directory
@@ -197,6 +215,7 @@ def main():
         # Compile the Code
         cmd = "\""+CMD_TOOL_PATH +"\"" + " " + CC_FLAGS_64 + " -fPIC -c -fpermissive " \
             + SRCS
+        log.info ("This is the command executed to generate the binaries" + cmd)
         os.system(cmd)
 
         # Generate the shared libraries
@@ -271,9 +290,7 @@ def main():
 
     # Create the DLL
     # Check the system architecture
-    nbits=8 * struct.calcsize("P")
     if(nbits==64):
-        plf="x64"
         if platform.system().lower()=='windows':
             PYTHON_DLL_SIM = os.path.join(PYTHON_DLL_DIR, 'win64')
         elif platform.system().lower()=='linux':
@@ -289,7 +306,7 @@ def main():
 
     # Check that all the required files have been created.
     if platform.system().lower()=='windows':
-        DLL_Simulator=os.path.join(file_path, 'x64','release',DLL_ROOT_NAME+'.dll')
+        DLL_Simulator=os.path.join(file_path, plf,'release',DLL_ROOT_NAME+'.dll')
     elif platform.system().lower()=='linux':
         DLL_Simulator=os.path.join(tmpFolderSrcPath, DLL_ROOT_NAME+".so")
 
@@ -313,7 +330,7 @@ def main():
         cmd = "\""+CMD_TOOL_PATH +"\"" + ' ' + output_file + " /p:configuration=release " + "/p:platform="+plf
         os.system(cmd)
 
-        LIB_Simulator=os.path.join(file_path, 'x64','release',DLL_ROOT_NAME+'.lib')
+        LIB_Simulator=os.path.join(file_path, plf,'release',DLL_ROOT_NAME+'.lib')
         if (not os.path.isfile(LIB_Simulator)):
             s = 'The SimulatorToFMU LIB {!s} does not exists'.format(LIB_Simulator)
             log.error(s)
@@ -324,7 +341,7 @@ def main():
             log.info('Copying {!s} in {!s}'.format(i, PYTHON_DLL_SIM))
             shutil.copy(i, PYTHON_DLL_SIM)
         # Remove all temporary folders.
-        tmp = ['x64', DLL_ROOT_NAME+'.vcxproj']
+        tmp = [plf, DLL_ROOT_NAME+'.vcxproj']
         for i in tmp:
             log.info('Deleting {!s}'.format(i))
             if(os.path.isdir(i)):
