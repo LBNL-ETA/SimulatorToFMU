@@ -108,14 +108,15 @@
 </ol>
 <p>SimulatorToFMU has been tested with:</p>
 <ul class="simple">
-<li>Python 2.7, Python 3.4, and Python 3.7</li>
+<li>Python 2.7, Python 3.4, Python 3.7, and Python 3.8</li>
 <li>Three Modelica parsers (All parsers are not needed for the export)<ul>
 <li>Dymola 2018 on Windows and Linux</li>
 <li>JModelica 2.0 on Windows, and JModelica trunk version 9899 on Linux</li>
-<li>OpenModelica 1.11.0 on Windows</li>
+<li>OpenModelica 1.19.2 on Windows</li>
 </ul>
 </li>
-<li>C-Compiler: Microsoft Visual Studio 10 Professional, and Microsoft Visual Studio 14.0</li>
+<li>C-Compiler: Microsoft Visual Studio 10 Professional, Microsoft Visual Studio 14.0, and
+Microsoft Visual Studio 19.0</li>
 </ul>
 </div>
 <div class="section" id="installation-directory">
@@ -126,13 +127,11 @@
 </ol>
 <blockquote>
 <div><ul class="simple">
-<li>Python installation folder (e.g. <code class="docutils literal notranslate"><span class="pre">C:\Python27`</span></code>)</li>
-<li>Python scripts folder (e.g. <code class="docutils literal notranslate"><span class="pre">C:\Python27\Scripts</span></code>),</li>
 <li>Dymola executable folder (e.g. <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files(x86)\Dymola2018\bin</span></code>) if Dymola is your Modelica parser.</li>
 <li>JModelica installation folder (e.g. <code class="docutils literal notranslate"><span class="pre">C:\JModelica.org-2.0</span></code>) if JModelica is your Modelica parser.</li>
-<li>OpenModelica executable folder (e.g. <code class="docutils literal notranslate"><span class="pre">C:\OpenModelica1.11.0-32bit\bin</span></code>) if OpenModelica is your Modelica parser.</li>
+<li>OpenModelica executable folder (e.g. <code class="docutils literal notranslate"><span class="pre">C:\OpenModelica1.19.2-64bit\bin</span></code>) if OpenModelica is your Modelica parser.</li>
 </ul>
-<p>You can add folders to your system path by performing following steps on Windows 8 or 10:</p>
+<p>You can add folders to your system path by performing following steps on Windows 10:</p>
 <ul class="simple">
 <li>In Search, search for and then select: System (Control Panel)</li>
 <li>Click the Advanced system settings link.</li>
@@ -151,6 +150,18 @@ into a command prompt to see if the right version of Python, Dymola, JModelica, 
 </div>
 </div></blockquote>
 <ol class="arabic simple" start="2">
+<li>Specify the path of OPENMODELICALIBRARY (Only if OpenModelica is your Modelica parser) by</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>Clicking the Advanced system settings link.</li>
+<li>Clicking Environment Variables. In the section System Variables, Click New to create a new system variable.</li>
+<li>Naming the new system variable OPENMODELICALIBRARY</li>
+<li>Setting the variable value to point to the location of the OpenModelica Modelica libary (e.g. D:programsOpenModelica1.19.2-64bitlibomlibrary)</li>
+<li>Click OK. Close all remaining windows by clicking OK.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
 <li>Install SimulatorToFMU by downloading the package from the master branch
 which is at <a class="reference external" href="https://github.com/LBNL-ETA/SimulatorToFMU">https://github.com/LBNL-ETA/SimulatorToFMU</a>.</li>
 </ol>
@@ -227,8 +238,8 @@ folder of JModelica.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.
+        &#169; Copyright 2022, The Regents of the University of California (through Lawrence Berkeley National Laboratory).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
     </div>
   </body>
 </html>

@@ -80,7 +80,7 @@ Following requirements must be met when using SimulatorToFMU
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -t                                                 | Modelica compiler. Options are ``dymola`` (Dymola), ``jmodelica``        |
 |                                                    | (JModelica), and ``openmodelica`` (OpenModelica).                        |
-|                                                    | Default is ``jmodelica``.                                                |
+|                                                    | Default is ``openmodelica``.                                             |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -pt                                                | Path to the Modelica executable compiler.                                |
 +----------------------------------------------------+--------------------------------------------------------------------------+
@@ -91,7 +91,7 @@ Following requirements must be met when using SimulatorToFMU
 |                                                    | Default is ``python``.                                                   |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -pv                                                |Flag to specify the Python target version. Options are ``27``, ``34``,    |
-|                                                    |``37``. Default is ``27``.                                                |
+|                                                    |``37`` and higher. Default is ``37``.                                     |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -h                                                 | Flag to list all the options supported by SimulatorToFMU.                |
 +----------------------------------------------------+--------------------------------------------------------------------------+
@@ -284,7 +284,7 @@ def main():
                                  help='Modelica compiler. Valid options are '
                                  + '<dymola> for Dymola, <jmodelica> '
                                  + 'for JModelica, and <openmodelica> for OpenModelica'
-                                 + ' Default is <jmodelica>')
+                                 + ' Default is <openmodelica>')
     simulator_group.add_argument("-pt", "--export-tool-path",
                                  help='Path to the Modelica executable compiler.')
     simulator_group.add_argument("-hm", "--has-memory",
@@ -292,7 +292,7 @@ def main():
                                  + ' Valid options are <true> and <false>. Default is <true>.')
     simulator_group.add_argument("-pv", "--python-version",
                                  help='Python target version.'
-                                 + ' Valid options are <27>, <34>, and <37>. Default is <27>.')
+                                 + ' Valid options are <27>, <34>, <37> and higher. Default is <37>.')
     simulator_group.add_argument("-x", "--exec-target",
                                  help='Execution target.'
                                  + ' Current valid option is <python> and <server>. Default is <python>.')
@@ -306,17 +306,6 @@ def main():
 
     # Parse the arguments
     args = parser.parse_args()
-
-    # if (not (tool_export is None)):
-    #     if(tool_export in ["cyme"]):
-    #         python_vers = '34'
-    #         # Check command line options
-    #         if not(platform.system().lower() in ['windows']):
-    #             log.info('SimulatorToFMU can only export CYME for Windows.')
-    #             return
-    #     else:
-    #         log.error("CYME is the only supported custom tool.")
-    #         return
 
     # Get the memory flag
     has_memory = args.has_memory
@@ -340,7 +329,7 @@ def main():
         python_vers = args.python_version
         if (python_vers is None):
             # Default Python version
-            python_vers = '27'
+            python_vers = '37'
         if (float(python_vers))<27:
             s='The flag -pv must either be 27, 34, 37 or higher.'
             log.error(s)
@@ -410,12 +399,12 @@ def main():
 
     if(export_tool is None):
         log.info('No export tool was specified. jmodelica the default will be used.')
-        export_tool = 'jmodelica'
+        export_tool = 'openmodelica'
 
     # Check if export tool is valid
     if not (export_tool.lower() in ['dymola', 'jmodelica', 'openmodelica']):
         s = 'Supported export tools are Dymola (dymola), Jmodelica (jmodelica)'\
-            ' and OpenModelica(openmodelica).'
+            ' and OpenModelica (openmodelica).'
         log.error(s)
         raise ValueError(s)
 
@@ -480,7 +469,7 @@ def main():
                 log.error(s)
                 raise ValueError(s)
 
-        print('============Exporting scripts={!s} as Functional Mock-up Unit. API={!s},'\
+        log.info('============Exporting scripts={!s} as Functional Mock-up Unit. API={!s},'\
             ' Version={!s}, Export Tool={!s}'.format(resource_scripts_path,
             fmi_api, fmi_version, export_tool))
 
@@ -1217,7 +1206,6 @@ class SimulatorToFMU(object):
 
 
         """
-
 
         # Check if library path is none
         if not(self.export_tool == 'jmodelica'):
