@@ -236,6 +236,10 @@ SimulatorToFMU_LIB_PATH = os.path.join(script_path, 'libraries', 'modelica')
 MODELICA_UTILITIES_H_IN = os.path.join(utilities_path, 'ModelicaUtilities.h')
 MODELICA_UTILITIES_H_DIR = os.path.join(script_path, 'libraries', 'modelica',
 'SimulatorToFMU', 'Resources', 'C-Sources')
+PYTHON_C_DIR = os.path.join(script_path, 'libraries', 'modelica',
+'SimulatorToFMU', 'Resources', 'src', 'python')
+PYTHON_DLL_DIR = os.path.join(script_path, 'libraries', 'modelica',
+'SimulatorToFMU', 'Resources', 'Library')
 MODELICA_UTILITIES_H_OUT = os.path.join(MODELICA_UTILITIES_H_DIR, 'ModelicaUtilities.h')
 
 
@@ -337,9 +341,15 @@ def main():
         if (python_vers is None):
             # Default Python version
             python_vers = '27'
-        if not (python_vers in ['27', '34', '37']):
-            log.error('The flag -pv must either be 27, 34, or 37.')
-            return
+        if (float(python_vers))<27:
+            s='The flag -pv must either be 27, 34, 37 or higher.'
+            log.error(s)
+            raise ValueError(s)
+        #elif python_vers in ['27', '34', '37']:
+        #    return
+        elif (float(python_vers))>37:
+            log.warning('The Python version is higher than 37. Make sure that the crealib.py' \
+            'script (in makeLib folder) has been run prior to exporting the FMU.')
 
     # Check operating systems
     if not(platform.system().lower() in ['windows', 'linux']):
@@ -1405,7 +1415,11 @@ class SimulatorToFMU(object):
                         'Library'))
 
         if(platform.system().lower() == 'windows'):
-            for arch in ['win32', 'win64']:
+            if(float(self.python_vers)<=37):
+                win_arch=['win32','win64']
+            else:
+                win_arch=['win64']
+            for arch in win_arch:
                 zip_path = os.path.normpath(os.path.join(dir_name, arch))
                 os.makedirs(zip_path)
                 if(self.exec_target=='python'):
@@ -1545,7 +1559,12 @@ class SimulatorToFMU(object):
                             'Library'))
 
             if(platform.system().lower() == 'windows'):
-                for arch in ['win32', 'win64']:
+                if(float(self.python_vers)<=37):
+                    print('This is win_arch' + self.python_vers)
+                    win_arch=['win32','win64']
+                else:
+                    win_arch=['win64']
+                for arch in win_arch:
                     fmu_lib_pat=os.path.join(fmutmp_path, 'binaries', arch)
                     if(self.exec_target=='python'):
                         tmp1='SimulatorToFMUPython'+self.python_vers+'.dll'
