@@ -339,7 +339,7 @@ def main():
         elif (float(python_vers))>37:
             log.warning('The Python version is higher than 37. Make sure that the crealib.py' \
             'script (in makeLib folder) has been run prior to exporting the FMU.')
-
+        # drop support for 32 bit operating systems
         if(float(python_vers)>37):
             # Check the system architecture
             nbits=8 * struct.calcsize("P")
@@ -353,11 +353,11 @@ def main():
         log.info('SimulatorToFMU is only supported on Linux and Windows.')
         return
 
-    # Check the system architecture
-    nbits=8 * struct.calcsize("P")
-    if((platform.system().lower() == 'linux') and nbits==32):
-        log.info('SimulatorToFMU is no longer supported on Linux 32-bit.')
-        return
+    # # Check the system architecture
+    # nbits=8 * struct.calcsize("P")
+    # if((platform.system().lower() == 'linux') and nbits==32):
+    #     log.info('SimulatorToFMU is no longer supported on Linux 32-bit.')
+    #     return
 
     # Check export tool
     export_tool = args.export_tool
@@ -1561,7 +1561,6 @@ class SimulatorToFMU(object):
 
             if(platform.system().lower() == 'windows'):
                 if(float(self.python_vers)<=37):
-                    print('This is win_arch' + self.python_vers)
                     win_arch=['win32','win64']
                 else:
                     win_arch=['win64']
@@ -1584,7 +1583,11 @@ class SimulatorToFMU(object):
                             shutil.copy2(mod_lib_pat, fmu_lib_pat)
 
             if(platform.system().lower() == 'linux'):
-                for arch in ['linux32', 'linux64']:
+                if(float(self.python_vers)<=37):
+                    lin_arch=['linux32','linux64']
+                else:
+                    lin_arch=['linux64']
+                for arch in lin_arch:
                     fmu_lib_pat=os.path.join(fmutmp_path, 'binaries', arch)
                     if(self.exec_target=='python'):
                         tmp1='libSimulatorToFMUPython'+self.python_vers+'.so'
