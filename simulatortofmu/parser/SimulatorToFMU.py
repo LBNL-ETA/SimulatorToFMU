@@ -292,7 +292,7 @@ def main():
                                  + ' Valid options are <true> and <false>. Default is <true>.')
     simulator_group.add_argument("-pv", "--python-version",
                                  help='Python target version.'
-                                 + ' Valid options are <27>, <34>, <37> and higher. Default is <37>.')
+                                 + ' Valid options are <27> (Python 2.7), <34> (Python 3.4), <37> (Python 3.7) and higher. Default is <37>.')
     simulator_group.add_argument("-x", "--exec-target",
                                  help='Execution target.'
                                  + ' Current valid option is <python> and <server>. Default is <python>.')
@@ -340,6 +340,14 @@ def main():
             log.warning('The Python version is higher than 37. Make sure that the crealib.py' \
             'script (in makeLib folder) has been run prior to exporting the FMU.')
 
+        if(float(python_vers)>37):
+            # Check the system architecture
+            nbits=8 * struct.calcsize("P")
+            if(nbits!=64):
+                s='SimulatorToFMU is only working for 64 bits architecture for Python 3.8 and higher'
+                log.error(s)
+                raise ValueError(s)
+
     # Check operating systems
     if not(platform.system().lower() in ['windows', 'linux']):
         log.info('SimulatorToFMU is only supported on Linux and Windows.')
@@ -353,10 +361,10 @@ def main():
 
     # Check export tool
     export_tool = args.export_tool
-    if (platform.system().lower() == 'linux' and export_tool == 'openmodelica'):
-        log.info('SimulatorToFMU is only supported on Windows when'\
-        ' using OpenModelica as the Modelica compiler.')
-        return
+    #if (platform.system().lower() == 'linux' and export_tool == 'openmodelica'):
+    #    log.info('SimulatorToFMU is only supported on Windows when'\
+    #    ' using OpenModelica as the Modelica compiler.')
+    #    return
 
     # Get export tool Path
     export_tool_path = args.export_tool_path
@@ -1429,7 +1437,12 @@ class SimulatorToFMU(object):
                         raise ValueError(s)
 
         if(platform.system().lower() == 'linux'):
-            for arch in ['linux32', 'linux64']:
+            # fixme === Drop support for Linux 32 bit
+            if(float(self.python_vers)<=37):
+                lin_arch=['linux32','linux64']
+            else:
+                lin_arch=['linux64']
+            for arch in lin_arch:
                 zip_path = os.path.normpath(os.path.join(dir_name, arch))
                 os.makedirs(zip_path)
                 if(self.exec_target=='python'):
@@ -1448,7 +1461,7 @@ class SimulatorToFMU(object):
                         shutil.copy2(lib_path, zip_path)
                     else:
                         s = '{!s} does not exist and will need'\
-                        ' to be compiled.'.format(fil_path)
+                        ' to be compiled.'.format(lib_path)
                         raise ValueError(s)
 
         fnam = os.path.normpath(os.path.join(dir_name, "README.txt"))

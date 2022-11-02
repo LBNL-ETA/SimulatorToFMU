@@ -57,7 +57,17 @@ def main():
     PY_VERS = args.python_version
 
     if(float(PY_VERS)<38):
-        s='The Python version={!s} is less than 3.8. This is not supported. '.format(PY_VERS)
+        s='The Python version={!s} is less than 38 (For Python 3.8). This is not supported. '.format(PY_VERS)
+        log.error(s)
+        raise ValueError(s)
+
+    # Check the system architecture
+    nbits=8 * struct.calcsize("P")
+    if(nbits==64):
+        plf="x64"
+    else:
+        s='This script is only working for 64 bits architecture'
+        log.error(s)
         raise ValueError(s)
 
     if platform.system().lower()=='windows':
@@ -150,14 +160,6 @@ def main():
             log.error(s)
             raise ValueError(s)
 
-    # Check the system architecture
-    nbits=8 * struct.calcsize("P")
-    if(nbits==64):
-        plf="x64"
-    else:
-        s='This is currently only working for 64 bits architecture'
-        log.error(s)
-        raise ValueError(s)
     if platform.system().lower()=='windows':
         loader = jja2.FileSystemLoader(MAKEFILE_TEMPLATE_WINDOWS_PATH)
         env = jja2.Environment(loader=loader)
@@ -215,13 +217,14 @@ def main():
         # Compile the Code
         cmd = "\""+CMD_TOOL_PATH +"\"" + " " + CC_FLAGS_64 + " -fPIC -c -fpermissive " \
             + SRCS
-        log.info ("This is the command executed to generate the binaries" + cmd)
+        log.info ("This is the command executed to compile the source code" + cmd)
         os.system(cmd)
 
         # Generate the shared libraries
         DLL_FLAGS = "-shared -fPIC -Wl,-soname"
         cmd = "\""+CMD_TOOL_PATH +"\"" + " " + DLL_FLAGS + "," + DLL_ROOT_NAME+".so" \
             + " -o " + DLL_ROOT_NAME+".so" + " " + OBJS + " -lc"
+        log.info ("This is the command executed to create the binaries" + cmd)
         os.system(cmd)
 
     	#$(CC) -shared -fPIC -Wl,-soname,$(LIB) -o $(LIB) $(OBJS) -lc
@@ -288,21 +291,15 @@ def main():
     # Switch back to the working directory
     os.chdir(workDir)
 
-    # Create the DLL
     # Check the system architecture
-    if(nbits==64):
-        if platform.system().lower()=='windows':
-            PYTHON_DLL_SIM = os.path.join(PYTHON_DLL_DIR, 'win64')
-        elif platform.system().lower()=='linux':
-            PYTHON_DLL_SIM = os.path.join(PYTHON_DLL_DIR, 'linux64')
-        if( not os.path.isdir(PYTHON_DLL_SIM)):
-            s='The folder {!s} does not exist.'.format(PYTHON_DLL_SIM)
-            raise ValueError(s)
-    else:
-        s='This is currently only working for 64 bits architecture'
-        log.error(s)
+    if platform.system().lower()=='windows':
+        PYTHON_DLL_SIM = os.path.join(PYTHON_DLL_DIR, 'win64')
+    elif platform.system().lower()=='linux':
+        PYTHON_DLL_SIM = os.path.join(PYTHON_DLL_DIR, 'linux64')
+    if( not os.path.isdir(PYTHON_DLL_SIM)):
+        s='The folder {!s} does not exist.'.format(PYTHON_DLL_SIM)
         raise ValueError(s)
-            #plf="Win32"
+
 
     # Check that all the required files have been created.
     if platform.system().lower()=='windows':
@@ -354,6 +351,12 @@ def main():
         for i in files:
             log.info('Copying {!s} in {!s}'.format(i, PYTHON_DLL_SIM))
             shutil.copy(i, PYTHON_DLL_SIM)
+        # get the current working directory
+        tmpCWD = os.getcwd()
+        os.chdir(PYTHON_DLL_SIM)
+        # Rename the python library so it can be found later by SimulatorToFMU
+        os.rename("libpython"+".".join(PY_VERS)+".so", "libpython"+PY_VERS+".so")
+        os.chdir(tmpCWD)
         # Delete the source folders
         shutil.rmtree(tmpFolderSrcPath)
 
