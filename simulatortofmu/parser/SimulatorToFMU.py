@@ -1618,8 +1618,17 @@ class SimulatorToFMU(object):
                 # Get the root of the tree
                 root = tree.getroot()
                 # Add the needsExecution tool attribute
-                root.attrib[NEEDSEXECUTIONTOOL] = 'true'
-                tree.write(MODELDESCRIPTION, xml_declaration=True)
+                #root.attrib[NEEDSEXECUTIONTOOL] = 'true'
+                #tree.write(MODELDESCRIPTION, xml_declaration=True)
+
+                #Iterate Through All Books
+                for element in root.findall("CoSimulation"):
+                    #Check if title contains the word Python
+                    if (element.get('needsExecutionTool') is not None):
+                        #Change xml attribute value
+                        element.set('needsExecutionTool','true')
+                #Write the modified file with the correct attribute
+                tree.write(MODELDESCRIPTION,xml_declaration=True)
 
             # Switch back to the current working directory
             os.chdir(cwd)
