@@ -158,7 +158,7 @@ class Tester(unittest.TestCase):
                 if (tool == 'openmodelica' or tool == 'jmodelica'):
                     version = str(float(version))
                 for api in ['me']:
-                    if (tool == 'openmodelica' and version == '1.0' and api == 'cs'):
+                    if (tool == 'openmodelica' and version == '1.0' and (api == 'cs' or api == 'me')):
                         print (
                             'tool={!s} with FMI version={!s} and FMI API={!s} is not supported.'.format(
                                 tool, version, api))
@@ -366,7 +366,7 @@ class Tester(unittest.TestCase):
                 if (tool == 'openmodelica' or tool == 'jmodelica'):
                     version = str(float(version))
                 for api in ['me', 'cs']:
-                    if (tool == 'openmodelica' and version == '1.0' and api == 'cs'):
+                    if (tool == 'openmodelica' and version == '1.0' and (api == 'cs' or api == 'me')):
                         print (
                             'tool={!s} with FMI version={!s} and FMI API={!s} is not supported.'.format(
                                 tool, version, api))
