@@ -340,11 +340,11 @@ def main():
             log.warning('The Python version is higher than 37. Make sure that the crealib.py' \
             'script (in makeLib folder) has been run prior to exporting the FMU.')
         # drop support for 32 bit operating systems
-        if(float(python_vers)>37):
+        if(float(python_vers)>=37):
             # Check the system architecture
             nbits=8 * struct.calcsize("P")
             if(nbits!=64):
-                s='SimulatorToFMU is only working for 64 bits architecture for Python 3.8 and higher'
+                s='SimulatorToFMU is only supported for 64 bits architecture for Python 3.7 and higher'
                 log.error(s)
                 raise ValueError(s)
 
@@ -1278,7 +1278,12 @@ class SimulatorToFMU(object):
                     command = os.path.normpath(os.path.join(
                     self.export_tool_path, 'setenv.bat'))
                 else:
-                    command = 'setenv.bat'
+                    nbits=8 * struct.calcsize("P")
+                    #Activate the 64 bits version of JModelica
+                    if(nbits==64):
+                        command = 'setenv.bat 64'
+                    else:
+                        command = 'setenv.bat'
         # Create command for OpenModelica
         if (self.export_tool == 'openmodelica'):
             if (not (self.export_tool_path is None)):
@@ -1411,7 +1416,7 @@ class SimulatorToFMU(object):
                         'Library'))
 
         if(platform.system().lower() == 'windows'):
-            if(float(self.python_vers)<=37):
+            if(float(self.python_vers)<37):
                 win_arch=['win32','win64']
             else:
                 win_arch=['win64']
@@ -1438,7 +1443,7 @@ class SimulatorToFMU(object):
 
         if(platform.system().lower() == 'linux'):
             # fixme === Drop support for Linux 32 bit
-            if(float(self.python_vers)<=37):
+            if(float(self.python_vers)<37):
                 lin_arch=['linux32','linux64']
             else:
                 lin_arch=['linux64']
