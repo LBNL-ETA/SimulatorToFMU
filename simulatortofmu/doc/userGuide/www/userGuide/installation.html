@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>2. Installation and Configuration &#8212; FMU Export of a Python-driven Simulation Program User Guide</title>
+    <title>3. Installation and Configuration &#8212; FMU Export of a Python-driven Simulation Program User Guide</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -16,8 +16,8 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3. Best Practice" href="bestPractice.html" />
-    <link rel="prev" title="1. Introduction" href="introduction.html" /> 
+    <link rel="next" title="4. Best Practice" href="bestPractice.html" />
+    <link rel="prev" title="2. Releases" href="releases.html" /> 
   </head><body>
 <div class="headerStyle">
 <img src="_static/lbl-logo.png" alt="LBL logo" />
@@ -33,10 +33,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="bestPractice.html" title="3. Best Practice"
+          <a href="bestPractice.html" title="4. Best Practice"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="introduction.html" title="1. Introduction"
+          <a href="releases.html" title="2. Releases"
              accesskey="P">previous</a> |</li>
     <a href="index.html">User Guide</a></li>
     </br>
@@ -49,21 +49,21 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2. Installation and Configuration</a><ul>
-<li><a class="reference internal" href="#software-requirements">2.1. Software requirements</a></li>
-<li><a class="reference internal" href="#installation-directory">2.2. Installation</a></li>
-<li><a class="reference internal" href="#unittests">2.3. UnitTests</a></li>
-<li><a class="reference internal" href="#uninstallation">2.4. Uninstallation</a></li>
+<li><a class="reference internal" href="#">3. Installation and Configuration</a><ul>
+<li><a class="reference internal" href="#software-requirements">3.1. Software requirements</a></li>
+<li><a class="reference internal" href="#installation-directory">3.2. Installation</a></li>
+<li><a class="reference internal" href="#unittests">3.3. UnitTests</a></li>
+<li><a class="reference internal" href="#uninstallation">3.4. Uninstallation</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="introduction.html"
-                        title="previous chapter">1. Introduction</a></p>
+  <p class="topless"><a href="releases.html"
+                        title="previous chapter">2. Releases</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="bestPractice.html"
-                        title="next chapter">3. Best Practice</a></p>
+                        title="next chapter">4. Best Practice</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -92,10 +92,18 @@
           <div class="body" role="main">
             
   <div class="section" id="installation-and-configuration">
-<span id="installation"></span><h1>2. Installation and Configuration<a class="headerlink" href="#installation-and-configuration" title="Permalink to this headline">¶</a></h1>
-<p>This chapter describes how to install, configure, and uninstall SimulatorToFMU on Windows and Linux operating systems. SimulatorToFMU is currently not supported on Mac OS.</p>
+<span id="installation"></span><h1>3. Installation and Configuration<a class="headerlink" href="#installation-and-configuration" title="Permalink to this headline">¶</a></h1>
+<p>This chapter describes how to install, configure, and uninstall SimulatorToFMU on Windows and Linux operating systems.
+SimulatorToFMU has the following limitations:</p>
+<blockquote>
+<div><ul class="simple">
+<li>SimulatorToFMU is not supported on Mac OS.</li>
+<li>SimulatorToFMU has limited support for Linux 32 bits and Windows 32 bits for Python 3.7 and lower.</li>
+<li>SimulatorToFMU is fully supported on Linux 64 bits and Windows 64 bits for Python 3.8 and higher.</li>
+</ul>
+</div></blockquote>
 <div class="section" id="software-requirements">
-<h2>2.1. Software requirements<a class="headerlink" href="#software-requirements" title="Permalink to this headline">¶</a></h2>
+<h2>3.1. Software requirements<a class="headerlink" href="#software-requirements" title="Permalink to this headline">¶</a></h2>
 <p>To export a Simulator as an FMU, SimulatorToFMU needs:</p>
 <ol class="arabic simple">
 <li>Python and following dependencies:<ul>
@@ -120,7 +128,7 @@ Microsoft Visual Studio 19.0</li>
 </ul>
 </div>
 <div class="section" id="installation-directory">
-<span id="id1"></span><h2>2.2. Installation<a class="headerlink" href="#installation-directory" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>3.2. Installation<a class="headerlink" href="#installation-directory" title="Permalink to this headline">¶</a></h2>
 <p>To install SimulatorToFMU, proceed as follows:</p>
 <ol class="arabic simple">
 <li>Add following folders to your system path:</li>
@@ -182,7 +190,7 @@ which is at <a class="reference external" href="https://github.com/LBNL-ETA/Simu
 </div></blockquote>
 </div>
 <div class="section" id="unittests">
-<h2>2.3. UnitTests<a class="headerlink" href="#unittests" title="Permalink to this headline">¶</a></h2>
+<h2>3.3. UnitTests<a class="headerlink" href="#unittests" title="Permalink to this headline">¶</a></h2>
 <p>The unittests use PyFMI to run the FMUs generated by the tested Modelica parsers.
 PyFMI is included in JModelica. To run the unittests, install JModelica and add
 the installation folder to your system path.</p>
@@ -190,21 +198,9 @@ the installation folder to your system path.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; python runUnitTest.py
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>On Windows’ machines, first run</p>
-<div class="last highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; setenv.bat
-</pre></div>
-</div>
-</div>
-<p>prior to starting the unittests. <cite>setenv.bat</cite> sets the environment variables
-needed by PyFMI/JModelica to run FMUs. Invoking <cite>setenv.bat</cite> in the command prompt, assumes
-that JModelica is on the system path. Otherwise,
-you will need to provide the full path to <cite>setenv.bat</cite> which is in the Installation
-folder of JModelica.</p>
 </div>
 <div class="section" id="uninstallation">
-<h2>2.4. Uninstallation<a class="headerlink" href="#uninstallation" title="Permalink to this headline">¶</a></h2>
+<h2>3.4. Uninstallation<a class="headerlink" href="#uninstallation" title="Permalink to this headline">¶</a></h2>
 <p>To uninstall SimulatorToFMU, delete the installation directory.</p>
 </div>
 </div>
@@ -225,10 +221,10 @@ folder of JModelica.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="bestPractice.html" title="3. Best Practice"
+          <a href="bestPractice.html" title="4. Best Practice"
              >next</a> |</li>
         <li class="right" >
-          <a href="introduction.html" title="1. Introduction"
+          <a href="releases.html" title="2. Releases"
              >previous</a> |</li>
     <a href="index.html">User Guide</a></li>
     </br>

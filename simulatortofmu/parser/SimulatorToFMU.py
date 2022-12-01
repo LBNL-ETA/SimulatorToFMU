@@ -337,7 +337,7 @@ def main():
         #elif python_vers in ['27', '34', '37']:
         #    return
         elif (float(python_vers))>37:
-            log.warning('The Python version is higher than 37. Make sure that the crealib.py' \
+            log.warning('The Python version is higher than 3.7. Make sure that the crealib.py' \
             'script (in makeLib folder) has been run prior to exporting the FMU.')
         # drop support for 32 bit operating systems
         if(float(python_vers)>=37):

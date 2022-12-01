@@ -5,7 +5,12 @@
 Installation and Configuration
 ==============================
 
-This chapter describes how to install, configure, and uninstall SimulatorToFMU on Windows and Linux operating systems. SimulatorToFMU is currently not supported on Mac OS.
+This chapter describes how to install, configure, and uninstall SimulatorToFMU on Windows and Linux operating systems.
+SimulatorToFMU has the following limitations:
+
+  - SimulatorToFMU is not supported on Mac OS.
+  - SimulatorToFMU has limited support for Linux 32 bits and Windows 32 bits for Python 3.7 and lower.
+  - SimulatorToFMU is fully supported on Linux 64 bits and Windows 64 bits for Python 3.8 and higher.
 
 
 Software requirements
@@ -43,8 +48,6 @@ To install SimulatorToFMU, proceed as follows:
 
 1. Add following folders to your system path:
 
- .. - Python installation folder (e.g. ``C:\Python27```)
- .. - Python scripts folder (e.g. ``C:\Python27\Scripts``),
  - Dymola executable folder (e.g. ``C:\Program Files(x86)\Dymola2018\bin``) if Dymola is your Modelica parser.
  - JModelica installation folder (e.g. ``C:\JModelica.org-2.0``) if JModelica is your Modelica parser.
  - OpenModelica executable folder (e.g. ``C:\OpenModelica1.19.2-64bit\bin``) if OpenModelica is your Modelica parser.
@@ -114,18 +117,6 @@ To test your installation run from the installation ``bin`` folder
 .. code-block:: none
 
     > python runUnitTest.py
-
-.. note:: On Windows' machines, first run
-
- .. code-block:: none
-
-     > setenv.bat
-
-prior to starting the unittests. `setenv.bat` sets the environment variables
-needed by PyFMI/JModelica to run FMUs. Invoking `setenv.bat` in the command prompt, assumes
-that JModelica is on the system path. Otherwise,
-you will need to provide the full path to `setenv.bat` which is in the Installation
-folder of JModelica.
 
 Uninstallation
 ^^^^^^^^^^^^^^

@@ -50,28 +50,26 @@ def exchange(configuration_file, time, input_names,
     # Since master algorithms need to some time call at the same time instant
     # an FMU multiple times for event iteration. It is for efficient reasons
     # good to catch the simulator input and outputs results, along with the current
-    #  and past simulation times to determine when the Simulator needs to be reinvoked.
-    newInputs=0
+    # and past simulation times to determine when the Simulator needs to be reinvoked.
+
     if memory == None:
-        # Initialize the Python object
+        # Initialize the Simulator object
         s = Simulator(configuration_file, time, input_names,
                         input_values, output_names, write_results)
+        # create the memory object
         memory = {'memory':s, 'tLast':time, 'outputs':None}
-        if not (input_values is None):
-            memory['inputsLast'] = input_values
-            memory['outputs'] = s.doTimeStep(input_values)
-        else:
-            # Return default output
-            memory['outputs'] = 1.0
+        # get and store the initial inputs
+        memory['inputsLast'] = input_values
+        # get and store the initial outputs
+        memory['outputs'] = s.doTimeStep(input_values)
+        # store the memory object
         memory['s'] = s
     else:
-        # Check if inputs values have changed
-        if (not (input_values is None) and isinstance(input_values, list)):
-            newInputs = sum([abs(m - n) for m, n in zip (input_values,
-            memory['inputsLast'])])
-        # Check if time has changed prior to updating the outputs
-        if(abs(time - memory['tLast'])>1e-6 or newInputs > 0):
-            # Updtate the outputs of the Simulator
+        # The assumption is that inputs are changed at every invocation of the exchange function
+        # For efficiency reasons, it is recommended to extend the code to check whether the output values need to be updated.
+        # Update the outputs of the Simulator if time has advanced
+        if(abs(time - memory['tLast'])>1e-6):
+            # Update the outputs
             memory['outputs'] = memory['s'].doTimeStep(memory['outputs'])
             # Save last time
             memory['tLast'] = time
@@ -80,11 +78,7 @@ def exchange(configuration_file, time, input_names,
     # Handle errors
     if(memory['outputs'] < 0.0):
             raise("The memory['outpus'] cannot be null")
-    # Save the output of the Simulator
+    # Save the outputs of the Simulator
     output_values = memory['outputs']
     #########################################################################
     return [output_values, memory]
-
-if __name__ == "__main__":
-    memory = None
-    print(exchange("dummy.csv", 0.0, "v", None, "i", 0, memory))
