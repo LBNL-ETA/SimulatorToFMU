@@ -252,7 +252,6 @@ def main():
     import argparse
 
     # Configure the argument parser
-
     parser = argparse.ArgumentParser(
         description='Export Simulator as a Functional Mock-up Unit')
     simulator_group = parser.add_argument_group(
@@ -330,34 +329,48 @@ def main():
         if (python_vers is None):
             # Default Python version
             python_vers = '37'
-        if (float(python_vers))<27:
-            s='The flag -pv must either be 27, 34, 37 or higher.'
-            log.error(s)
-            raise ValueError(s)
-        #elif python_vers in ['27', '34', '37']:
-        #    return
-        elif (float(python_vers))>37:
-            log.warning('The Python version is higher than 3.7. Make sure that the crealib.py' \
-            'script (in makeLib folder) has been run prior to exporting the FMU.')
-        # drop support for 32 bit operating systems
-        if(float(python_vers)>=37):
-            # Check the system architecture
-            nbits=8 * struct.calcsize("P")
-            if(nbits!=64):
-                s='SimulatorToFMU is only supported for 64 bits architecture for Python 3.7 and higher'
+        else:
+            # check the validity of the Python version
+            arr_py_vers = python_vers.split('.')
+            len_str_py_vers=len(str(python_vers))
+            if(len(arr_py_vers)>1):
+                s='The flag -pv must be a two digits number which is either 27 for Python 2.7,'\
+                ' 34 for Python 3.4, 37 for Python 3.7 or higher (e.g. 38 for Python 3.8). '\
+                ' The -pv (Python version) set is {!s} which is invalid.'.format(python_vers)
                 log.error(s)
                 raise ValueError(s)
+            if(len_str_py_vers>2):
+                s='The flag -pv must be a two digits number which is either 27 for Python 2.7,'\
+                ' 34 for Python 3.4, 37 for Python 3.7 or higher (e.g. 38 for Python 3.8). '\
+                ' The -pv (Python version) set is {!s} which is invalid.'.format(python_vers)
+                log.error(s)
+                raise ValueError(s)
+            if (float(python_vers))<27:
+                s='The flag -pv must be a two digits number which is either 27 for Python 2.7,'\
+                ' 34 for Python 3.4, 37 for Python 3.7 or higher (e.g. 38 for Python 3.8). '\
+                ' The -pv (Python version) set is {!s} which is invalid.'.format(python_vers)
+                log.error(s)
+                raise ValueError(s)
+            #elif python_vers in ['27', '34', '37']:
+            #    return
+            if (float(python_vers))>37:
+                s='The Python version set ({!s}) is higher than 3.7. Make sure that the crealib.py' \
+                ' script (in makeLib folder) has been run prior to exporting the FMU.'.format(python_vers)
+                log.warning(s)
+            # drop support for 32 bit operating systems
+            if(float(python_vers)>=37):
+                # Check the system architecture
+                nbits=8 * struct.calcsize("P")
+                if(nbits!=64):
+                    s='SimulatorToFMU is only supported for 64 bits architecture for Python 3.7 and higher.'
+                    log.error(s)
+                    raise ValueError(s)
 
     # Check operating systems
     if not(platform.system().lower() in ['windows', 'linux']):
-        log.info('SimulatorToFMU is only supported on Linux and Windows.')
-        return
-
-    # # Check the system architecture
-    # nbits=8 * struct.calcsize("P")
-    # if((platform.system().lower() == 'linux') and nbits==32):
-    #     log.info('SimulatorToFMU is no longer supported on Linux 32-bit.')
-    #     return
+        s='SimulatorToFMU is only supported on Linux and Windows.'
+        log.error(s)
+        raise ValueError(s)
 
     # Check export tool
     export_tool = args.export_tool
@@ -417,17 +430,20 @@ def main():
         raise ValueError(s)
 
     # Define templates variables
+    # Template for Dymola
     if(export_tool.lower() == 'dymola'):
         mos_template_path = MOS_TEMPLATE_PATH_DYMOLA
         # Convert the FMI version to int for Dymola
         if fmi_version in ['1.0', '2.0']:
             fmi_version = str(int(float(fmi_version)))
         modelica_path = 'MODELICAPATH'
+    # Template for JModelica
     elif(export_tool.lower() == 'jmodelica'):
         mos_template_path = MOS_TEMPLATE_PATH_JMODELICA
         if fmi_version in ['1', '2']:
             fmi_version = str(float(fmi_version)*1.0)
         modelica_path = None
+    # Template for OpenModelica
     elif(export_tool.lower() == 'openmodelica'):
         if fmi_version in ['1', '2']:
             fmi_version = str(float(fmi_version)*1.0)
@@ -438,11 +454,11 @@ def main():
     # OpenModelica
     if (export_tool == 'openmodelica' and fmi_version ==
             '1.0' and fmi_api.lower() == 'cs'):
-        log.info(
-            'Export of FMU type cs for version 1 is not supported for openmodelica.' +
-            ' Supported combinations are me (model-exchange) for versions 1.0 & 2.0,' +
-            ' cs (co-simulation) & me_cs (model-exchange & co-simulation) for version 2.0.')
-        return
+        s='Export of FMU type cs for version 1 is not supported for openmodelica.'\
+            ' Supported combinations are me (model-exchange) for versions 1.0 & 2.0,'\
+            ' cs (co-simulation) & me_cs (model-exchange & co-simulation) for version 2.0.'
+        log.error(s)
+        raise ValueError(s)
 
     # Get the Python script path
     resource_scripts_path = args.resource_scripts_path
@@ -498,14 +514,14 @@ def main():
 
     # Check configuration file for JModelica
     if con_path is None and export_tool=='jmodelica':
-        s = ('No configuration file was provided.'+\
-             ' JModelica does not allow to set the path'+
-             ' to a configuration file at runtime.' +\
-             ' Hence if the exported simulation program/script'+\
-             ' needs a configuration file to run, then the path'+\
-             ' to the configuration file must be provided'+\
-             ' when creating the FMU. Otherwise the FMU'+\
-             ' will fail to run.')
+        s = 'No configuration file was provided.'\
+             ' JModelica does not allow to set the path'\
+             ' to a configuration file at runtime.' \
+             ' Hence if the exported simulation program/script'\
+             ' needs a configuration file to run, then the path'\
+             ' to the configuration file must be provided'\
+             ' when creating the FMU. Otherwise the FMU'\
+             ' will fail to run.'
         log.warning(s)
         con_path = ''
     elif (con_path is None):
