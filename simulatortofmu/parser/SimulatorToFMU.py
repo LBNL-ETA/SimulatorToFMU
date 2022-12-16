@@ -80,7 +80,7 @@ Following requirements must be met when using SimulatorToFMU
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -t                                                 | Modelica compiler. Options are ``dymola`` (Dymola), ``jmodelica``        |
 |                                                    | (JModelica), and ``openmodelica`` (OpenModelica).                        |
-|                                                    | Default is ``jmodelica``.                                                |
+|                                                    | Default is ``openmodelica``.                                             |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -pt                                                | Path to the Modelica executable compiler.                                |
 +----------------------------------------------------+--------------------------------------------------------------------------+
@@ -91,7 +91,7 @@ Following requirements must be met when using SimulatorToFMU
 |                                                    | Default is ``python``.                                                   |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -pv                                                |Flag to specify the Python target version. Options are ``27``, ``34``,    |
-|                                                    |``37``. Default is ``27``.                                                |
+|                                                    |``37`` and higher. Default is ``37``.                                     |
 +----------------------------------------------------+--------------------------------------------------------------------------+
 | -h                                                 | Flag to list all the options supported by SimulatorToFMU.                |
 +----------------------------------------------------+--------------------------------------------------------------------------+
@@ -236,6 +236,10 @@ SimulatorToFMU_LIB_PATH = os.path.join(script_path, 'libraries', 'modelica')
 MODELICA_UTILITIES_H_IN = os.path.join(utilities_path, 'ModelicaUtilities.h')
 MODELICA_UTILITIES_H_DIR = os.path.join(script_path, 'libraries', 'modelica',
 'SimulatorToFMU', 'Resources', 'C-Sources')
+PYTHON_C_DIR = os.path.join(script_path, 'libraries', 'modelica',
+'SimulatorToFMU', 'Resources', 'src', 'python')
+PYTHON_DLL_DIR = os.path.join(script_path, 'libraries', 'modelica',
+'SimulatorToFMU', 'Resources', 'Library')
 MODELICA_UTILITIES_H_OUT = os.path.join(MODELICA_UTILITIES_H_DIR, 'ModelicaUtilities.h')
 
 
@@ -248,7 +252,6 @@ def main():
     import argparse
 
     # Configure the argument parser
-
     parser = argparse.ArgumentParser(
         description='Export Simulator as a Functional Mock-up Unit')
     simulator_group = parser.add_argument_group(
@@ -280,7 +283,7 @@ def main():
                                  help='Modelica compiler. Valid options are '
                                  + '<dymola> for Dymola, <jmodelica> '
                                  + 'for JModelica, and <openmodelica> for OpenModelica'
-                                 + ' Default is <jmodelica>')
+                                 + ' Default is <openmodelica>')
     simulator_group.add_argument("-pt", "--export-tool-path",
                                  help='Path to the Modelica executable compiler.')
     simulator_group.add_argument("-hm", "--has-memory",
@@ -288,7 +291,7 @@ def main():
                                  + ' Valid options are <true> and <false>. Default is <true>.')
     simulator_group.add_argument("-pv", "--python-version",
                                  help='Python target version.'
-                                 + ' Valid options are <27>, <34>, and <37>. Default is <27>.')
+                                 + ' Valid options are <27> (Python 2.7), <34> (Python 3.4), <37> (Python 3.7) and higher. Default is <37>.')
     simulator_group.add_argument("-x", "--exec-target",
                                  help='Execution target.'
                                  + ' Current valid option is <python> and <server>. Default is <python>.')
@@ -302,17 +305,6 @@ def main():
 
     # Parse the arguments
     args = parser.parse_args()
-
-    # if (not (tool_export is None)):
-    #     if(tool_export in ["cyme"]):
-    #         python_vers = '34'
-    #         # Check command line options
-    #         if not(platform.system().lower() in ['windows']):
-    #             log.info('SimulatorToFMU can only export CYME for Windows.')
-    #             return
-    #     else:
-    #         log.error("CYME is the only supported custom tool.")
-    #         return
 
     # Get the memory flag
     has_memory = args.has_memory
@@ -336,28 +328,56 @@ def main():
         python_vers = args.python_version
         if (python_vers is None):
             # Default Python version
-            python_vers = '27'
-        if not (python_vers in ['27', '34', '37']):
-            log.error('The flag -pv must either be 27, 34, or 37.')
-            return
+            python_vers = '37'
+        else:
+            # check the validity of the Python version
+            arr_py_vers = python_vers.split('.')
+            len_str_py_vers=len(str(python_vers))
+            if(len(arr_py_vers)>1):
+                s='The flag -pv must be a two digits number which is either 27 for Python 2.7,'\
+                ' 34 for Python 3.4, 37 for Python 3.7 or higher (e.g. 38 for Python 3.8). '\
+                ' The -pv (Python version) set is {!s} which is invalid.'.format(python_vers)
+                log.error(s)
+                raise ValueError(s)
+            if(len_str_py_vers>2):
+                s='The flag -pv must be a two digits number which is either 27 for Python 2.7,'\
+                ' 34 for Python 3.4, 37 for Python 3.7 or higher (e.g. 38 for Python 3.8). '\
+                ' The -pv (Python version) set is {!s} which is invalid.'.format(python_vers)
+                log.error(s)
+                raise ValueError(s)
+            if (float(python_vers))<27:
+                s='The flag -pv must be a two digits number which is either 27 for Python 2.7,'\
+                ' 34 for Python 3.4, 37 for Python 3.7 or higher (e.g. 38 for Python 3.8). '\
+                ' The -pv (Python version) set is {!s} which is invalid.'.format(python_vers)
+                log.error(s)
+                raise ValueError(s)
+            #elif python_vers in ['27', '34', '37']:
+            #    return
+            if (float(python_vers))>37:
+                s='The Python version set ({!s}) is higher than 3.7. Make sure that the crealib.py' \
+                ' script (in makeLib folder) has been run prior to exporting the FMU.'.format(python_vers)
+                log.warning(s)
+            # drop support for 32 bit operating systems
+            if(float(python_vers)>=37):
+                # Check the system architecture
+                nbits=8 * struct.calcsize("P")
+                if(nbits!=64):
+                    s='SimulatorToFMU is only supported for 64 bits architecture for Python 3.7 and higher.'
+                    log.error(s)
+                    raise ValueError(s)
 
     # Check operating systems
     if not(platform.system().lower() in ['windows', 'linux']):
-        log.info('SimulatorToFMU is only supported on Linux and Windows.')
-        return
-
-    # Check the system architecture
-    nbits=8 * struct.calcsize("P")
-    if((platform.system().lower() == 'linux') and nbits==32):
-        log.info('SimulatorToFMU is no longer supported on Linux 32-bit.')
-        return
+        s='SimulatorToFMU is only supported on Linux and Windows.'
+        log.error(s)
+        raise ValueError(s)
 
     # Check export tool
     export_tool = args.export_tool
-    if (platform.system().lower() == 'linux' and export_tool == 'openmodelica'):
-        log.info('SimulatorToFMU is only supported on Windows when'\
-        ' using OpenModelica as the Modelica compiler.')
-        return
+    #if (platform.system().lower() == 'linux' and export_tool == 'openmodelica'):
+    #    log.info('SimulatorToFMU is only supported on Windows when'\
+    #    ' using OpenModelica as the Modelica compiler.')
+    #    return
 
     # Get export tool Path
     export_tool_path = args.export_tool_path
@@ -400,27 +420,30 @@ def main():
 
     if(export_tool is None):
         log.info('No export tool was specified. jmodelica the default will be used.')
-        export_tool = 'jmodelica'
+        export_tool = 'openmodelica'
 
     # Check if export tool is valid
     if not (export_tool.lower() in ['dymola', 'jmodelica', 'openmodelica']):
         s = 'Supported export tools are Dymola (dymola), Jmodelica (jmodelica)'\
-            ' and OpenModelica(openmodelica).'
+            ' and OpenModelica (openmodelica).'
         log.error(s)
         raise ValueError(s)
 
     # Define templates variables
+    # Template for Dymola
     if(export_tool.lower() == 'dymola'):
         mos_template_path = MOS_TEMPLATE_PATH_DYMOLA
         # Convert the FMI version to int for Dymola
         if fmi_version in ['1.0', '2.0']:
             fmi_version = str(int(float(fmi_version)))
         modelica_path = 'MODELICAPATH'
+    # Template for JModelica
     elif(export_tool.lower() == 'jmodelica'):
         mos_template_path = MOS_TEMPLATE_PATH_JMODELICA
         if fmi_version in ['1', '2']:
             fmi_version = str(float(fmi_version)*1.0)
         modelica_path = None
+    # Template for OpenModelica
     elif(export_tool.lower() == 'openmodelica'):
         if fmi_version in ['1', '2']:
             fmi_version = str(float(fmi_version)*1.0)
@@ -431,11 +454,11 @@ def main():
     # OpenModelica
     if (export_tool == 'openmodelica' and fmi_version ==
             '1.0' and fmi_api.lower() == 'cs'):
-        log.info(
-            'Export of FMU type cs for version 1 is not supported for openmodelica.' +
-            ' Supported combinations are me (model-exchange) for versions 1.0 & 2.0,' +
-            ' cs (co-simulation) & me_cs (model-exchange & co-simulation) for version 2.0.')
-        return
+        s='Export of FMU type cs for version 1 is not supported for openmodelica.'\
+            ' Supported combinations are me (model-exchange) for versions 1.0 & 2.0,'\
+            ' cs (co-simulation) & me_cs (model-exchange & co-simulation) for version 2.0.'
+        log.error(s)
+        raise ValueError(s)
 
     # Get the Python script path
     resource_scripts_path = args.resource_scripts_path
@@ -470,7 +493,7 @@ def main():
                 log.error(s)
                 raise ValueError(s)
 
-        print('============Exporting scripts={!s} as Functional Mock-up Unit. API={!s},'\
+        log.info('============Exporting scripts={!s} as Functional Mock-up Unit. API={!s},'\
             ' Version={!s}, Export Tool={!s}'.format(resource_scripts_path,
             fmi_api, fmi_version, export_tool))
 
@@ -491,14 +514,14 @@ def main():
 
     # Check configuration file for JModelica
     if con_path is None and export_tool=='jmodelica':
-        s = ('No configuration file was provided.'+\
-             ' JModelica does not allow to set the path'+
-             ' to a configuration file at runtime.' +\
-             ' Hence if the exported simulation program/script'+\
-             ' needs a configuration file to run, then the path'+\
-             ' to the configuration file must be provided'+\
-             ' when creating the FMU. Otherwise the FMU'+\
-             ' will fail to run.')
+        s = 'No configuration file was provided.'\
+             ' JModelica does not allow to set the path'\
+             ' to a configuration file at runtime.' \
+             ' Hence if the exported simulation program/script'\
+             ' needs a configuration file to run, then the path'\
+             ' to the configuration file must be provided'\
+             ' when creating the FMU. Otherwise the FMU'\
+             ' will fail to run.'
         log.warning(s)
         con_path = ''
     elif (con_path is None):
@@ -1208,7 +1231,6 @@ class SimulatorToFMU(object):
 
         """
 
-
         # Check if library path is none
         if not(self.export_tool == 'jmodelica'):
             # Set the Modelica path to point to the Simulator Library
@@ -1272,7 +1294,12 @@ class SimulatorToFMU(object):
                     command = os.path.normpath(os.path.join(
                     self.export_tool_path, 'setenv.bat'))
                 else:
-                    command = 'setenv.bat'
+                    nbits=8 * struct.calcsize("P")
+                    #Activate the 64 bits version of JModelica
+                    if(nbits==64):
+                        command = 'setenv.bat 64'
+                    else:
+                        command = 'setenv.bat'
         # Create command for OpenModelica
         if (self.export_tool == 'openmodelica'):
             if (not (self.export_tool_path is None)):
@@ -1405,7 +1432,11 @@ class SimulatorToFMU(object):
                         'Library'))
 
         if(platform.system().lower() == 'windows'):
-            for arch in ['win32', 'win64']:
+            if(float(self.python_vers)<37):
+                win_arch=['win32','win64']
+            else:
+                win_arch=['win64']
+            for arch in win_arch:
                 zip_path = os.path.normpath(os.path.join(dir_name, arch))
                 os.makedirs(zip_path)
                 if(self.exec_target=='python'):
@@ -1427,7 +1458,12 @@ class SimulatorToFMU(object):
                         raise ValueError(s)
 
         if(platform.system().lower() == 'linux'):
-            for arch in ['linux32', 'linux64']:
+            # fixme === Drop support for Linux 32 bit
+            if(float(self.python_vers)<37):
+                lin_arch=['linux32','linux64']
+            else:
+                lin_arch=['linux64']
+            for arch in lin_arch:
                 zip_path = os.path.normpath(os.path.join(dir_name, arch))
                 os.makedirs(zip_path)
                 if(self.exec_target=='python'):
@@ -1446,7 +1482,7 @@ class SimulatorToFMU(object):
                         shutil.copy2(lib_path, zip_path)
                     else:
                         s = '{!s} does not exist and will need'\
-                        ' to be compiled.'.format(fil_path)
+                        ' to be compiled.'.format(lib_path)
                         raise ValueError(s)
 
         fnam = os.path.normpath(os.path.join(dir_name, "README.txt"))
@@ -1545,7 +1581,11 @@ class SimulatorToFMU(object):
                             'Library'))
 
             if(platform.system().lower() == 'windows'):
-                for arch in ['win32', 'win64']:
+                if(float(self.python_vers)<=37):
+                    win_arch=['win32','win64']
+                else:
+                    win_arch=['win64']
+                for arch in win_arch:
                     fmu_lib_pat=os.path.join(fmutmp_path, 'binaries', arch)
                     if(self.exec_target=='python'):
                         tmp1='SimulatorToFMUPython'+self.python_vers+'.dll'
@@ -1564,7 +1604,11 @@ class SimulatorToFMU(object):
                             shutil.copy2(mod_lib_pat, fmu_lib_pat)
 
             if(platform.system().lower() == 'linux'):
-                for arch in ['linux32', 'linux64']:
+                if(float(self.python_vers)<=37):
+                    lin_arch=['linux32','linux64']
+                else:
+                    lin_arch=['linux64']
+                for arch in lin_arch:
                     fmu_lib_pat=os.path.join(fmutmp_path, 'binaries', arch)
                     if(self.exec_target=='python'):
                         tmp1='libSimulatorToFMUPython'+self.python_vers+'.so'
@@ -1595,8 +1639,17 @@ class SimulatorToFMU(object):
                 # Get the root of the tree
                 root = tree.getroot()
                 # Add the needsExecution tool attribute
-                root.attrib[NEEDSEXECUTIONTOOL] = 'true'
-                tree.write(MODELDESCRIPTION, xml_declaration=True)
+                #root.attrib[NEEDSEXECUTIONTOOL] = 'true'
+                #tree.write(MODELDESCRIPTION, xml_declaration=True)
+
+                #Iterate Through All Books
+                for element in root.findall("CoSimulation"):
+                    #Check if title contains the word Python
+                    if (element.get('needsExecutionTool') is not None):
+                        #Change xml attribute value
+                        element.set('needsExecutionTool','true')
+                #Write the modified file with the correct attribute
+                tree.write(MODELDESCRIPTION,xml_declaration=True)
 
             # Switch back to the current working directory
             os.chdir(cwd)

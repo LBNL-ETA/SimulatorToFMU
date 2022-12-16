@@ -9,6 +9,37 @@ Best Practice
 This section explains to users the best practice in configuring a Simulator XML input file,
 and implementing the Python wrapper which will interface with the Simulator.
 
+
+Configuring and Generating the Python Binaries
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This option has been added starting from Python 3.8.
+To export a Simulator that wraps a Python script as an FMU,
+the user needs to configure files that are needed to
+create binaries for the targeted Python version.
+
+This can be done by editing the
+``systemVariables-windows.properties`` (Windows) or ``systemVariables-linux.properties`` (Linux)
+files. These files are located under ``parser/makLib`` folder.
+
+First, The user is required to provide the path to the following folders:
+
+- ``PYTHON_EXE_DIR``. This is the path to the Python executable directory (e.g. ``D:\programs\Anaconda3``)
+
+- ``CMD_TOOL``. This is the path to the build tools needed to compile the Python/C interface (e.g. ``C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\msbuild.exe``)
+
+Next, the user is required to run the ``createlib.py`` that is located in ``parser/makLib`` folder by
+running the following command:
+
+.. code-block:: none
+
+  > python  parser/makLib/createlib.py -pv <python-version>
+
+where ``python-version`` is the targeted Python version (e.g. ``38`` for Python 3.8).
+
+This command will invoke the build tools that will create the Python binaries and copied them in the
+appropriate Modelica library folder (``parser\libraries\modelica\SimulatorToFMU\Resources\Library``).
+The created python binaries will be embedded in the FMU when the FMU will be created (see :doc:`build`).
+
 Configuring the Simulator XML input file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -57,15 +88,46 @@ To export a Simulator as an FMU, the user needs to write the Python wrapper whic
 The wrapper will be embedded in the FMU when the Simulator is exported and used at runtime on the target machine.
 
 The user needs to extend the Python wrapper provided in ``parser/utilities/simulator_wrapper.py``
-and implements the function ``exchange``.
+and implements the function ``exchange()``.
 
-The following snippet shows the Simulator function.
+Line 1 to Line 19 represents a dummy Simulator written in Python.
+This simulator implements a ``doTimeStep()`` method that gets some input values and increment the value by one.
+
+Line 22 to Line 84 represents the ``exchange`` function that provides a FMI interface to the Simulator.
+The inputs (Line 22) and return arguments (Line 81) of the ``exchange()`` function should not be modified.
+The remaining body of the function should be customized so it can invoke the python Simulator when needed.
+In this specific case, it is assumed that the Python Simulator has memory.
+
+Line 55 checks if a memory object exists.
+
+Line 57 initializes the Simulator by passing the parameters received through the FMI interface.
+
+Line 60 initializes memory object.
+
+Line 62 stores the initial input values.
+
+Line 64 initializes the output values by calling the "doTimeStep()" of the Simulator.
+
+Line 66 stores the memory object
+
+Line 67 activates the branch which is invoked during time stepping where simulation data are exchanged with
+the Simulator through the FMI interface.
+
+Line 71 checks if time has changed since the last invocation prior to updating the outputs.
+
+Line 73 invokes the "doTimeStep()" method of the Simulator to update the outputs.
+
+Line 75 to Line 77 save the last simulation time as well as the latest input values and updated output values.
+
+Line 79 checks the validity of the output values.
+
+Line 82 stores the output values that will then be returned on Line 84 along with the memory object.
 
 .. literalinclude:: ../../../parser/utilities/simulator_wrapper.py
    :language: python
    :linenos:
 
-The arguments of the functions are in the next table
+The arguments of the ``exchange`` function are in the next table
 
 +----------------------------------------------------+-------------------------------------------------------------------+
 | Arguments                                          | Description                                                       |
@@ -90,7 +152,7 @@ The arguments of the functions are in the next table
 |                                                    | variables which have memory.                                      |
 +----------------------------------------------------+-------------------------------------------------------------------+
 
-If the simulator does not have memory, then the function ``simulator`` will be defined as
+If the simulator does not have memory, then the function ``exchange`` will be defined as
 
 .. literalinclude:: ../../../parser/utilities/simulator_wrapper_no_memory.py
    :language: python

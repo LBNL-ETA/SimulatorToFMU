@@ -55,10 +55,10 @@ to not export all symbols but only the needed ones */
 #endif
 
 /*
- * This function.simulators variables 
- * with an external simulator. 
+ * This function.simulators variables
+ * with an external simulator.
  *
- * @param moduleName the module name 
+ * @param moduleName the module name
  * @param functionName the function name
  * @param configFileName the configuration file
  * @param modTim the simulation time
@@ -74,27 +74,27 @@ to not export all symbols but only the needed ones */
  * @param resWri the result flag
  * @param ModelicaFormatError the pointer
  * to the inModelicaFormatError
- * @param memory a Python object               
- * @param have_memory the flag indicating a Python object          
+ * @param memory a Python object
+ * @param have_memory the flag indicating a Python object
  */
 LBNLPYTHONINTERPRETER_EXPORT void pythonSimulatorVariables(const char * moduleName,
-							const char * functionName, 
+							const char * functionName,
 							const char * configFileName,
 							double modTim,
-							const size_t nDblWri, 
+							const size_t nDblWri,
 							const char ** strWri,
-							double * dblValWri, 
-							size_t nDblRea, 
+							double * dblValWri,
+							size_t nDblRea,
 							const char ** strRea,
 							double * dblValRea, size_t nDblParWri,
-							const char ** strParWri, 
-							double * dblValParWri, 
+							const char ** strParWri,
+							double * dblValParWri,
 							int resWri,
 							void(*inModelicaFormatError)(const char *string, ...),
                           	void* object,
                           	int have_memory);
 
-LBNLPYTHONINTERPRETER_EXPORT void* initPythonMemory();
+LBNLPYTHONINTERPRETER_EXPORT void* initPythonMemory(char* pytScri);
 
 LBNLPYTHONINTERPRETER_EXPORT void freePythonMemory(void* object);
 
@@ -104,4 +104,3 @@ LBNLPYTHONINTERPRETER_EXPORT void freePythonMemory(void* object);
 
 
 #endif /* _PYTHONINTERPRETER_H_ */
-

@@ -2,7 +2,7 @@
 class Simulator():
     """
     Dummy simulator Python-driven simulator
-    which increments in its doTimeSteo method the input values by 1.
+    which increments in its doTimeStep method the input values by 1.
     This class is for illustration purposes only.
     """
     def __init__(self, configuration_file, time, input_names,
@@ -42,14 +42,11 @@ def exchange(configuration_file, time, input_names,
     # If the list of output names has only one name, then only a scalar
     # must be returned.
     ########################################################################
-    # Since master algorithms need to some time call at the same time instant
-    # an FMU multiple times for event iteration. It is for efficient reasons
-    # good to catch the simulator outputs results, and use the current and past
-    # simulation times to determine when the Simulator needs to be reinvoked
 
-    # Call the Simulator
+    # # Initialize the Simulator object
     s = Simulator(configuration_file, time, input_names,
                         input_values, output_names, write_results)
+    # check if we have input values. If yes, update the outputs.
     if not (input_values is None):
         output_values=s.doTimeStep(input_values)
     else:
@@ -59,6 +56,3 @@ def exchange(configuration_file, time, input_names,
     # Save the output of the Simulator
     #########################################################################
     return output_values
-
-#if __name__ == "__main__":
-#    print exchange("dummy.csv", 0.0, "v", 1.0, "i", 0))

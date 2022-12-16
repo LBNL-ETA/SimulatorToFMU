@@ -5,7 +5,12 @@
 Installation and Configuration
 ==============================
 
-This chapter describes how to install, configure, and uninstall SimulatorToFMU on Windows and Linux operating systems. SimulatorToFMU is currently not supported on Mac OS.
+This chapter describes how to install, configure, and uninstall SimulatorToFMU on Windows and Linux operating systems.
+SimulatorToFMU has the following limitations:
+
+  - SimulatorToFMU is not supported on Mac OS.
+  - SimulatorToFMU has limited support for Linux 32 bits and Windows 32 bits for Python 3.7 and lower.
+  - SimulatorToFMU is fully supported on Linux 64 bits and Windows 64 bits for Python 3.8 and higher.
 
 
 Software requirements
@@ -24,14 +29,15 @@ To export a Simulator as an FMU, SimulatorToFMU needs:
 
 SimulatorToFMU has been tested with:
 
-- Python 2.7, Python 3.4, and Python 3.7
-- Three Modelica parsers (All parsers are not needed for the export)
+- Python 2.7, Python 3.4, Python 3.7, and Python 3.8
+- Three Modelica parsers (Only one parser is needed for the export)
 
   - Dymola 2018 on Windows and Linux
-  - JModelica 2.0 on Windows, and JModelica trunk version 9899 on Linux
-  - OpenModelica 1.11.0 on Windows
+  - JModelica 2.0, JModelica 2.4 on Windows, and JModelica trunk version 9899 on Linux
+  - OpenModelica 1.19.2 on Windows
 
-- C-Compiler: Microsoft Visual Studio 10 Professional, and Microsoft Visual Studio 14.0
+- C-Compiler: Microsoft Visual Studio 10 Professional, Microsoft Visual Studio 14.0, and
+  Microsoft Visual Studio 19.0
 
 .. _installation directory:
 
@@ -42,14 +48,12 @@ To install SimulatorToFMU, proceed as follows:
 
 1. Add following folders to your system path:
 
- - Python installation folder (e.g. ``C:\Python27```)
- - Python scripts folder (e.g. ``C:\Python27\Scripts``),
  - Dymola executable folder (e.g. ``C:\Program Files(x86)\Dymola2018\bin``) if Dymola is your Modelica parser.
  - JModelica installation folder (e.g. ``C:\JModelica.org-2.0``) if JModelica is your Modelica parser.
- - OpenModelica executable folder (e.g. ``C:\OpenModelica1.11.0-32bit\bin``) if OpenModelica is your Modelica parser.
+ - OpenModelica executable folder (e.g. ``C:\OpenModelica1.19.2-64bit\bin``) if OpenModelica is your Modelica parser.
 
 
- You can add folders to your system path by performing following steps on Windows 8 or 10:
+ You can add folders to your system path by performing following steps on Windows 10:
 
  - In Search, search for and then select: System (Control Panel)
 
@@ -70,9 +74,21 @@ To install SimulatorToFMU, proceed as follows:
 
     - SimulatorToFMU sets the hidden Dymola 2018's flag ``Advanced.AllowStringParametersForFMU`` to ``true`` when exporting a simulation program/script as an FMU. The flag is not available in older versions of Dymola. The flag is required to allow a master algorithm to set the path to the configuration file of an FMU. See section :ref:`build_cmd` for more details.
 
-2. Install SimulatorToFMU by downloading the package from the master branch
-   which is at https://github.com/LBNL-ETA/SimulatorToFMU.
+2. Specify the path of OPENMODELICALIBRARY (Only if OpenModelica is your Modelica parser) by
 
+  - Clicking the Advanced system settings link.
+
+  - Clicking Environment Variables. In the section System Variables, Click New to create a new system variable.
+
+  - Naming the new system variable OPENMODELICALIBRARY
+
+  - Setting the variable value to point to the location of the OpenModelica Modelica libary (e.g. ``D:\programs\OpenModelica1.19.2-64bit\lib\omlibrary``)
+
+  - Click OK. Close all remaining windows by clicking OK.
+
+
+3. Install SimulatorToFMU by downloading the package from the master branch
+   which is at https://github.com/LBNL-ETA/SimulatorToFMU.
 
   The installation directory should contain the following subdirectories:
 
@@ -101,18 +117,6 @@ To test your installation run from the installation ``bin`` folder
 .. code-block:: none
 
     > python runUnitTest.py
-
-.. note:: On Windows' machines, first run
-
- .. code-block:: none
-
-     > setenv.bat
-
-prior to starting the unittests. `setenv.bat` sets the environment variables
-needed by PyFMI/JModelica to run FMUs. Invoking `setenv.bat` in the command prompt, assumes
-that JModelica is on the system path. Otherwise,
-you will need to provide the full path to `setenv.bat` which is in the Installation
-folder of JModelica.
 
 Uninstallation
 ^^^^^^^^^^^^^^

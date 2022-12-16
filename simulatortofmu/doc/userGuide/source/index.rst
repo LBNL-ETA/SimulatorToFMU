@@ -3,10 +3,11 @@ User Guide
 ==========
 
 .. toctree::
-   :numbered: 
+   :numbered:
    :maxdepth: 3
 
    introduction
+   releases
    installation
    bestPractice
    build

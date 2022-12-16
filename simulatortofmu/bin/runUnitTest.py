@@ -61,7 +61,7 @@ Simulator_T = simulator.SimulatorToFMU('',
                                        MO_TEMPLATE_PATH,
                                        MOS_TEMPLATE_PATH_DYMOLA,
                                        XSD_FILE_PATH,
-                                       '27',
+                                       '37',
                                        python_scripts_path,
                                        '2.0',
                                        'me',
@@ -98,6 +98,9 @@ class Tester(unittest.TestCase):
         if tool == 'openmodelica' and platform.system().lower() == "windows":
             tool = 'omc'
 
+        if tool == 'openmodelica' and platform.system().lower() == "linux":
+            tool = 'omc'
+
         cmd = "where" if platform.system() == "Windows" else "which"
         try:
             return subprocess.call([cmd, tool])
@@ -128,158 +131,165 @@ class Tester(unittest.TestCase):
         except BaseException:
             print ('PyFMI not installed. Test will not be be run.')
             return
-        if (tool=='openmodelica' and platform.system().lower() == 'linux'):
-                print ('tool={!s} is not supported on Linux'.format(tool))
-                return
-
-        else:
+        # if (tool=='openmodelica' and platform.system().lower() == 'linux'):
+        #         print ('tool={!s} is not supported on Linux'.format(tool))
+        #         return
+        #
+        # else:
         # Export FMUs which are needed to run the cases.
-            if tool == 'openmodelica':
-                modPat = 'OPENMODELICALIBRARY'
-                mosT = MOS_TEMPLATE_PATH_OPENMODELICA
-                # Add the library folder to the system pah so unit test can be run
-                # with OpenModelica
-                for arch in ['win32']:
-                    lib_path_arch=os.path.join(
-                        script_path, '..', 'parser', 'libraries', 'modelica',
-                        'SimulatorToFMU', 'Resources','Library', arch)
-                orig_path=os.environ.get('PATH')
-                os.environ['PATH']=lib_path_arch + os.pathsep + orig_path
-            elif tool == 'dymola':
-                modPat = 'MODELICAPATH'
-                mosT = MOS_TEMPLATE_PATH_DYMOLA
-            elif tool == 'jmodelica':
-                # Unset environment variable
-                if (os.environ.get('MODELICAPATH') is not None):
-                    del os.environ['MODELICAPATH']
-                modPat = None
-                mosT = MOS_TEMPLATE_PATH_JMODELICA
-            for version in ['2']:
-                if (tool == 'openmodelica' or tool == 'jmodelica'):
-                    version = str(float(version))
-                for api in ['me']:
-                    if (tool == 'openmodelica' and version == '1.0' and api == 'cs'):
-                        print (
-                            'tool={!s} with FMI version={!s} and FMI API={!s} is not supported.'.format(
-                                tool, version, api))
+        if tool == 'openmodelica':
+            modPat = 'OPENMODELICALIBRARY'
+            mosT = MOS_TEMPLATE_PATH_OPENMODELICA
+            # Add the library folder to the system pah so unit test can be run
+            # with OpenModelica
+            # Get the current OS platform
+            nbits=8 * struct.calcsize("P")
+            if (platform.system().lower() == 'linux'):
+                plat='linux'+str(nbits)
+            elif (platform.system().lower() == 'windows'):
+                plat='win'+str(nbits)
+            for arch in [plat]:
+                lib_path_arch=os.path.join(
+                    script_path, '..', 'parser', 'libraries', 'modelica',
+                    'SimulatorToFMU', 'Resources','Library', arch)
+            orig_path=os.environ.get('PATH')
+            os.environ['PATH']=lib_path_arch + os.pathsep + orig_path
+        elif tool == 'dymola':
+            modPat = 'MODELICAPATH'
+            mosT = MOS_TEMPLATE_PATH_DYMOLA
+        elif tool == 'jmodelica':
+            # Unset environment variable
+            if (os.environ.get('MODELICAPATH') is not None):
+                del os.environ['MODELICAPATH']
+            modPat = None
+            mosT = MOS_TEMPLATE_PATH_JMODELICA
+        for version in ['2']:
+            if (tool == 'openmodelica' or tool == 'jmodelica'):
+                version = str(float(version))
+            for api in ['me']:
+                if (tool == 'openmodelica' and version == '1.0' and (api == 'cs' or api == 'me')):
+                    print (
+                        'tool={!s} with FMI version={!s} and FMI API={!s} is not supported.'.format(
+                            tool, version, api))
+                    continue
+                for cs_xml in ['true']:
+                    if (version == '1'):
                         continue
-                    for cs_xml in ['true']:
-                        if (version == '1'):
-                            continue
-                        # Setting parameters for running Python or server architecture
-                        if (platform.system().lower()=='linux'):
-                            exc_arr=['python']
-                            print('Server architecture is only supported on Windows')
-                        elif (platform.system().lower()=='windows' and (tool=='jmodelica')):
-                            exc_arr=['python'] # Exclude ServerFMU from the Unittests
-                        elif (platform.system().lower()=='windows' and (tool in ['dymola', 'openmodelica'])):
-                            exc_arr=['python']
-                            # Dymola's FMUs cannot be instantiated twice in the same process
-                            # This is the reason why we don't call it twice for the different
-                            # architecture. Setting exc_arr='server' will allow testing the Python architecture
-                            print('Only running the Python architecture for Dymola')
-                        for exc in exc_arr:
-                            if exc=='python':
-                                scripts_path=python_scripts_path
-                            elif exc=='server':
-                                scripts_path=server_scripts_path
-                            Simulator_Test = simulator.SimulatorToFMU(
-                                '',
-                                XML_INPUT_FILE,
-                                SimulatorToFMU_LIB_PATH,
-                                MO_TEMPLATE_PATH,
-                                mosT,
-                                XSD_FILE_PATH,
-                                '27',
-                                scripts_path,
-                                version,
-                                api,
-                                tool,
-                                None,
-                                modPat,
-                                cs_xml,
-                                'true',
-                                exc)
+                    # Setting parameters for running Python or server architecture
+                    if (platform.system().lower()=='linux'):
+                        exc_arr=['python']
+                        print('Server architecture is only supported on Windows')
+                    elif (platform.system().lower()=='windows' and (tool=='jmodelica')):
+                        exc_arr=['python'] # Exclude ServerFMU from the Unittests
+                    elif (platform.system().lower()=='windows' and (tool in ['dymola', 'openmodelica'])):
+                        exc_arr=['python']
+                        # Dymola's FMUs cannot be instantiated twice in the same process
+                        # This is the reason why we don't call it twice for the different
+                        # architecture. Setting exc_arr='server' will allow testing the Python architecture
+                        print('Only running the Python architecture for Dymola')
+                    for exc in exc_arr:
+                        if exc=='python':
+                            scripts_path=python_scripts_path
+                        elif exc=='server':
+                            scripts_path=server_scripts_path
+                        Simulator_Test = simulator.SimulatorToFMU(
+                            '',
+                            XML_INPUT_FILE,
+                            SimulatorToFMU_LIB_PATH,
+                            MO_TEMPLATE_PATH,
+                            mosT,
+                            XSD_FILE_PATH,
+                            '37',
+                            scripts_path,
+                            version,
+                            api,
+                            tool,
+                            None,
+                            modPat,
+                            cs_xml,
+                            'true',
+                            exc)
 
-                            print (
-                                'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}, exc={!s}'.format(
-                                    tool, version, api, exc))
+                        print (
+                            'Export the simulator with tool={!s}, FMI version={!s}, FMI API={!s}, exc={!s}'.format(
+                                tool, version, api, exc))
 
-                            start = datetime.now()
-                            self.helper_export(Simulator_Test)
-                            end = datetime.now()
-                            print(
-                                'Export the simulator as an FMU in {!s} seconds.'.format(
-                                    (end - start).total_seconds()))
+                        start = datetime.now()
+                        self.helper_export(Simulator_Test)
+                        end = datetime.now()
+                        print(
+                            'Export the simulator as an FMU in {!s} seconds.'.format(
+                                (end - start).total_seconds()))
 
-                            fmu_path = os.path.join(
-                            script_path, '..', 'fmus', tool, platform.system().lower())
-                            print(
-                                'Copy simulator.fmu to {!s}.'.format(fmu_path))
-                            shutil.copy2('simulator.fmu', fmu_path)
+                        fmu_path = os.path.join(
+                        script_path, '..', 'fmus', tool, platform.system().lower())
+                        print(
+                            'Copy simulator.fmu to {!s}.'.format(fmu_path))
+                        shutil.copy2('simulator.fmu', fmu_path)
 
-                            fmu_path = os.path.join(
-                                    script_path, '..', 'fmus', tool, platform.system().lower(), 'simulator.fmu')
-                            # Parameters which will be arguments of the function
-                            start_time = 0.0
-                            stop_time = 5.0
+                        fmu_path = os.path.join(
+                                script_path, '..', 'fmus', tool, platform.system().lower(), 'simulator.fmu')
 
-                            print ('Starting the simulation with {!s}'.format(tool))
-                            start = datetime.now()
+                        # Parameters which will be arguments of the function
+                        start_time = 0.0
+                        stop_time = 5.0
 
-                            simulator_input_valref = []
-                            simulator_output_valref = []
+                        print ('Starting the simulation with {!s}'.format(tool))
+                        start = datetime.now()
 
-                            sim_mod = load_fmu(fmu_path, log_level=7)
-                            sim_mod.setup_experiment(
-                                start_time=start_time, stop_time=stop_time)
+                        simulator_input_valref = []
+                        simulator_output_valref = []
 
-                            # Define the inputs
-                            simulator_input_names = ['v']
-                            simulator_input_values = [220.0]
-                            simulator_output_names = ['i']
+                        sim_mod = load_fmu(fmu_path, log_level=7)
+                        sim_mod.setup_experiment(
+                            start_time=start_time, stop_time=stop_time)
 
-                            # Get the value references of simulator inputs
-                            for elem in simulator_input_names:
-                                simulator_input_valref.append(
-                                    sim_mod.get_variable_valueref(elem))
+                        # Define the inputs
+                        simulator_input_names = ['v']
+                        simulator_input_values = [220.0]
+                        simulator_output_names = ['i']
 
-                            # Get the value references of simulator outputs
-                            for elem in simulator_output_names:
-                                simulator_output_valref.append(
-                                    sim_mod.get_variable_valueref(elem))
+                        # Get the value references of simulator inputs
+                        for elem in simulator_input_names:
+                            simulator_input_valref.append(
+                                sim_mod.get_variable_valueref(elem))
 
-                            # Set the flag to save the results
-                            sim_mod.set('_saveToFile', 'false')
+                        # Get the value references of simulator outputs
+                        for elem in simulator_output_names:
+                            simulator_output_valref.append(
+                                sim_mod.get_variable_valueref(elem))
 
-                            # Initialize the FMUs
-                            sim_mod.initialize()
+                        # Set the flag to save the results
+                        sim_mod.set('_saveToFile', 'false')
 
-                            # Call event update prior to entering continuous mode.
-                            sim_mod.event_update()
+                        # Initialize the FMUs
+                        sim_mod.initialize()
 
-                            # Enter continuous time mode
-                            sim_mod.enter_continuous_time_mode()
+                        # Call event update prior to entering continuous mode.
+                        sim_mod.event_update()
 
-                            sim_mod.set_real(simulator_input_valref, simulator_input_values)
+                        # Enter continuous time mode
+                        sim_mod.enter_continuous_time_mode()
 
-                            end = datetime.now()
+                        sim_mod.set_real(simulator_input_valref, simulator_input_values)
 
-                            print(
-                                'Ran a single Simulator simulation with {!s} FMU={!s} in {!s} seconds.'.format(
-                                    tool, fmu_path, (end - start).total_seconds()))
-                            if not (tool=='openmodelica'):
-                                # PyFMI fails to get the output of an OpenModelica FMU
-                                self.assertEqual(
-                                    sim_mod.get_real(
-                                        sim_mod.get_variable_valueref('i')),
-                                    1.0,
-                                    'Values are not matching.')
-                            sim_mod.terminate()
-            if(tool=='openmodelica'):
-                del os.environ['PATH']
-                # Reset environment variable
-                os.environ['PATH']=orig_path
+                        end = datetime.now()
+
+                        print(
+                            'Ran a single Simulator simulation with {!s} FMU={!s} in {!s} seconds.'.format(
+                                tool, fmu_path, (end - start).total_seconds()))
+                        if not (tool=='openmodelica'):
+                            # PyFMI fails to get the output of an OpenModelica FMU
+                            self.assertEqual(
+                                sim_mod.get_real(
+                                    sim_mod.get_variable_valueref('i')),
+                                1.0,
+                                'Values are not matching.')
+                        sim_mod.terminate()
+        if(tool=='openmodelica'):
+            del os.environ['PATH']
+            # Reset environment variable
+            os.environ['PATH']=orig_path
 
 
     def test_check_duplicates(self):
@@ -347,10 +357,9 @@ class Tester(unittest.TestCase):
                 print("======tool={!s} was found. Unit Test will be run".format(tool))
             else:
                 continue
-
-            if (platform.system().lower() == 'linux' and tool == 'openmodelica'):
-                print ('tool={!s} is not supported on Linux.'.format(tool))
-                continue
+            # if (platform.system().lower() == 'linux' and tool == 'openmodelica'):
+            #     print ('tool={!s} is not supported on Linux.'.format(tool))
+            #     continue
             if tool == 'openmodelica':
                 modPat = 'OPENMODELICALIBRARY'
                 mosT = MOS_TEMPLATE_PATH_OPENMODELICA
@@ -366,7 +375,7 @@ class Tester(unittest.TestCase):
                 if (tool == 'openmodelica' or tool == 'jmodelica'):
                     version = str(float(version))
                 for api in ['me', 'cs']:
-                    if (tool == 'openmodelica' and version == '1.0' and api == 'cs'):
+                    if (tool == 'openmodelica' and version == '1.0' and (api == 'cs' or api == 'me')):
                         print (
                             'tool={!s} with FMI version={!s} and FMI API={!s} is not supported.'.format(
                                 tool, version, api))
@@ -379,7 +388,7 @@ class Tester(unittest.TestCase):
                             if exc=='python':
                                 scripts_path=python_scripts_path
                                 if (platform.system().lower() == 'linux'):
-                                    py_arr=['27']
+                                    py_arr=['37']
                                 else:
                                     py_arr=['27', '34', '37']
                                 for py_vers in py_arr:
@@ -418,7 +427,7 @@ class Tester(unittest.TestCase):
                                     MO_TEMPLATE_PATH,
                                     mosT,
                                     XSD_FILE_PATH,
-                                    '27',
+                                    '37',
                                     scripts_path,
                                     version,
                                     api,
@@ -453,9 +462,9 @@ class Tester(unittest.TestCase):
             else:
                 continue
 
-            if (platform.system().lower() == 'linux' and tool == 'openmodelica'):
-                print ('tool={!s} is not supported on Linux.'.format(tool))
-                continue
+            # if (platform.system().lower() == 'linux' and tool == 'openmodelica'):
+            #     print ('tool={!s} is not supported on Linux.'.format(tool))
+            #     continue
             if tool == 'openmodelica':
                 modPat = 'OPENMODELICALIBRARY'
                 mosT = MOS_TEMPLATE_PATH_OPENMODELICA
@@ -491,7 +500,7 @@ class Tester(unittest.TestCase):
                                 MO_TEMPLATE_PATH,
                                 mosT,
                                 XSD_FILE_PATH,
-                                '27',
+                                '37',
                                 scripts_path,
                                 version,
                                 api,
