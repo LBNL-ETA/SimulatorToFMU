@@ -20,7 +20,7 @@ jobs:
         run: |
           $CONDA/bin/conda update -n base -c defaults conda
           $CONDA/bin/conda install libxml2
-          $CONDA/bin/conda install pyfmi
+          $CONDA/bin/conda install -c conda-forge pyfmi
           #python -m pip install --upgrade pip
           #pip install flake8 pytest
           #if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
