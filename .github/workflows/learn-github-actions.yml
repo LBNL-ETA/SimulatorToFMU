@@ -20,7 +20,7 @@ jobs:
         run: |
           ls -l
           $CONDA/bin/conda update -n base -c defaults conda
-          $CONDA/bin/conda install libxml
+          $CONDA/bin/conda install lxml
           $CONDA/bin/conda install jinja2
           $CONDA/bin/conda install -c conda-forge pyfmi
           cd simulatortofmu/bin/
