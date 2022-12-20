@@ -12,24 +12,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - name: Setup conda
+        uses: s-weigand/setup-conda@v1
         with:
+          update-conda: true
           python-version: ${{ matrix.python-version }}
+          conda-channels: anaconda, conda-forge
       - name: Install dependencies
         run: |
           ls -l
-          $CONDA/bin/conda update -n base -c defaults conda
+          #$CONDA/bin/conda update -n base -c defaults conda
           #$CONDA/bin/conda install -y lxml
           #$CONDA/bin/conda install -y jinja2
           #pip3 install lxml
           #pip3 install jinja2
           #$CONDA/bin/conda install -c anaconda jinja2
           $CONDA/bin/conda install -c conda-forge pyfmi
-          $CONDA/bin/conda list
+          #$CONDA/bin/conda list
           cd simulatortofmu/bin/
           python runUnitTest.py
           #python -m pip install --upgrade pip
           #pip install flake8 pytest
           #if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
+       
