@@ -1,4 +1,4 @@
-name: Python package
+name: Running Tests for SimulatorToFMU
 
 on: [push]
 
@@ -9,7 +9,6 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.7"]
-
     steps:
       - uses: actions/checkout@v3
       - name: Setup conda
@@ -20,18 +19,11 @@ jobs:
           conda-channels: anaconda, conda-forge
       - name: Install dependencies
         run: |
-          ls -l
-          #$CONDA/bin/conda update -n base -c defaults conda
-          #$CONDA/bin/conda install -y lxml
-          #$CONDA/bin/conda install -y jinja2
-          #pip3 install lxml
-          #pip3 install jinja2
           $CONDA/bin/conda install -c anaconda jinja2
           $CONDA/bin/conda install -c conda-forge pyfmi
-          #$CONDA/bin/conda list
+      - name: Running the tests
+        run: |
           cd simulatortofmu/bin/
           python runUnitTest.py
-          #python -m pip install --upgrade pip
-          #pip install flake8 pytest
-          #if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
        
