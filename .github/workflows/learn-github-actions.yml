@@ -2,6 +2,10 @@ name: Running Tests for SimulatorToFMU
 
 on: [push]
 
+env: 
+  OPENMODELICALIBRARY: "/usr/lib/omlibrary"
+  PYTHONPATH: "simulatortofmu/parser/utilities:$PYTHONPATH"
+
 jobs:
   build:
 
@@ -26,9 +30,9 @@ jobs:
         with:
           version: 1.19.2 
       - name: Set environment variables   
-        env: 
-          OPENMODELICALIBRARY: "/usr/lib/omlibrary"
-          PYTHONPATH: "simulatortofmu/parser/utilities:$PYTHONPATH"
+        run: |
+          echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
+          echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
       - name: Running the tests
         run: |
           cd simulatortofmu/bin/
