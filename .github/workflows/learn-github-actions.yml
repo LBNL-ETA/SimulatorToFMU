@@ -31,8 +31,8 @@ jobs:
           version: 1.19.2 
       - name: test existence of folder
         run: |
-          cd ~
-          locate BaseSampler.mo
+          cd /
+          ls
           #find /var -name "FMITest" -type d
           #cd /usr/lib/omlibrary 
       - name: Set OpenModelica Library 
