@@ -29,12 +29,15 @@ jobs:
         uses: THM-MoTE/setup-openmodelica@v1  
         with:
           version: 1.19.2 
-      - name: Set Pythonpath 
+      - name: test existence of folder
         run: |
-          echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
-      - name: Set OpenModelica Library
+          cd /usr/lib/omlibrary 
+      - name: Set OpenModelica Library 
         run: |
-          echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
+          #echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
+      - name: Set Python Path
+        run: |
+          #echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
       - name: Running the tests
         run: |
           echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
