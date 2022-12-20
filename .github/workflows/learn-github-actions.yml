@@ -25,6 +25,10 @@ jobs:
         uses: THM-MoTE/setup-openmodelica@v1  
         with:
           version: 1.19.2 
+      - name: Set environment variables   
+        env: 
+          OPENMODELICALIBRARY: "/usr/lib/omlibrary"
+          PYTHONPATH: "simulatortofmu/parser/utilities:$PYTHONPATH"
       - name: Running the tests
         run: |
           cd simulatortofmu/bin/
