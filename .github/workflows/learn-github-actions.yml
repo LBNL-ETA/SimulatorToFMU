@@ -25,6 +25,7 @@ jobs:
           #$CONDA/bin/conda install -c conda-forge pyfmi
           pip3 install lxml
           pip3 install jinja2
+          pip3 install pyfmi
           cd simulatortofmu/bin/
           python runUnitTest.py
           #python -m pip install --upgrade pip
