@@ -32,8 +32,10 @@ jobs:
       - name: test existence of folder
         run: |
           cd /
+          cd lib64/
           ls
-          cd lib64
+          cd ..
+          cd lib32/
           ls
           #find /var -name "FMITest" -type d
           #cd /usr/lib/omlibrary 
