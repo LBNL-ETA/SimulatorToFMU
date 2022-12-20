@@ -33,6 +33,8 @@ jobs:
         run: |
           cd /
           ls
+          cd lib64
+          ls
           #find /var -name "FMITest" -type d
           #cd /usr/lib/omlibrary 
       - name: Set OpenModelica Library 
