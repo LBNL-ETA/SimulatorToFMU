@@ -20,9 +20,9 @@ jobs:
         run: |
           ls -l
           $CONDA/bin/conda update -n base -c defaults conda
-          $CONDA/bin/conda install lxml
-          $CONDA/bin/conda install jinja2
-          $CONDA/bin/conda install -c conda-forge pyfmi
+          $CONDA/bin/conda install -y lxml
+          $CONDA/bin/conda install -y jinja2
+          $CONDA/bin/conda install -c -y conda-forge pyfmi
           cd simulatortofmu/bin/
           python runUnitTest.py
           #python -m pip install --upgrade pip
