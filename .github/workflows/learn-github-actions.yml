@@ -19,10 +19,12 @@ jobs:
       - name: Install dependencies
         run: |
           ls -l
-          $CONDA/bin/conda update -n base -c defaults conda
-          $CONDA/bin/conda install -y lxml
-          $CONDA/bin/conda install -y jinja2
-          $CONDA/bin/conda install -c conda-forge pyfmi
+          #$CONDA/bin/conda update -n base -c defaults conda
+          #$CONDA/bin/conda install -y lxml
+          #$CONDA/bin/conda install -y jinja2
+          #$CONDA/bin/conda install -c conda-forge pyfmi
+          pip3 install lxml
+          pip3 install jinja2
           cd simulatortofmu/bin/
           python runUnitTest.py
           #python -m pip install --upgrade pip
