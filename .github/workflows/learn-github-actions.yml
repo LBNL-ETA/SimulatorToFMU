@@ -22,8 +22,9 @@ jobs:
           $CONDA/bin/conda update -n base -c defaults conda
           #$CONDA/bin/conda install -y lxml
           #$CONDA/bin/conda install -y jinja2
-          pip3 install lxml
-          pip3 install jinja2
+          #pip3 install lxml
+          #pip3 install jinja2
+          #$CONDA/bin/conda install -c anaconda jinja2
           $CONDA/bin/conda install -c conda-forge pyfmi
           $CONDA/bin/conda list
           cd simulatortofmu/bin/
