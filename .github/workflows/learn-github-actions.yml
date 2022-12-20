@@ -26,9 +26,16 @@ jobs:
           $CONDA/bin/conda install -c anaconda jinja2
           $CONDA/bin/conda install -c conda-forge pyfmi
       - name: Install OpenModelica
-        uses: THM-MoTE/setup-openmodelica@v1  
-        with:
-          version: 1.19.2 
+        run: |
+          sudo apt-get update
+          sudo apt-get install ca-certificates curl gnupg lsb-release
+          curl -fsSL http://build.openmodelica.org/apt/openmodelica.asc | sudo gpg --dearmor -o /usr/share/keyrings/openmodelica-keyring.gpg
+          sudo apt update
+          sudo apt install openmodelica
+          sudo apt install omlibrary
+        #uses: THM-MoTE/setup-openmodelica@v1  
+        #with:
+        #  version: 1.19.2 
       - name: test existence of folder
         run: |
           sudo apt-get install omlibrary/
