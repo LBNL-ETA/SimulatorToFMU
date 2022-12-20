@@ -31,7 +31,7 @@ jobs:
           version: 1.19.2 
       - name: test existence of folder
         run: |
-          find /usr -name "FMITest" -type d
+          find /lib -name "FMITest" -type d
           #cd /usr/lib/omlibrary 
       - name: Set OpenModelica Library 
         run: |
