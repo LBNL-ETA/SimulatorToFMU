@@ -17,10 +17,14 @@ jobs:
           update-conda: true
           python-version: ${{ matrix.python-version }}
           conda-channels: anaconda, conda-forge
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           $CONDA/bin/conda install -c anaconda jinja2
           $CONDA/bin/conda install -c conda-forge pyfmi
+      - name: Install OpenModelica
+        uses: THM-MoTE/setup-openmodelica@v1  
+        with:
+          version: 1.19.2 
       - name: Running the tests
         run: |
           cd simulatortofmu/bin/
