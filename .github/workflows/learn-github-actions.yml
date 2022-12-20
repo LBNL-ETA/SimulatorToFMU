@@ -29,12 +29,16 @@ jobs:
         uses: THM-MoTE/setup-openmodelica@v1  
         with:
           version: 1.19.2 
-      - name: Set environment variables   
+      - name: Set Pythonpath 
         run: |
           echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
+      - name: Set OpenModelica Library
+        run: |
           echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
       - name: Running the tests
         run: |
+          echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
+          echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
           cd simulatortofmu/bin/
           python runUnitTest.py
 
