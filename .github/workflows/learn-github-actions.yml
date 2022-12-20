@@ -31,14 +31,9 @@ jobs:
           version: 1.19.2 
       - name: test existence of folder
         run: |
-          cd /
-          cd lib64/
-          ls
-          cd ..
-          cd lib32/
-          ls
-          #find /var -name "FMITest" -type d
-          #cd /usr/lib/omlibrary 
+          sudo apt-get install omlibrary/
+          find /var -name "FMITest" -type d
+          cd /usr/lib/omlibrary 
       - name: Set OpenModelica Library 
         run: |
           #echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
