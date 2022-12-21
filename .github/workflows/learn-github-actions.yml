@@ -23,15 +23,17 @@ jobs:
           conda-channels: anaconda, conda-forge
       - name: Install OpenModelica
         run: |
-          for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+          sudo apt-get update
+          sudo apt install -y wget gnupg lsb-release
+          for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` stable"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
           wget -q http://build.openmodelica.org/apt/openmodelica.asc -O- | sudo apt-key add -
-          sudo apt update
-          sudo apt install openmodelica
+          sudo apt-get update
+          sudo apt install -y openmodelica
           for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
-          #sudo apt install omlibrary
-          cd /
-          sudo apt install tree
-          tree -L 5
+          sudo apt install omlibrary
+          #cd /
+          #sudo apt install tree
+          #tree -L 5
           cd /usr/lib/omlibrary
       - name: Install Python dependencies
         run: |
