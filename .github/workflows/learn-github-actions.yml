@@ -32,8 +32,8 @@ jobs:
           for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
           sudo apt install omlibrary
           cd /
-          sudo apt install locate
-          locate omlibrary
+          #sudo apt install locate
+          sudo find / -name "FMITest" -type d
           #sudo apt install tree
           #tree -L 5
           cd /usr/lib/omlibrary
