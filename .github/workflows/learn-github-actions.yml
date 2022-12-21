@@ -31,7 +31,8 @@ jobs:
           sudo apt-get install ca-certificates curl gnupg lsb-release
           curl -fsSL http://build.openmodelica.org/apt/openmodelica.asc 
           sudo gpg --dearmor -o /usr/share/keyrings/openmodelica-keyring.gpg
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openmodelica-keyring.gpg] https://build.openmodelica.org/apt $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/openmodelica.list > /dev/null
+          #echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openmodelica-keyring.gpg] https://build.openmodelica.org/apt $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/openmodelica.list > /dev/null
+          sudo tee /etc/apt/sources.list.d/openmodelica.list
           sudo apt update
           sudo apt install openmodelica
           sudo apt install omlibrary
