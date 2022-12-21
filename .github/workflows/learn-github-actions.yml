@@ -34,10 +34,10 @@ jobs:
           cd /
           #sudo apt install locate
           echo "trying to locate the FMITest folder in /"
-          find / -iname "Modelica 3.2.3" -type d
+          sudo find / -iname "Modelica 3.2.3" -type d
           echo "trying to locate the FMITest folder in home"
           cd ~
-          find / -iname "Modelica 3.2.3" -type d
+          sudo find / -iname "Modelica 3.2.3" -type d
           #sudo apt install tree
           #tree -L 5
           cd /usr/lib/omlibrary
