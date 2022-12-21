@@ -2,9 +2,9 @@ name: Running Tests for SimulatorToFMU
 
 on: [push]
 
-env: 
-  OPENMODELICALIBRARY: "/usr/lib/omlibrary"
-  PYTHONPATH: "simulatortofmu/parser/utilities:$PYTHONPATH"
+#env: 
+#  OPENMODELICALIBRARY: "/usr/lib/omlibrary"
+#  PYTHONPATH: "simulatortofmu/parser/utilities:$PYTHONPATH"
 
 jobs:
   build:
@@ -21,13 +21,13 @@ jobs:
           update-conda: true
           python-version: ${{ matrix.python-version }}
           conda-channels: anaconda, conda-forge
-      #- name: Install Python dependencies
-      #  run: |
-      #    $CONDA/bin/conda install -c anaconda jinja2
-      #    $CONDA/bin/conda install -c conda-forge pyfmi
+      - name: Install Python dependencies
+        run: |
+          $CONDA/bin/conda install -c anaconda jinja2
+          $CONDA/bin/conda install -c conda-forge pyfmi
       - name: Install OpenModelica
         run: |
-          for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` nightly"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+          for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
           wget -q http://build.openmodelica.org/apt/openmodelica.asc -O- | sudo apt-key add -
           sudo apt update
           sudo apt install openmodelica
@@ -37,8 +37,6 @@ jobs:
         #  version: 1.19.2 
       - name: test existence of folder
         run: |
-          sudo apt-get install omlibrary/
-          find /var -name "FMITest" -type d
           cd /usr/lib/omlibrary 
       - name: Set OpenModelica Library 
         run: |
