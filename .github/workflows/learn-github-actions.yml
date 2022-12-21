@@ -31,7 +31,7 @@ jobs:
           #sudo apt install omlibrary
           cd /
           sudo apt install tree
-          tree -L 3
+          tree -L 5
           cd /usr/lib/omlibrary
       - name: Install Python dependencies
         run: |
