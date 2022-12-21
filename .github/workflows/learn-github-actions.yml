@@ -33,7 +33,11 @@ jobs:
           sudo apt install omlibrary
           cd /
           #sudo apt install locate
-          sudo find / -name "FMITest" -type d
+          echo "trying to locate the FMITest folder in /"
+          sudo find / -iname "FMITest" -type d
+          echo "trying to locate the FMITest folder in home"
+          cd ~
+          sudo find / -iname "FMITest" -type d
           #sudo apt install tree
           #tree -L 5
           cd /usr/lib/omlibrary
