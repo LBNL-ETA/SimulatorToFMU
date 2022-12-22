@@ -39,9 +39,9 @@ jobs:
           #cd ~
           #sudo find / -iname "omlibrary" -type d
           #sudo apt install tree
-          cd /usr/
+          cd /
           find . -name *.mo
-          echo "finishing searching for mo files in /usr/"
+          echo "finishing searching for mo files in /"
           cd /usr/lib/omlibrary
       - name: Install Python dependencies
         run: |
