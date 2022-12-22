@@ -31,18 +31,18 @@ jobs:
           sudo apt install -y openmodelica
           #for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
           sudo apt install omlibrary
-          sudo apt install tree
+          #sudo apt install tree
           #sudo apt install locate
-          echo "trying to locate the omlibrary folder in /"
+          #echo "trying to locate the omlibrary folder in /"
           #sudo find / -iname "omlibrary" -type d
           #echo "trying to locate the omlibrary folder in home"
           #cd ~
           #sudo find / -iname "omlibrary" -type d
           #sudo apt install tree
-          cd /
-          sudo find . -name *.mo
-          echo "finishing searching for mo files in /"
-          cd /usr/lib/omlibrary
+          #cd /
+          #sudo find . -name *.mo
+          #echo "finishing searching for mo files in /"
+          #cd /usr/lib/omlibrary
       - name: Install Python dependencies
         run: |
           $CONDA/bin/conda install -c anaconda jinja2
@@ -68,9 +68,8 @@ jobs:
           #echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
       - name: Running the tests
         run: |
-          echo "OPENMODELICALIBRARY=/usr/share/omlibrary" >> $GITHUB_ENV
+          echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
           echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
-          cd ~
           cd simulatortofmu/bin/
           python runUnitTest.py
 
