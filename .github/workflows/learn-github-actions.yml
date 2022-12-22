@@ -23,11 +23,6 @@ jobs:
           conda-channels: anaconda, conda-forge
       - name: Install OpenModelica
         run: |
-          echo "change to lib directory"
-          cd /usr/lib
-          echo "manage to change to lib directory"
-          echo "create lib directory"
-          sudo mkdir /usr/lib
           sudo apt-get update
           sudo apt install -y wget gnupg lsb-release
           for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` stable"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
@@ -36,16 +31,18 @@ jobs:
           sudo apt install -y openmodelica
           #for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
           sudo apt install omlibrary
-          cd /
+          cd /usr/lib/
+          sudo apt install tree
+          tree -L 3
           #sudo apt install locate
-          echo "trying to locate the Modelica 3.2.3 folder in /"
+          echo "trying to locate the omlibrary folder in /"
           sudo find / -iname "omlibrary" -type d
-          echo "trying to locate the Modelica 3.2.3 folder in home"
+          echo "trying to locate the omlibrary folder in home"
           cd ~
           sudo find / -iname "omlibrary" -type d
           sudo apt install tree
-          tree -L 7
-          cd /var/lib/omlibrary
+          cd /usr/local/lib/
+          tree -L 2
       - name: Install Python dependencies
         run: |
           $CONDA/bin/conda install -c anaconda jinja2
