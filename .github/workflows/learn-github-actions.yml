@@ -23,6 +23,15 @@ jobs:
           conda-channels: anaconda, conda-forge
       - name: Install OpenModelica
         run: |
+          echo "checking the user directory"
+          tree -L 3 /usr/
+          echo "cd in user bin"
+          cd /usr/bin
+          ls -l /usr/bin
+          echo "cd in user lib"
+          cd /usr/lib
+          ls -l /usr/lib
+          tree /usr/
           sudo apt-get update
           sudo apt install -y wget gnupg lsb-release
           for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` stable"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
