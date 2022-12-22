@@ -72,12 +72,15 @@ jobs:
       - name: Set Python Path
         run: |
           #echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
-      - name: Running the tests
+      - name: Set environment variables
         run: |
           echo "OPENMODELICALIBRARY=/home/runner/.openmodelica/libraries/" >> $GITHUB_ENV
-          echo "MODELICAPATH=/home/runner/.openmodelica/libraries/" >> $GITHUB_ENV
+          #echo "MODELICAPATH=/home/runner/.openmodelica/libraries/" >> $GITHUB_ENV
           echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
+      - name: Running the tests
+        run: |
           cd simulatortofmu/bin/
           python runUnitTest.py
+
 
        
