@@ -39,7 +39,7 @@ jobs:
           #cd ~
           #sudo find / -iname "omlibrary" -type d
           #sudo apt install tree
-          cd /usr/share/lib/
+          cd /usr/share/omlibrary/
           tree -L 3
       - name: Install Python dependencies
         run: |
@@ -55,19 +55,20 @@ jobs:
         #uses: THM-MoTE/setup-openmodelica@v1  
         #with:
         #  version: 1.19.2 
-      - name: test existence of folder
-        run: |
-          cd /usr/lib/omlibrary 
-      - name: Set OpenModelica Library 
-        run: |
-          #echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
+      #- name: test existence of folder
+      #  run: |
+      #    cd /usr/lib/omlibrary 
+      #- name: Set OpenModelica Library 
+      #  run: |
+      #    #echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
       - name: Set Python Path
         run: |
           #echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
       - name: Running the tests
         run: |
-          echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
+          echo "OPENMODELICALIBRARY=/usr/share/omlibrary" >> $GITHUB_ENV
           echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
+          cd ~
           cd simulatortofmu/bin/
           python runUnitTest.py
 
