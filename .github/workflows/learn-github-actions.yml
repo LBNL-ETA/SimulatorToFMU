@@ -9,7 +9,7 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.7"]
@@ -68,7 +68,7 @@ jobs:
           #echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
       - name: Running the tests
         run: |
-          echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
+          echo "OPENMODELICALIBRARY=/home/runner/.openmodelica/libraries/" >> $GITHUB_ENV
           echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
           cd simulatortofmu/bin/
           python runUnitTest.py
