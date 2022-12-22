@@ -34,13 +34,13 @@ jobs:
           cd /
           #sudo apt install locate
           echo "trying to locate the Modelica 3.2.3 folder in /"
-          sudo find / -iname "Modelica 3.2.3" -type d
+          sudo find / -iname "omlibrary" -type d
           echo "trying to locate the Modelica 3.2.3 folder in home"
           cd ~
-          sudo find / -iname "Modelica 3.2.3" -type d
+          sudo find / -iname "omlibrary" -type d
           sudo apt install tree
-          tree -L 5
-          cd /usr/lib/omlibrary
+          tree -L 7
+          cd /var/lib/omlibrary
       - name: Install Python dependencies
         run: |
           $CONDA/bin/conda install -c anaconda jinja2
