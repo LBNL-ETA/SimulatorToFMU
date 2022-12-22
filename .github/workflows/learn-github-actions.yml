@@ -39,8 +39,10 @@ jobs:
           #cd ~
           #sudo find / -iname "omlibrary" -type d
           #sudo apt install tree
-          cd /usr/share/omlibrary/
-          tree -L 3
+          cd /usr/
+          find . -name *.mo
+          echo "finishing searching for mo files in /usr/"
+          cd /usr/lib/omlibrary
       - name: Install Python dependencies
         run: |
           $CONDA/bin/conda install -c anaconda jinja2
