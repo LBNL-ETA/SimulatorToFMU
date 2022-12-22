@@ -31,18 +31,16 @@ jobs:
           sudo apt install -y openmodelica
           #for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
           sudo apt install omlibrary
-          cd /usr/lib/
           sudo apt install tree
-          tree -L 3
           #sudo apt install locate
           echo "trying to locate the omlibrary folder in /"
-          sudo find / -iname "omlibrary" -type d
-          echo "trying to locate the omlibrary folder in home"
-          cd ~
-          sudo find / -iname "omlibrary" -type d
-          sudo apt install tree
-          cd /usr/local/lib/
-          tree -L 2
+          #sudo find / -iname "omlibrary" -type d
+          #echo "trying to locate the omlibrary folder in home"
+          #cd ~
+          #sudo find / -iname "omlibrary" -type d
+          #sudo apt install tree
+          cd /usr/share/lib/
+          tree -L 3
       - name: Install Python dependencies
         run: |
           $CONDA/bin/conda install -c anaconda jinja2
