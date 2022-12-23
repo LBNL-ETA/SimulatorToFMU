@@ -25,6 +25,7 @@ jobs:
         run: |
           #cd simulatortofmu/parser/libraries/modelica/SimulatorToFMU
           #sudo apt install tree
+          pwd
           tree -L 4
           echo "switch to root folder"
           cd /home/
