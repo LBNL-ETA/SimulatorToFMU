@@ -1,7 +1,7 @@
 SimulatorToFMU
 --------------
 
-|Running Tests for SimulatorToFMU|
+|SimulatorToFMU Tests|
 
 .. |SimulatorToFMU Tests| image:: https://github.com/LBNL-ETA/SimulatorToFMU/actions/workflows/unitTest.yml/badge.svg
    :target: https://github.com/LBNL-ETA/SimulatorToFMU/actions/workflows/unitTest.yml
