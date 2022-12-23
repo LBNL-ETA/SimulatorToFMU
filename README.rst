@@ -1,8 +1,11 @@
 SimulatorToFMU
 --------------
 
-.. image:: https://travis-ci.org/LBNL-ETA/SimulatorToFMU.svg?branch=master
-    :target: https://travis-ci.org/LBNL-ETA/SimulatorToFMU
+|Running Tests for SimulatorToFMU|
+
+.. |Running Tests for SimulatorToFMU| image:: https://github.com/LBNL-ETA/SimulatorToFMU/actions/workflows/unitTest.yml/badge.svg
+   :target: https://github.com/LBNL-ETA/SimulatorToFMU/actions/workflows/unitTest.yml
+
 
 Overview
 ^^^^^^^^
