@@ -24,7 +24,9 @@ jobs:
       - name: Copy Python libraries to the user libray folder
         run: |
           #cd simulatortofmu/parser/libraries/modelica/SimulatorToFMU
-          #sudo apt install tree
+          sudo apt install tree
+          pwd
+          tree -L 6
           sudo cp /home/runner/work/SimulatorToFMU/simulatortofmu/parser/libraries/modelica/SimulatorToFMU/Resources/Library/linux64/libpython37.so /usr/lib/
       - name: Install OpenModelica
         run: |
