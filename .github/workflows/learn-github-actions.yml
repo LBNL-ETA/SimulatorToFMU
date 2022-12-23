@@ -21,6 +21,9 @@ jobs:
           update-conda: true
           python-version: ${{ matrix.python-version }}
           conda-channels: anaconda, conda-forge
+      - name: Copy Python libraries to the user libray folder
+        run: |
+          sudo cp simulatortofmu/parser/libraries/modelica/SimulatorToFMU/Resources/Library/linux64/libpython37.so /usr/lib/
       - name: Install OpenModelica
         run: |
           sudo apt-get update          
@@ -63,12 +66,6 @@ jobs:
         #uses: THM-MoTE/setup-openmodelica@v1  
         #with:
         #  version: 1.19.2 
-      #- name: test existence of folder
-      #  run: |
-      #    cd /usr/lib/omlibrary 
-      #- name: Set OpenModelica Library 
-      #  run: |
-      #    #echo "OPENMODELICALIBRARY=/usr/lib/omlibrary" >> $GITHUB_ENV
       - name: Set Python Path
         run: |
           #echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
