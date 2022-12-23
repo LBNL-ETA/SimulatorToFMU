@@ -2,9 +2,8 @@ name: Running Tests for SimulatorToFMU
 
 on: [push]
 
-#env: 
-#  OPENMODELICALIBRARY: "/usr/lib/omlibrary"
-#  PYTHONPATH: "simulatortofmu/parser/utilities:$PYTHONPATH"
+env: 
+  SIMULATORTOFMUPATH: "/home/runner/work/SimulatorToFMU/SimulatorToFMU/simulatortofmu"
 
 jobs:
   build:
@@ -23,64 +22,32 @@ jobs:
           conda-channels: anaconda, conda-forge
       - name: Copy Python libraries to the user libray folder
         run: |
-          #cd simulatortofmu/parser/libraries/modelica/SimulatorToFMU
           sudo apt install tree
           pwd
           tree -L 6
-          sudo cp /home/runner/work/SimulatorToFMU/SimulatorToFMU/simulatortofmu/parser/libraries/modelica/SimulatorToFMU/Resources/Library/linux64/libpython37.so /usr/lib/
+          sudo cp $SIMULATORTOFMUPATH/parser/libraries/modelica/SimulatorToFMU/Resources/Library/linux64/libpython37.so /usr/lib/
       - name: Install OpenModelica
         run: |
           sudo apt-get update          
           sudo apt install -y wget gnupg lsb-release
           curl -fsSL http://build.openmodelica.org/apt/openmodelica.asc | sudo gpg --dearmor -o /usr/share/keyrings/openmodelica-keyring.gpg
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openmodelica-keyring.gpg] https://build.openmodelica.org/apt $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/openmodelica.list > /dev/null
-          
-          #for deb in deb-src; do echo "$deb https://build.openmodelica.org/omc/builds/linux/releases/1.19.2/ jammy release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
-          #for deb in deb-src; do echo "$deb http://build.openmodelica.org/apt bionic release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
-
-          #for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` stable"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
-          #wget -q http://build.openmodelica.org/apt/openmodelica.asc -O- | sudo apt-key add -
           sudo apt-get update
           sudo apt install -y openmodelica
-          for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
+          #for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
           sudo apt install omlibrary
-          
-          #sudo apt install locate
-          #echo "trying to locate the omlibrary folder in /"
-          #sudo find / -iname "omlibrary" -type d
-          #echo "trying to locate the omlibrary folder in home"
-          #cd ~
-          #sudo find / -iname "omlibrary" -type d
-          #sudo apt install tree
-          #cd /
-          #sudo find . -name *.mo
-          #echo "finishing searching for mo files in /"
-          #cd /usr/lib/omlibrary
       - name: Install Python dependencies
         run: |
           $CONDA/bin/conda install -c anaconda jinja2
           $CONDA/bin/conda install -c conda-forge pyfmi
-      #- name: Install OpenModelica
-        #run: |
-        #  for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
-        #  wget -q http://build.openmodelica.org/apt/openmodelica.asc -O- | sudo apt-key add -
-        #  sudo apt update
-        #  sudo apt install openmodelica
-        #  sudo apt install omlibrary
-        #uses: THM-MoTE/setup-openmodelica@v1  
-        #with:
-        #  version: 1.19.2 
-      - name: Set Python Path
-        run: |
-          #echo "PYTHONPATH=/home/runner/work/SimulatorToFMU/SimulatorToFMU/simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
+
       - name: Set environment variables
         run: |
           echo "OPENMODELICALIBRARY=/home/runner/.openmodelica/libraries/" >> $GITHUB_ENV
-          #echo "MODELICAPATH=/home/runner/.openmodelica/libraries/" >> $GITHUB_ENV
-          echo "PYTHONPATH=/home/runner/work/SimulatorToFMU/SimulatorToFMU/simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
+          echo "PYTHONPATH=$SIMULATORTOFMUPATH/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
       - name: Running the tests
         run: |
-          cd simulatortofmu/bin/
+          cd $SIMULATORTOFMUPATH/bin/
           python runUnitTest.py
 
 
