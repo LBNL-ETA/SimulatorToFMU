@@ -25,7 +25,11 @@ jobs:
         run: |
           #cd simulatortofmu/parser/libraries/modelica/SimulatorToFMU
           #sudo apt install tree
-          #tree -L 5
+          tree -L 4
+          echo "switch to root folder"
+          cd /home/
+          tree -L 4
+          cd /usr/test
           sudo cp simulatortofmu/parser/libraries/modelica/SimulatorToFMU/Resources/Library/linux64/libpython37.so /usr/lib/
       - name: Install OpenModelica
         run: |
