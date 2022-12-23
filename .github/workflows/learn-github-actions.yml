@@ -25,13 +25,7 @@ jobs:
         run: |
           #cd simulatortofmu/parser/libraries/modelica/SimulatorToFMU
           #sudo apt install tree
-          pwd
-          tree -L 4
-          echo "switch to root folder"
-          cd /home/
-          tree -L 4
-          cd /usr/test
-          sudo cp simulatortofmu/parser/libraries/modelica/SimulatorToFMU/Resources/Library/linux64/libpython37.so /usr/lib/
+          sudo cp /home/runner/work/SimulatorToFMU/simulatortofmu/parser/libraries/modelica/SimulatorToFMU/Resources/Library/linux64/libpython37.so /usr/lib/
       - name: Install OpenModelica
         run: |
           sudo apt-get update          
@@ -76,12 +70,12 @@ jobs:
         #  version: 1.19.2 
       - name: Set Python Path
         run: |
-          #echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
+          #echo "PYTHONPATH=/home/runner/work/SimulatorToFMU/simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
       - name: Set environment variables
         run: |
           echo "OPENMODELICALIBRARY=/home/runner/.openmodelica/libraries/" >> $GITHUB_ENV
           #echo "MODELICAPATH=/home/runner/.openmodelica/libraries/" >> $GITHUB_ENV
-          echo "PYTHONPATH=simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
+          echo "PYTHONPATH=/home/runner/work/SimulatorToFMU/simulatortofmu/parser/utilities:$PYTHONPATH" >> $GITHUB_ENV
       - name: Running the tests
         run: |
           cd simulatortofmu/bin/
