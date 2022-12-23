@@ -23,9 +23,9 @@ jobs:
           conda-channels: anaconda, conda-forge
       - name: Copy Python libraries to the user libray folder
         run: |
-          cd simulatortofmu/parser/libraries/modelica/SimulatorToFMU
-          sudo apt install tree
-          tree -L 5
+          #cd simulatortofmu/parser/libraries/modelica/SimulatorToFMU
+          #sudo apt install tree
+          #tree -L 5
           sudo cp simulatortofmu/parser/libraries/modelica/SimulatorToFMU/Resources/Library/linux64/libpython37.so /usr/lib/
       - name: Install OpenModelica
         run: |
