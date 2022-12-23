@@ -23,6 +23,9 @@ jobs:
           conda-channels: anaconda, conda-forge
       - name: Copy Python libraries to the user libray folder
         run: |
+          cd simulatortofmu/parser/libraries/modelica/SimulatorToFMU
+          sudo apt install tree
+          tree -L 5
           sudo cp simulatortofmu/parser/libraries/modelica/SimulatorToFMU/Resources/Library/linux64/libpython37.so /usr/lib/
       - name: Install OpenModelica
         run: |
@@ -40,7 +43,7 @@ jobs:
           sudo apt install -y openmodelica
           for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
           sudo apt install omlibrary
-          #sudo apt install tree
+          
           #sudo apt install locate
           #echo "trying to locate the omlibrary folder in /"
           #sudo find / -iname "omlibrary" -type d
